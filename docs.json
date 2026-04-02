@@ -78,65 +78,46 @@
 
           {
 
-            "group": "Docs",
+            "group": "Collabase Apps",
 
             "pages": [
 
-              "docs/overview",
+              {
+                "group": "Docs",
+                "pages": [
+                  "docs/overview",
+                  "docs/pages",
+                  "docs/templates"
+                ]
+              },
 
-              "docs/pages",
+              {
+                "group": "Test Management",
+                "pages": [
+                  "test-management/overview",
+                  "test-management/test-cases",
+                  "test-management/test-runs",
+                  "test-management/milestones"
+                ]
+              },
 
-              "docs/templates"
+              {
+                "group": "Automation",
+                "pages": [
+                  "automation/overview",
+                  "automation/triggers",
+                  "automation/conditions",
+                  "automation/actions"
+                ]
+              },
 
-            ]
-
-          },
-
-          {
-
-            "group": "Test Management",
-
-            "pages": [
-
-              "test-management/overview",
-
-              "test-management/test-cases",
-
-              "test-management/test-runs",
-
-              "test-management/milestones"
-
-            ]
-
-          },
-
-          {
-
-            "group": "Automation",
-
-            "pages": [
-
-              "automation/overview",
-
-              "automation/triggers",
-
-              "automation/conditions",
-
-              "automation/actions"
-
-            ]
-
-          },
-
-          {
-
-            "group": "Intranet",
-
-            "pages": [
-
-              "intranet/overview",
-
-              "intranet/blog-posts"
+              {
+                "group": "Intranet",
+                "pages": [
+                  "intranet/overview",
+                  "intranet/blog-posts"
+                ]
+              }
 
             ]
 
