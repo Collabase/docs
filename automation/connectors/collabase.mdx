@@ -1,0 +1,82 @@
+---
+title: "Collabase (built-in)"
+description: "Native Collabase actions for tasks, pages, projects, registry objects, test management, and notifications — no external credentials required."
+---
+
+# Collabase (built-in)
+
+The Collabase connector provides native actions and triggers that operate directly inside your Collabase instance. No credentials, no API keys — it reads and writes your Collabase data with full access to tasks, pages, projects, the Registry, Test Management, and notifications.
+
+## Authentication
+
+**Auth type:** None (runs in the same security context as the automation)
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Task Created** | A new task is created in any project |
+| **Task Status Changed** | A task transitions to a different workflow status |
+| **Task Assigned** | A task is assigned to a team member |
+| **Page Created** | A new page is created in any space |
+| **Page Updated** | An existing page's content is saved |
+| **Registry Object Created** | A new registry object is created in any schema |
+| **Registry Object Updated** | A registry object's fields are modified |
+| **Test Case Failed** | A test case result is marked as FAILED in a test run |
+| **Test Case Passed** | A test case result is marked as PASSED |
+| **Test Run Started** | A new test run begins |
+| **Test Suite Created** | A new test suite is created |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Tasks">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Search Tasks** | `projectId`, `query`, `status`, `priority`, `limit` | results[] — id, key, title, priority |
+    | **Create Task** | `projectId`, `title`, `description`, `priority`, `assigneeId`, `dueDate` | id, key, title |
+    | **Update Task** | `taskId`, `title`, `description`, `priority`, `statusId`, `assigneeId` | id |
+    | **Add Task Comment** | `taskId`, `text` | id |
+  </Accordion>
+  <Accordion title="Pages">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Search Pages** | `spaceId`, `query`, `status`, `limit` | results[] — id, title, status |
+    | **Create Page** | `spaceId`, `title`, `parentId` | id, title |
+    | **Update Page** | `pageId`, `title`, `content` | id |
+    | **Update Page Status** | `pageId`, `status` (DRAFT/PUBLISHED/ARCHIVED) | id |
+  </Accordion>
+  <Accordion title="Projects">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Search Projects** | `spaceId`, `query` | results[] — id, name, slug |
+    | **Create Project** | `spaceId`, `name`, `description`, `key` | id, name, slug |
+  </Accordion>
+  <Accordion title="Registry">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Search Registry Objects** | `schemaId`, `typeId`, `query`, `limit` | results[] — id, label, objectKey |
+    | **Get Registry Object** | `objectId` | id, label, objectKey, fields{} |
+    | **Create Registry Object** | `schemaId`, `typeId`, `label`, `fields{}` | id, label, objectKey |
+    | **Update Registry Object** | `objectId`, `label`, `fields{}` | id |
+    | **Delete Registry Object** | `objectId` | id |
+  </Accordion>
+  <Accordion title="Test Management">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Test Case** | `testProjectId`, `title`, `description`, `priority`, `type`, `suiteId` | id, title |
+    | **Update Test Case Status** | `testCaseId`, `status` (DRAFT/READY/DEPRECATED) | id |
+    | **Create Test Run** | `testProjectId`, `name`, `description` | id, name |
+    | **Search Test Cases** | `testProjectId`, `query` | results[] — id, title |
+    | **Search Test Runs** | `testProjectId`, `query`, `status` | results[] — id, name, status |
+  </Accordion>
+  <Accordion title="Notifications">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Send Notification** | `userId`, `title`, `message`, `link` | id |
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  The Collabase connector is always available — it does not appear in the Connections list and requires no setup. Select it from the node picker under **Built-in**.
+</Note>

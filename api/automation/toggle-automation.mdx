@@ -1,0 +1,28 @@
+---
+title: "Toggle automation"
+description: "Enable or disable an automation."
+api: "PATCH /api/v1/automation/{automationId}/toggle"
+---
+
+## Path parameters
+
+<ParamField path="automationId" type="string" required>The automation to toggle.</ParamField>
+
+## Request body
+
+<ParamField body="isEnabled" type="boolean" required>`true` to enable, `false` to disable.</ParamField>
+
+<RequestExample>
+```bash
+curl -X PATCH "https://your-collabase.ch/api/v1/automation/auto-abc123/toggle" \
+  -H "Authorization: Bearer cba_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "isEnabled": false }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{ "id": "auto-abc123", "isEnabled": false }
+```
+</ResponseExample>

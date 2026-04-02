@@ -1,0 +1,49 @@
+---
+title: "Create connection"
+description: "Store credentials for a connector as a reusable named connection."
+api: "POST /api/v1/automation/connections"
+---
+
+Creates a new connector connection. Credentials are stored encrypted and never returned in plain text after creation.
+
+<Warning>
+  The `config` map contains raw credentials (API keys, tokens). Ensure you are making this request over HTTPS. Values are stored encrypted at rest.
+</Warning>
+
+## Request body
+
+<ParamField body="name" type="string" required>Human-readable name. 1–100 characters.</ParamField>
+<ParamField body="connectorId" type="string" required>The connector to configure, e.g. `slack`, `github`.</ParamField>
+<ParamField body="authType" type="string" required>The auth method, e.g. `apiKey`, `basic`, `oauth2`.</ParamField>
+<ParamField body="config" type="object" required>Key-value credential map. Keys and structure are connector-specific.</ParamField>
+<ParamField body="visibility" type="string">`PRIVATE` (default) | `SPACE` | `GLOBAL`</ParamField>
+<ParamField body="spaceId" type="string">Required if `visibility` is `SPACE`.</ParamField>
+
+<RequestExample>
+```bash
+curl -X POST "https://your-collabase.ch/api/v1/automation/connections" \
+  -H "Authorization: Bearer cba_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "GitHub Actions Bot",
+    "connectorId": "github",
+    "authType": "apiKey",
+    "config": {
+      "token": "ghp_xxxxxxxxxxxxxxxxxxxx"
+    },
+    "visibility": "SPACE",
+    "spaceId": "space-001"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "id": "conn-xyz",
+  "name": "GitHub Actions Bot",
+  "connectorId": "github",
+  "visibility": "SPACE"
+}
+```
+</ResponseExample>

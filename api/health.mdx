@@ -1,0 +1,29 @@
+---
+title: "Health check"
+description: "Check whether the Collabase API is reachable and what version is running."
+api: "GET /api/health"
+---
+
+Returns the operational status of the API. No authentication required. Use this endpoint for uptime monitoring, load-balancer health probes, and deployment verification.
+
+## Response
+
+<ResponseField name="status" type="string">Always `ok` when the service is running.</ResponseField>
+<ResponseField name="version" type="string">Deployed application version. `"unknown"` if not set.</ResponseField>
+<ResponseField name="timestamp" type="string">Current server time in ISO 8601 format.</ResponseField>
+
+<RequestExample>
+```bash
+curl "https://your-collabase.ch/api/health"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "status": "ok",
+  "version": "1.4.2",
+  "timestamp": "2026-04-02T21:00:00.000Z"
+}
+```
+</ResponseExample>

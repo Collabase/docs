@@ -1,0 +1,64 @@
+---
+title: "SCIM Users"
+description: "Create, read, update, and deprovision users via the SCIM 2.0 Users endpoint."
+---
+
+# SCIM Users
+
+## List users — `GET /api/scim/v2/Users`
+
+Returns a paginated list of users in SCIM ListResponse format.
+
+**Query parameters:**
+
+| Param | Description |
+|---|---|
+| `filter` | SCIM filter expression (e.g. `userName eq "user@example.com"`) |
+| `startIndex` | 1-based pagination offset (default: `1`) |
+| `count` | Results per page (default: `100`, max: `100`) |
+
+```bash
+curl "https://your-collabase.ch/api/scim/v2/Users?filter=userName+eq+%22user%40example.com%22" \
+  -H "Authorization: Bearer <scim-token>"
+```
+
+## Create user — `POST /api/scim/v2/Users`
+
+Provisions a new user. If a user with the same email already exists, the existing account is linked and returned.
+
+**Required fields:** `userName` (email), `name.givenName`, `name.familyName`
+
+```bash
+curl -X POST "https://your-collabase.ch/api/scim/v2/Users" \
+  -H "Authorization: Bearer <scim-token>" \
+  -H "Content-Type: application/scim+json" \
+  -d '{
+    "schemas": ["urn:ietf:params:scim:schemas:core:2.0:User"],
+    "userName": "alice@example.com",
+    "name": { "givenName": "Alice", "familyName": "Smith" },
+    "active": true
+  }'
+```
+
+## Get user — `GET /api/scim/v2/Users/{id}`
+
+Returns a single user by their SCIM ID.
+
+## Update user (PATCH) — `PATCH /api/scim/v2/Users/{id}`
+
+Supports SCIM PATCH operations to update individual attributes or deactivate a user.
+
+```json
+{
+  "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+  "Operations": [
+    { "op": "replace", "path": "active", "value": false }
+  ]
+}
+```
+
+Setting `active: false` **deactivates** the user account without deleting it.
+
+## Delete user — `DELETE /api/scim/v2/Users/{id}`
+
+Permanently removes the user from Collabase. This action cannot be undone.

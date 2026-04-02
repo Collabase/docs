@@ -1,107 +1,64 @@
 ---
 title: "Schema Designer"
-description: "The Schema Designer is a visual ER-diagram canvas where you build your data model — create Object Types, define Attributes, and draw typed Relations with cardinality."
+description: "A visual ER-diagram canvas to build your data model — create Object Types, define Attributes, and draw typed Relations."
 ---
 
-The Schema Designer is a full-screen visual canvas where you design the structure of your data model. Object Types appear as nodes, Schema Relations appear as edges connecting them, and the canvas gives you a live view of how your data model is shaped — before any objects are created.
+# Schema Designer
+
+The Schema Designer is a full-screen visual canvas where you design the structure of your data model. Object Types appear as cards, Relations appear as connecting arrows, and the canvas gives you a live view of your model before any objects are created.
 
 ## The canvas
 
-The designer uses a drag-and-drop canvas. Each Object Type is represented as a card node that you can freely position. Edges between nodes represent Schema Relations, labelled with their name and cardinality.
+Open a Schema → click the **Designer** tab to enter the canvas.
 
-Use the **minimap** in the bottom-right corner to navigate large schemas. Pan by clicking and dragging the canvas background. Zoom with the scroll wheel or the zoom controls.
+| Action | How |
+|---|---|
+| Add Object Type | Click **+ Object Type** in the toolbar |
+| Move types | Drag a card to reposition it |
+| Add Relation | Hover a card → click the **→** handle and drag to another card |
+| Zoom | Scroll or pinch |
+| Pan | Click and drag the canvas background |
+| Auto-layout | Click **Auto layout** in the toolbar to tidy the diagram |
 
-<Tip>
-  All changes in the designer are staged locally until you click **Save**. You can undo and redo individual changes with **Ctrl+Z** / **Ctrl+Y** before committing.
-</Tip>
+## Creating an Object Type
 
-## Object Types
+1. Click **+ Object Type**
+2. Enter a name (e.g. `Customer`)
+3. Optionally choose an icon and color
+4. Click **Create**
 
-An Object Type is a class or table within your Schema — for example "Server", "Vendor", or "Product".
+The new type appears as a card on the canvas. Click it to open the attribute editor.
 
-### Creating an Object Type
+## Defining Attributes
 
-<Steps>
-  <Step title="Open the Schema Designer">
-    Open your Schema and click the **Designer** tab.
-  </Step>
-  <Step title="Add an Object Type">
-    Click **Add Object Type** in the toolbar. Give it a name, choose an icon and color, and add an optional description.
-  </Step>
-  <Step title="Set a key prefix (optional)">
-    If you want objects to have auto-generated, human-readable keys (e.g. `SRV-001`), enter a short prefix in the **Key Prefix** field. Leave it blank if you do not need object keys.
-  </Step>
-  <Step title="Save">
-    Click **Save** on the Object Type form, then **Save** on the canvas to commit the change to the Schema.
-  </Step>
-</Steps>
-
-## Attributes
-
-Attributes are the fields on an Object Type. They define what data each Object of that type stores.
-
-### Attribute fields
+With an Object Type selected, click **+ Attribute** in the side panel:
 
 | Field | Description |
 |---|---|
-| **Name** | The display name of the attribute (e.g. "IP Address", "Owner", "Status") |
-| **Type** | The field type — text, number, date, select, member, and more |
-| **Required** | If enabled, a value must be provided when creating or editing an object |
-| **Unique** | If enabled, no two objects of this type can share the same value for this attribute |
-| **Label** | Marks this attribute as the object's primary display name in the browser and relation views |
+| **Name** | Attribute name (e.g. `Annual Revenue`) |
+| **Type** | Data type — text, number, date, boolean, select, url, email |
+| **Required** | Whether this attribute must be filled when creating an object |
+| **Unique** | Enforce uniqueness across all objects of this type |
+| **Prefix** | For `select` types — define allowed options |
+
+## Creating Relations
+
+Relations connect two Object Types with a typed edge.
+
+1. Hover over the source Object Type card
+2. Click the **→** arrow handle
+3. Drag to the target Object Type
+4. Configure:
+   - **Label** — e.g. "has many", "belongs to"
+   - **Cardinality** — `1:1`, `1:N`, or `N:M`
+   - **Direction** — unidirectional or bidirectional (navigable from both types)
+
+Relations with `1:N` cardinality show the `1` side and the `N` side in the object form automatically.
+
+## Editing an existing schema
+
+Click any Object Type card to edit its attributes. Click any Relation arrow to edit its configuration. All changes are applied immediately — no draft/publish cycle.
 
 <Warning>
-  Only one attribute per Object Type can be marked as **Label**. If no attribute is marked as Label, the object's internal ID is used as its display name.
+  Deleting an Attribute removes all stored values for that attribute across all existing objects. This cannot be undone.
 </Warning>
-
-### Adding an Attribute
-
-<Steps>
-  <Step title="Select an Object Type">
-    Click on an Object Type node in the canvas to open its detail panel.
-  </Step>
-  <Step title="Open the Attributes tab">
-    Click **Attributes** in the detail panel.
-  </Step>
-  <Step title="Add an attribute">
-    Click **Add Attribute**, choose a name and type, and set any constraints. Click **Save**.
-  </Step>
-</Steps>
-
-## Schema Relations
-
-A Schema Relation is a formal, typed link between two Object Types. It defines that objects of one type can be related to objects of another type — and with what cardinality.
-
-### Cardinality options
-
-| Cardinality | Meaning |
-|---|---|
-| `1:1` | One object of Type A relates to exactly one object of Type B |
-| `1:N` | One object of Type A relates to many objects of Type B |
-| `N:1` | Many objects of Type A relate to one object of Type B |
-| `N:N` | Many objects of Type A relate to many objects of Type B |
-
-### Drawing a Relation
-
-<Steps>
-  <Step title="Hover over an Object Type node">
-    A connection handle appears on the edge of the node.
-  </Step>
-  <Step title="Drag to the target Object Type">
-    Click and drag from the source node's handle to the target node. Release to open the Relation form.
-  </Step>
-  <Step title="Configure the Relation">
-    Give the relation a name (e.g. "belongs to", "managed by") and select the cardinality. Click **Save**.
-  </Step>
-  <Step title="Save the canvas">
-    Click **Save** to commit the relation to the Schema.
-  </Step>
-</Steps>
-
-## Change log
-
-The designer maintains a local change log for the current session. Every add, edit, or delete is listed in the **Changes** panel. You can review what will be saved before committing, and use **Ctrl+Z** / **Ctrl+Y** to undo or redo individual steps.
-
-<Note>
-  The change log resets when you click **Save** or navigate away. Unsaved changes are not persisted.
-</Note>

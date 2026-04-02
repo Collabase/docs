@@ -1,0 +1,47 @@
+---
+title: "Create automation"
+description: "Create a new automation."
+api: "POST /api/v1/automation"
+---
+
+Creates a new automation owned by the authenticated user.
+
+## Request body
+
+<ParamField body="name" type="string" required>Display name. 1–200 characters.</ParamField>
+<ParamField body="description" type="string">Optional description.</ParamField>
+<ParamField body="triggerType" type="string" required>`COLLABASE_EVENT` | `WEBHOOK` | `SCHEDULE` | `MANUAL`</ParamField>
+<ParamField body="triggerConfig" type="object">Trigger-specific configuration. Defaults to `{}`.</ParamField>
+<ParamField body="flowGraph" type="object">Initial node graph. Defaults to `{}`.</ParamField>
+<ParamField body="spaceId" type="string">Associate with a space ID.</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">Automation ID.</ResponseField>
+<ResponseField name="name" type="string">Automation name.</ResponseField>
+<ResponseField name="isEnabled" type="boolean">Always `false` for new automations.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/automation" \
+  -H "Authorization: Bearer cba_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Sprint Report",
+    "triggerType": "SCHEDULE",
+    "triggerConfig": { "cron": "0 9 * * MON" }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "id": "auto-xyz789",
+  "name": "Sprint Report",
+  "isEnabled": false,
+  "triggerType": "SCHEDULE",
+  "createdAt": "2026-04-01T08:00:00.000Z"
+}
+```
+</ResponseExample>

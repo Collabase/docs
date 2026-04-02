@@ -5,13 +5,13 @@ description: "Manage deals, persons, organizations, activities, and notes in Pip
 
 # Pipedrive
 
-Automate your Pipedrive sales pipeline — create and update deals, log activities, add notes, and sync person and organization data from your workflows.
+Automate your Pipedrive sales pipeline — create and update deals, log activities, add notes, search deals by keyword, and sync person and organization data.
 
 ## Authentication
 
 **Auth type:** API Key
 
-Find your API token in [Pipedrive Settings → Personal preferences → API](https://app.pipedrive.com/settings/api).
+Find your token in [Pipedrive Settings → Personal preferences → API](https://app.pipedrive.com/settings/api).
 
 | Credential | Description |
 |---|---|
@@ -37,7 +37,7 @@ Find your API token in [Pipedrive Settings → Personal preferences → API](htt
     |---|---|---|
     | **Create Deal** | `title`, `value`, `currency`, `stageId`, `personId`, `organizationId`, `expectedCloseDate` | dealId, title, stageId |
     | **Update Deal** | `dealId`, `title`, `stageId`, `value`, `status` | dealId |
-    | **Get Deal** | `dealId` | dealId, title, value, stage, status, personName |
+    | **Get Deal** | `dealId` | dealId, title, value, stage, status |
     | **Search Deals** | `term`, `limit` | deals[], count |
   </Accordion>
   <Accordion title="Persons & organizations">

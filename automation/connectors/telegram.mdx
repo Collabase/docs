@@ -1,27 +1,28 @@
 ---
 title: "Telegram"
-description: "Send messages, media, and inline keyboards via Telegram Bot API."
+description: "Send messages, media, keyboard buttons, edit and pin messages via Telegram Bot API."
 ---
 
 # Telegram
 
-Send text, photos, documents, and interactive inline keyboard buttons to Telegram users and groups. Useful for bot-driven alerts and approval workflows.
+Send text, photos, documents, interactive inline keyboards, and location pins to Telegram users and groups. Edit sent messages, pin important ones, and handle button callback queries.
 
 ## Authentication
 
 **Auth type:** API Key
 
-Create a bot via [@BotFather](https://t.me/BotFather) on Telegram (send `/newbot`) and copy the HTTP API token.
+Create a bot via [@BotFather](https://t.me/BotFather) on Telegram using `/newbot`.
 
 | Credential | Description |
 |---|---|
-| **Bot Token** | The token provided by @BotFather (e.g. `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw`) |
+| **Bot Token** | Token from @BotFather (e.g. `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw`) |
 
 ## Triggers
 
 | Trigger | When it fires |
 |---|---|
 | **Message Received** | A user sends a message to the bot |
+| **Command Received** | A user sends a `/command` to the bot |
 | **Callback Query** | A user clicks an inline keyboard button |
 
 ## Actions
@@ -32,9 +33,12 @@ Create a bot via [@BotFather](https://t.me/BotFather) on Telegram (send `/newbot
 | **Send Photo** | `chatId`, `photoUrl`, `caption` | messageId |
 | **Send Document** | `chatId`, `documentUrl`, `caption` | messageId |
 | **Send Inline Keyboard** | `chatId`, `text`, `buttons[]` (label + callbackData) | messageId |
+| **Edit Message** | `chatId`, `messageId`, `text` | ok |
+| **Delete Message** | `chatId`, `messageId` | ok |
+| **Pin Message** | `chatId`, `messageId`, `disableNotification` | ok |
 | **Answer Callback Query** | `callbackQueryId`, `text`, `showAlert` | success |
 | **Get Chat** | `chatId` | id, title, type, memberCount |
 
 <Tip>
-  Use `parseMode: "HTML"` to format messages with `<b>bold</b>`, `<i>italic</i>`, or `<code>code</code>` tags. Markdown is also supported but HTML is more predictable with special characters.
+  Use `parseMode: "HTML"` for formatting: `<b>bold</b>`, `<i>italic</i>`, `<code>code</code>`. HTML is more reliable than Markdown when messages contain special characters like `.`, `!`, or `-`.
 </Tip>

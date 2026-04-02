@@ -1,21 +1,21 @@
 ---
 title: "Google Calendar"
-description: "Create events, check free/busy availability, and manage Google Calendar calendars."
+description: "Create, update, delete events, check availability, respond to invitations, and manage calendars."
 ---
 
 # Google Calendar
 
-Manage events across Google Calendar — from creating meetings to checking availability before scheduling. Works with any Google Calendar account (personal or Google Workspace).
+Manage events across Google Calendar — from creating meetings to checking free/busy availability, quick-adding natural language events, and responding to invitations.
 
 ## Authentication
 
 **Auth type:** OAuth 2.0
 
-Create OAuth 2.0 credentials in [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials. Enable the **Google Calendar API**. Generate a token using the OAuth 2.0 flow with `https://www.googleapis.com/auth/calendar` scope.
+Enable the **Google Calendar API** in [Google Cloud Console](https://console.cloud.google.com/). Generate an OAuth 2.0 access token with `https://www.googleapis.com/auth/calendar` scope.
 
 | Credential | Description |
 |---|---|
-| **Access Token** | OAuth 2.0 access token (refresh via your OAuth flow) |
+| **Access Token** | OAuth 2.0 access token with Calendar scope |
 
 ## Triggers
 
@@ -23,7 +23,7 @@ Create OAuth 2.0 credentials in [Google Cloud Console](https://console.cloud.goo
 |---|---|
 | **Event Created** | A new event is added to a calendar |
 | **Event Updated** | An existing event is modified |
-| **Event Deleted** | An event is removed from the calendar |
+| **Event Deleted** | An event is removed |
 | **Event Starting Soon** | An event begins within a configured window |
 
 ## Actions
@@ -33,15 +33,18 @@ Create OAuth 2.0 credentials in [Google Cloud Console](https://console.cloud.goo
     | Action | Key inputs | Key outputs |
     |---|---|---|
     | **Create Event** | `calendarId`, `summary`, `description`, `startDateTime`, `endDateTime`, `attendees[]`, `location`, `sendNotifications` | eventId, htmlLink |
+    | **Quick Add Event** | `calendarId`, `text` (natural language, e.g. "Meeting tomorrow at 3pm") | eventId, htmlLink |
     | **Get Event** | `calendarId`, `eventId` | eventId, summary, start, end, attendees[], status |
     | **Update Event** | `calendarId`, `eventId`, `summary`, `startDateTime`, `endDateTime`, `description` | eventId, htmlLink |
     | **Delete Event** | `calendarId`, `eventId`, `sendNotifications` | deleted |
     | **List Events** | `calendarId`, `timeMin`, `timeMax`, `query`, `maxResults` | events[], count |
+    | **Respond to Event** | `calendarId`, `eventId`, `response` (accepted/declined/tentative) | eventId |
   </Accordion>
   <Accordion title="Scheduling">
     | Action | Key inputs | Key outputs |
     |---|---|---|
     | **Get Free/Busy** | `calendarIds[]`, `timeMin`, `timeMax` | busy[], free[] |
+    | **Find Free Slot** | `calendarIds[]`, `duration` (minutes), `from`, `to`, `workingHoursOnly` | slotStart, slotEnd, found |
   </Accordion>
   <Accordion title="Calendars">
     | Action | Key inputs | Key outputs |
@@ -52,5 +55,5 @@ Create OAuth 2.0 credentials in [Google Cloud Console](https://console.cloud.goo
 </AccordionGroup>
 
 <Tip>
-  Use `calendarId: "primary"` to always target the authenticated user's primary calendar without looking up the ID.
+  Use `calendarId: "primary"` to target the authenticated user's primary calendar without looking up the ID first.
 </Tip>

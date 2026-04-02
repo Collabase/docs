@@ -1,17 +1,17 @@
 ---
 title: "Google Drive"
-description: "Upload, download, move, copy, share, and manage files and folders in Google Drive."
+description: "Upload, download, move, copy, rename, share, and manage files and folders in Google Drive."
 ---
 
 # Google Drive
 
-Manage files and folders in Google Drive from your automations — create folders, upload files from URLs, share files with external users, and move items between folders.
+Manage files and folders in Google Drive from your automations — create folders, upload files from URLs, rename files, share with external users, and move items between folders.
 
 ## Authentication
 
 **Auth type:** OAuth 2.0
 
-Enable the **Google Drive API** in [Google Cloud Console](https://console.cloud.google.com/). Generate an OAuth 2.0 access token with `https://www.googleapis.com/auth/drive` scope.
+Enable the **Google Drive API** in [Google Cloud Console](https://console.cloud.google.com/). Generate an OAuth 2.0 token with `https://www.googleapis.com/auth/drive` scope.
 
 | Credential | Description |
 |---|---|
@@ -24,7 +24,7 @@ Enable the **Google Drive API** in [Google Cloud Console](https://console.cloud.
 | **File Created** | A new file is added to a monitored folder |
 | **File Updated** | An existing file is modified |
 | **File Deleted** | A file is removed |
-| **File Shared** | A file is shared with a new user |
+| **Folder Created** | A new folder is created |
 
 ## Actions
 
@@ -36,14 +36,15 @@ Enable the **Google Drive API** in [Google Cloud Console](https://console.cloud.
     | **Get File** | `fileId` | fileId, name, mimeType, webViewLink, size |
     | **Copy File** | `fileId`, `newName`, `parentFolderId` | fileId, name, webViewLink |
     | **Move File** | `fileId`, `newParentFolderId` | fileId, name |
+    | **Rename File** | `fileId`, `newName` | fileId, name |
     | **Delete File** | `fileId` | deleted |
     | **Search Files** | `query`, `mimeType`, `parentFolderId`, `maxResults` | files[], count |
+    | **List Files** | `folderId` | files[], count |
   </Accordion>
   <Accordion title="Folders">
     | Action | Key inputs | Key outputs |
     |---|---|---|
     | **Create Folder** | `name`, `parentFolderId` | folderId, name, webViewLink |
-    | **List Folder Contents** | `folderId` | files[], count |
   </Accordion>
   <Accordion title="Sharing">
     | Action | Key inputs | Key outputs |

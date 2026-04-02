@@ -5,30 +5,30 @@ description: "Manage contacts, deals, companies, tickets, notes, and tasks in Hu
 
 # HubSpot
 
-Sync CRM data, automate pipeline stages, and trigger workflows from HubSpot events. Connect your Collabase automations to HubSpot's full contact lifecycle.
+Sync CRM data, automate pipeline stages, and trigger workflows from HubSpot contact and deal events. Covers the full contact lifecycle from creation through deal close.
 
 ## Authentication
 
 **Auth type:** API Key (Private App Token)
 
-Create a private app in [HubSpot Settings → Integrations → Private Apps](https://app.hubspot.com/private-apps). Grant it the scopes you need: `crm.objects.contacts`, `crm.objects.deals`, `crm.objects.companies`, etc.
+Create a private app in [HubSpot Settings → Integrations → Private Apps](https://app.hubspot.com/private-apps). Grant scopes: `crm.objects.contacts.read`, `crm.objects.contacts.write`, `crm.objects.deals.read`, `crm.objects.deals.write`, `crm.objects.companies.write`.
 
 | Credential | Description |
 |---|---|
-| **Access Token** | Private app token from HubSpot (starts with `pat-`) |
+| **Access Token** | Private app token (starts with `pat-`) |
 
 ## Triggers
 
 | Trigger | When it fires |
 |---|---|
 | **Contact Created** | A new HubSpot contact is created |
+| **Contact Updated** | A contact's property value is changed |
 | **Deal Created** | A new deal is added to the pipeline |
 | **Deal Stage Changed** | A deal moves to a different pipeline stage |
 | **Deal Won** | A deal is marked as closed-won |
 | **Deal Lost** | A deal is marked as closed-lost |
 | **Company Created** | A new company record is created |
 | **Ticket Created** | A new support ticket is opened |
-| **Contact Property Changed** | A contact's property value is updated |
 
 ## Actions
 

@@ -1,32 +1,36 @@
 ---
 title: "GitHub"
-description: "Create issues, manage pull requests, trigger GitHub Actions workflows, and respond to repository events."
+description: "Manage issues, pull requests, releases, and trigger GitHub Actions workflows."
 ---
 
 # GitHub
 
-Integrate Collabase automations with your GitHub repositories — create issues from bugs or tasks, comment on pull requests, trigger CI/CD workflows, and react to push events.
+Integrate Collabase automations with GitHub repositories — create and update issues, comment on pull requests, trigger CI/CD workflows, create releases, and react to push and release events.
 
 ## Authentication
 
 **Auth type:** Personal Access Token
 
-Generate a token in [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens). Grant `repo` scope for private repositories.
+Generate a token at [github.com/settings/tokens](https://github.com/settings/tokens). Grant `repo` scope for private repositories, `public_repo` for public only.
 
 | Credential | Description |
 |---|---|
-| **Token** | A GitHub personal access token (classic or fine-grained) with `repo` scope |
+| **Token** | GitHub personal access token with `repo` scope |
 
 ## Triggers
 
 | Trigger | When it fires |
 |---|---|
-| **Push** | A commit is pushed to a repository |
+| **Push** | A commit is pushed to any branch |
 | **Pull Request Opened** | A new pull request is opened |
 | **Pull Request Merged** | A pull request is merged |
 | **Issue Opened** | A new issue is created |
 | **Issue Closed** | An issue is closed |
 | **Release Published** | A new release is published |
+
+<Note>
+  Configure a webhook in your GitHub repository under **Settings → Webhooks**, pointing to your Collabase webhook endpoint, to enable triggers.
+</Note>
 
 ## Actions
 
@@ -34,12 +38,12 @@ Generate a token in [GitHub Settings → Developer settings → Personal access 
 |---|---|---|
 | **Create Issue** | `owner`, `repo`, `title`, `body`, `labels[]`, `assignees[]` | number, html_url, state |
 | **Update Issue** | `owner`, `repo`, `issueNumber`, `title`, `body`, `state`, `labels[]` | number, html_url |
-| **Add Issue Comment** | `owner`, `repo`, `issueNumber`, `body` | id, html_url |
 | **Close Issue** | `owner`, `repo`, `issueNumber` | number, state |
+| **Add Issue Comment** | `owner`, `repo`, `issueNumber`, `body` | id, html_url |
 | **Trigger Workflow** | `owner`, `repo`, `workflowId`, `ref`, `inputs{}` | dispatched |
 | **Create Release** | `owner`, `repo`, `tagName`, `name`, `body`, `draft`, `prerelease` | id, html_url, tagName |
 | **Get Repository** | `owner`, `repo` | name, full_name, description, stars, forks, defaultBranch |
 
 <Tip>
-  **Trigger Workflow** dispatches a `workflow_dispatch` event. The target workflow file must have `on: workflow_dispatch` in its triggers for this to work.
+  **Trigger Workflow** dispatches a `workflow_dispatch` event. The target workflow file must have `on: workflow_dispatch` in its triggers.
 </Tip>

@@ -1,0 +1,48 @@
+---
+title: "Customer Portal"
+description: "Give external customers a branded view into their support tickets — no Collabase account required."
+---
+
+# Customer Portal
+
+The Customer Portal gives external stakeholders — clients, partners, end users — a read-only window into the tickets they submitted or that are relevant to them. They don't need a Collabase account.
+
+## Enabling the portal
+
+1. Open the project → **Settings → Portal**
+2. Toggle **Enable Customer Portal**
+3. Configure the portal name and welcome message
+4. Copy the portal URL to share with your customers
+
+## What customers see
+
+The portal shows only tasks tagged to the requesting customer's organization or email domain. Customers can:
+
+- View ticket status, priority, and last update
+- Read comments posted as **Public** (private comments are hidden)
+- See file attachments marked as public
+- Submit new tickets via the portal form (if enabled)
+
+## Portal form
+
+Enable the portal submission form to let external users create new tasks without logging into Collabase:
+
+1. **Settings → Portal → Enable Submission Form**
+2. Configure which fields to show (subject, description, priority, attachments)
+3. Set the default task type for portal submissions
+4. Optionally require email verification before submission
+
+Submitted tasks appear in the project queue tagged with the submitter's email and the source `PORTAL`.
+
+## Comment visibility
+
+When commenting on a task, choose **Public** or **Internal**:
+
+| Visibility | Portal customers see | Team members see |
+|---|---|---|
+| **Public** | ✅ Yes | ✅ Yes |
+| **Internal** | ❌ No | ✅ Yes |
+
+<Note>
+  The portal URL is not authenticated. It uses a Space-scoped token to show only the tasks relevant to the visitor. Ensure your portal does not contain sensitive information in public comments.
+</Note>

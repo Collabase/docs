@@ -1,0 +1,53 @@
+---
+title: "SLA Policies"
+description: "Define response and resolution time targets per priority. Track and surface SLA breaches across your project."
+---
+
+# SLA Policies
+
+SLA (Service Level Agreement) policies let you define time targets for how quickly tasks should be responded to and resolved, based on their priority. Collabase tracks these targets automatically and surfaces breaches in the queue and board views.
+
+## SLA fields
+
+Each SLA Policy has a name and a set of priority rules:
+
+| Field | Description |
+|---|---|
+| **Name** | e.g. "Standard Support SLA" |
+| **Priority rules** | Per-priority response and resolution times in minutes |
+
+### Priority rule fields
+
+| Field | Description |
+|---|---|
+| **Priority** | `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL` |
+| **First Response (minutes)** | Max time before a team member replies or takes ownership |
+| **Resolution (minutes)** | Max time before the task reaches a resolved status |
+
+## Creating an SLA Policy
+
+1. Open the project → **Settings → SLA Policies**
+2. Click **+ New Policy**
+3. Name the policy
+4. Add rules for each priority level you want to track
+5. Save and **set as default** to apply it to all new tasks
+
+## SLA breach indicators
+
+When a task breaches an SLA target:
+- A **red timer badge** appears on the task card in board and queue views
+- The task is sorted to the top of its queue
+- An automation trigger fires if you have an `SLA breached` workflow configured
+
+## Example policy — 3-tier support
+
+| Priority | First Response | Resolution |
+|---|---|---|
+| CRITICAL | 30 min | 4 hours |
+| HIGH | 4 hours | 1 day |
+| MEDIUM | 1 day | 3 days |
+| LOW | 3 days | 7 days |
+
+<Tip>
+  Combine SLA tracking with Automation: trigger an escalation when an SLA breach occurs — reassign the task, page the on-call engineer via PagerDuty, or send a Slack alert.
+</Tip>

@@ -1,0 +1,51 @@
+---
+title: "SCIM 2.0"
+description: "Provision users and groups from any SCIM 2.0 identity provider — Okta, Microsoft Entra ID, Azure AD, Google Workspace SAML."
+---
+
+# SCIM 2.0 Provisioning
+
+Collabase implements the SCIM 2.0 (RFC 7644) protocol for automated user and group lifecycle management from any compatible identity provider.
+
+## Base URL
+
+```
+https://your-collabase.ch/api/scim/v2
+```
+
+## Authentication
+
+SCIM endpoints authenticate via Bearer token. Generate a SCIM token in **Admin → Identity Providers → SCIM Tokens**.
+
+```
+Authorization: Bearer <scim-token>
+```
+
+## Supported endpoints
+
+| Endpoint | Methods | Description |
+|---|---|---|
+| `/Users` | GET, POST | List and create users |
+| `/Users/{id}` | GET, PATCH, PUT, DELETE | Manage individual users |
+| `/Groups` | GET, POST | List and create groups |
+| `/Groups/{id}` | GET, PATCH, PUT, DELETE | Manage individual groups |
+| `/Schemas` | GET | Return SCIM schema definitions |
+| `/ServiceProviderConfig` | GET | Return SCIM capability config |
+
+## Filter support
+
+List endpoints support SCIM filter syntax:
+- `filter=userName eq "user@example.com"`
+- `filter=displayName eq "Engineering"`
+- `filter=externalId eq "okta-user-id"`
+
+## Provider setup guides
+
+<CardGroup cols={2}>
+  <Card title="Okta" icon="shield" href="https://developer.okta.com/docs/guides/scim-provisioning-integration-connect/">
+    Configure Collabase as a SCIM app in Okta.
+  </Card>
+  <Card title="Microsoft Entra ID" icon="microsoft" href="https://learn.microsoft.com/en-us/entra/identity/app-provisioning/user-provisioning">
+    Provision users via Microsoft Entra ID (Azure AD).
+  </Card>
+</CardGroup>

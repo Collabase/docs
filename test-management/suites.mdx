@@ -1,0 +1,41 @@
+---
+title: "Test Suites"
+description: "Suites organize test cases into logical groups within a project — by feature, module, or priority."
+---
+
+# Test Suites
+
+A Test Suite is a named folder for organizing test cases inside a Test Project. Suites have no effect on execution — they are purely organizational and help teams find cases quickly in large projects.
+
+## When to use suites
+
+Use suites whenever a project has more than 20–30 test cases. Common groupings:
+
+- **By feature** — Authentication, Checkout, Dashboard, Reports
+- **By type** — Smoke Tests, Regression, Edge Cases
+- **By priority** — P0 Critical, P1 High, P2 Normal
+
+## Creating a suite
+
+1. Open the Test Project → **Suites** tab (left panel)
+2. Click **+ New Suite**
+3. Name the suite
+4. Optionally add a description
+
+## Moving cases between suites
+
+Drag a test case from the case list to a different suite in the left panel, or open the case and change its **Suite** field.
+
+## Suite stats
+
+The Suites panel shows a live count of cases per suite with status breakdown:
+
+| Indicator | Meaning |
+|---|---|
+| Gray count | Total cases in suite |
+| Green | READY cases (included in next run) |
+| Yellow | DRAFT cases (excluded from runs) |
+
+<Note>
+  Deleting a suite does not delete the cases in it. Cases are moved to "No Suite" (the project root level).
+</Note>

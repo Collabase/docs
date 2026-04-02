@@ -1,0 +1,32 @@
+---
+title: "Test connection"
+description: "Verify that a saved connection's credentials are valid."
+api: "POST /api/v1/automation/connections/{id}/test"
+---
+
+Calls the connector's `testConnection` method using the stored credentials. Returns whether the credentials are valid and an optional diagnostic message.
+
+## Path parameters
+
+<ParamField path="id" type="string" required>Connection ID to test.</ParamField>
+
+## Response
+
+<ResponseField name="ok" type="boolean">`true` if credentials are valid.</ResponseField>
+<ResponseField name="message" type="string">Human-readable result or error detail.</ResponseField>
+
+<RequestExample>
+```bash
+curl -X POST "https://your-collabase.ch/api/v1/automation/connections/conn-abc/test" \
+  -H "Authorization: Bearer cba_live_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{ "ok": true, "message": "Connected as @collabase-bot" }
+```
+```json 200
+{ "ok": false, "message": "401 Unauthorized — token may be expired" }
+```
+</ResponseExample>

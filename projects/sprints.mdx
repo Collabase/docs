@@ -1,0 +1,55 @@
+---
+title: "Sprints"
+description: "Organize and time-box work into sprints. Plan, run, and review sprints with a dedicated backlog and velocity tracking."
+---
+
+# Sprints
+
+Sprints let you group tasks into time-boxed iterations — typically 1–2 weeks. The Sprint view shows the active sprint's scope, team capacity, and progress toward completion.
+
+## Backlog vs. active sprint
+
+Every project has a **backlog** — the holding area for all planned work not yet in a sprint. When you're ready to plan an iteration, create a sprint and drag tasks from the backlog into it.
+
+Only one sprint can be **active** at a time. You can have multiple sprints in **planned** state ready to activate next.
+
+## Creating a sprint
+
+1. Open the project → **Sprint** view
+2. Click **+ New Sprint**
+3. Set a name, start date, and end date
+4. Drag tasks from the backlog into the sprint (or create new tasks directly in it)
+5. Click **Start Sprint** to activate it
+
+## Sprint fields
+
+| Field | Description |
+|---|---|
+| **Name** | e.g. "Sprint 12 — Auth Hardening" |
+| **Start Date** | When the sprint begins |
+| **End Date** | Sprint deadline |
+| **Goal** | Optional plain-text sprint goal shown at the top of the Sprint view |
+
+## Running a sprint
+
+During the sprint, the board shows only tasks in the active sprint. Team members move tasks through status columns as they work. The sprint header shows:
+
+- **Remaining tasks** — pending + in-progress count
+- **Completed tasks** — done count
+- **Days remaining** — countdown to end date
+
+## Completing a sprint
+
+Click **Complete Sprint** when the end date arrives:
+
+1. Tasks with a `Done` status are marked as completed
+2. Tasks still open are moved back to the backlog (or to the next sprint — your choice)
+3. A **Sprint Review** summary is generated showing velocity and completion rate
+
+<Tip>
+  Use Automation to send a Slack message when a sprint is completed — trigger: `scheduleTime`, action: Collabase `searchTasks` + Slack `sendMessage`.
+</Tip>
+
+## Velocity tracking
+
+The Sprint view's velocity chart plots completed task counts (or story points if configured) across the last 6 sprints. Use this for capacity planning in sprint planning sessions.

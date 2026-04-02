@@ -1,0 +1,45 @@
+---
+title: "List connectors"
+description: "Return metadata for all installed automation connectors."
+api: "GET /api/v1/automation/connectors"
+---
+
+Returns the full list of connectors available in this Collabase instance, including their actions and configuration field schemas. Useful for building dynamic UIs that enumerate available integrations.
+
+## Response
+
+<ResponseField name="[].id" type="string">Connector ID, e.g. `slack`.</ResponseField>
+<ResponseField name="[].name" type="string">Display name.</ResponseField>
+<ResponseField name="[].description" type="string">Short description.</ResponseField>
+<ResponseField name="[].authType" type="string">Auth method this connector uses.</ResponseField>
+<ResponseField name="[].category" type="string">Category group.</ResponseField>
+<ResponseField name="[].actions" type="array">Action definitions — id, name, description.</ResponseField>
+<ResponseField name="[].schemaFields" type="array">Connection credential field definitions.</ResponseField>
+
+<RequestExample>
+```bash
+curl "https://your-collabase.ch/api/v1/automation/connectors" \
+  -H "Authorization: Bearer cba_live_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+[
+  {
+    "id": "slack",
+    "name": "Slack",
+    "description": "Post messages and manage channels in Slack.",
+    "authType": "apiKey",
+    "category": "communication",
+    "actions": [
+      { "id": "sendMessage", "name": "Send Message" },
+      { "id": "sendDm", "name": "Send Direct Message" }
+    ],
+    "schemaFields": [
+      { "key": "botToken", "label": "Bot Token", "type": "string", "required": true }
+    ]
+  }
+]
+```
+</ResponseExample>

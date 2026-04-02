@@ -1,0 +1,40 @@
+---
+title: "Queues"
+description: "Queues organize tasks into named triage inboxes — ideal for support teams, review pipelines, and multi-stage workflows."
+---
+
+# Queues
+
+Queues are named task groups within a project that create structured inboxes — ideal for support teams handling incoming tickets, review pipelines that need clear ownership, or any workflow that needs staged triage.
+
+## How queues work
+
+A queue is a filtered view of tasks in the project. Each queue has a **name** and a set of **filters** that determine which tasks it shows. Tasks can belong to multiple queues simultaneously.
+
+The Queue view shows all queues in the left sidebar. Selecting a queue shows only the tasks matching its filters, sorted by priority and due date by default.
+
+## Creating a queue
+
+1. Open the project → **Queue** view
+2. Click **+ New Queue**
+3. Name the queue (e.g. "Tier 1 Support", "UX Review", "Blocked")
+4. Configure filters: status, type, assignee, label, priority
+5. Save
+
+## Typical queue setups
+
+| Queue name | Filters |
+|---|---|
+| **Unassigned** | assignee = none |
+| **Overdue** | dueDate < today, status ≠ Done |
+| **Critical open** | priority = CRITICAL, status ≠ Done |
+| **In Review** | status = "In Review" |
+| **My tasks** | assignee = me, status ≠ Done |
+
+## Queue-based SLA
+
+Combine queues with **SLA Policies** to track response times per queue. When a task enters a queue, the SLA clock starts. If the task isn't picked up within the response window, it becomes SLA-breached and is highlighted in red.
+
+<Note>
+  Queues are a view — they do not change a task's status or assignee. To automate queue membership, use Automation to update task fields (e.g. assignee or label) that your queue filters on.
+</Note>

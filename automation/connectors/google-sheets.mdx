@@ -1,11 +1,11 @@
 ---
 title: "Google Sheets"
-description: "Read, append, update, clear, and search rows in Google Sheets spreadsheets."
+description: "Read, append, update, clear, search rows, and manage sheets in Google Sheets spreadsheets."
 ---
 
 # Google Sheets
 
-Read and write data in Google Sheets spreadsheets. Use it as a simple database, a reporting output, or a data source for automation logic.
+Read and write data in Google Sheets — use it as a simple database, a reporting output, or a data source. Supports batch updates, row search, and sheet metadata retrieval.
 
 ## Authentication
 
@@ -21,8 +21,12 @@ Enable the **Google Sheets API** in [Google Cloud Console](https://console.cloud
 
 | Trigger | When it fires |
 |---|---|
-| **New Row Added** | A new row is appended to a sheet (polling-based) |
-| **Row Updated** | An existing row is modified (polling-based) |
+| **New Row Added** | A new row is appended to a tracked sheet |
+| **Row Updated** | An existing row's content is changed |
+
+<Note>
+  Google Sheets triggers use polling. Changes are detected on a configurable interval (minimum: 1 minute). For real-time response, combine a Google Forms submission webhook with a Sheets read action instead.
+</Note>
 
 ## Actions
 
@@ -36,7 +40,8 @@ Enable the **Google Sheets API** in [Google Cloud Console](https://console.cloud
 | **Batch Update** | `spreadsheetId`, `data[]` (range + values pairs) | totalUpdatedCells |
 | **List Sheets** | `spreadsheetId` | sheets[] — sheetId, title, index |
 | **Create Sheet** | `spreadsheetId`, `title` | sheetId, title |
+| **Get Spreadsheet Info** | `spreadsheetId` | title, locale, sheets[], spreadsheetUrl |
 
 <Tip>
-  Use A1 notation for ranges: `Sheet1!A1:D10`. If you omit the sheet name, the first sheet is used. Use `Sheet1!A:A` to target an entire column.
+  Use A1 notation for ranges: `Sheet1!A1:D10`. Omit the sheet name to target the first sheet. Use `Sheet1!A:A` to target an entire column.
 </Tip>

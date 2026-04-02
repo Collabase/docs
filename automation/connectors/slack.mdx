@@ -1,21 +1,21 @@
 ---
 title: "Slack"
-description: "Post messages, send direct messages, manage channels, reactions, and files in Slack."
+description: "Post messages, send DMs, manage channels, reactions, and files in Slack."
 ---
 
 # Slack
 
-Send messages to Slack channels and direct message users from any automation. Slack is one of the most common connectors — use it to surface alerts, approval links, and workflow updates directly in your team's conversations.
+Send messages to Slack channels and DM users from any automation. React to messages, manage channels, upload files, and handle app mentions — all via the Slack Web API.
 
 ## Authentication
 
-**Auth type:** Bot token (OAuth 2.0 installation)
+**Auth type:** Bot token (OAuth 2.0)
 
-Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps). Add the following bot token scopes: `chat:write`, `im:write`, `channels:join`, `reactions:write`, `files:write`. Install the app to your workspace and copy the **Bot User OAuth Token** (`xoxb-...`).
+Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps). Add bot token scopes: `chat:write`, `chat:write.public`, `im:write`, `channels:join`, `channels:manage`, `channels:read`, `reactions:write`, `files:write`. Install the app to your workspace and copy the **Bot User OAuth Token** (`xoxb-...`).
 
 | Credential | Description |
 |---|---|
-| **Bot Token** | Your Slack bot OAuth token, starting with `xoxb-` |
+| **Bot Token** | Slack bot OAuth token starting with `xoxb-` |
 
 ## Triggers
 
@@ -27,7 +27,7 @@ Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps). Add the 
 | **App Mention** | A user mentions the bot with `@botname` |
 
 <Note>
-  Triggers require you to configure a Slack webhook URL in your app's **Event Subscriptions** settings, pointing to your Collabase instance's webhook endpoint.
+  Triggers require configuring Slack Event Subscriptions in your app settings, pointing to your Collabase webhook endpoint.
 </Note>
 
 ## Actions
@@ -38,13 +38,13 @@ Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps). Add the 
     |---|---|---|
     | **Send Message** | `channel`, `text`, `username`, `iconEmoji`, `blocks` | ok, ts, channel |
     | **Send Direct Message** | `userId`, `text` | ok, ts |
-    | **Update Message** | `channel`, `ts`, `text` | ok, ts |
+    | **Update Message** | `channel`, `ts` (message timestamp), `text` | ok, ts |
     | **Delete Message** | `channel`, `ts` | ok |
   </Accordion>
   <Accordion title="Reactions & files">
     | Action | Key inputs | Key outputs |
     |---|---|---|
-    | **Add Reaction** | `channel`, `ts`, `emoji` | ok |
+    | **Add Reaction** | `channel`, `ts`, `emoji` (without `:`) | ok |
     | **Upload File** | `channels`, `fileUrl`, `filename`, `title`, `initialComment` | fileId, permalink |
   </Accordion>
   <Accordion title="Channel management">
@@ -58,5 +58,5 @@ Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps). Add the 
 </AccordionGroup>
 
 <Tip>
-  Use the channel's **ID** (e.g. `C012AB3CD`), not its display name, for reliable delivery. Find the ID by right-clicking the channel in Slack and selecting **Copy link** — the last segment of the URL is the ID.
+  Use the channel's **ID** (e.g. `C012AB3CD`), not its display name, for reliable delivery. Right-click the channel in Slack → **Copy link** — the last URL segment is the ID.
 </Tip>

@@ -1,0 +1,66 @@
+---
+title: "List executions"
+description: "Get the 50 most recent execution records for an automation."
+api: "GET /api/v1/automation/{automationId}/executions"
+---
+
+Returns the 50 most recent execution runs for the automation, each with their per-step logs.
+
+## Path parameters
+
+<ParamField path="automationId" type="string" required>The automation ID.</ParamField>
+
+## Response
+
+<ResponseField name="[].id" type="string">Execution ID.</ResponseField>
+<ResponseField name="[].status" type="string">`QUEUED` | `RUNNING` | `SUCCESS` | `FAILED` | `CANCELLED` | `PARTIAL`</ResponseField>
+<ResponseField name="[].startedAt" type="string">ISO 8601 start timestamp.</ResponseField>
+<ResponseField name="[].completedAt" type="string">ISO 8601 completion timestamp.</ResponseField>
+<ResponseField name="[].durationMs" type="number">Total duration in milliseconds.</ResponseField>
+<ResponseField name="[].error" type="string">Top-level error message if the run failed.</ResponseField>
+<ResponseField name="[].stepLogs" type="array">Per-step logs — see below.</ResponseField>
+
+**stepLogs fields:**
+
+| Field | Type | Description |
+|---|---|---|
+| `stepId` | string | Node ID in the flow graph |
+| `stepType` | string | Node type (e.g. `action`, `condition`) |
+| `connectorId` | string | Connector ID if applicable |
+| `status` | string | Same enum as execution status |
+| `output` | object | Step output data |
+| `error` | string | Step-level error |
+| `durationMs` | number | Step duration |
+
+<RequestExample>
+```bash
+curl "https://your-collabase.ch/api/v1/automation/auto-abc123/executions" \
+  -H "Authorization: Bearer cba_live_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+[
+  {
+    "id": "exec-xyz789",
+    "status": "SUCCESS",
+    "startedAt": "2026-04-01T09:00:00.000Z",
+    "completedAt": "2026-04-01T09:00:02.500Z",
+    "durationMs": 2500,
+    "error": null,
+    "stepLogs": [
+      {
+        "stepId": "node-1",
+        "stepType": "action",
+        "connectorId": "slack",
+        "status": "SUCCESS",
+        "output": { "ok": true, "ts": "1234567890.123456" },
+        "error": null,
+        "durationMs": 310
+      }
+    ]
+  }
+]
+```
+</ResponseExample>

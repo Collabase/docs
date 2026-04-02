@@ -1,0 +1,43 @@
+---
+title: "List templates"
+description: "Browse public automation templates."
+api: "GET /api/v1/automation/templates"
+---
+
+Returns public automation templates, ordered by download count (most popular first).
+
+## Query parameters
+
+<ParamField query="category" type="string">Filter by category slug.</ParamField>
+<ParamField query="q" type="string">Full-text search across name and description.</ParamField>
+
+## Response
+
+<ResponseField name="[].id" type="string">Template ID.</ResponseField>
+<ResponseField name="[].name" type="string">Template name.</ResponseField>
+<ResponseField name="[].description" type="string">Short description.</ResponseField>
+<ResponseField name="[].category" type="string">Category.</ResponseField>
+<ResponseField name="[].tags" type="array">Tags.</ResponseField>
+<ResponseField name="[].downloads" type="number">Install count.</ResponseField>
+
+<RequestExample>
+```bash
+curl "https://your-collabase.ch/api/v1/automation/templates?category=testing" \
+  -H "Authorization: Bearer cba_live_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+[
+  {
+    "id": "tpl-001",
+    "name": "Notify Slack on Test Failure",
+    "description": "Sends a Slack DM when a critical test case fails.",
+    "category": "testing",
+    "tags": ["slack", "testing", "alerting"],
+    "downloads": 142
+  }
+]
+```
+</ResponseExample>

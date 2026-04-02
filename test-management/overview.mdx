@@ -1,98 +1,65 @@
 ---
 sidebarTitle: "Overview"
-description: "Test Management is the quality operating system built into every Collabase Space — structured test cases, execution runs, and result history all in one place."
+description: "Test Management is the quality operating system built into every Collabase Space — structured test cases, execution runs, milestones, and result history all in one place."
 ---
 
 # Test Management
 
 <img src="/images/test-management.png" alt="Collabase Test Management" style={{ borderRadius: '8px', marginBottom: '24px' }} />
 
-Test Management is the quality operating system built into Collabase. It gives QA engineers and development teams a structured way to define what needs to be tested, execute tests in organised runs, and track results over time — without leaving the platform where all the other work happens.
+Test Management is the quality operating system built into every Collabase Space. It gives QA teams and developers a structured place to define what needs to be verified, execute it, and measure quality over time — all without leaving Collabase.
 
-## Why use Test Management
+## How it works
 
-Most teams test their software informally. Cases live in spreadsheets, run results in chat threads, and the link between "what was tested" and "what was shipped" is a question nobody can answer confidently. Test Management closes that gap.
-
-<AccordionGroup>
-  <Accordion title="Everything is structured">
-    Test cases have status, priority, type, and ownership. Results are recorded per run, not overwritten. Every execution produces a complete, auditable record.
-  </Accordion>
-  <Accordion title="History is preserved">
-    Every run is a snapshot. You can look back at what passed and failed in a release from three months ago without any manual archiving.
-  </Accordion>
-  <Accordion title="It connects to the rest of Collabase">
-    Runs link to milestones. Failures can trigger Automations. Test cases link to the Docs pages that describe the features under test. Members are the same people already in the Space — no separate accounts or roles to manage.
-  </Accordion>
-</AccordionGroup>
-
-## Key concepts
-
-Test Management is organised in a clear hierarchy.
-
-```
-Test Project
-└── Test Suite
-    └── Test Case
-        └── Test Run
-            └── Milestone
-```
-
-<AccordionGroup>
-  <Accordion title="Test Project">
-    A Test Project is the top-level container for all testing work in a domain. Create one per product area or application. It holds all suites, cases, and runs.
-  </Accordion>
-  <Accordion title="Test Suite">
-    A Test Suite is a named group of related test cases. Use suites to organise cases by feature, component, or risk area. Suites can be nested to reflect your product's structure.
-  </Accordion>
-  <Accordion title="Test Case">
-    A Test Case describes a single thing to verify. Each case has a status (`DRAFT`, `READY`, `DEPRECATED`), a priority, and a type. Only cases in `READY` status are included in a test run.
-  </Accordion>
-  <Accordion title="Test Run">
-    A Test Run is an execution session. When you start a run, Collabase automatically enrolls all `READY` cases and sets each result to `PENDING`. Testers work through each case and record their result.
-  </Accordion>
-  <Accordion title="Milestone">
-    A Milestone groups test runs to a release, sprint, or any other delivery event. Milestones give you a per-release quality snapshot: how many cases passed, how many failed, and what the pass rate was.
-  </Accordion>
-</AccordionGroup>
-
-## How to access Test Management
-
-<Steps>
-  <Step title="Open your Space">
-    Navigate to any Space from the left sidebar or the Spaces index.
-  </Step>
-  <Step title="Click Test Management in the sidebar">
-    Test Management appears in the Space navigation alongside Docs, Automation, and Intranet.
-  </Step>
-  <Step title="Create your first Test Project">
-    Click **New Project**, give it a name and an optional description, and you are ready to start adding suites and cases.
-  </Step>
-</Steps>
-
-## Connected apps
-
-<CardGroup cols={3}>
-  <Card title="Automation" icon="bolt">
-    Trigger workflows on test results. Start runs automatically from a CI pipeline using the `Create Test Run` action. Send notifications when a critical test fails.
+<CardGroup cols={2}>
+  <Card title="Test Cases" icon="file-lines" href="/test-management/test-cases">
+    Define the steps, preconditions, and expected results for each thing to verify. Organize cases into suites by feature or component.
   </Card>
-  <Card title="Docs" icon="file-text">
-    Link test cases and suites to the Docs pages that describe the features under test. Keep specifications and test coverage in sync.
-  </Card>
-  <Card title="Search" icon="magnifying-glass">
-    Test projects, cases, and runs are all searchable from the global search bar. Members only see content from Spaces they have access to.
-  </Card>
-</CardGroup>
-
-## Next steps
-
-<CardGroup cols={3}>
-  <Card title="Test cases" icon="list-checks" href="/test-management/test-cases">
-    Learn how to create a project, add suites, and write test cases with the right status and priority.
-  </Card>
-  <Card title="Test runs" icon="play" href="/test-management/test-runs">
-    Learn how to start a run, work through cases, and record results.
+  <Card title="Test Runs" icon="play" href="/test-management/test-runs">
+    Execute all READY cases in a single run session. Each result is recorded independently — pass, fail, blocked, or skipped.
   </Card>
   <Card title="Milestones" icon="flag" href="/test-management/milestones">
-    Group runs to a release and get a per-milestone quality snapshot.
+    Group runs under a release or sprint milestone to get an aggregate quality view across all linked runs.
+  </Card>
+  <Card title="Suites" icon="folder" href="/test-management/suites">
+    Group test cases logically by feature, module, or priority to keep large projects organized.
   </Card>
 </CardGroup>
+
+## Quality workflow
+
+```
+Define Cases → Mark READY → Create Run → Execute & Record → Attach to Milestone → Ship
+```
+
+1. **Define** test cases for every user story or feature
+2. **Review and mark READY** — only verified cases are included in runs
+3. **Create a test run** — Collabase enrolls all READY cases automatically
+4. **Execute** — testers record PASS/FAIL/BLOCKED/SKIP for each case
+5. **Attach to milestone** — link to the release for an aggregate quality snapshot
+6. **Ship** — use milestone pass rates as your quality gate
+
+## Automation integration
+
+Test Management integrates directly with the Automation engine:
+
+| Event | Trigger available |
+|---|---|
+| Test case fails | ✅ `collabase.testCase.failed` |
+| Test case passes | ✅ `collabase.testCase.passed` |
+| Test run started | ✅ `collabase.testRun.started` |
+| Test suite created | ✅ `collabase.testSuite.created` |
+
+Use these to automatically notify Slack, create Jira issues for failures, or trigger CI pipelines on test completion.
+
+## Roles
+
+| Role | Can do |
+|---|---|
+| **Space Owner / Admin** | Create projects, manage members, delete |
+| **Member** | Create cases, execute runs, record results |
+| **Viewer** | View cases, runs, and results (read-only) |
+
+## Admin configuration
+
+Admins can configure access to Test Management per Space under **Admin → Apps**. There are no instance-wide settings specific to Test Management beyond Space permissions.

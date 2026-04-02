@@ -1,23 +1,31 @@
 ---
 title: "Twilio"
-description: "Send SMS, MMS, WhatsApp messages, and make voice calls via Twilio."
+description: "Send SMS, MMS, WhatsApp messages, make voice calls, and respond to inbound messages via Twilio."
 ---
 
 # Twilio
 
-Send SMS and MMS messages to any phone number worldwide, initiate WhatsApp messages through Twilio's sandbox or approved numbers, and trigger voice calls with TwiML scripts.
+Send SMS and MMS messages globally, initiate WhatsApp conversations, trigger voice calls, and react to inbound messages and call events via Twilio webhooks.
 
 ## Authentication
 
 **Auth type:** Basic (Account SID + Auth Token)
 
-Find your credentials in the [Twilio Console](https://console.twilio.com/) dashboard.
+Find credentials in the [Twilio Console](https://console.twilio.com/) dashboard.
 
 | Credential | Description |
 |---|---|
-| **Account SID** | Your Twilio account SID (starts with `AC`) |
-| **Auth Token** | Your Twilio auth token |
-| **From Number** | The Twilio phone number or WhatsApp sender to use |
+| **Account SID** | Twilio account SID (starts with `AC`) |
+| **Auth Token** | Twilio auth token |
+| **From Number** | Your Twilio phone number or WhatsApp sender |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **SMS Received** | An inbound SMS arrives on your Twilio number |
+| **Call Received** | An inbound voice call arrives on your Twilio number |
+| **SMS Status Changed** | A sent message status changes (delivered, failed, etc.) |
 
 ## Actions
 
@@ -25,10 +33,7 @@ Find your credentials in the [Twilio Console](https://console.twilio.com/) dashb
 |---|---|---|
 | **Send SMS** | `to`, `body` | sid, status, to |
 | **Send MMS** | `to`, `body`, `mediaUrl` | sid, status, to |
-| **Send WhatsApp** | `to`, `body` (prefix `whatsapp:` on both from/to is handled automatically) | sid, status |
+| **Send WhatsApp** | `to`, `body` | sid, status |
 | **Make Voice Call** | `to`, `twimlUrl` or `twiml` | sid, status, direction |
-| **Lookup Number** | `phoneNumber` | phoneNumber, countryCode, carrier`, lineType |
-
-<Warning>
-  Voice calls use TwiML to define what happens when the call connects. Either host a TwiML XML file and pass its URL, or provide the TwiML string directly in the `twiml` field. See the [Twilio TwiML docs](https://www.twilio.com/docs/voice/twiml) for the full syntax.
-</Warning>
+| **Get Message Status** | `messageSid` | sid, status, to, from, body, dateSent |
+| **Lookup Number** | `phoneNumber` | phoneNumber, countryCode, lineType |

@@ -1,0 +1,50 @@
+---
+title: "SCIM Groups"
+description: "Sync groups from your identity provider to Collabase via the SCIM 2.0 Groups endpoint."
+---
+
+# SCIM Groups
+
+## List groups — `GET /api/scim/v2/Groups`
+
+Returns all groups in SCIM ListResponse format.
+
+**Query parameters:** `filter`, `startIndex`, `count` (same as Users)
+
+## Create group — `POST /api/scim/v2/Groups`
+
+Creates a Collabase group from the IdP group. Members included in the `members` array are added automatically.
+
+```bash
+curl -X POST "https://your-collabase.ch/api/scim/v2/Groups" \
+  -H "Authorization: Bearer <scim-token>" \
+  -H "Content-Type: application/scim+json" \
+  -d '{
+    "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Group"],
+    "displayName": "Engineering",
+    "members": [
+      { "value": "scim-user-id-1", "display": "Alice Smith" }
+    ]
+  }'
+```
+
+## Update group — `PATCH /api/scim/v2/Groups/{id}`
+
+Use SCIM PATCH to add or remove group members:
+
+```json
+{
+  "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+  "Operations": [
+    {
+      "op": "add",
+      "path": "members",
+      "value": [{ "value": "scim-user-id-2" }]
+    }
+  ]
+}
+```
+
+## Delete group — `DELETE /api/scim/v2/Groups/{id}`
+
+Removes the group from Collabase. Users in the group are not deleted.

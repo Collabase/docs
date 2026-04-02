@@ -1,0 +1,73 @@
+---
+title: "Tasks"
+description: "Tasks are the fundamental unit of work in Projects — learn how to create, triage, track, and close tasks effectively."
+---
+
+# Tasks
+
+A task represents a single unit of work. It can be a feature, a bug, a support ticket, a review item — anything your team needs to track. Every task lives inside a Project and has a structured set of fields that make it searchable, assignable, and automatable.
+
+## Task fields
+
+| Field | Description |
+|---|---|
+| **Title** | Required. Short description of the work. |
+| **Type** | Task type — `Task`, `Bug`, `Story`, `Epic`, or custom types your admin has defined. |
+| **Status** | Current workflow state (e.g. Todo, In Progress, In Review, Done). Configurable per project. |
+| **Priority** | `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`. |
+| **Assignee** | The team member responsible. |
+| **Due Date** | Optional deadline. Overdue tasks are flagged in all views. |
+| **Parent** | Nest tasks under an Epic or parent task for hierarchy. |
+| **Sprint** | Active sprint the task is in. |
+| **Queue** | Triage queue the task belongs to. |
+| **Description** | Full rich-text body — supports code blocks, images, tables, and callouts. |
+| **Custom Fields** | Any additional fields your admin has configured for the project's task type. |
+
+## Creating a task
+
+<Steps>
+  <Step title="Open the project">
+    Navigate to your Space → **Projects** → select the project.
+  </Step>
+  <Step title="Click New Task">
+    Press **N** anywhere on the board, or click **+ New Task** in the top bar.
+  </Step>
+  <Step title="Fill in the required fields">
+    Title and Type are required. All other fields are optional and can be set later.
+  </Step>
+  <Step title="Save">
+    Press **Enter** or click **Create**. The task appears in the first status column.
+  </Step>
+</Steps>
+
+## Task detail view
+
+Open any task to see its full detail panel:
+
+- **Activity feed** — full change history with who changed what and when
+- **Comments** — threaded comments with @mentions, reactions, and rich text
+- **Checklists** — create sub-task checklists within a task
+- **Child tasks** — link child tasks for multi-step work
+- **Attachments** — attach files directly to the task
+- **Worklogs** — log time spent (if enabled by admin)
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `N` | New task |
+| `T` | Change task type |
+| `P` | Set priority |
+| `A` | Assign to yourself |
+| `D` | Set due date |
+| `Space` | Open task detail |
+| `Esc` | Close panel |
+
+## Bulk actions
+
+Select multiple tasks using the checkbox in list view, then use the bulk action bar to:
+- Change status
+- Reassign
+- Set priority
+- Move to sprint
+- Delete

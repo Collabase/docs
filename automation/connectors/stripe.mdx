@@ -1,34 +1,34 @@
 ---
 title: "Stripe"
-description: "Process payments, manage customers, subscriptions, invoices, and refunds via Stripe."
+description: "Process payments, manage customers, subscriptions, invoices, coupons, and refunds via Stripe."
 ---
 
 # Stripe
 
-Trigger automations from payment events or take action on Stripe objects — create payment links, manage subscriptions, issue refunds, and retrieve customer and invoice data.
+Trigger automations from payment events or take action on Stripe objects — create payment links, manage subscriptions, issue refunds, create invoices, apply coupons, and retrieve charge history.
 
 ## Authentication
 
 **Auth type:** API Key
 
-Get your secret key from [Stripe Dashboard → Developers → API keys](https://dashboard.stripe.com/apikeys). Use your **live** secret key for production and **test** secret key for development.
+Get your secret key from [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys). Use `sk_live_` for production, `sk_test_` for development.
 
 | Credential | Description |
 |---|---|
-| **Secret Key** | Stripe secret key (starts with `sk_live_` or `sk_test_`) |
-| **Webhook Secret** | Stripe webhook signing secret — from **Developers → Webhooks → your endpoint → Signing secret** |
+| **Secret Key** | Stripe secret key (`sk_live_` or `sk_test_`) |
+| **Webhook Secret** | From **Developers → Webhooks → your endpoint → Signing secret** |
 
 ## Triggers
 
 | Trigger | When it fires |
 |---|---|
 | **Payment Succeeded** | A charge or payment intent succeeds |
-| **Payment Failed** | A charge fails or a payment intent requires action |
+| **Payment Failed** | A charge fails or requires action |
 | **Customer Created** | A new Stripe customer is created |
 | **Subscription Created** | A new subscription is started |
 | **Subscription Cancelled** | A subscription is cancelled |
 | **Invoice Paid** | An invoice is paid |
-| **Invoice Payment Failed** | An invoice payment attempt fails |
+| **Charge Refunded** | A charge is refunded (full or partial) |
 
 ## Actions
 
@@ -41,23 +41,30 @@ Get your secret key from [Stripe Dashboard → Developers → API keys](https://
     | **Update Customer** | `customerId`, `name`, `email`, `metadata{}` | customerId |
     | **Search Customers** | `query` (Stripe query syntax) | customers[], count |
   </Accordion>
-  <Accordion title="Payments">
+  <Accordion title="Payments & charges">
     | Action | Key inputs | Key outputs |
     |---|---|---|
     | **Create Payment Link** | `priceId`, `quantity`, `redirectUrl` | url, paymentLinkId |
-    | **Create Refund** | `paymentIntentId`, `amount` (optional, blank = full refund), `reason` | refundId, amount, status |
+    | **Create Refund** | `paymentIntentId`, `amount` (blank = full refund), `reason` | refundId, amount, status |
     | **Retrieve Charge** | `chargeId` | chargeId, amount, currency, status, receiptUrl |
+    | **List Charges** | `customerId`, `limit` | charges[], count |
   </Accordion>
-  <Accordion title="Subscriptions & invoices">
+  <Accordion title="Subscriptions">
     | Action | Key inputs | Key outputs |
     |---|---|---|
     | **Create Subscription** | `customerId`, `priceId`, `quantity`, `trialDays` | subscriptionId, status, currentPeriodEnd |
     | **Cancel Subscription** | `subscriptionId`, `cancelAtPeriodEnd` | subscriptionId, status |
+  </Accordion>
+  <Accordion title="Invoices & discounts">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
     | **Get Invoice** | `invoiceId` | invoiceId, amount, status, pdfUrl |
     | **List Invoices** | `customerId`, `status`, `limit` | invoices[], count |
+    | **Create Invoice** | `customerId`, `description`, `daysUntilDue`, `autoAdvance` | invoiceId, status, amountDue |
+    | **Create Coupon** | `percentOff` or `amountOff`, `currency`, `duration`, `maxRedemptions` | couponId, valid |
   </Accordion>
 </AccordionGroup>
 
 <Warning>
-  Always use the **Webhook Secret** to verify incoming Stripe webhook events. Collabase verifies the `Stripe-Signature` header using HMAC-SHA256 before triggering any automation. Never disable this verification in production.
+  Always verify Stripe webhook events using the **Webhook Secret**. Collabase verifies the `Stripe-Signature` header with HMAC-SHA256 before processing any trigger.
 </Warning>

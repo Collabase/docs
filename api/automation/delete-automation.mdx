@@ -1,0 +1,30 @@
+---
+title: "Delete automation"
+description: "Permanently delete an automation and all its execution history."
+api: "DELETE /api/v1/automation/{automationId}"
+---
+
+<Warning>
+  Deletion is permanent. All execution history for this automation is also removed.
+</Warning>
+
+## Path parameters
+
+<ParamField path="automationId" type="string" required>The automation to delete.</ParamField>
+
+## Response
+
+<ResponseField name="ok" type="boolean">Always `true` on success.</ResponseField>
+
+<RequestExample>
+```bash
+curl -X DELETE "https://your-collabase.ch/api/v1/automation/auto-abc123" \
+  -H "Authorization: Bearer cba_live_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{ "ok": true }
+```
+</ResponseExample>

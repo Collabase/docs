@@ -1,0 +1,49 @@
+---
+title: "Custom Workflows"
+description: "Define task statuses, transitions, and task types to match how your team works."
+---
+
+# Custom Workflows
+
+Every project has its own workflow — a set of statuses that tasks move through. You can customize the statuses, their display order, and which transitions are valid.
+
+## Statuses
+
+A status represents the current state of a task in the workflow. Each project starts with a default set of statuses, but you can add, rename, reorder, and remove them.
+
+### Status types
+
+Every status maps to one of three **categories**:
+
+| Category | Meaning |
+|---|---|
+| **Todo** | Work not yet started. Tasks in this category count as backlog. |
+| **In Progress** | Work actively in progress. Used for velocity calculations. |
+| **Done** | Completed work. Tasks in this category are excluded from SLA tracking. |
+
+### Configuring statuses
+
+Open the project → **Settings → Statuses**:
+
+1. Click **+ New Status** to add a status
+2. Name it (e.g. "In Review", "Blocked", "Waiting on Customer")
+3. Select the category (Todo / In Progress / Done)
+4. Choose a color
+5. Drag to reorder — status order matches the board column order
+
+## Task types
+
+Task types let you categorize different kinds of work in a project. Each task type can have custom fields attached to it.
+
+Default task types: `Task`, `Bug`, `Story`, `Epic`
+
+Admins can define additional global task types under **Admin → Task Types**, which become available across all projects.
+
+## Admin: Global task types
+
+In **Admin → Task Types**, administrators can define organization-wide task types with:
+- Custom name and icon
+- Required and optional custom fields
+- Default priority
+
+Space-level task types can also be defined per Space to complement the global set.

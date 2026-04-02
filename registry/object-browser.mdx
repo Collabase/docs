@@ -1,76 +1,59 @@
 ---
 title: "Object Browser"
-description: "The Object Browser is a structured table view for browsing, creating, filtering, and managing the objects in a Registry Schema."
+description: "Browse, create, filter, sort, and manage registry objects in a structured table view."
 ---
 
-The Object Browser is where you work with actual data — the individual records that populate your Schema. Each Object Type in your Schema gets its own table view, with columns for every Attribute you have defined.
+# Object Browser
+
+The Object Browser is where you work with actual data — the individual records that populate your Schema. Each Object Type gets its own table view, with columns for every Attribute you have defined.
 
 ## Navigating the browser
 
-Open a Schema and click the **Objects** tab. The left panel lists all Object Types in the Schema. Click an Object Type to load its object table on the right.
-
-The table shows one row per Object and one column per Attribute. Columns are sortable and configurable. The total object count for the selected type is shown above the table.
+Open a Schema → click the **Browse** tab. The left sidebar lists all Object Types. Select one to see its objects in the main table.
 
 ## Creating objects
 
-<Steps>
-  <Step title="Select an Object Type">
-    In the left panel, click the Object Type you want to add a record to.
-  </Step>
-  <Step title="Click New Object">
-    Click **New Object** in the top bar. A creation form slides in from the right.
-  </Step>
-  <Step title="Fill in the fields">
-    Complete the required Attributes and any optional ones. If the Object Type has a key prefix configured, a unique key is generated automatically (e.g. `SRV-001`).
-  </Step>
-  <Step title="Save">
-    Click **Create** to save the object. It appears immediately in the table.
-  </Step>
-</Steps>
+Click **+ New Object** in the top bar:
 
-## Viewing and editing an object
+1. Fill in the required attributes (marked with `*`)
+2. Fill in optional attributes
+3. Link related objects via Relation fields — a picker shows existing objects of the target type
+4. Click **Create**
 
-Click any row in the table to open the Object detail panel. The panel shows:
+The new object appears in the table immediately.
 
-- All Attribute values for the object
-- The object's auto-generated key (if applicable)
-- All Object Relations — other objects linked to this one, grouped by Relation name
+## Filtering
 
-Click **Edit** in the detail panel to change any Attribute value. Click **Save** to confirm.
+Use the **Filters** button above the table to add attribute filters:
 
-## Column configurator
+- Text: `contains`, `equals`, `starts with`
+- Number: `=`, `>`, `<`, `between`
+- Date: `is`, `before`, `after`, `this week/month`
+- Select: `is any of`
+- Boolean: `is true/false`
 
-Click the **Columns** button above the table to open the column configurator. Toggle individual Attributes on or off to control which columns are visible in the table. Your column selection is persisted per Object Type.
+Multiple filters are combined with AND logic. Save filter combinations as **Saved Views** using the star icon.
 
-## Searching and filtering
+## Sorting
 
-Use the **Search** bar above the table to filter objects by their Label attribute. For more precise filtering, click **Filter** to add one or more attribute-based filters.
+Click any column header to sort by that attribute. Shift+click to add a secondary sort.
 
-| Filter option | Behaviour |
-|---|---|
-| Text | Matches objects where the attribute contains the entered value |
-| Select / Member | Matches objects with any of the selected values |
-| Date | Matches objects within the specified date range |
-| Required / Unique | Filter by constraint flags on the attribute |
+## Bulk actions
 
-Filters stack — all active filters must match for an object to appear in the table.
+Select multiple objects using the row checkboxes:
+- **Delete** selected
+- **Export** to CSV
+- **Bulk update** a shared attribute across selected objects
 
-## Object Relations
+## Object detail view
 
-From the Object detail panel, you can view and manage the relations this object has with other objects.
+Click any row to open the object's full detail view:
 
-- The **Relations** section lists all connected objects, grouped by the Schema Relation they belong to.
-- Click **Add Relation** to link this object to another object of the appropriate type.
-- Click the remove icon next to a relation to unlink the two objects.
+- All attributes in an editable form
+- **Related objects** — objects connected via Relations, navigable from here
+- **Change history** — full audit log of every field change with timestamp and user
+- **Comments** — internal notes on this object
 
-<Note>
-  Object Relations follow the cardinality defined in the Schema Designer. A 1:1 relation will not let you add a second related object — the control is disabled once the relation is filled.
-</Note>
+## Export
 
-## Deleting objects
-
-Open the object detail panel and click **Delete** in the bottom of the panel. You will be asked to confirm. Deleting an object also removes all Object Relations it is part of.
-
-<Warning>
-  Object deletion is permanent and cannot be undone. Make sure the object is not referenced by active Automations or external API consumers before deleting it.
-</Warning>
+Click **Export → CSV** above the table to download all objects of the current type as a CSV. The export respects active filters.

@@ -1,0 +1,37 @@
+---
+title: "Update automation"
+description: "Update an automation's name, description, or flow graph."
+api: "PATCH /api/v1/automation/{automationId}"
+---
+
+## Path parameters
+
+<ParamField path="automationId" type="string" required>The automation to update.</ParamField>
+
+## Request body
+
+All fields are optional. Send only the fields you want to change.
+
+<ParamField body="name" type="string">New name. 1–200 characters.</ParamField>
+<ParamField body="description" type="string">New description.</ParamField>
+<ParamField body="flowGraph" type="object">Replace the entire node graph.</ParamField>
+<ParamField body="triggerConfig" type="object">Replace the trigger configuration.</ParamField>
+
+<RequestExample>
+```bash
+curl -X PATCH "https://your-collabase.ch/api/v1/automation/auto-abc123" \
+  -H "Authorization: Bearer cba_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Notify on Critical Test Failure" }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "id": "auto-abc123",
+  "name": "Notify on Critical Test Failure",
+  "isEnabled": true
+}
+```
+</ResponseExample>

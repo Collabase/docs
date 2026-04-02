@@ -1,0 +1,36 @@
+---
+title: "Webhook trigger"
+description: "Fire a WEBHOOK-type automation by sending a POST request to its unique URL."
+api: "POST /api/v1/automation/trigger/{webhookId}"
+---
+
+Triggers an automation that uses the **Webhook** trigger type. Does not require authentication — the `webhookId` acts as a secret. Keep it private.
+
+## Path parameters
+
+<ParamField path="webhookId" type="string" required>The unique webhook ID from the automation's trigger node configuration.</ParamField>
+
+## Request body
+
+Send any JSON object. The entire body is available in the automation as `{{payload.*}}`.
+
+## Response
+
+<ResponseField name="executionId" type="string">The execution ID for the triggered run.</ResponseField>
+
+<RequestExample>
+```bash
+curl -X POST "https://your-collabase.ch/api/v1/automation/trigger/wh-abc123" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "environment": "production",
+    "deployedBy": "github-actions"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 202
+{ "executionId": "exec-new001" }
+```
+</ResponseExample>

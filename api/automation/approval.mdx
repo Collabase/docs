@@ -1,0 +1,50 @@
+---
+title: "Approval wait-state"
+description: "Check and resolve an automation approval gate via its one-time token."
+---
+
+# Approval wait-state
+
+The Approval node pauses automation execution and waits for a human to approve or reject it. Each pending approval has a unique, one-time token. The automation sends this token to a reviewer (e.g. via email or Slack), and the reviewer responds via these endpoints.
+
+## Get approval status
+
+**`GET /api/v1/automation/approvals/{token}`**
+
+Returns the current status of the approval and, if still pending, a prompt message.
+
+<ParamField path="token" type="string" required>The approval token sent to the reviewer.</ParamField>
+
+**Response:**
+
+| Status | Meaning |
+|---|---|
+| `PENDING` | Awaiting response |
+| `APPROVED` | Approved |
+| `REJECTED` | Rejected |
+| `TIMED_OUT` | Timeout passed without a response |
+
+## Respond to approval
+
+**`POST /api/v1/automation/approvals/{token}`**
+
+<ParamField path="token" type="string" required>The approval token.</ParamField>
+
+**Request body:**
+
+<ParamField body="action" type="string" required>`approve` or `reject`</ParamField>
+<ParamField body="userId" type="string">Optional. ID of the user approving/rejecting.</ParamField>
+
+<RequestExample>
+```bash
+curl -X POST "https://your-collabase.ch/api/v1/automation/approvals/tok-abc123" \
+  -H "Content-Type: application/json" \
+  -d '{ "action": "approve" }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{ "status": "APPROVED", "resolvedAt": "2026-04-02T14:00:00.000Z" }
+```
+</ResponseExample>

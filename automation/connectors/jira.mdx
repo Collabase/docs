@@ -5,13 +5,13 @@ description: "Create, update, transition, and search Jira issues. Trigger automa
 
 # Jira
 
-Connect Collabase to Jira to create issues from bugs or test failures, update issue status from automation outcomes, and trigger workflows from sprint or issue status changes.
+Connect Collabase to Jira to create issues from bugs or test failures, update status, transition issues through workflows, and attach files — triggered by Jira webhook events.
 
 ## Authentication
 
 **Auth type:** Basic (email + API token)
 
-Generate an API token in [Atlassian Account → Security → API tokens](https://id.atlassian.com/manage-profile/security/api-tokens).
+Generate an API token at [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens).
 
 | Credential | Description |
 |---|---|
@@ -23,8 +23,8 @@ Generate an API token in [Atlassian Account → Security → API tokens](https:/
 
 | Trigger | When it fires |
 |---|---|
-| **Issue Created** | A new Jira issue is created |
-| **Issue Updated** | An issue's status or fields change |
+| **Issue Created** | A new Jira issue is created in any project |
+| **Issue Updated** | An issue's status, fields, or assignee change |
 | **Issue Resolved** | An issue is transitioned to a resolved status |
 | **Sprint Started** | A sprint is activated |
 | **Sprint Completed** | A sprint is closed |
@@ -42,5 +42,5 @@ Generate an API token in [Atlassian Account → Security → API tokens](https:/
 | **Attach File** | `issueKey`, `fileUrl`, `filename` | attachmentId |
 
 <Tip>
-  To find valid transition IDs, call the Jira REST API: `GET /rest/api/3/issue/{issueKey}/transitions`. Common values: `11` = To Do, `21` = In Progress, `31` = Done (varies per project workflow configuration).
+  Find valid transition IDs via the Jira REST API: `GET /rest/api/3/issue/{issueKey}/transitions`. Common IDs: `11` = To Do, `21` = In Progress, `31` = Done (these vary per project workflow).
 </Tip>

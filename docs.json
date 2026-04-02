@@ -99,12 +99,26 @@
               },
 
               {
+                "group": "Projects",
+                "pages": [
+                  "projects/overview",
+                  "projects/tasks",
+                  "projects/sprints",
+                  "projects/queues",
+                  "projects/sla",
+                  "projects/workflows",
+                  "projects/portal"
+                ]
+              },
+
+              {
                 "group": "Test Management",
                 "pages": [
                   "test-management/overview",
                   "test-management/test-cases",
                   "test-management/test-runs",
-                  "test-management/milestones"
+                  "test-management/milestones",
+                  "test-management/suites"
                 ]
               },
 
@@ -206,7 +220,10 @@
                 "group": "Intranet",
                 "pages": [
                   "intranet/overview",
-                  "intranet/blog-posts"
+                  "intranet/blog-posts",
+                  "intranet/events",
+                  "intranet/quick-links",
+                  "intranet/birthdays"
                 ]
               },
 
@@ -303,13 +320,50 @@
             "group": "Automation",
 
             "pages": [
-
               "api/automation/list-automations",
-
-              "api/automation/trigger-automation"
-
+              "api/automation/create-automation",
+              "api/automation/get-automation",
+              "api/automation/update-automation",
+              "api/automation/delete-automation",
+              "api/automation/toggle-automation",
+              "api/automation/trigger-automation",
+              "api/automation/webhook-trigger",
+              "api/automation/list-connectors",
+              "api/automation/list-templates",
+              "api/automation/approval",
+              {
+                "group": "Executions",
+                "pages": [
+                  "api/automation/executions/list-executions"
+                ]
+              },
+              {
+                "group": "Connections",
+                "pages": [
+                  "api/automation/connections/list-connections",
+                  "api/automation/connections/create-connection",
+                  "api/automation/connections/test-connection"
+                ]
+              }
             ]
 
+          },
+
+          {
+
+            "group": "SCIM 2.0",
+
+            "pages": [
+              "api/scim/overview",
+              "api/scim/users",
+              "api/scim/groups"
+            ]
+
+          },
+
+          {
+            "group": "Health",
+            "pages": [ "api/health" ]
           }
 
         ]
