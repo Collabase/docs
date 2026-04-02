@@ -117,6 +117,16 @@
                   "intranet/overview",
                   "intranet/blog-posts"
                 ]
+              },
+
+              {
+                "group": "Registry",
+                "pages": [
+                  "registry/overview",
+                  "registry/schema-designer",
+                  "registry/object-browser",
+                  "registry/settings"
+                ]
               }
 
             ]

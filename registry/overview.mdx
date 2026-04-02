@@ -1,0 +1,107 @@
+---
+sidebarTitle: "Overview"
+description: "The Registry is Collabase's structured data modeling and object management app — define custom schemas, populate them with objects, and connect them with typed relations."
+---
+
+<img src="/images/registry.png" alt="Registry" width="60" />
+
+# Registry
+
+Registry is Collabase's custom database builder. It lets you define structured data models from scratch, populate them with records, and connect them with typed relations — all inside the platform where the rest of your work happens. Use it to model anything that doesn't fit neatly into Docs or Tasks: product catalogs, asset registers, supplier databases, hardware inventories, customer lists, and more.
+
+## Why use Registry
+
+Most teams end up managing structured data in spreadsheets that drift out of sync, or in standalone databases that nobody connects to anything else. Registry gives that data a permanent, structured, searchable home inside Collabase.
+
+<AccordionGroup>
+  <Accordion title="Model your own data structures">
+    You define the shape of your data from scratch. Create Object Types with the fields you need, set constraints like required and unique, and generate human-readable keys automatically — all without writing code or managing a database.
+  </Accordion>
+  <Accordion title="Connect objects with typed relations">
+    Schema Relations let you formally define how Object Types relate to each other — with named, directional edges and full cardinality control (1:1, 1:N, N:1, N:N). Object Relations then link concrete records together, building a queryable object graph.
+  </Accordion>
+  <Accordion title="Browse and search your data">
+    The Object Browser gives you a structured table view of every record in a Schema. Filter by any attribute, configure which columns are visible, and jump directly to any object — with full field values and related objects in one place.
+  </Accordion>
+  <Accordion title="Controlled visibility and API access">
+    Each Schema has its own visibility setting — Private, Internal, or Public — and an optional toggle to expose objects over the REST API. You control exactly who can see what.
+  </Accordion>
+</AccordionGroup>
+
+## Key concepts
+
+Registry is organised in a clear hierarchy.
+
+```
+Schema
+└── Object Type
+      ├── Attribute (fields)
+      └── Object (records)
+            └── Field Values
+
+Schema Relation  (type-level link: Object Type → Object Type)
+Object Relation  (instance-level link: Object → Object)
+```
+
+<AccordionGroup>
+  <Accordion title="Schema">
+    A Schema is the top-level container for a data model. It has a name, icon, color, description, and a visibility setting. Every Object Type and every Object lives inside a Schema.
+  </Accordion>
+  <Accordion title="Object Type">
+    An Object Type is a class or table within a Schema — for example, "Server", "Vendor", or "Product". Each Object Type has its own set of Attributes and can have an optional `keyPrefix` that generates unique, human-readable keys for its objects (e.g. `SRV-001`).
+  </Accordion>
+  <Accordion title="Attribute">
+    An Attribute is a field on an Object Type, backed by Collabase's custom field system. Attributes support multiple field types and can be marked as `Required`, `Unique`, or `Label` (the attribute used as the object's display name).
+  </Accordion>
+  <Accordion title="Object">
+    An Object is a record — a specific instance of an Object Type. For example, a specific server named "prod-db-01" is an Object of the "Server" type. Each Object stores field values for every Attribute defined on its type.
+  </Accordion>
+  <Accordion title="Schema Relation">
+    A Schema Relation is a type-level link between two Object Types. It has a name (e.g. "belongs to") and a cardinality (1:1, 1:N, N:1, N:N). Schema Relations appear as edges in the visual Schema Designer.
+  </Accordion>
+  <Accordion title="Object Relation">
+    An Object Relation is an instance-level link between two concrete Objects. For example, if a Schema Relation says "Server belongs to DataCenter", then an Object Relation records that the specific object "prod-db-01 belongs to EU-DC-1".
+  </Accordion>
+</AccordionGroup>
+
+## How to access Registry
+
+<Steps>
+  <Step title="Open your Space">
+    Navigate to any Space from the left sidebar or the Spaces index.
+  </Step>
+  <Step title="Click Registry in the sidebar">
+    Registry appears in the Space navigation alongside Docs, Automation, and other apps.
+  </Step>
+  <Step title="Create your first Schema">
+    Click **New Schema**, give it a name and an optional description. Then open the Schema Designer to start adding Object Types and Attributes.
+  </Step>
+</Steps>
+
+## Connected apps
+
+<CardGroup cols={3}>
+  <Card title="Automation" icon="bolt">
+    Trigger workflows based on Registry events. Use Registry objects as structured input data for automation pipelines or populate a Schema automatically via the **Create Object** action.
+  </Card>
+  <Card title="Docs" icon="file-lines">
+    Link Registry objects to the Docs pages that describe the domain they represent. Keep your specifications and your data models in sync.
+  </Card>
+  <Card title="Public API" icon="code">
+    Per-schema API access lets external systems read Registry objects over REST. Enable it in Schema Settings and point your integrations at the `/api/v1/mcp-registry` endpoint.
+  </Card>
+</CardGroup>
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Schema Designer" icon="diagram-project" href="/registry/schema-designer">
+    Build your data model visually — create Object Types, add Attributes, and draw typed Relations between types.
+  </Card>
+  <Card title="Object Browser" icon="table" href="/registry/object-browser">
+    Browse, create, filter, and manage the objects in your Schema.
+  </Card>
+  <Card title="Settings & Visibility" icon="sliders" href="/registry/settings">
+    Configure Schema visibility, enable public API access, and manage Schema details.
+  </Card>
+</CardGroup>

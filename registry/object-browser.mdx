@@ -1,0 +1,76 @@
+---
+title: "Object Browser"
+description: "The Object Browser is a structured table view for browsing, creating, filtering, and managing the objects in a Registry Schema."
+---
+
+The Object Browser is where you work with actual data — the individual records that populate your Schema. Each Object Type in your Schema gets its own table view, with columns for every Attribute you have defined.
+
+## Navigating the browser
+
+Open a Schema and click the **Objects** tab. The left panel lists all Object Types in the Schema. Click an Object Type to load its object table on the right.
+
+The table shows one row per Object and one column per Attribute. Columns are sortable and configurable. The total object count for the selected type is shown above the table.
+
+## Creating objects
+
+<Steps>
+  <Step title="Select an Object Type">
+    In the left panel, click the Object Type you want to add a record to.
+  </Step>
+  <Step title="Click New Object">
+    Click **New Object** in the top bar. A creation form slides in from the right.
+  </Step>
+  <Step title="Fill in the fields">
+    Complete the required Attributes and any optional ones. If the Object Type has a key prefix configured, a unique key is generated automatically (e.g. `SRV-001`).
+  </Step>
+  <Step title="Save">
+    Click **Create** to save the object. It appears immediately in the table.
+  </Step>
+</Steps>
+
+## Viewing and editing an object
+
+Click any row in the table to open the Object detail panel. The panel shows:
+
+- All Attribute values for the object
+- The object's auto-generated key (if applicable)
+- All Object Relations — other objects linked to this one, grouped by Relation name
+
+Click **Edit** in the detail panel to change any Attribute value. Click **Save** to confirm.
+
+## Column configurator
+
+Click the **Columns** button above the table to open the column configurator. Toggle individual Attributes on or off to control which columns are visible in the table. Your column selection is persisted per Object Type.
+
+## Searching and filtering
+
+Use the **Search** bar above the table to filter objects by their Label attribute. For more precise filtering, click **Filter** to add one or more attribute-based filters.
+
+| Filter option | Behaviour |
+|---|---|
+| Text | Matches objects where the attribute contains the entered value |
+| Select / Member | Matches objects with any of the selected values |
+| Date | Matches objects within the specified date range |
+| Required / Unique | Filter by constraint flags on the attribute |
+
+Filters stack — all active filters must match for an object to appear in the table.
+
+## Object Relations
+
+From the Object detail panel, you can view and manage the relations this object has with other objects.
+
+- The **Relations** section lists all connected objects, grouped by the Schema Relation they belong to.
+- Click **Add Relation** to link this object to another object of the appropriate type.
+- Click the remove icon next to a relation to unlink the two objects.
+
+<Note>
+  Object Relations follow the cardinality defined in the Schema Designer. A 1:1 relation will not let you add a second related object — the control is disabled once the relation is filled.
+</Note>
+
+## Deleting objects
+
+Open the object detail panel and click **Delete** in the bottom of the panel. You will be asked to confirm. Deleting an object also removes all Object Relations it is part of.
+
+<Warning>
+  Object deletion is permanent and cannot be undone. Make sure the object is not referenced by active Automations or external API consumers before deleting it.
+</Warning>

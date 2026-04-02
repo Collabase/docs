@@ -1,0 +1,80 @@
+---
+title: "Settings & Visibility"
+description: "Control who can access a Registry Schema, enable public API access, and manage Schema details like name, icon, and description."
+---
+
+Each Registry Schema has its own settings panel where you can control its name, description, visibility, and API access. Open a Schema and click the **Settings** tab to access it.
+
+## Schema details
+
+| Field | Description |
+|---|---|
+| **Name** | The display name of the Schema, shown in the Registry sidebar and in the Schema list |
+| **Description** | An optional summary of what this Schema models and what it is used for |
+| **Icon** | A visual identifier for the Schema, shown in the sidebar and object headers |
+| **Color** | An accent color applied to the Schema's icon and cards across the UI |
+
+Click **Save** after making changes to any detail field.
+
+## Visibility
+
+Visibility controls who can see the Schema and the objects inside it.
+
+| Level | Who has access |
+|---|---|
+| `PRIVATE` | Only the Schema owner and Space admins |
+| `INTERNAL` | All members of the Space |
+| `PUBLIC` | Anyone with access to the Collabase instance, including unauthenticated users if API access is enabled |
+
+<Note>
+  Visibility applies to the Schema as a whole. There is no per-Object-Type or per-Object visibility setting. If a Schema is Internal, all its Object Types and Objects are visible to all Space members.
+</Note>
+
+## Public API access
+
+When enabled, the Schema's objects are accessible over the Collabase REST API at:
+
+```
+GET /api/v1/mcp-registry
+```
+
+This allows external systems — CI pipelines, integrations, third-party tools — to read Registry objects without a user session.
+
+<Warning>
+  Public API access should only be enabled on Schemas with `PUBLIC` visibility. Enabling API access on a `PRIVATE` or `INTERNAL` Schema exposes its data to anyone with a valid API token.
+</Warning>
+
+To enable public API access:
+
+<Steps>
+  <Step title="Open Schema Settings">
+    Open the Schema and click the **Settings** tab.
+  </Step>
+  <Step title="Toggle Public API Access">
+    Find the **Public API Access** toggle and enable it.
+  </Step>
+  <Step title="Set visibility to Public">
+    Ensure the Schema visibility is set to `PUBLIC` before sharing the API endpoint externally.
+  </Step>
+  <Step title="Save">
+    Click **Save** to apply the change.
+  </Step>
+</Steps>
+
+## Danger zone
+
+The danger zone contains irreversible Schema-level actions.
+
+### Delete Schema
+
+Deleting a Schema permanently removes:
+
+- All Object Types and their Attribute definitions
+- All Objects and their field values
+- All Schema Relations and Object Relations
+
+<Warning>
+  Schema deletion cannot be undone. All data inside the Schema is permanently destroyed. Export or document any critical data before proceeding.
+</Warning>
+
+To delete a Schema, scroll to the bottom of the Settings tab, click **Delete Schema**, and confirm by typing the Schema name.
