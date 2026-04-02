@@ -1,0 +1,51 @@
+---
+title: "OpenAI"
+description: "Generate text with GPT models, create images with DALL·E 3, transcribe audio, convert text to speech, and generate embeddings."
+---
+
+# OpenAI
+
+Use OpenAI's API directly in automations — run GPT-4o completions, generate images with DALL·E 3, transcribe audio files, produce speech, and create embeddings for semantic search pipelines.
+
+## Authentication
+
+**Auth type:** API Key
+
+Create a secret key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+
+| Credential | Description |
+|---|---|
+| **API Key** | Your OpenAI secret key (starts with `sk-`) |
+| **Organization ID** | Optional — found in OpenAI Platform → Settings → Organization |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Text">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Chat Completion** | `model`, `systemPrompt`, `userMessage`, `temperature`, `maxTokens`, `jsonMode` | content, model, promptTokens, completionTokens, totalTokens |
+  </Accordion>
+  <Accordion title="Images">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Generate Image** | `prompt`, `model` (dall-e-3/dall-e-2), `size`, `quality`, `style` | imageUrl, revisedPrompt |
+  </Accordion>
+  <Accordion title="Audio">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Transcribe Audio** | `audioUrl`, `language`, `prompt` | text, language |
+    | **Text to Speech** | `input`, `voice` (alloy/echo/fable/onyx/nova/shimmer), `model`, `speed` | audioBase64, mimeType |
+  </Accordion>
+  <Accordion title="Embeddings & moderation">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Embedding** | `input`, `model` (text-embedding-3-small / large) | embedding[], dimensions, model |
+    | **Moderate Content** | `input` | flagged, categories{}, scores{} |
+    | **List Models** | — | models[] — id, created |
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Enable `jsonMode: true` in **Chat Completion** to force GPT to return valid JSON output. Your `systemPrompt` or `userMessage` must instruct the model to produce JSON — the API enforces the format but does not define the schema.
+</Tip>

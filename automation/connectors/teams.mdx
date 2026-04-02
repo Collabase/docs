@@ -1,0 +1,50 @@
+---
+title: "Microsoft Teams"
+description: "Send channel messages, create online meetings, and manage teams via Microsoft Graph API."
+---
+
+# Microsoft Teams
+
+Send messages to Teams channels and users, schedule online meetings, and manage team membership — all without leaving your automation flow. Uses Microsoft Graph API with OAuth 2.0 client credentials.
+
+## Authentication
+
+**Auth type:** OAuth 2.0 (client credentials)
+
+Register an app in [Azure Portal](https://portal.azure.com) → **App registrations**. Grant it the following **application permissions** (not delegated): `Chat.ReadWrite`, `ChannelMessage.Send`, `OnlineMeetings.ReadWrite`, `Team.ReadBasic.All`, `TeamMember.ReadWrite.All`. Then grant admin consent.
+
+| Credential | Description |
+|---|---|
+| **Tenant ID** | Your Microsoft Entra (AAD) tenant ID |
+| **Client ID** | The application (client) ID from App registrations |
+| **Client Secret** | A client secret value — not the secret ID |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Channel Message Posted** | A new message is posted in a monitored Teams channel |
+| **Meeting Started** | A scheduled online meeting begins |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Messages">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Send Channel Message** | `teamId`, `channelId`, `message` | id, webUrl |
+    | **Send Direct Message** | `recipientEmail`, `message` | id |
+  </Accordion>
+  <Accordion title="Meetings">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Online Meeting** | `subject`, `startDateTime`, `endDateTime`, `organizerEmail` | id, joinUrl, subject |
+  </Accordion>
+  <Accordion title="Team management">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Team** | `displayName`, `description`, `visibility` | id, displayName |
+    | **Add Member to Team** | `teamId`, `memberEmail`, `role` | success |
+    | **Create Channel** | `teamId`, `displayName`, `description`, `membershipType` | id, displayName |
+  </Accordion>
+</AccordionGroup>

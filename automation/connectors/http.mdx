@@ -1,0 +1,52 @@
+---
+title: "HTTP"
+description: "Make GET, POST, PUT, PATCH, and DELETE requests to any external API."
+---
+
+# HTTP
+
+Call any external REST API from your automations — with full control over headers, authentication, request body, and query parameters. Use it for APIs that don't have a dedicated Collabase connector.
+
+## Authentication
+
+**Auth type:** None (configure per-action)
+
+The HTTP connector does not use stored credentials. Configure authentication inline within each action.
+
+## Actions
+
+### HTTP Request
+
+The single action on this connector handles all HTTP methods.
+
+| Field | Description |
+|---|---|
+| **URL** | The target URL. Supports `{{variables}}`. |
+| **Method** | `GET`, `POST`, `PUT`, `PATCH`, or `DELETE` |
+| **Headers** | Key-value pairs. Use for `Authorization`, `Content-Type`, etc. |
+| **Body** | JSON string or raw body for POST/PUT/PATCH requests |
+| **Query Params** | Key-value pairs appended to the URL |
+
+**Outputs:**
+
+| Field | Description |
+|---|---|
+| `status` | HTTP status code |
+| `body` | Parsed JSON response body (or raw string if not JSON) |
+| `headers` | Response headers |
+| `ok` | `true` if status is 200–299 |
+
+## Example — call a private REST API
+
+```
+[HTTP Request]
+    url: https://api.yourapp.com/v1/users
+    method: GET
+    headers:
+        Authorization: Bearer {{secrets.apiKey}}
+        Accept: application/json
+```
+
+<Tip>
+  To use secrets in HTTP headers without hardcoding them, store the value in an automation variable using a **Set Variable** node, then reference it as `{{varName}}` in the header value.
+</Tip>

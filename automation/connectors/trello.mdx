@@ -1,0 +1,57 @@
+---
+title: "Trello"
+description: "Create and manage cards, add comments and labels, and respond to Trello board events."
+---
+
+# Trello
+
+Automate Trello card management — create cards from automation triggers, move them between lists, attach labels, post comments, and retrieve board and list data.
+
+## Authentication
+
+**Auth type:** API Key + Token
+
+Get your API key from [trello.com/power-ups/admin](https://trello.com/power-ups/admin). Click the **Token** link to generate a user token.
+
+| Credential | Description |
+|---|---|
+| **API Key** | Your Trello API key |
+| **API Token** | Your Trello user token |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Card Created** | A new card is added to a board |
+| **Card Moved** | A card is moved to a different list |
+| **Card Archived** | A card is archived (closed) |
+| **Comment Added** | A comment is posted on a card |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Cards">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Card** | `listId`, `name`, `description`, `due`, `labelIds`, `memberIds`, `position` | cardId, name, url, listId |
+    | **Update Card** | `cardId`, `name`, `description`, `listId`, `due`, `dueComplete`, `closed` | cardId, name, url |
+    | **Get Card** | `cardId` | cardId, name, url, listId, due, closed |
+    | **Delete Card** | `cardId` | deleted |
+    | **List Cards in List** | `listId` | cards[], count |
+  </Accordion>
+  <Accordion title="Comments & labels">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Add Comment** | `cardId`, `text` | commentId, text |
+    | **Add Label to Card** | `cardId`, `labelId` | success |
+  </Accordion>
+  <Accordion title="Boards">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **List Boards** | — | boards[] — boardId, name, url, closed |
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Trello uses `closed: true` to archive cards — it does not permanently delete them. Use **Delete Card** only if you want permanent removal.
+</Note>

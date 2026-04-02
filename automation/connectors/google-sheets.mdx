@@ -1,0 +1,42 @@
+---
+title: "Google Sheets"
+description: "Read, append, update, clear, and search rows in Google Sheets spreadsheets."
+---
+
+# Google Sheets
+
+Read and write data in Google Sheets spreadsheets. Use it as a simple database, a reporting output, or a data source for automation logic.
+
+## Authentication
+
+**Auth type:** OAuth 2.0
+
+Enable the **Google Sheets API** in [Google Cloud Console](https://console.cloud.google.com/). Generate an OAuth 2.0 token with `https://www.googleapis.com/auth/spreadsheets` scope.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | OAuth 2.0 access token with Sheets scope |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **New Row Added** | A new row is appended to a sheet (polling-based) |
+| **Row Updated** | An existing row is modified (polling-based) |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Get Row(s)** | `spreadsheetId`, `range` (A1 notation) | values[][], count |
+| **Append Row** | `spreadsheetId`, `sheetName`, `values[]` | updatedRange, updatedRows |
+| **Update Row** | `spreadsheetId`, `range`, `values[][]` | updatedRange, updatedCells |
+| **Clear Range** | `spreadsheetId`, `range` | clearedRange |
+| **Find Row** | `spreadsheetId`, `sheetName`, `column`, `value` | row{}, rowNumber, found |
+| **Batch Update** | `spreadsheetId`, `data[]` (range + values pairs) | totalUpdatedCells |
+| **List Sheets** | `spreadsheetId` | sheets[] — sheetId, title, index |
+| **Create Sheet** | `spreadsheetId`, `title` | sheetId, title |
+
+<Tip>
+  Use A1 notation for ranges: `Sheet1!A1:D10`. If you omit the sheet name, the first sheet is used. Use `Sheet1!A:A` to target an entire column.
+</Tip>

@@ -1,0 +1,42 @@
+---
+title: "Linear"
+description: "Manage issues, projects, and teams in Linear using the GraphQL API."
+---
+
+# Linear
+
+Create and update Linear issues, post comments, search, and retrieve team data from your Collabase automations. Linear's GraphQL API is used throughout.
+
+## Authentication
+
+**Auth type:** API Key (Personal API Key)
+
+Create a key in [Linear Settings → API](https://linear.app/settings/api) → Personal API keys.
+
+| Credential | Description |
+|---|---|
+| **API Key** | Your Linear personal API key |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Issue Created** | A new Linear issue is created |
+| **Issue Status Changed** | An issue transitions to a different workflow state |
+| **Issue Assigned** | An issue is assigned to a team member |
+| **Comment Added** | A comment is posted on an issue |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Issue** | `teamId`, `title`, `description`, `priority` (0–4), `assigneeId`, `labelIds[]`, `dueDate` | issueId, identifier, title, url |
+| **Update Issue** | `issueId`, `title`, `description`, `priority`, `stateId`, `assigneeId`, `dueDate` | issueId, title |
+| **Get Issue** | `issueId` | issueId, identifier, title, state, priority, assignee, url |
+| **Add Comment** | `issueId`, `body` | commentId, body |
+| **Search Issues** | `query`, `teamId`, `limit` | issues[], count |
+| **List Teams** | — | teams[] — id, name, key |
+
+<Note>
+  Priority values: `0` = No priority, `1` = Urgent, `2` = High, `3` = Normal, `4` = Low.
+</Note>

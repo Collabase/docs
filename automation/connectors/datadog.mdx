@@ -1,0 +1,43 @@
+---
+title: "Datadog"
+description: "Send events, query metrics, manage monitors, and create incidents in Datadog."
+---
+
+# Datadog
+
+React to Datadog alerts automatically — mute monitors during maintenance, create incidents when alerts fire, post events to the event stream, and query metric data to inform automation logic.
+
+## Authentication
+
+**Auth type:** API Key + Application Key
+
+Create both keys in [Datadog → Organization Settings → API Keys / Application Keys](https://app.datadoghq.com/organization-settings/api-keys).
+
+| Credential | Description |
+|---|---|
+| **API Key** | Datadog API key |
+| **Application Key** | Datadog application key (required for read operations) |
+| **Site** | Optional — set to `datadoghq.eu` for EU customers. Leave blank for US1. |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Alert Triggered** | A monitor transitions to ALERT state |
+| **Alert Recovered** | A monitor recovers from ALERT state |
+| **Incident Created** | A new incident is opened in Datadog |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Send Event** | `title`, `text`, `alertType` (info/warning/error/success), `tags`, `host` | eventId, url |
+| **Query Metrics** | `query` (Datadog metric query), `from` (seconds ago or Unix timestamp), `to` | series[], queryTime |
+| **Get Monitor** | `monitorId` | monitorId, name, status, type |
+| **Mute Monitor** | `monitorId`, `end` (ISO 8601 datetime, blank = indefinite) | monitorId, name, status |
+| **Create Incident** | `title`, `severity` (SEV-1 to SEV-5), `customerImpacted`, `notificationMessage` | incidentId, title, severity, url |
+| **List Monitors** | `status` filter, `limit` | monitors[], count |
+
+<Note>
+  For `Query Metrics`, if `from` is less than 86400 (one day in seconds), it is interpreted as "N seconds ago from now". Otherwise it is treated as an absolute Unix timestamp.
+</Note>

@@ -1,0 +1,63 @@
+---
+title: "Stripe"
+description: "Process payments, manage customers, subscriptions, invoices, and refunds via Stripe."
+---
+
+# Stripe
+
+Trigger automations from payment events or take action on Stripe objects — create payment links, manage subscriptions, issue refunds, and retrieve customer and invoice data.
+
+## Authentication
+
+**Auth type:** API Key
+
+Get your secret key from [Stripe Dashboard → Developers → API keys](https://dashboard.stripe.com/apikeys). Use your **live** secret key for production and **test** secret key for development.
+
+| Credential | Description |
+|---|---|
+| **Secret Key** | Stripe secret key (starts with `sk_live_` or `sk_test_`) |
+| **Webhook Secret** | Stripe webhook signing secret — from **Developers → Webhooks → your endpoint → Signing secret** |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Payment Succeeded** | A charge or payment intent succeeds |
+| **Payment Failed** | A charge fails or a payment intent requires action |
+| **Customer Created** | A new Stripe customer is created |
+| **Subscription Created** | A new subscription is started |
+| **Subscription Cancelled** | A subscription is cancelled |
+| **Invoice Paid** | An invoice is paid |
+| **Invoice Payment Failed** | An invoice payment attempt fails |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Customers">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Customer** | `email`, `name`, `phone`, `description`, `metadata{}` | customerId, email |
+    | **Get Customer** | `customerId` | customerId, email, name, balance, currency |
+    | **Update Customer** | `customerId`, `name`, `email`, `metadata{}` | customerId |
+    | **Search Customers** | `query` (Stripe query syntax) | customers[], count |
+  </Accordion>
+  <Accordion title="Payments">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Payment Link** | `priceId`, `quantity`, `redirectUrl` | url, paymentLinkId |
+    | **Create Refund** | `paymentIntentId`, `amount` (optional, blank = full refund), `reason` | refundId, amount, status |
+    | **Retrieve Charge** | `chargeId` | chargeId, amount, currency, status, receiptUrl |
+  </Accordion>
+  <Accordion title="Subscriptions & invoices">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Subscription** | `customerId`, `priceId`, `quantity`, `trialDays` | subscriptionId, status, currentPeriodEnd |
+    | **Cancel Subscription** | `subscriptionId`, `cancelAtPeriodEnd` | subscriptionId, status |
+    | **Get Invoice** | `invoiceId` | invoiceId, amount, status, pdfUrl |
+    | **List Invoices** | `customerId`, `status`, `limit` | invoices[], count |
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  Always use the **Webhook Secret** to verify incoming Stripe webhook events. Collabase verifies the `Stripe-Signature` header using HMAC-SHA256 before triggering any automation. Never disable this verification in production.
+</Warning>

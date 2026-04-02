@@ -1,0 +1,42 @@
+---
+title: "Monday.com"
+description: "Create and update items, post updates, search boards, and respond to Monday.com events."
+---
+
+# Monday.com
+
+Manage Monday.com boards from your Collabase automations. Create items with column values, post text updates, search for items by name, and list all boards — using Monday.com's GraphQL API.
+
+## Authentication
+
+**Auth type:** API Key (Personal API Token)
+
+Find your token in [Monday.com → Profile → Developers → My Access Tokens](https://monday.com/apps/manage).
+
+| Credential | Description |
+|---|---|
+| **Personal API Token** | Your Monday.com personal API token |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Item Created** | A new item (row) is added to a board |
+| **Column Value Changed** | Any column on an item is updated |
+| **Status Changed** | An item's status column changes to a new value |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Item** | `boardId`, `itemName`, `groupId`, `columnValues` (JSON) | itemId, name, boardId, groupId, columnValues[] |
+| **Update Item** | `boardId`, `itemId`, `columnValues` (JSON) | itemId, name |
+| **Get Item** | `itemId` | itemId, name, boardId, groupId, columnValues[] |
+| **Archive Item** | `itemId` | itemId, archived |
+| **Post Update** | `itemId`, `body` (HTML supported) | updateId |
+| **Search Items** | `boardId`, `term`, `limit` | items[], count |
+| **List Boards** | `limit` | boards[] — boardId, name, description |
+
+<Tip>
+  Pass `columnValues` as a JSON string where keys are column IDs (not display names). You can find the column ID by opening a board in Monday.com, clicking a column header, and selecting **Column settings**.
+</Tip>

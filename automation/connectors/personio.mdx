@@ -1,0 +1,34 @@
+---
+title: "Personio"
+description: "Manage employee records, submit absence requests, and sync HR data from Personio."
+---
+
+# Personio
+
+Sync and manage HR data in Personio — retrieve employee profiles, submit absence requests, update employee attributes, and list departments. A common connector for onboarding automations and HR reporting.
+
+## Authentication
+
+**Auth type:** OAuth 2.0 (client credentials)
+
+Create API credentials in [Personio Settings → API credentials](https://app.personio.com/settings/api). The connector automatically exchanges client ID and secret for a bearer token.
+
+| Credential | Description |
+|---|---|
+| **Client ID** | Personio API client ID |
+| **Client Secret** | Personio API client secret |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Get Employee** | `employeeId` | id, firstName, lastName, email, department, position |
+| **Search Employees** | `query` | employees[] — id, firstName, lastName, email |
+| **Create Absence** | `employeeId`, `absenceTypeId`, `startDate`, `endDate`, `halfDay` | success |
+| **Update Employee Attribute** | `employeeId`, `attributeKey`, `value` | success |
+| **List Departments** | — | departments[] — id, name |
+| **List Absence Types** | — | absenceTypes[] — id, name, category |
+
+<Tip>
+  Use **Search Employees** with a name or email query to look up the employee ID before performing update or absence operations.
+</Tip>

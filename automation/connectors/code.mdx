@@ -1,0 +1,42 @@
+---
+title: "Code"
+description: "Run custom JavaScript logic as a step in your automation."
+---
+
+# Code
+
+Execute arbitrary JavaScript inside an automation step. Use it when built-in connectors and Transform nodes are not expressive enough for a transformation or calculation.
+
+## Authentication
+
+**Auth type:** None
+
+## How it works
+
+The Code node runs in an isolated sandbox via the Collabase code-runner microservice. Write a function that receives the step's `inputs` and returns an object — the returned keys become the node's output variables.
+
+```javascript
+// Example: calculate a due date 7 days from now
+const dueDate = new Date(inputs.startDate);
+dueDate.setDate(dueDate.getDate() + 7);
+return {
+  dueDate: dueDate.toISOString(),
+  dueDateFormatted: dueDate.toLocaleDateString("de-CH")
+};
+```
+
+## Fields
+
+| Field | Description |
+|---|---|
+| **Code** | JavaScript function body. `inputs` is available as a pre-bound object containing all mapped input variables. Return a plain object. |
+| **Input mappings** | Variables from previous nodes mapped to `inputs` keys |
+| **Timeout** | Maximum execution time in milliseconds (default: 5000) |
+
+<Warning>
+  The Code node does not have access to Node.js built-ins like `fs`, `http`, or `require`. Network access is blocked inside the sandbox. For external HTTP calls, use the **HTTP** connector instead.
+</Warning>
+
+<Tip>
+  For complex multi-step transformations that need external libraries, use the **Python** node (AI Microservices) or the **HTTP** connector to call a dedicated function endpoint.
+</Tip>

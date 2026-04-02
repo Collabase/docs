@@ -1,0 +1,148 @@
+---
+title: "Connectors"
+sidebarTitle: "Overview"
+description: "Connect Collabase automations to third-party services — from Slack to Stripe to GitHub."
+---
+
+# Connectors
+
+Connectors are pre-built integrations that let your automations read from and write to external services. Each connector defines its own **triggers** (events that start an automation) and **actions** (operations the automation performs). No custom code is required.
+
+## How connectors work
+
+Every automation step that calls an external service uses a connector. When you add an action node to the builder, you select the connector, configure the action, and map input fields from previous steps using `{{variable}}` syntax.
+
+Credentials are stored securely per-connector. Each connector has a **Test Connection** button that verifies credentials before you save them.
+
+## Available connectors
+
+<CardGroup cols={3}>
+  <Card title="Slack" icon="message-square" href="/automation/connectors/slack">
+    Post messages, send DMs, manage channels and reactions
+  </Card>
+  <Card title="Microsoft Teams" icon="users" href="/automation/connectors/teams">
+    Send channel messages, create meetings, manage teams
+  </Card>
+  <Card title="Discord" icon="message-circle" href="/automation/connectors/discord">
+    Send messages, embeds, manage threads and roles
+  </Card>
+  <Card title="WhatsApp" icon="smartphone" href="/automation/connectors/whatsapp">
+    Send messages and media via WhatsApp Business API
+  </Card>
+  <Card title="Telegram" icon="send" href="/automation/connectors/telegram">
+    Send messages and media via Telegram Bot API
+  </Card>
+  <Card title="SendGrid" icon="mail" href="/automation/connectors/sendgrid">
+    Transactional email with templates and tracking
+  </Card>
+  <Card title="Twilio" icon="phone" href="/automation/connectors/twilio">
+    SMS, MMS, WhatsApp, and voice calls via Twilio
+  </Card>
+  <Card title="Email" icon="inbox" href="/automation/connectors/email">
+    SMTP email using your server's mail configuration
+  </Card>
+  <Card title="Google Calendar" icon="calendar" href="/automation/connectors/google-calendar">
+    Create events, check availability, manage calendars
+  </Card>
+  <Card title="Outlook Calendar" icon="calendar-days" href="/automation/connectors/outlook-calendar">
+    Microsoft 365 calendar events and scheduling assistant
+  </Card>
+  <Card title="Calendly" icon="clock" href="/automation/connectors/calendly">
+    Retrieve events, invitees, and create scheduling links
+  </Card>
+  <Card title="Google Drive" icon="folder" href="/automation/connectors/google-drive">
+    Upload, move, share, and manage Drive files
+  </Card>
+  <Card title="Google Sheets" icon="table" href="/automation/connectors/google-sheets">
+    Read, append, update, and search spreadsheet rows
+  </Card>
+  <Card title="Dropbox" icon="cloud" href="/automation/connectors/dropbox">
+    Upload from URL, list folders, move, and share files
+  </Card>
+  <Card title="Airtable" icon="database" href="/automation/connectors/airtable">
+    Full CRUD on Airtable records with filtering and views
+  </Card>
+  <Card title="Notion" icon="file-text" href="/automation/connectors/notion">
+    Create and update pages, query databases, search
+  </Card>
+  <Card title="HubSpot" icon="trending-up" href="/automation/connectors/hubspot">
+    Contacts, deals, companies, tickets, and pipeline events
+  </Card>
+  <Card title="Pipedrive" icon="bar-chart-2" href="/automation/connectors/pipedrive">
+    Deals, persons, organizations, activities, and notes
+  </Card>
+  <Card title="Stripe" icon="credit-card" href="/automation/connectors/stripe">
+    Payments, customers, subscriptions, invoices, refunds
+  </Card>
+  <Card title="GitHub" icon="github" href="/automation/connectors/github">
+    Issues, pull request comments, and workflow dispatch
+  </Card>
+  <Card title="GitLab" icon="git-branch" href="/automation/connectors/gitlab">
+    Issues, merge requests, pipelines, and file creation
+  </Card>
+  <Card title="Jira" icon="layout" href="/automation/connectors/jira">
+    Create, update, and transition Jira issues
+  </Card>
+  <Card title="Linear" icon="circle" href="/automation/connectors/linear">
+    Issue lifecycle, comments, and team management
+  </Card>
+  <Card title="Asana" icon="check-square" href="/automation/connectors/asana">
+    Task CRUD, comments, and project listing
+  </Card>
+  <Card title="Trello" icon="columns" href="/automation/connectors/trello">
+    Cards, lists, labels, comments, and board management
+  </Card>
+  <Card title="Monday.com" icon="layout-grid" href="/automation/connectors/monday">
+    Items, board columns, updates, and group management
+  </Card>
+  <Card title="Sentry" icon="bug" href="/automation/connectors/sentry">
+    Issue triage, releases, and project monitoring
+  </Card>
+  <Card title="Datadog" icon="bar-chart" href="/automation/connectors/datadog">
+    Events, metric queries, monitors, and incidents
+  </Card>
+  <Card title="PagerDuty" icon="bell" href="/automation/connectors/pagerduty">
+    Incident lifecycle, escalation, and on-call management
+  </Card>
+  <Card title="OpenAI" icon="sparkles" href="/automation/connectors/openai">
+    Chat, images, embeddings, moderation, Whisper, TTS
+  </Card>
+  <Card title="Bexio" icon="briefcase" href="/automation/connectors/bexio">
+    Swiss ERP: contacts, invoices, and projects
+  </Card>
+  <Card title="Abacus" icon="calculator" href="/automation/connectors/abacus">
+    Swiss ERP: customers, orders, and financials
+  </Card>
+  <Card title="Personio" icon="users" href="/automation/connectors/personio">
+    Employee records, absences, and HR sync
+  </Card>
+  <Card title="HTTP" icon="globe" href="/automation/connectors/http">
+    Call any external API with full request control
+  </Card>
+  <Card title="AI (local)" icon="cpu" href="/automation/connectors/ai">
+    Ollama-compatible LLM prompts and summaries
+  </Card>
+  <Card title="Transform" icon="shuffle" href="/automation/connectors/transform">
+    Format dates, filter arrays, and reshape data
+  </Card>
+  <Card title="Code" icon="code-2" href="/automation/connectors/code">
+    Run custom JavaScript inside an automation step
+  </Card>
+</CardGroup>
+
+## Authentication
+
+Each connector uses one of four authentication types:
+
+| Type | How to configure |
+|---|---|
+| **API Key** | Enter the key directly in the connector credential form |
+| **OAuth 2.0** | Generate a token from the service's developer console and paste it in |
+| **Basic** | Username and password |
+| **None** | No credentials required (e.g. Email, Transform, HTTP with public APIs) |
+
+Credentials are encrypted at rest. They are never logged or exposed in automation output variables.
+
+<Note>
+  Connector credentials are workspace-scoped. Any member with **Automation: Edit** permission can select existing credentials when building an automation, but cannot view the raw credential values.
+</Note>

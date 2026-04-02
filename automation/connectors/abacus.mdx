@@ -1,0 +1,35 @@
+---
+title: "Abacus"
+description: "Access customers, projects, and financial data in Abacus ERP via REST API."
+---
+
+# Abacus
+
+Integrate with Abacus ERP — one of Switzerland's most widely deployed business software suites. Retrieve customer and project data, sync financial records, and connect Abacus to your Collabase workflows.
+
+## Authentication
+
+**Auth type:** Basic (username + password or API key depending on Abacus version)
+
+Configure API access in your Abacus installation settings. Requires Abacus with REST API module enabled.
+
+| Credential | Description |
+|---|---|
+| **Base URL** | Your Abacus installation URL |
+| **API Key** | Abacus API key or Basic auth credentials |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **List Customers** | `search`, `limit` | customers[], count |
+| **Get Customer** | `customerId` | customerId, name, address, email |
+| **Create Customer** | `name`, `address`, `email`, `phone` | customerId, name |
+| **List Projects** | `status`, `customerId`, `limit` | projects[], count |
+| **Get Project** | `projectId` | projectId, name, status, customerId |
+| **List Orders** | `customerId`, `status`, `limit` | orders[], count |
+| **Get Financial Summary** | — | totalRevenue, totalExpenses, netProfit |
+
+<Note>
+  Abacus is commonly deployed on-premises. Ensure your Collabase instance can reach your Abacus API endpoint — either on the same network or via a secure tunnel/VPN.
+</Note>

@@ -1,0 +1,56 @@
+---
+title: "Discord"
+description: "Send messages, embeds, manage threads, reactions, and roles in Discord servers."
+---
+
+# Discord
+
+Post messages and rich embeds to Discord channels, manage threads, add reactions, and control roles — useful for developer communities, gaming, and real-time team alerts.
+
+## Authentication
+
+**Auth type:** Bot token
+
+Create a Discord application at [discord.com/developers](https://discord.com/developers/applications), add a Bot, and copy the **Token**. Invite the bot to your server using OAuth2 URL with the `bot` scope and the permissions your actions require.
+
+| Credential | Description |
+|---|---|
+| **Bot Token** | The bot token from Discord Developer Portal → Bot → Reset Token |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Message Created** | A message is posted in a monitored channel |
+| **Member Joined** | A user joins the Discord server |
+| **Reaction Added** | A reaction is added to any message |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Messages">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Send Message** | `channelId`, `content`, `username` | id, channelId |
+    | **Send Embed** | `channelId`, `title`, `description`, `color`, `fields[]`, `footer`, `imageUrl` | id, channelId |
+    | **Edit Message** | `channelId`, `messageId`, `content` | id |
+    | **Delete Message** | `channelId`, `messageId` | deleted |
+  </Accordion>
+  <Accordion title="Threads & reactions">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Thread** | `channelId`, `name`, `messageId` (optional) | id, name |
+    | **Add Reaction** | `channelId`, `messageId`, `emoji` | success |
+  </Accordion>
+  <Accordion title="Roles & channels">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Add Role to Member** | `guildId`, `userId`, `roleId` | success |
+    | **Remove Role from Member** | `guildId`, `userId`, `roleId` | success |
+    | **Create Channel** | `guildId`, `name`, `type`, `topic`, `categoryId` | id, name |
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Use `color` as a decimal integer for embed colors. For example, `5793266` is blue (`#586ae2`). You can convert hex to decimal at any online color picker.
+</Tip>

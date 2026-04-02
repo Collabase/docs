@@ -1,0 +1,56 @@
+---
+title: "Pipedrive"
+description: "Manage deals, persons, organizations, activities, and notes in Pipedrive CRM."
+---
+
+# Pipedrive
+
+Automate your Pipedrive sales pipeline — create and update deals, log activities, add notes, and sync person and organization data from your workflows.
+
+## Authentication
+
+**Auth type:** API Key
+
+Find your API token in [Pipedrive Settings → Personal preferences → API](https://app.pipedrive.com/settings/api).
+
+| Credential | Description |
+|---|---|
+| **API Token** | Your Pipedrive personal API token |
+| **Company Domain** | Your Pipedrive domain (e.g. `yourcompany.pipedrive.com`) |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Deal Created** | A new deal is added |
+| **Deal Updated** | A deal's stage, value, or details change |
+| **Deal Won** | A deal is moved to a Won stage |
+| **Deal Lost** | A deal is moved to a Lost stage |
+| **Person Created** | A new person contact is created |
+| **Activity Created** | A new activity is logged |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Deals">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Deal** | `title`, `value`, `currency`, `stageId`, `personId`, `organizationId`, `expectedCloseDate` | dealId, title, stageId |
+    | **Update Deal** | `dealId`, `title`, `stageId`, `value`, `status` | dealId |
+    | **Get Deal** | `dealId` | dealId, title, value, stage, status, personName |
+    | **Search Deals** | `term`, `limit` | deals[], count |
+  </Accordion>
+  <Accordion title="Persons & organizations">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Person** | `name`, `email`, `phone`, `organizationId` | personId, name |
+    | **Update Person** | `personId`, `name`, `email`, `phone` | personId |
+    | **Create Organization** | `name`, `address` | organizationId, name |
+  </Accordion>
+  <Accordion title="Activities & notes">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Activity** | `subject`, `type`, `dueDate`, `dueTime`, `dealId`, `personId`, `note` | activityId, subject |
+    | **Create Note** | `content`, `dealId`, `personId`, `organizationId` | noteId |
+  </Accordion>
+</AccordionGroup>

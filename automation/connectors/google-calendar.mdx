@@ -1,0 +1,56 @@
+---
+title: "Google Calendar"
+description: "Create events, check free/busy availability, and manage Google Calendar calendars."
+---
+
+# Google Calendar
+
+Manage events across Google Calendar — from creating meetings to checking availability before scheduling. Works with any Google Calendar account (personal or Google Workspace).
+
+## Authentication
+
+**Auth type:** OAuth 2.0
+
+Create OAuth 2.0 credentials in [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials. Enable the **Google Calendar API**. Generate a token using the OAuth 2.0 flow with `https://www.googleapis.com/auth/calendar` scope.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | OAuth 2.0 access token (refresh via your OAuth flow) |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Event Created** | A new event is added to a calendar |
+| **Event Updated** | An existing event is modified |
+| **Event Deleted** | An event is removed from the calendar |
+| **Event Starting Soon** | An event begins within a configured window |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Events">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Event** | `calendarId`, `summary`, `description`, `startDateTime`, `endDateTime`, `attendees[]`, `location`, `sendNotifications` | eventId, htmlLink |
+    | **Get Event** | `calendarId`, `eventId` | eventId, summary, start, end, attendees[], status |
+    | **Update Event** | `calendarId`, `eventId`, `summary`, `startDateTime`, `endDateTime`, `description` | eventId, htmlLink |
+    | **Delete Event** | `calendarId`, `eventId`, `sendNotifications` | deleted |
+    | **List Events** | `calendarId`, `timeMin`, `timeMax`, `query`, `maxResults` | events[], count |
+  </Accordion>
+  <Accordion title="Scheduling">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Get Free/Busy** | `calendarIds[]`, `timeMin`, `timeMax` | busy[], free[] |
+  </Accordion>
+  <Accordion title="Calendars">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **List Calendars** | — | calendars[] — id, summary, primary |
+    | **Create Calendar** | `summary`, `description`, `timeZone` | calendarId, summary |
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Use `calendarId: "primary"` to always target the authenticated user's primary calendar without looking up the ID.
+</Tip>

@@ -1,0 +1,43 @@
+---
+title: "PagerDuty"
+description: "Create, acknowledge, resolve, and annotate PagerDuty incidents. Respond to on-call events."
+---
+
+# PagerDuty
+
+Automate incident response — open new incidents from critical alerts, auto-acknowledge or resolve incidents when upstream issues are fixed, post status updates as notes, and list open incidents for status overviews.
+
+## Authentication
+
+**Auth type:** API Key (REST API Token)
+
+Create a token in [PagerDuty → My Profile → User Settings → Create API Access Token](https://support.pagerduty.com/docs/api-access-keys#generate-a-general-access-rest-api-key).
+
+| Credential | Description |
+|---|---|
+| **API Token** | Your PagerDuty REST API token |
+| **From Email** | A valid PagerDuty user email — required by the API for all write operations |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Incident Triggered** | A new incident is opened (triggered state) |
+| **Incident Acknowledged** | A responder acknowledges an incident |
+| **Incident Resolved** | An incident is marked as resolved |
+| **Incident Escalated** | An incident moves to the next escalation policy level |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Incident** | `title`, `serviceId`, `urgency` (high/low), `body`, `escalationPolicyId`, `assigneeUserId` | incidentId, incidentNumber, title, status, urgency, htmlUrl |
+| **Acknowledge Incident** | `incidentId` | incidentId, status |
+| **Resolve Incident** | `incidentId`, `resolution` (optional note) | incidentId, status |
+| **Add Note** | `incidentId`, `content` | noteId, content |
+| **List Incidents** | `statuses`, `serviceIds`, `limit` | incidents[], count |
+| **Get Service** | `serviceId` | serviceId, name, status, htmlUrl |
+
+<Warning>
+  The **From Email** credential must correspond to an active PagerDuty user in your account. PagerDuty requires this for audit trail purposes on all incident write operations.
+</Warning>

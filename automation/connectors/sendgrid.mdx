@@ -1,0 +1,42 @@
+---
+title: "SendGrid"
+description: "Send transactional emails with dynamic templates and track delivery via SendGrid."
+---
+
+# SendGrid
+
+Send transactional emails using SendGrid's API — with or without dynamic templates. Suitable for formatted notifications, onboarding sequences, and any workflow that requires reliable email delivery with open/click tracking.
+
+## Authentication
+
+**Auth type:** API Key
+
+Create an API key in [SendGrid Settings → API Keys](https://app.sendgrid.com/settings/api_keys) with at minimum **Mail Send** permissions.
+
+| Credential | Description |
+|---|---|
+| **API Key** | Your SendGrid API key (starts with `SG.`) |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Email Opened** | A recipient opens a tracked email |
+| **Email Clicked** | A recipient clicks a tracked link |
+| **Email Bounced** | Delivery fails with a hard or soft bounce |
+| **Unsubscribe** | A recipient unsubscribes from your list |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Send Email** | `to`, `toName`, `from`, `fromName`, `subject`, `htmlContent`, `textContent`, `replyTo` | messageId, status |
+| **Send Template Email** | `to`, `from`, `templateId`, `dynamicTemplateData` | messageId |
+| **Add Contact** | `email`, `firstName`, `lastName`, `listIds[]` | contactId |
+| **Remove Contact** | `email` | success |
+| **Create List** | `name` | listId, name |
+| **Get Email Stats** | `startDate`, `endDate` | requests, delivered, opens, clicks, bounces |
+
+<Tip>
+  Use **Send Template Email** for branded, complex layouts. Design your template in the SendGrid UI with `{{variable}}` placeholders, then pass matching keys via `dynamicTemplateData`.
+</Tip>

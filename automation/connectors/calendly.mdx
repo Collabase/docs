@@ -1,0 +1,39 @@
+---
+title: "Calendly"
+description: "Retrieve scheduled events, invitee details, and create one-off scheduling links in Calendly."
+---
+
+# Calendly
+
+Connect to Calendly to retrieve booking data and trigger automations when meetings are scheduled or cancelled — useful for onboarding flows, CRM updates, and scheduling-based notifications.
+
+## Authentication
+
+**Auth type:** API Key (Personal Access Token)
+
+Generate a token in [Calendly → Integrations → API & Webhooks](https://calendly.com/integrations/api_webhooks).
+
+| Credential | Description |
+|---|---|
+| **Personal Access Token** | Your Calendly personal access token |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Event Scheduled** | An invitee books a meeting |
+| **Event Cancelled** | An invitee cancels a booking |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **List Events** | `status` (active/cancelled), `count` | events[], count |
+| **Get Event** | `eventUri` | eventId, name, startTime, endTime, location |
+| **Get Invitee** | `inviteeUri` | inviteeId, name, email, status |
+| **Cancel Event** | `eventUri`, `cancelReason` | success |
+| **Create One-Off Scheduling Link** | `maxEventCount`, `ownerUri` | bookingUrl, expiresAt |
+
+<Note>
+  Calendly uses URIs rather than simple IDs. Trigger payloads include the full `event` and `invitee` URIs, which you pass directly to Get Event and Get Invitee actions.
+</Note>

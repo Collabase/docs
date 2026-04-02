@@ -1,0 +1,47 @@
+---
+title: "Outlook Calendar"
+description: "Manage Microsoft 365 calendar events, respond to meeting requests, and check scheduling availability."
+---
+
+# Outlook Calendar
+
+Create, update, delete, and list events in Microsoft 365 (Outlook) calendars via Microsoft Graph API. Includes a scheduling assistant to find available meeting slots.
+
+## Authentication
+
+**Auth type:** OAuth 2.0 (client credentials or delegated)
+
+Register an app in [Azure Portal](https://portal.azure.com) → App registrations. Grant `Calendars.ReadWrite` and `OnlineMeetings.ReadWrite` permissions.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | Microsoft Graph API access token |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Event Created** | A new calendar event is created |
+| **Event Updated** | An event's details change |
+| **Event Cancelled** | An event is cancelled |
+| **Meeting Response Received** | An attendee accepts, declines, or tentatively accepts |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Events">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Event** | `subject`, `body`, `startDateTime`, `endDateTime`, `attendees[]`, `location`, `isOnlineMeeting` | eventId, webLink, onlineMeetingUrl |
+    | **Get Event** | `eventId` | eventId, subject, start, end, attendees[], status |
+    | **Update Event** | `eventId`, `subject`, `startDateTime`, `endDateTime`, `body` | eventId, webLink |
+    | **Delete Event** | `eventId` | deleted |
+    | **List Events** | `startDateTime`, `endDateTime`, `top` | events[], count |
+  </Accordion>
+  <Accordion title="Response & scheduling">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Respond to Meeting** | `eventId`, `response` (accept/decline/tentativelyAccept), `comment` | success |
+    | **Get Scheduling Availability** | `attendees[]`, `startDateTime`, `endDateTime`, `durationMinutes` | suggestions[] |
+  </Accordion>
+</AccordionGroup>

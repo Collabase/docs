@@ -1,0 +1,42 @@
+---
+title: "Asana"
+description: "Create and update tasks, post comments, list projects, and respond to Asana events."
+---
+
+# Asana
+
+Manage Asana tasks from your automations — create tasks from Collabase events, update status, assign team members, and post follow-up comments automatically.
+
+## Authentication
+
+**Auth type:** OAuth 2.0 (Personal Access Token)
+
+Create a Personal Access Token in [Asana → My Profile → Apps → Manage Developer Apps](https://app.asana.com/0/my-apps).
+
+| Credential | Description |
+|---|---|
+| **Personal Access Token** | Your Asana PAT |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Task Created** | A new task is added to a project |
+| **Task Completed** | A task is marked as complete |
+| **Task Updated** | A task's fields are modified |
+| **Comment Added** | A comment is posted on a task |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Task** | `projectId`, `name`, `notes`, `assigneeGid`, `dueOn`, `sectionGid` | taskId, gid, name, permalink |
+| **Update Task** | `taskGid`, `name`, `notes`, `completed`, `assigneeGid`, `dueOn` | taskId, name, completed |
+| **Get Task** | `taskGid` | taskId, name, completed, dueOn, assignee, permalink |
+| **List Tasks** | `projectId`, `completedSince`, `limit` | tasks[], count |
+| **Add Comment** | `taskGid`, `text` | commentId, text |
+| **List Projects** | `workspaceGid`, `teamGid` | projects[] — projectId, name |
+
+<Tip>
+  Use the task's GID (a numeric string) rather than its name for reliable identification across API calls. The GID is visible in the Asana task URL.
+</Tip>

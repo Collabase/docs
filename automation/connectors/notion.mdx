@@ -1,0 +1,40 @@
+---
+title: "Notion"
+description: "Create and update Notion pages, query databases, append blocks, and search your workspace."
+---
+
+# Notion
+
+Read and write Notion content from your automations — create pages with rich blocks, query database entries with filters, append content to existing pages, and search across your workspace.
+
+## Authentication
+
+**Auth type:** API Key (Internal Integration Token)
+
+Create an integration at [notion.so/my-integrations](https://www.notion.so/my-integrations). Share the relevant pages and databases with the integration from Notion's **Share** menu.
+
+| Credential | Description |
+|---|---|
+| **Integration Token** | Your Notion internal integration token (starts with `secret_`) |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Page Created** | A new page is created in a database |
+| **Page Updated** | A database page's properties are modified |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Page** | `parentPageId` or `databaseId`, `title`, `properties{}`, `content[]` (blocks) | pageId, url |
+| **Update Page** | `pageId`, `properties{}`, `archived` | pageId, url |
+| **Get Page** | `pageId` | pageId, title, url, properties{} |
+| **Query Database** | `databaseId`, `filter{}` (Notion filter object), `sorts[]`, `pageSize` | results[], count, hasMore |
+| **Append Blocks** | `blockId`, `children[]` (Notion block objects) | blockId |
+| **Search** | `query`, `filter` (page or database), `limit` | results[], count |
+
+<Note>
+  Notion's `properties` and `content` fields use Notion's block and property object format. Refer to the [Notion API docs](https://developers.notion.com/reference/intro) for the exact schema of each property type (Title, Select, Date, etc.).
+</Note>

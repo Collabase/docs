@@ -1,0 +1,42 @@
+---
+title: "Airtable"
+description: "Create, read, update, delete, and search records across Airtable bases and tables."
+---
+
+# Airtable
+
+Read and write Airtable records from any automation step. Use Airtable as a lightweight database to store, look up, and update records without writing any code.
+
+## Authentication
+
+**Auth type:** API Key (Personal Access Token)
+
+Create a token at [airtable.com/create/tokens](https://airtable.com/create/tokens) with `data.records:read`, `data.records:write`, and `schema.bases:read` scopes.
+
+| Credential | Description |
+|---|---|
+| **Personal Access Token** | Your Airtable personal access token |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Record Created** | A new record is added to a table |
+| **Record Updated** | An existing record's fields are modified |
+| **Record Deleted** | A record is removed from a table |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **List Records** | `baseId`, `tableIdOrName`, `filterFormula`, `sort[]`, `view`, `maxRecords` | records[], count |
+| **Get Record** | `baseId`, `tableIdOrName`, `recordId` | recordId, fields{}, createdTime |
+| **Create Record** | `baseId`, `tableIdOrName`, `fields{}` (JSON) | recordId, fields{} |
+| **Update Record** | `baseId`, `tableIdOrName`, `recordId`, `fields{}` | recordId, fields{} |
+| **Delete Record** | `baseId`, `tableIdOrName`, `recordId` | deleted, recordId |
+| **Search Records** | `baseId`, `tableIdOrName`, `searchField`, `searchValue` | records[], count |
+| **List Bases** | — | bases[] — id, name, permissionLevel |
+
+<Tip>
+  Pass `fields` as a JSON object where keys are the exact column names in Airtable. Field names are case-sensitive and must match the column headers exactly.
+</Tip>

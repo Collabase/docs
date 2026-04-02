@@ -1,0 +1,35 @@
+---
+title: "Bexio"
+description: "Manage contacts, invoices, projects, and orders in Bexio Swiss ERP."
+---
+
+# Bexio
+
+Automate Swiss business processes with Bexio — create invoices when projects complete, sync contacts from other systems, and retrieve order data for reporting workflows.
+
+## Authentication
+
+**Auth type:** API Key
+
+Generate an API token in [Bexio Settings → API Tokens](https://office.bexio.com/index.php/settings/apiTokens).
+
+| Credential | Description |
+|---|---|
+| **API Token** | Your Bexio API token |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **List Contacts** | `searchTerm`, `limit` | contacts[], count |
+| **Get Contact** | `contactId` | contactId, name, email, phone |
+| **Create Contact** | `name`, `email`, `phone`, `address` | contactId, name |
+| **Create Invoice** | `contactId`, `title`, `positions[]`, `dueDate` | invoiceId, documentNumber |
+| **Get Invoice** | `invoiceId` | invoiceId, status, total, dueDate |
+| **List Projects** | `status`, `limit` | projects[], count |
+| **Create Project** | `name`, `contactId`, `startDate`, `endDate` | projectId, name |
+| **Create Order** | `contactId`, `title`, `positions[]` | orderId, documentNumber |
+
+<Note>
+  Bexio is available for Swiss companies only. Ensure your Bexio account has API access enabled under your plan before using this connector.
+</Note>

@@ -1,0 +1,35 @@
+---
+title: "Email"
+description: "Send emails via the SMTP server configured in Collabase Admin Settings."
+---
+
+# Email
+
+Send emails from any automation using the SMTP server configured in **Admin Settings → Mail**. No per-connector credentials are required — the Email connector uses the global mail configuration.
+
+## Authentication
+
+**Auth type:** None (uses system SMTP config)
+
+Configure your SMTP server in **Admin Settings → Mail** before using this connector. If no active mail configuration exists, action steps will fail at runtime.
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Send Email** | `to`, `subject`, `html` or `text`, `from` (optional override), `cc`, `bcc`, `attachments[]` | messageId, accepted[], rejected[] |
+
+<Warning>
+  The Email connector requires a valid SMTP configuration in **Admin Settings → Mail**. If no configuration exists, this connector will fail at runtime. Configure mail settings before deploying automations that use it.
+</Warning>
+
+## Example
+
+```
+[Trigger: Task Status Changed → Done]
+    ↓
+[Email: Send Email]
+    to: {{task.assignee.email}}
+    subject: Task completed: {{task.title}}
+    html: <p>Your task <strong>{{task.title}}</strong> is now complete.</p>
+```

@@ -1,0 +1,54 @@
+---
+title: "Google Drive"
+description: "Upload, download, move, copy, share, and manage files and folders in Google Drive."
+---
+
+# Google Drive
+
+Manage files and folders in Google Drive from your automations — create folders, upload files from URLs, share files with external users, and move items between folders.
+
+## Authentication
+
+**Auth type:** OAuth 2.0
+
+Enable the **Google Drive API** in [Google Cloud Console](https://console.cloud.google.com/). Generate an OAuth 2.0 access token with `https://www.googleapis.com/auth/drive` scope.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | OAuth 2.0 access token with Drive scope |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **File Created** | A new file is added to a monitored folder |
+| **File Updated** | An existing file is modified |
+| **File Deleted** | A file is removed |
+| **File Shared** | A file is shared with a new user |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Files">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Upload File from URL** | `fileUrl`, `filename`, `mimeType`, `parentFolderId` | fileId, name, webViewLink |
+    | **Get File** | `fileId` | fileId, name, mimeType, webViewLink, size |
+    | **Copy File** | `fileId`, `newName`, `parentFolderId` | fileId, name, webViewLink |
+    | **Move File** | `fileId`, `newParentFolderId` | fileId, name |
+    | **Delete File** | `fileId` | deleted |
+    | **Search Files** | `query`, `mimeType`, `parentFolderId`, `maxResults` | files[], count |
+  </Accordion>
+  <Accordion title="Folders">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Folder** | `name`, `parentFolderId` | folderId, name, webViewLink |
+    | **List Folder Contents** | `folderId` | files[], count |
+  </Accordion>
+  <Accordion title="Sharing">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Share File** | `fileId`, `email`, `role` (reader/writer/commenter), `type` (user/anyone) | permissionId |
+    | **Get Share Link** | `fileId` | webViewLink, webContentLink |
+  </Accordion>
+</AccordionGroup>

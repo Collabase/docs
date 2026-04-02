@@ -1,0 +1,57 @@
+---
+title: "GitLab"
+description: "Manage issues, merge requests, trigger CI/CD pipelines, and respond to GitLab events."
+---
+
+# GitLab
+
+Connect GitLab to Collabase automations — create and update issues, comment on merge requests, trigger pipelines, and react to push and pipeline events via GitLab webhooks.
+
+## Authentication
+
+**Auth type:** API Key (Personal Access Token or Project Access Token)
+
+Create a token in [GitLab → User Settings → Access Tokens](https://gitlab.com/-/profile/personal_access_tokens). Grant `api`, `read_repository`, and `write_repository` scopes.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | GitLab personal access token or project access token |
+| **GitLab URL** | Your GitLab instance URL (default: `https://gitlab.com`) |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Push** | A commit is pushed to a repository |
+| **Merge Request Opened** | A new MR is created |
+| **Merge Request Merged** | An MR is merged |
+| **Pipeline Succeeded** | A CI/CD pipeline completes successfully |
+| **Pipeline Failed** | A CI/CD pipeline fails |
+| **Issue Opened** | A new issue is created |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Issues">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Issue** | `projectId`, `title`, `description`, `labels[]`, `assigneeIds[]`, `milestoneId`, `dueDate` | issueId, iid, webUrl |
+    | **Update Issue** | `projectId`, `issueIid`, `title`, `description`, `stateEvent`, `labels[]` | issueId, state |
+    | **Add Comment** | `projectId`, `issueIid`, `body` | commentId |
+    | **Close Issue** | `projectId`, `issueIid` | issueId, state |
+    | **List Issues** | `projectId`, `state`, `labels`, `search`, `limit` | issues[], count |
+  </Accordion>
+  <Accordion title="Merge requests">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Merge Request** | `projectId`, `sourceBranch`, `targetBranch`, `title`, `description` | mrId, iid, webUrl |
+    | **Add MR Comment** | `projectId`, `mrIid`, `body` | commentId |
+    | **Merge MR** | `projectId`, `mrIid` | state |
+  </Accordion>
+  <Accordion title="CI/CD & files">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Trigger Pipeline** | `projectId`, `ref`, `variables{}` | pipelineId, status, webUrl |
+    | **Create File** | `projectId`, `filePath`, `branch`, `content`, `commitMessage` | filePath, branch |
+  </Accordion>
+</AccordionGroup>

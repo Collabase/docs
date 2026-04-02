@@ -116,7 +116,89 @@
                   "automation/conditions",
                   "automation/actions",
                   "automation/nodes",
-                  "automation/integrations"
+                  {
+                    "group": "Connectors",
+                    "pages": [
+                      "automation/connectors/overview",
+                      {
+                        "group": "Communication",
+                        "pages": [
+                          "automation/connectors/slack",
+                          "automation/connectors/teams",
+                          "automation/connectors/discord",
+                          "automation/connectors/whatsapp",
+                          "automation/connectors/telegram",
+                          "automation/connectors/sendgrid",
+                          "automation/connectors/twilio",
+                          "automation/connectors/email"
+                        ]
+                      },
+                      {
+                        "group": "Calendar",
+                        "pages": [
+                          "automation/connectors/google-calendar",
+                          "automation/connectors/outlook-calendar",
+                          "automation/connectors/calendly"
+                        ]
+                      },
+                      {
+                        "group": "Storage & Data",
+                        "pages": [
+                          "automation/connectors/google-drive",
+                          "automation/connectors/google-sheets",
+                          "automation/connectors/dropbox",
+                          "automation/connectors/airtable",
+                          "automation/connectors/notion"
+                        ]
+                      },
+                      {
+                        "group": "CRM & Finance",
+                        "pages": [
+                          "automation/connectors/hubspot",
+                          "automation/connectors/pipedrive",
+                          "automation/connectors/stripe"
+                        ]
+                      },
+                      {
+                        "group": "Developer Tools",
+                        "pages": [
+                          "automation/connectors/github",
+                          "automation/connectors/gitlab",
+                          "automation/connectors/jira",
+                          "automation/connectors/linear",
+                          "automation/connectors/sentry",
+                          "automation/connectors/datadog",
+                          "automation/connectors/pagerduty"
+                        ]
+                      },
+                      {
+                        "group": "Project Management",
+                        "pages": [
+                          "automation/connectors/asana",
+                          "automation/connectors/trello",
+                          "automation/connectors/monday"
+                        ]
+                      },
+                      {
+                        "group": "Swiss ERP & HR",
+                        "pages": [
+                          "automation/connectors/bexio",
+                          "automation/connectors/abacus",
+                          "automation/connectors/personio"
+                        ]
+                      },
+                      {
+                        "group": "AI & Utilities",
+                        "pages": [
+                          "automation/connectors/openai",
+                          "automation/connectors/ai",
+                          "automation/connectors/http",
+                          "automation/connectors/transform",
+                          "automation/connectors/code"
+                        ]
+                      }
+                    ]
+                  }
                 ]
               },
 

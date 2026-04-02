@@ -1,0 +1,33 @@
+---
+title: "WhatsApp"
+description: "Send messages, media, and template notifications via WhatsApp Business API."
+---
+
+# WhatsApp
+
+Send text messages, images, documents, and pre-approved template messages to WhatsApp users via the Meta Cloud API. Use it for customer notifications, OTPs, and transactional updates.
+
+## Authentication
+
+**Auth type:** API Key
+
+Set up the [WhatsApp Business Platform](https://developers.facebook.com/docs/whatsapp) in Meta for Developers. Add a phone number to your app and get a permanent access token.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | Meta permanent access token from your app's system user |
+| **Phone Number ID** | The ID of your WhatsApp Business phone number (not the number itself) |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Send Text Message** | `to`, `message`, `previewUrl` | messageId, status |
+| **Send Image** | `to`, `imageUrl`, `caption` | messageId, status |
+| **Send Document** | `to`, `documentUrl`, `filename`, `caption` | messageId, status |
+| **Send Template** | `to`, `templateName`, `languageCode`, `components[]` | messageId, status |
+| **Mark as Read** | `messageId` | success |
+
+<Warning>
+  The `to` field must include the country code without a `+` sign (e.g. `41791234567` for a Swiss number). WhatsApp only accepts messages to numbers that have opted in or where your business is approved for outbound messaging.
+</Warning>

@@ -1,0 +1,59 @@
+---
+title: "HubSpot"
+description: "Manage contacts, deals, companies, tickets, notes, and tasks in HubSpot CRM."
+---
+
+# HubSpot
+
+Sync CRM data, automate pipeline stages, and trigger workflows from HubSpot events. Connect your Collabase automations to HubSpot's full contact lifecycle.
+
+## Authentication
+
+**Auth type:** API Key (Private App Token)
+
+Create a private app in [HubSpot Settings → Integrations → Private Apps](https://app.hubspot.com/private-apps). Grant it the scopes you need: `crm.objects.contacts`, `crm.objects.deals`, `crm.objects.companies`, etc.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | Private app token from HubSpot (starts with `pat-`) |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Contact Created** | A new HubSpot contact is created |
+| **Deal Created** | A new deal is added to the pipeline |
+| **Deal Stage Changed** | A deal moves to a different pipeline stage |
+| **Deal Won** | A deal is marked as closed-won |
+| **Deal Lost** | A deal is marked as closed-lost |
+| **Company Created** | A new company record is created |
+| **Ticket Created** | A new support ticket is opened |
+| **Contact Property Changed** | A contact's property value is updated |
+
+## Actions
+
+<AccordionGroup>
+  <Accordion title="Contacts">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Contact** | `email`, `firstName`, `lastName`, `phone`, `company` | contactId, email |
+    | **Update Contact** | `contactId`, `properties{}` | contactId |
+    | **Get Contact** | `contactId` | contactId, email, firstName, lastName, properties{} |
+    | **Search Contacts** | `filterProperty`, `filterValue`, `limit` | contacts[], count |
+  </Accordion>
+  <Accordion title="Deals">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Deal** | `dealName`, `pipeline`, `dealStage`, `amount`, `closeDate`, `associatedContactId` | dealId, dealName |
+    | **Update Deal** | `dealId`, `properties{}` | dealId |
+    | **Get Deal** | `dealId` | dealId, dealName, stage, amount, closeDate |
+  </Accordion>
+  <Accordion title="Companies, notes & tasks">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Company** | `name`, `domain`, `industry` | companyId, name |
+    | **Create Note** | `body`, `contactId`, `dealId` | noteId |
+    | **Create Task** | `subject`, `body`, `dueDate`, `priority`, `contactId` | taskId, subject |
+    | **Create Ticket** | `subject`, `content`, `pipeline`, `status`, `priority` | ticketId, subject |
+  </Accordion>
+</AccordionGroup>

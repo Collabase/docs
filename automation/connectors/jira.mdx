@@ -1,0 +1,46 @@
+---
+title: "Jira"
+description: "Create, update, transition, and search Jira issues. Trigger automations from Jira events."
+---
+
+# Jira
+
+Connect Collabase to Jira to create issues from bugs or test failures, update issue status from automation outcomes, and trigger workflows from sprint or issue status changes.
+
+## Authentication
+
+**Auth type:** Basic (email + API token)
+
+Generate an API token in [Atlassian Account → Security → API tokens](https://id.atlassian.com/manage-profile/security/api-tokens).
+
+| Credential | Description |
+|---|---|
+| **Email** | Your Atlassian account email |
+| **API Token** | Your Atlassian API token |
+| **Base URL** | Your Jira instance URL (e.g. `https://yourcompany.atlassian.net`) |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **Issue Created** | A new Jira issue is created |
+| **Issue Updated** | An issue's status or fields change |
+| **Issue Resolved** | An issue is transitioned to a resolved status |
+| **Sprint Started** | A sprint is activated |
+| **Sprint Completed** | A sprint is closed |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Issue** | `projectKey`, `summary`, `issueType`, `description`, `priority`, `assigneeEmail`, `labels[]` | id, key, url |
+| **Get Issue** | `issueKey` | id, key, summary, status, assignee, priority |
+| **Update Issue** | `issueKey`, `summary`, `priority`, `assigneeEmail`, `description` | success |
+| **Transition Issue** | `issueKey`, `transitionId` | success |
+| **Search Issues (JQL)** | `jql`, `maxResults` | issues[] — id, key, summary, status |
+| **Add Comment** | `issueKey`, `body` | id |
+| **Attach File** | `issueKey`, `fileUrl`, `filename` | attachmentId |
+
+<Tip>
+  To find valid transition IDs, call the Jira REST API: `GET /rest/api/3/issue/{issueKey}/transitions`. Common values: `11` = To Do, `21` = In Progress, `31` = Done (varies per project workflow configuration).
+</Tip>

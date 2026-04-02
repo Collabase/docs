@@ -1,0 +1,40 @@
+---
+title: "Dropbox"
+description: "Upload files from URLs, list folders, move, delete, and create shared links in Dropbox."
+---
+
+# Dropbox
+
+Automate file management in Dropbox — upload files sourced from URLs, organize folders, create shareable links, and move or delete files as part of larger workflows.
+
+## Authentication
+
+**Auth type:** OAuth 2.0
+
+Generate an access token in [Dropbox App Console](https://www.dropbox.com/developers/apps) → OAuth 2 → Generate. For production use, implement the full OAuth flow to get long-lived refresh tokens.
+
+| Credential | Description |
+|---|---|
+| **Access Token** | Dropbox OAuth 2.0 access token |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **File Uploaded** | A new file is added to Dropbox |
+| **File Deleted** | A file is removed from Dropbox |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **List Folder** | `path`, `recursive` | entries[], count |
+| **Upload File from URL** | `fileUrl`, `dropboxPath`, `overwrite` | id, name, path, size |
+| **Move / Rename File** | `fromPath`, `toPath` | name, path |
+| **Delete File** | `path` | deleted, name |
+| **Create Shared Link** | `path`, `requirePassword` | url, name |
+| **Create Folder** | `path` | id, name, path |
+
+<Note>
+  `path` must be an absolute Dropbox path starting with `/` (e.g. `/Reports/2025/report.pdf`). Use an empty string `""` to reference the root folder in List Folder.
+</Note>

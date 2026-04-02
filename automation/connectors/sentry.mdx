@@ -1,0 +1,44 @@
+---
+title: "Sentry"
+description: "Triage issues, manage releases, and track projects in Sentry error monitoring."
+---
+
+# Sentry
+
+Connect Sentry to Collabase automations to triage errors as they occur — auto-assign issues, create tasks from new errors, resolve bugs when deployments succeed, and register releases for accurate stack trace attribution.
+
+## Authentication
+
+**Auth type:** API Key (Auth Token)
+
+Create a token in [Sentry → Settings → Developer Settings → User Auth Tokens](https://sentry.io/settings/account/api/auth-tokens/). Grant `project:read`, `project:write`, and `event:read` scopes.
+
+| Credential | Description |
+|---|---|
+| **Auth Token** | Your Sentry user auth token |
+| **Organization Slug** | Your Sentry organization slug — visible in the URL: `sentry.io/organizations/{slug}/` |
+
+## Triggers
+
+| Trigger | When it fires |
+|---|---|
+| **New Issue Created** | An error or issue is first seen in Sentry |
+| **Issue Resolved** | An issue is marked as resolved |
+| **Issue Regressed** | A previously resolved issue reappears |
+| **Alert Triggered** | A metric or performance alert fires |
+
+## Actions
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **List Issues** | `projectSlug`, `query` (Sentry search syntax), `limit` | issues[], count |
+| **Get Issue** | `issueId` | issueId, title, status, level, count, firstSeen, lastSeen, permalink |
+| **Resolve Issue** | `issueId` | issueId, title, status |
+| **Ignore Issue** | `issueId` | issueId, status |
+| **Assign Issue** | `issueId`, `assignee` (username or email) | issueId, assignee |
+| **Create Release** | `version`, `projects` (comma-separated slugs), `url` | version, projects[] |
+| **List Projects** | — | projects[] — slug, name, platform |
+
+<Tip>
+  Use Sentry search syntax in the `query` field for List Issues: `is:unresolved level:error` or `assigned:me`. See [Sentry search documentation](https://docs.sentry.io/product/sentry-basics/search/) for the full query language.
+</Tip>
