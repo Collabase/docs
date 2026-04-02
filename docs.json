@@ -7,13 +7,9 @@
   "name": "Collabase",
 
   "colors": {
-
-    "primary": "#145fa0",
-
-    "light": "#7494b4",
-
-    "dark": "#e3e9ed"
-
+    "primary": "#2d97fb",
+    "light": "#2d97fb",
+    "dark": "#ffffff"
   },
 
   "favicon": "https://media.brand.dev/dd2a0511-ba8c-46f2-9fe4-839b8d7e79ca.png",
@@ -236,6 +232,18 @@
 
     ]
 
+  },
+  "fonts": {
+    "family": "Geist",
+    "weight": 500,
+    "heading": {
+      "family": "Geist",
+      "weight": 900
+    },
+    "body": {
+      "family": "Geist",
+      "weight": 500
+    }
   }
 
 }
