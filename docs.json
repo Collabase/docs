@@ -7,115 +7,57 @@
     "light": "#7494b4",
     "dark": "#e3e9ed"
   },
-  "favicon": "https://media.brand.dev/dd2a0511-ba8c-46f2-9fe4-839b8d7e79ca.png",
+  "favicon": "/favicon.png", 
   "logo": {
     "light": "https://media.brand.dev/65133c69-e311-4244-b5db-175bf3a712d9.png",
     "dark": "https://media.brand.dev/65133c69-e311-4244-b5db-175bf3a712d9.png"
   },
-  "navbar": {
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/briantrp/collabase"
+  "tabs": [
+    {
+      "name": "Documentation",
+      "url": "introduction"
+    },
+    {
+      "name": "API Reference",
+      "url": "api"
     }
-  },
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Documentation",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "installation",
-              "first-run"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "concepts/spaces",
-              "concepts/permissions",
-              "concepts/search"
-            ]
-          },
-          {
-            "group": "Docs",
-            "pages": [
-              "docs/overview",
-              "docs/pages",
-              "docs/templates"
-            ]
-          },
-          {
-            "group": "Test Management",
-            "pages": [
-              "test-management/overview",
-              "test-management/test-cases",
-              "test-management/test-runs",
-              "test-management/milestones"
-            ]
-          },
-          {
-            "group": "Automation",
-            "pages": [
-              "automation/overview",
-              "automation/triggers",
-              "automation/conditions",
-              "automation/actions"
-            ]
-          },
-          {
-            "group": "Intranet",
-            "pages": [
-              "intranet/overview",
-              "intranet/blog-posts"
-            ]
-          },
-          {
-            "group": "Administration",
-            "pages": [
-              "admin/users-groups",
-              "admin/identity-providers",
-              "admin/ai-configuration",
-              "admin/backup"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "api/introduction"
-            ]
-          },
-          {
-            "group": "Pages",
-            "pages": [
-              "api/pages/create-page"
-            ]
-          },
-          {
-            "group": "Test Management",
-            "pages": [
-              "api/test-management/list-projects",
-              "api/test-management/create-project",
-              "api/test-management/create-test-case",
-              "api/test-management/create-test-run"
-            ]
-          },
-          {
-            "group": "Automation",
-            "pages": [
-              "api/automation/list-automations",
-              "api/automation/trigger-automation"
-            ]
-          }
-        ]
-      }
-    ]
-  }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        "installation",
+        "first-run"
+      ]
+    },
+    {
+      "group": "Core Concepts",
+      "pages": [
+        "concepts/spaces",
+        "concepts/permissions",
+        "concepts/search"
+      ]
+    },
+    {
+      "group": "Docs",
+      "pages": [
+        "docs/overview",
+        "docs/pages",
+        "docs/templates"
+      ]
+    },
+    {
+      "group": "Overview",
+      "pages": [
+        "api/introduction"
+      ]
+    },
+    {
+      "group": "Pages",
+      "pages": [
+        "api/pages/create-page"
+      ]
+    }
+  ]
 }
