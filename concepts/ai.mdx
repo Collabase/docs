@@ -1,0 +1,170 @@
+---
+title: "AI features"
+description: "A complete guide to every AI capability in Collabase — from the in-editor Brain assistant to semantic search, AI automation nodes, and the AI logs."
+---
+
+Collabase integrates AI throughout the platform under the **Collabase Brain** umbrella. All AI features share the same provider configuration set in **Settings → AI** — configure your provider once and every feature benefits.
+
+<CardGroup cols={2}>
+  <Card title="AI in the editor" icon="pen-to-square" href="#ai-in-the-editor">
+    Generate, summarise, translate, and improve text anywhere you write in Collabase.
+  </Card>
+  <Card title="Semantic search" icon="magnifying-glass" href="#semantic-search-rag">
+    Ask questions in plain language and get answers grounded in your actual content.
+  </Card>
+  <Card title="AI in Automation" icon="bolt" href="#ai-in-automation">
+    Use the AI/LLM node to generate text, summarise inputs, and classify data inside pipelines.
+  </Card>
+  <Card title="AI logs" icon="list" href="#ai-logs">
+    See every AI request made across the platform — tokens used, latency, and errors.
+  </Card>
+</CardGroup>
+
+---
+
+## Enabling Collabase Brain
+
+All AI features are controlled by a single master switch: **Collabase Brain**.
+
+1. Go to **Settings → AI**.
+2. Toggle **Collabase Brain** to **enabled**.
+3. Select and configure your AI provider (see [AI Configuration](/admin/ai-configuration)).
+
+When Brain is disabled, the `/ai` command disappears from the editor, semantic search falls back to keyword search, and AI automation nodes return an error at runtime.
+
+---
+
+## AI in the editor
+
+The AI command is available anywhere you write content — pages in the Docs app, test case descriptions, automation notes, and Intranet posts.
+
+### Using the AI command
+
+Type `/ai` on any line to open the AI action menu. The menu closes and the cursor returns to the text when the action completes.
+
+| Command | What it does |
+|---|---|
+| **Generate** | Write new content from a prompt you provide |
+| **Summarise** | Compress the selected text or current page into a concise summary |
+| **Improve writing** | Refine grammar, clarity, and overall tone |
+| **Fix spelling & grammar** | Correct errors only — tone and structure are preserved |
+| **Make shorter** | Trim the selection to its essential points |
+| **Make longer** | Expand the selection with more detail |
+| **Continue writing** | Extend the text from the current cursor position |
+| **Translate** | Translate selected text — you choose the target language |
+
+**Selection behaviour:** If text is selected, the command operates on the selection. If nothing is selected, it operates on the paragraph at the cursor.
+
+### AI writing in custom fields
+
+In the Registry app, text-type custom fields also support the AI command. Use it to auto-fill descriptions, summaries, or structured text based on other field values.
+
+---
+
+## Semantic search (RAG)
+
+When **RAG / Semantic Search** is enabled in **Settings → AI**, Collabase indexes all pages as vector embeddings and uses them to answer natural-language questions in Brain chat.
+
+### How it works
+
+1. When a page is saved, its content is split into 512-token chunks.
+2. Each chunk is converted to a vector embedding by your configured embedding model.
+3. When you ask Brain a question, the engine retrieves the most relevant chunks and passes them to the language model as context.
+4. The model generates a response grounded in your actual content, with source links.
+
+### Embedding models
+
+Configure the embedding source in **Settings → AI → RAG / Semantic Search**:
+
+| Option | Description |
+|---|---|
+| **Same as AI provider** | Reuses the generation model for embeddings. Works well for most setups. |
+| **Custom provider** | Use a dedicated embedding model. Recommended for best accuracy. |
+
+Recommended dedicated models:
+- Ollama: `nomic-embed-text`, `mxbai-embed-large`
+- OpenAI: `text-embedding-3-small`
+
+### Indexing delay
+
+Pages become searchable after indexing completes — typically a few seconds after saving. Newly installed instances may take a few minutes to index all existing content.
+
+---
+
+## AI in Automation
+
+The **AI / LLM** connector lets you run LLM actions inside any automation pipeline. This is distinct from the in-editor Brain — it uses a separately configured connection and can target a different model if needed.
+
+### Setting up the AI connector
+
+1. In **Automation → Connections**, click **New Connection** and select **AI / LLM**.
+2. Enter the `baseUrl` and `apiKey` for your provider.
+3. Save the connection.
+
+### Available actions
+
+| Action | Use case | Key inputs |
+|---|---|---|
+| **Generate Text** | Draft content, classify input, transform data | `model`, `systemPrompt`, `userPrompt`, `temperature` |
+| **Summarize Text** | Condense long inputs before passing them to other nodes | `text`, `model`, `maxSentences` |
+
+### Chaining AI with other connectors
+
+AI nodes output `content` (Generate Text) or `summary` (Summarize Text) — reference them with `{{previous.content}}` in subsequent nodes.
+
+**Example — auto-create a Jira issue from a failed test with an AI-generated description:**
+```
+[Trigger: Test Case Failed]
+    ↓
+[AI: Generate Text]
+    systemPrompt: "Write a concise Jira bug report in English."
+    userPrompt: "Test case '{{testCaseTitle}}' failed in run {{testRunId}}."
+    ↓
+[Jira: Create Issue]
+    projectKey: QA
+    summary: "Automated bug: {{testCaseTitle}}"
+    description: {{previous.content}}
+    issueType: Bug
+    priority: High
+```
+
+---
+
+## AI logs
+
+**Settings → AI → Logs** shows a time-ordered history of every AI request sent from your Collabase instance across all features (editor, RAG, automation nodes).
+
+Each log entry shows:
+
+| Field | Description |
+|---|---|
+| **Timestamp** | When the request was made |
+| **Feature** | Which feature triggered the request — editor, RAG, or automation |
+| **Model** | The model that processed the request |
+| **Tokens used** | Total token count (prompt + completion) |
+| **Latency** | Time from request sent to response received |
+| **Status** | Success or error with the error message |
+
+### Using logs to debug
+
+If an AI action in an automation fails, find the corresponding log entry and check the error message. Common issues:
+
+| Error | Fix |
+|---|---|
+| `Connection refused` | The Ollama server is not running or is unreachable from Collabase |
+| `model not found` | The specified model has not been pulled in Ollama. Run `ollama pull <model-name>` on the server. |
+| `invalid_api_key` | The API key for your cloud provider is incorrect or expired |
+| `context length exceeded` | The input is too long for the model. Reduce input size or switch to a model with a larger context window. |
+
+---
+
+## Privacy and data residency
+
+<AccordionGroup>
+  <Accordion title="Using Ollama (local)">
+    All AI processing stays entirely on your own server. No content is sent to any external service. This is the recommended option for organisations with strict data residency requirements (e.g. Swiss financial or healthcare data).
+  </Accordion>
+  <Accordion title="Using cloud providers (OpenAI, Gemini, Azure, Groq)">
+    Content sent to AI actions is transmitted to the respective cloud provider's API. Review each provider's data processing agreement to understand how they handle your data. API keys are encrypted at rest in Collabase and are never logged.
+  </Accordion>
+</AccordionGroup>

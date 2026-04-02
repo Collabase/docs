@@ -1,0 +1,348 @@
+---
+title: "Integrations"
+description: "Connect Collabase Automation to external tools — ERP systems, HR platforms, communication apps, and developer tools."
+---
+
+Integrations (called **connectors** in the builder) extend the automation engine beyond Collabase-native actions. Each connector handles authentication, exposes typed actions, and optionally listens for incoming webhook events from the external system.
+
+## Setting up a connection
+
+Before using a connector in an automation, you save your credentials once as a **Connection**. The connection is reused across all automations — you never paste an API key into a node directly.
+
+<Steps>
+  <Step title="Open Automation → Connections">
+    Navigate to your Space and select **Automation** in the sidebar. Click **Connections** in the top navigation.
+  </Step>
+  <Step title="Click New Connection">
+    Choose the connector you want to connect (e.g. Bexio, Jira, Slack).
+  </Step>
+  <Step title="Enter your credentials">
+    Each connector lists the required fields. Fill them in and click **Test Connection** to verify before saving.
+  </Step>
+  <Step title="Save the connection">
+    Give the connection a name (e.g. "Bexio Production") and save it. It is now available in the node picker inside any automation builder.
+  </Step>
+</Steps>
+
+<Note>
+  Credentials are encrypted at rest using AES-256. They are never logged or exposed in execution traces. To rotate credentials, open the connection and update the relevant field.
+</Note>
+
+---
+
+## Bexio
+
+<img src="/images/bexio.png" alt="Bexio" width="120" style={{ marginBottom: '16px' }} />
+
+**Category:** ERP · **Auth:** API key · **Swiss SME accounting, CRM, and project management**
+
+Connect Collabase to your Bexio account to automate contact management, invoicing, quoting, and project tracking.
+
+**Required credential:** `apiKey` — your Bexio API key from **Bexio Settings → API**.
+
+**Webhook triggers** — Bexio pushes events to Collabase via signed webhooks:
+
+| Trigger | When it fires |
+|---|---|
+| Contact Created | A new contact or company is added |
+| Contact Updated | An existing contact is modified |
+| Invoice Created | A new invoice is created |
+| Invoice Paid | An invoice is marked as paid |
+| Quote Created | A new quote/offer is created |
+| Quote Accepted | A quote is accepted by the client |
+| Order Created | A new order is created |
+| Project Created | A new Bexio project is created |
+
+**Actions:**
+
+<AccordionGroup>
+  <Accordion title="Contacts">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Search Contacts** | `query`, `limit` | `contacts[]` — id, name, email |
+    | **Get Contact** | `contactId` | id, name, email |
+    | **Create Contact** | `name`, `email`, `contactType`, `phone` | id, name |
+    | **Update Contact** | `contactId`, `name`, `email`, `phone` | id, name |
+  </Accordion>
+  <Accordion title="Invoices">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Invoice** | `contactId`, `title`, `currencyCode` | id, document_nr |
+    | **Get Invoice** | `invoiceId` | id, document_nr, total_gross |
+    | **Send Invoice** | `invoiceId`, `recipientEmail`, `subject`, `message` | success |
+    | **Mark Invoice as Paid** | `invoiceId`, `date` | success |
+  </Accordion>
+  <Accordion title="Quotes">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Quote** | `contactId`, `title`, `validDays` | id, document_nr |
+    | **Send Quote** | `quoteId`, `recipientEmail` | success |
+    | **Accept Quote** | `quoteId` | success |
+  </Accordion>
+  <Accordion title="Projects & Time">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Project** | `name`, `contactId`, `startDate` | id, name |
+    | **Log Time** | `projectId`, `duration` (minutes), `date`, `text` | id |
+  </Accordion>
+  <Accordion title="Items">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Search Items** | `query` | `items[]` — id, intern_name, unit_price |
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Abacus ERP
+
+**Category:** ERP · **Auth:** OAuth 2.0 (client credentials) · **Swiss enterprise ERP**
+
+Connect to Abacus Cloud for accounting, CRM, project management, and HR workflows. Abacus uses OAuth 2.0 client credentials — no user interaction is required once configured.
+
+**Required credentials:** `clientId`, `clientSecret`, `baseUrl` (defaults to `https://cloud.abacus.ch/api`).
+
+**Actions:**
+
+<AccordionGroup>
+  <Accordion title="CRM / Customers">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Search Customers** | `query` | `customers[]` — id, name |
+    | **Get Customer** | `customerId` | id, name, email |
+    | **Create Customer** | `name`, `email`, `phone`, `city` | id, name |
+  </Accordion>
+  <Accordion title="Accounting">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Journal Entry** | `debitAccount`, `creditAccount`, `amount`, `text`, `date` | id |
+    | **Get Account Balance** | `accountNumber`, `fiscalYear` | account, balance |
+  </Accordion>
+  <Accordion title="Projects">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Project** | `name`, `customerId`, `startDate`, `budget` (hours) | id, name |
+    | **Log Time Entry** | `projectId`, `hours`, `description`, `date` | id |
+    | **Get Project Budget** | `projectId` | budgetHours, actualHours |
+  </Accordion>
+  <Accordion title="HR">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Get Employee** | `employeeId` | id, firstName, lastName, email |
+    | **Create Absence Request** | `employeeId`, `absenceType`, `startDate`, `endDate` | id, status |
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Jira Cloud
+
+<img src="/images/jira.png" alt="Jira" width="100" style={{ marginBottom: '16px' }} />
+
+**Category:** Project management · **Auth:** API key (email + token) · **Atlassian Jira Cloud**
+
+Create issues, update status, search with JQL, and post comments on Jira issues directly from automations.
+
+**Required credentials:** `domain` (your Atlassian subdomain, e.g. `mycompany`), `email`, `apiToken` — generate the token at [id.atlassian.com](https://id.atlassian.com).
+
+**Actions:**
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Issue** | `projectKey`, `summary`, `issueType`, `description`, `priority`, `assigneeEmail`, `labels` | id, key, url |
+| **Get Issue** | `issueKey` | id, key, summary, status, assignee |
+| **Update Issue** | `issueKey`, `summary`, `priority`, `assigneeEmail` | success |
+| **Transition Issue** | `issueKey`, `transitionId` | success |
+| **Search Issues (JQL)** | `jql`, `maxResults` | `issues[]` — id, key, summary |
+| **Add Comment** | `issueKey`, `body` | id |
+
+<Tip>
+  To find valid transition IDs, call the Jira REST API: `GET /rest/api/3/issue/{issueKey}/transitions`. Common values: `11` = To Do, `21` = In Progress, `31` = Done (varies per project workflow).
+</Tip>
+
+---
+
+## Slack
+
+<img src="/images/slack.jpg" alt="Slack" width="100" style={{ marginBottom: '16px' }} />
+
+**Category:** Communication · **Auth:** Bot token · **Slack workspace messaging**
+
+Post messages to Slack channels or send direct messages to specific users.
+
+**Required credential:** `botToken` — a Slack bot OAuth token (`xoxb-...`). Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps), add the `chat:write` and `im:write` scopes, and install it to your workspace.
+
+**Actions:**
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Send Message** | `channel` (channel ID or name), `text`, `username`, `iconEmoji` | ok, ts, channel |
+| **Send Direct Message** | `userId`, `text` | ok, ts |
+
+<Note>
+  Use the channel's **ID** (e.g. `C012AB3CD`), not its display name, for reliable delivery. Find the ID by right-clicking the channel in Slack and selecting **Copy link** — the last part of the URL is the ID.
+</Note>
+
+---
+
+## Microsoft Teams
+
+**Category:** Communication · **Auth:** OAuth 2.0 (client credentials via Microsoft Entra) · **Teams messaging and meetings**
+
+Send messages to Teams channels or individual users, create online meetings, and manage Teams structure — all via Microsoft Graph API.
+
+**Required credentials:** `tenantId`, `clientId`, `clientSecret` — register an app in [Azure Portal](https://portal.azure.com) → App registrations, and grant it `Chat.ReadWrite`, `ChannelMessage.Send`, and `OnlineMeetings.ReadWrite` application permissions.
+
+**Triggers:**
+
+| Trigger | When it fires |
+|---|---|
+| Channel Message Posted | A new message is posted in a monitored Teams channel |
+| Meeting Started | A scheduled online meeting begins |
+
+**Actions:**
+
+<AccordionGroup>
+  <Accordion title="Messages">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Send Channel Message** | `teamId`, `channelId`, `message` | id, webUrl |
+    | **Send Direct Message** | `recipientEmail`, `message` | id |
+  </Accordion>
+  <Accordion title="Meetings">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Online Meeting** | `subject`, `startDateTime`, `endDateTime`, `organizerEmail` | id, joinUrl, subject |
+  </Accordion>
+  <Accordion title="Teams management">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Team** | `displayName`, `description`, `visibility` | id, displayName |
+    | **Add Member to Team** | `teamId`, `memberEmail`, `role` | success |
+    | **Create Channel** | `teamId`, `displayName`, `description`, `membershipType` | id, displayName |
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## GitHub
+
+**Category:** Developer tools · **Auth:** Personal Access Token · **GitHub repository actions**
+
+Create issues, comment on pull requests, and trigger GitHub Actions workflows from automations.
+
+**Required credential:** `token` — a GitHub Personal Access Token with `repo` scope. Generate one at **GitHub Settings → Developer settings → Personal access tokens**.
+
+**Actions:**
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Create Issue** | `owner`, `repo`, `title`, `body`, `labels`, `assignees` | number, html_url, state |
+| **Add Issue Comment** | `owner`, `repo`, `issueNumber`, `body` | id, html_url |
+| **Trigger Workflow** | `owner`, `repo`, `workflowId`, `ref`, `inputs` | dispatched |
+
+<Tip>
+  **Trigger Workflow** dispatches a `workflow_dispatch` event. For it to work, the target workflow file must have `on: workflow_dispatch` in its triggers.
+</Tip>
+
+---
+
+## Personio
+
+<img src="/images/personio.png" alt="Personio" width="100" style={{ marginBottom: '16px' }} />
+
+**Category:** HR · **Auth:** OAuth 2.0 (client credentials) · **DACH HR platform**
+
+Manage employee records, submit absence requests, and sync HR data from Personio.
+
+**Required credentials:** `clientId`, `clientSecret` — create an API credentials pair in **Personio Settings → API credentials**.
+
+**Actions:**
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Get Employee** | `employeeId` | id, first_name, last_name, email, department |
+| **Search Employees** | `query` | `employees[]` — id, first_name, last_name |
+| **Create Absence** | `employeeId`, `absenceTypeId`, `startDate`, `endDate`, `halfDay` | success |
+| **Update Employee Attribute** | `employeeId`, `attributeKey`, `value` | success |
+| **List Departments** | — | `departments[]` — id, name |
+
+---
+
+## Email
+
+**Category:** Communication · **Auth:** None (uses system mail config) · **SMTP email sending**
+
+Send emails to any address using the SMTP credentials configured in **Admin Settings → Mail**. No connection setup is required — this connector uses the global mail configuration.
+
+**Actions:**
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Send Email** | `to`, `subject`, `html` or `text` | messageId, accepted[] |
+
+<Warning>
+  The Email connector requires a valid SMTP configuration in **Admin Settings → Mail**. If no active mail configuration exists, the action will fail with an error at runtime. Configure mail settings before using this connector in production automations.
+</Warning>
+
+---
+
+## AI / LLM
+
+**Category:** AI · **Auth:** API key (optional for local Ollama) · **Text generation and summarisation**
+
+Run prompts through any OpenAI-compatible language model — including local Ollama instances — directly inside an automation.
+
+**Required credentials:** `baseUrl` (Ollama: `http://localhost:11434/v1` | OpenAI: `https://api.openai.com/v1`), `apiKey` (leave empty for local Ollama).
+
+**Actions:**
+
+| Action | Key inputs | Key outputs |
+|---|---|---|
+| **Generate Text** | `model`, `systemPrompt`, `userPrompt`, `temperature`, `maxTokens` | content, model, tokensUsed |
+| **Summarize Text** | `text`, `model`, `maxSentences` | summary |
+
+**Example — summarise a failing test case description and post it to Slack:**
+```
+[Trigger: Test Case Failed]
+    ↓
+[AI / LLM: Summarize Text]
+    text: {{testCaseTitle}} — {{testCaseDescription}}
+    maxSentences: 2
+    ↓
+[Slack: Send Message]
+    channel: C012QA
+    text: "Test failure: {{previous.summary}}"
+```
+
+---
+
+## Transform
+
+**Category:** Utility · **Auth:** None · **Data manipulation between nodes**
+
+Transform nodes reshape data in-flight between steps. No external service is called — all processing happens inside the automation engine.
+
+**Actions:**
+
+| Action | Description | Key inputs | Key outputs |
+|---|---|---|---|
+| **Set Variable** | Assign a static or interpolated value to a named key | `key`, `value` | result |
+| **Format Date** | Format an ISO date string for display | `date`, `locale` (default: `de-CH`), `format` | result |
+| **Filter Array** | Keep only array items where a field matches a value | `array`, `field`, `value` | result |
+| **JSON Transform** | Pick specific keys from an object to produce a clean output | `input`, `keys[]` | result |
+
+**Example — format a date for a German-speaking audience:**
+```
+[Transform: Format Date]
+    date: {{timestamp}}
+    locale: de-CH
+    format: long
+→ outputs: "2. April 2026, 14:30"
+```
+
+---
+
+## HTTP (custom integrations)
+
+The **HTTP** action lets you call any external API that isn't covered by a dedicated connector. See [Actions](/automation/actions) for full documentation including credential management.

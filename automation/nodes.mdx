@@ -1,0 +1,376 @@
+---
+title: "Node reference"
+description: "Complete reference for every trigger and action node available in the Collabase Automation builder."
+---
+
+Every automation is built from nodes. This page documents every trigger and action node that ships natively with Collabase. All native nodes run under the automation engine's session and respect your Space permissions — no connection setup required.
+
+All input values support double-brace variable syntax to reference data from upstream nodes: `{{testCaseTitle}}`, `{{previous.id}}`, `{{payload.environment}}`.
+
+---
+
+## Triggers
+
+A trigger is the first node in every automation. It listens for an event and fires the pipeline when that event occurs, passing its output fields to all downstream nodes.
+
+### Test case failed
+
+Fires every time a tester marks a test result as `FAILED` during an active test run.
+
+**When it fires:** Once per failing result. Does not fire for `BLOCKED`, `SKIPPED`, or `PASSED` results.
+
+| Output field | Type | Description |
+|---|---|---|
+| `testRunId` | `string` | ID of the test run containing the result |
+| `testCaseId` | `string` | ID of the test case that failed |
+| `testCaseTitle` | `string` | Human-readable title of the failed test case |
+
+**Example:**
+```
+[Trigger: Test Case Failed]
+    ↓
+[Condition: testCaseTitle contains "checkout"]
+    ↓
+[Action: Send Notification]
+    userId: qa-lead-user-id
+    title: "Critical test failure"
+    message: "{{testCaseTitle}} failed in run {{testRunId}}"
+```
+
+---
+
+### Test case passed
+
+Fires every time a tester marks a test result as `PASSED` during an active test run.
+
+**When it fires:** Once per passing result. Does not fire for `FAILED`, `BLOCKED`, or `SKIPPED` results.
+
+| Output field | Type | Description |
+|---|---|---|
+| `testRunId` | `string` | ID of the test run |
+| `testCaseId` | `string` | ID of the test case that passed |
+| `testCaseTitle` | `string` | Human-readable title of the test case |
+
+---
+
+### Test run started
+
+Fires the moment a new test run is created — whether started manually or by an automation.
+
+**When it fires:** Once per test run, at the moment of creation. Does not fire when the run status changes later.
+
+| Output field | Type | Description |
+|---|---|---|
+| `testRunId` | `string` | ID of the newly created test run |
+| `testRunName` | `string` | Name given to the run |
+| `testProjectId` | `string` | ID of the test project this run belongs to |
+
+**Example:**
+```
+[Trigger: Test Run Started]
+    ↓
+[Action: Create Page]
+    spaceId: your-space-id
+    title: "Run Report — {{testRunName}}"
+```
+
+---
+
+### Test suite created
+
+Fires when a new test suite is added to a test project.
+
+**When it fires:** Once per suite creation. Does not fire when a suite is renamed or deleted.
+
+| Output field | Type | Description |
+|---|---|---|
+| `suiteId` | `string` | ID of the newly created suite |
+| `suiteName` | `string` | Name of the suite |
+| `testProjectId` | `string` | ID of the parent test project |
+
+---
+
+### Schedule
+
+Fires on a recurring schedule you define. Use cron syntax or the schedule picker in the builder.
+
+| Output field | Type | Description |
+|---|---|---|
+| `timestamp` | `string` | ISO 8601 timestamp of when the trigger fired |
+| `date` | `string` | Date portion: `YYYY-MM-DD` |
+
+**Common schedule expressions:**
+
+| Expression | Fires |
+|---|---|
+| `0 9 * * 1` | Every Monday at 09:00 |
+| `0 0 * * *` | Every day at midnight |
+| `0 8 1 * *` | First of every month at 08:00 |
+
+---
+
+### Webhook
+
+Fires when an external system sends a `POST` request to the automation's unique endpoint. The full JSON payload is passed downstream as `{{payload.*}}`.
+
+To get the webhook URL: open the automation, click the trigger node, and copy the **Webhook URL** from the configuration panel.
+
+```bash
+curl -X POST "https://your-collabase.example/api/v1/automation/auto-abc123/webhook" \
+  -H "Content-Type: application/json" \
+  -d '{"event": "deployment.completed", "environment": "production"}'
+```
+
+| Output field | Type | Description |
+|---|---|---|
+| `payload` | `object` | The full JSON body sent in the POST request |
+
+---
+
+### Manual
+
+Fires when you click **Run** from the automation dashboard. Useful for testing or workflows you want to control explicitly.
+
+No output fields — use this trigger when the automation does not depend on event data.
+
+---
+
+## Actions
+
+Action nodes run after your trigger fires and your conditions pass. Each action receives the output of the previous node and produces its own output that subsequent nodes can reference.
+
+---
+
+### Create page
+
+Creates a new page inside a Collabase Space with an empty body. You can optionally nest it under an existing parent page.
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `spaceId` | `string` | **Yes** | ID of the target Space |
+| `title` | `string` | No | Title of the new page. Defaults to `"Untitled"` |
+| `parentId` | `string` | No | ID of an existing page to nest this one under |
+
+| Output field | Type | Description |
+|---|---|---|
+| `id` | `string` | ID of the newly created page |
+| `title` | `string` | Title of the page as saved |
+
+<Note>
+  Pages are created with `DRAFT` status. Chain an **Update page status** action immediately after if you need the page published right away.
+</Note>
+
+**Example — create a run report page when a test run starts:**
+```
+[Trigger: Test Run Started]
+    ↓
+[Action: Create Page]
+    spaceId: your-space-id
+    title: "Run Report — {{testRunName}}"
+```
+
+---
+
+### Update page status
+
+Changes the status of an existing Collabase page. Use this to advance content through its lifecycle automatically.
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `pageId` | `string` | **Yes** | ID of the page to update |
+| `status` | `enum` | **Yes** | New status — see values below |
+
+| Status | Meaning |
+|---|---|
+| `DRAFT` | Work in progress — not ready for review |
+| `IN_PROGRESS` | Actively being written |
+| `IN_REVIEW` | Ready for someone to review |
+| `PUBLISHED` | Visible and ready to read |
+| `VERIFIED` | Reviewed and approved — the authoritative version |
+
+| Output field | Type | Description |
+|---|---|---|
+| `id` | `string` | ID of the updated page |
+
+**Example — chain with Create Page to move a new page straight to review:**
+```
+[Action: Create Page] → outputs id
+    ↓
+[Action: Update Page Status]
+    pageId: {{previous.id}}
+    status: IN_REVIEW
+```
+
+---
+
+### Create test case
+
+Creates a new test case inside a Collabase test project. New cases are created with status `DRAFT` and must be promoted to `READY` before they can be enrolled in a test run.
+
+| Input field | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `testProjectId` | `string` | **Yes** | — | ID of the target test project |
+| `title` | `string` | **Yes** | — | Title of the test case |
+| `description` | `string` | No | — | Optional detailed description |
+| `priority` | `enum` | No | `MEDIUM` | `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL` |
+| `type` | `enum` | No | `MANUAL` | `MANUAL`, `AUTOMATED`, or `EXPLORATORY` |
+| `suiteId` | `string` | No | — | ID of the suite to place this case in |
+
+| Output field | Type | Description |
+|---|---|---|
+| `id` | `string` | ID of the created test case |
+| `title` | `string` | Title as saved |
+
+**Example — create a regression case for every bug filed via webhook:**
+```
+[Trigger: Webhook — bug tracker]
+    ↓
+[Action: Create Test Case]
+    testProjectId: regression-project-id
+    title: "Regression: {{payload.bugTitle}}"
+    priority: HIGH
+    type: MANUAL
+```
+
+---
+
+### Update test case status
+
+Changes the status of an existing test case. This controls whether the case is enrolled in future test runs — only `READY` cases are included when a run starts.
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `testCaseId` | `string` | **Yes** | ID of the test case to update |
+| `status` | `enum` | **Yes** | `DRAFT`, `READY`, or `DEPRECATED` |
+
+| Output field | Type | Description |
+|---|---|---|
+| `id` | `string` | ID of the updated test case |
+
+---
+
+### Create test run
+
+Creates a new test run inside a test project and automatically enrolls all `READY` test cases. This is the automation equivalent of clicking **Start Run** manually — the run and all results are created in a single transaction.
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `testProjectId` | `string` | **Yes** | ID of the test project to run |
+| `name` | `string` | **Yes** | Name of the test run |
+| `description` | `string` | No | Optional description |
+| `milestoneId` | `string` | No | ID of a milestone to associate this run with |
+
+| Output field | Type | Description |
+|---|---|---|
+| `id` | `string` | ID of the created test run |
+| `name` | `string` | Name of the run as saved |
+
+<Note>
+  Only `READY` test cases are enrolled. `DRAFT` and `DEPRECATED` cases are skipped. If the project has no `READY` cases, the run is still created but will have no results.
+</Note>
+
+**Example — start a regression run every Monday at 09:00:**
+```
+[Trigger: Schedule — Weekly, Monday 09:00]
+    ↓
+[Action: Create Test Run]
+    testProjectId: your-project-id
+    name: "Weekly Regression — {{date}}"
+```
+
+---
+
+### Search test cases
+
+Searches for test cases within a project by keyword. Returns up to 20 matches ordered by relevance.
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `testProjectId` | `string` | **Yes** | ID of the test project to search in |
+| `query` | `string` | **Yes** | Keyword matched against title and description (case-insensitive) |
+
+| Output field | Type | Description |
+|---|---|---|
+| `results` | `array` | Array of matched test cases, each with `id` and `title` |
+
+```json
+{
+  "results": [
+    { "id": "tc-001", "title": "Verify checkout with discount code" },
+    { "id": "tc-002", "title": "Checkout with expired card should fail" }
+  ]
+}
+```
+
+---
+
+### Search test runs
+
+Looks up test runs within a project by name or status. Returns up to 20 matches ordered by creation date (newest first).
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `testProjectId` | `string` | **Yes** | ID of the test project to search in |
+| `query` | `string` | No | Keyword matched against the run name (case-insensitive) |
+| `status` | `enum` | No | Filter: `PENDING`, `IN_PROGRESS`, `COMPLETED`, or `ABORTED` |
+
+| Output field | Type | Description |
+|---|---|---|
+| `results` | `array` | Array of matching runs, each with `id`, `name`, and `status` |
+
+---
+
+### Send notification
+
+Sends an in-app notification to a Collabase user. The notification appears in the user's notification centre immediately.
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `userId` | `string` | **Yes** | ID of the Collabase user to notify |
+| `title` | `string` | **Yes** | Short title shown in the notification badge |
+| `message` | `string` | **Yes** | Full message body |
+| `link` | `string` | No | URL to open when the user clicks the notification |
+
+| Output field | Type | Description |
+|---|---|---|
+| `id` | `string` | ID of the created notification record |
+
+<Note>
+  This action delivers in-app notifications only. There is no email fallback. The `link` field accepts a Collabase-internal path (e.g., `/my-space/page-id`) or a full external URL.
+</Note>
+
+---
+
+## HTTP action
+
+The HTTP action calls any external API from within an automation. Use it to send data to Slack, post to GitHub, trigger a CI pipeline, or update a record in an external tool.
+
+| Input field | Type | Required | Description |
+|---|---|---|---|
+| `method` | `enum` | **Yes** | `GET` or `POST` |
+| `url` | `string` | **Yes** | The full URL to call |
+| `headers` | `object` | No | Key-value pairs to include as request headers |
+| `body` | `object` | No | JSON body for `POST` requests |
+| `credentialId` | `string` | No | ID of a saved credential to use for authentication |
+
+The response body is available to downstream nodes as `{{previous.body}}` and the HTTP status code as `{{previous.status}}`.
+
+### Saving credentials
+
+If the external API requires authentication, save the credentials once in Space Settings and reference them by ID — rather than hardcoding keys into action configurations.
+
+<Steps>
+  <Step title="Open Space Settings">
+    Navigate to your Space and click **Settings** in the sidebar, then open the **Credentials** tab.
+  </Step>
+  <Step title="Add a new credential">
+    Click **New Credential**, give it a name, and enter the key-value pairs — for example, `Authorization: Bearer your-api-key`.
+  </Step>
+  <Step title="Reference it in the HTTP action">
+    In the HTTP action configuration, select your saved credential from the **Credential** dropdown. The headers are injected at runtime and never exposed in execution logs.
+  </Step>
+</Steps>
+
+<Warning>
+  Credential values are stored encrypted and are never shown in plain text after saving. If you need to update a key, delete the existing credential and create a new one.
+</Warning>

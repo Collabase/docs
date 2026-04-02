@@ -1,0 +1,61 @@
+---
+title: "Updates"
+description: "Update Collabase to a new version, apply database migrations, and back up your data."
+---
+
+Collabase uses Docker Compose for deployment and Prisma Migrations for database schema management. Updates are designed to be safe — migrations only add new tables or columns, never remove existing data.
+
+## Updating Collabase
+
+<Steps>
+  <Step title="Navigate to your installation folder">
+    Open a terminal on the server where Collabase is running and navigate to the folder containing your `docker-compose.yml`.
+  </Step>
+  <Step title="Pull the latest image">
+    ```bash
+    docker compose pull
+    docker compose up -d
+    ```
+    Docker pulls the new image and restarts the container. The application is back online in seconds.
+  </Step>
+  <Step title="Apply any pending migrations">
+    On the next boot, Collabase checks whether the database matches the current schema. If migrations are pending, the system enters **Maintenance Required** state automatically — see below.
+  </Step>
+</Steps>
+
+## Database migrations
+
+Collabase uses **Prisma Migrations** to manage database changes. Every schema change is versioned and applied in order.
+
+### Automatic migration on boot
+
+When the application starts, it checks whether any migrations are pending. If so:
+
+1. Users see a **Maintenance Required** screen — they cannot log in during this time.
+2. You, as admin, click **Apply System Update**.
+3. The system streams the migration log to your browser in real time.
+4. Once complete, the system returns to `READY` state and users are allowed back in.
+
+<Note>
+  Migrations only add new tables or columns. They never delete existing data.
+</Note>
+
+## Backing up your data
+
+Your data lives in three folders on the host that were created during installation. Back these up before every major update.
+
+| Folder | Contents |
+|---|---|
+| `./db_data` | Raw Postgres database files |
+| `./collabase_data` | User uploads and file attachments |
+| `./shared-home` | Configuration and cache |
+
+<Warning>
+  Always back up these three directories before performing a major version update. Docker volume mounts mean data persists across container restarts, but it is not protected against host-level failures.
+</Warning>
+
+A simple backup looks like this:
+
+```bash
+tar -czf collabase-backup-$(date +%Y%m%d).tar.gz ./db_data ./collabase_data ./shared-home
+```

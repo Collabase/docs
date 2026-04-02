@@ -1,0 +1,118 @@
+---
+title: "Suggestions"
+description: "Viewers can propose edits to any page without overwriting the original content. Page owners review each suggestion and accept or reject it."
+---
+
+Suggestions let people with read-only access to a page contribute content changes without being able to edit the page directly. The page owner reviews each suggestion and decides whether to accept or reject it — keeping the author in full control while still allowing broad participation.
+
+## How it works
+
+When a Space has **Viewer Suggestions** enabled, Viewers open a page and find themselves in **Suggestion mode** automatically instead of the standard read-only view. In this mode, anything they type or delete is captured as a tracked change — highlighted on the page, attributed to them, and queued for review. The original content remains untouched until an editor explicitly accepts the suggestion.
+
+Page editors see all pending suggestions inline and get notified via the notification bell as soon as a suggestion is submitted.
+
+---
+
+## Enabling Viewer Suggestions
+
+Viewer Suggestions are a Space-level toggle. They are **off by default** and must be enabled by a Space Owner or Admin.
+
+<Steps>
+  <Step title="Open Space Settings">
+    Navigate to your Space and click **Settings** in the sidebar.
+  </Step>
+  <Step title="Go to the General tab">
+    The **Viewer Suggestions** toggle is in the General settings panel.
+  </Step>
+  <Step title="Enable the toggle">
+    Turn on **Viewer Suggestions**. The change takes effect immediately — Viewers who already have the page open will enter Suggestion mode on their next navigation.
+  </Step>
+</Steps>
+
+<Note>
+  Enabling Viewer Suggestions applies to all pages in the Space. It is not configurable per page.
+</Note>
+
+---
+
+## Making a suggestion (Viewer)
+
+When you open a page in a Space with Viewer Suggestions enabled, the editor toolbar shows **Suggestion** as your active mode. You are in the editor, but your changes are tracked — not applied directly.
+
+### Inserting text
+
+Type anywhere in the page. Your new text appears **highlighted in green**, indicating it is a pending insertion.
+
+### Deleting text
+
+Select text and press Delete or Backspace. The text stays visible but appears **highlighted in red with a strikethrough**, indicating it is a pending deletion.
+
+### Replacing text
+
+Select existing text and type new text. The original displays in red (deletion) and your new text displays in green (insertion) side by side.
+
+### Adding a comment to your suggestion
+
+After making a change, a suggestion card appears in the right sidebar. You can add a comment to explain your reasoning — this helps the page owner understand your intent when reviewing.
+
+<Tip>
+  Write a brief comment on each suggestion explaining why you are proposing the change. This significantly speeds up the review process for the page owner.
+</Tip>
+
+---
+
+## Reviewing suggestions (Editor / Owner)
+
+When someone submits a suggestion on a page you own or can edit, you receive an **in-app notification** — *"[Name] suggested changes on '[Page title]'"* — with a link directly to the page.
+
+### The suggestion panel
+
+Open the page. All pending suggestions are visible in the right sidebar as **suggestion cards**. Each card shows:
+
+- The contributor's name and avatar
+- When the suggestion was submitted
+- A summary of the change — e.g. *Add: "new paragraph text"*, *Delete: "old sentence"*, or *Replace: "old" with "new"*
+- Any comment left by the contributor
+
+Hover over a suggestion card to reveal the **Accept** (✓) and **Reject** (✗) buttons.
+
+### Accepting a suggestion
+
+Click **✓ Accept**. The change is applied to the page immediately — inserted text becomes permanent, deleted text is removed. The contributor receives an in-app notification: *"[Your name] accepted your suggestion on '[Page title]'"*.
+
+### Rejecting a suggestion
+
+Click **✗ Reject**. The suggestion is discarded and the page remains unchanged. The contributor receives an in-app notification: *"[Your name] rejected your suggestion on '[Page title]'"*.
+
+### Replying to a suggestion
+
+If you need clarification before deciding, type a reply in the suggestion card's comment field. The contributor is notified of your reply and can respond — this creates a threaded discussion on the suggestion without accepting or rejecting it.
+
+---
+
+## Suggestion modes explained
+
+The editor toolbar includes a **mode selector** that controls your editing context. The available modes depend on your permissions on the page.
+
+| Mode | Icon | Who sees it | What it does |
+|---|---|---|---|
+| **Editing** | ✏️ Pen | Editors only | Full edit access — changes are applied directly |
+| **Suggestion** | ✏️ Pencil-line | Editors and Viewers (when enabled) | Changes are tracked and queued for review |
+| **Viewing** | 👁 Eye | Everyone | Read-only — no editing or suggesting |
+
+Viewers in a Space with Viewer Suggestions enabled see only **Suggestion** and **Viewing** modes. The **Editing** mode is hidden for them.
+
+Editors can also switch into Suggestion mode themselves if they want their own changes to go through a review — for example, to propose a major structural edit to a shared document before committing it.
+
+---
+
+## Notification reference
+
+| Event | Who is notified | Message |
+|---|---|---|
+| Suggestion submitted | Page author | *"[Name] suggested changes on '[Page title]'"* |
+| Suggestion accepted | Suggester | *"[Name] accepted your suggestion on '[Page title]'"* |
+| Suggestion rejected | Suggester | *"[Name] rejected your suggestion on '[Page title]'"* |
+| Reply on suggestion | Suggester | *"[Name] replied to your suggestion on '[Page title]'"* |
+
+All notifications appear in the **notification bell** in the top bar and link directly to the relevant page.

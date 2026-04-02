@@ -1,0 +1,96 @@
+---
+title: "Space settings"
+description: "Configure a Space — rename it, toggle apps, manage members, and transfer or delete the Space."
+---
+
+Space settings let Space Owners and Space Admins configure how a Space looks, what apps are active in it, and who has access. Open them by navigating to your Space and clicking **Settings** in the sidebar.
+
+---
+
+## General
+
+The **General** tab controls the Space's identity.
+
+| Setting | Description |
+|---|---|
+| **Name** | The display name shown in the sidebar and header. Can be changed at any time. |
+| **Mission statement** | A short description shown on the Space cockpit. Helps members understand what the Space is for at a glance. |
+| **Icon** | An emoji or icon displayed next to the Space name. |
+| **Visibility** | Controls who can see and access the Space — `Private`, `Internal`, or `Public`. See [Spaces](/concepts/spaces) for details. |
+
+<Warning>
+  The Space **slug** is set at creation time and cannot be changed afterwards. All Collabase links use the slug, so changing it would break existing URLs.
+</Warning>
+
+---
+
+## Apps
+
+The **Apps** tab lets you enable or disable Collabase apps within this Space. All apps are enabled by default when a Space is created.
+
+| App | What it does when enabled |
+|---|---|
+| **Docs** | Members can create and manage pages, templates, and the page tree |
+| **Test Management** | Members can create test projects, suites, cases, runs, and record results |
+| **Automation** | Members can build and run automation pipelines |
+| **Intranet** | Members can publish announcements and blog posts |
+
+Disabling an app hides it from the sidebar for all members. Existing data is preserved — re-enabling the app restores access to it.
+
+---
+
+## Members
+
+The **Members** tab lets you invite individual users or groups and assign their Space role.
+
+### Inviting a member
+
+<Steps>
+  <Step title="Open Space Settings → Members">
+    Click the **Add Member** button.
+  </Step>
+  <Step title="Search for the user">
+    Type a name or email address. Only users who already have a Collabase account are shown.
+  </Step>
+  <Step title="Assign a Space role">
+    Choose **Owner**, **Admin**, **Member**, or **Viewer**. See [Permissions](/concepts/permissions) for what each role can do.
+  </Step>
+  <Step title="Click Add">
+    The user immediately gains access to the Space with the selected role.
+  </Step>
+</Steps>
+
+### Granting access to a Group
+
+Instead of inviting individual users, you can grant access to an entire Group at once. All current and future members of the Group inherit the Space role you assign.
+
+<Steps>
+  <Step title="Click Add Group in the Members tab">
+    Select the Group from the dropdown.
+  </Step>
+  <Step title="Assign a Space role">
+    Choose the role for all members of this Group.
+  </Step>
+  <Step title="Click Save">
+    Group membership is reflected immediately.
+  </Step>
+</Steps>
+
+### Changing or removing a member
+
+- To change a member's role, use the role dropdown on their row.
+- To remove a member, click the remove button on their row. The user immediately loses access to the Space.
+
+---
+
+## Danger zone
+
+The **Danger zone** tab contains irreversible actions.
+
+| Action | Effect |
+|---|---|
+| **Delete Space** | Permanently deletes the Space and all its content — pages, test projects, automations, and member assignments. This cannot be undone. |
+
+<Warning>
+  Deleting a Space is permanent. Export or back up any critical content before proceeding. Only the Space Owner can delete a Space.
+</Warning>

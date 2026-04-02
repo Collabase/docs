@@ -1,0 +1,77 @@
+---
+title: "Troubleshooting"
+description: "Diagnose common issues with Collabase — connection errors, permission problems, and container management."
+---
+
+Collabase reports errors before they cause data issues. Here is how to diagnose and resolve the most common problems.
+
+## Connection lost overlay
+
+If you see a black **"Connection Lost"** screen:
+
+- **Cause:** The application cannot reach the Postgres database.
+- **Solution:**
+
+<Steps>
+  <Step title="Check if the database container is running">
+    ```bash
+    docker ps
+    ```
+    Look for the `db` container in the output. If it is not listed or shows `Exited`, the container has stopped.
+  </Step>
+  <Step title="Check database logs">
+    ```bash
+    docker compose logs db
+    ```
+    Look for any startup errors or disk-full messages.
+  </Step>
+  <Step title="Verify the DATABASE_URL">
+    Open your `.env` file and confirm that `DATABASE_URL` points to the correct host, port, and database name.
+  </Step>
+</Steps>
+
+## Logs and diagnostics
+
+To see what the application is doing in real time:
+
+```bash
+docker compose logs -f app
+```
+
+### Health endpoint
+
+Collabase exposes a built-in health endpoint used by Docker's health check. You can call it manually to confirm the system state:
+
+```bash
+curl http://localhost:3000/api/health
+```
+
+| Response | Meaning |
+|---|---|
+| `200 OK` | The system is `READY` and healthy |
+| `503 Service Unavailable` | The system is in a setup or update state — normal during first run or migration |
+
+## Container management
+
+| Action | Command |
+|---|---|
+| Restart all containers | `docker compose restart` |
+| Hard reset (keep data) | `docker compose down && docker compose up -d` |
+| View running containers | `docker ps` |
+| Rebuild image (rarely needed) | `docker compose up -d --build` |
+
+## Permission errors
+
+If uploads fail or the application cannot write files:
+
+<Steps>
+  <Step title="Check folder permissions">
+    Confirm that `collabase_data` and `shared-home` on the host are writable by the user running Docker.
+  </Step>
+  <Step title="Re-run the migration script">
+    ```bash
+    ./migrate-data.sh
+    ```
+    This script resets the correct ownership and permissions on all data folders.
+  </Step>
+</Steps>

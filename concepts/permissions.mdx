@@ -11,9 +11,9 @@ Global roles are assigned by a platform administrator. They determine what a use
 
 | Role | What they can do |
 |---|---|
-| `ADMIN` | Full platform access — manage users, Spaces, and all global settings |
-| `COLLABORATOR` | Normal user — can access Spaces they are invited to, and create content within them |
-| `VIEWER` | Read-only access — can read content in Spaces they are explicitly invited to, but cannot create or edit anything |
+| **Admin** | Full platform access — manage users, Spaces, and all global settings |
+| **Collaborator** | Normal user — can access Spaces they are invited to, and create content within them |
+| **Viewer** | Read-only access — can read content in Spaces they are explicitly invited to, but cannot create or edit anything |
 
 ## Space roles
 
@@ -23,17 +23,32 @@ Within each Space, members have a Space role that controls their permissions in 
 |---|---|
 | **Owner** | Full control — manage members, configure all Space settings, and delete the Space |
 | **Admin** | Manage members, configure automations, create and edit all content |
-| **Member** | Create and edit content, run automations |
+| **Member** | Create and edit content, run automations manually |
 | **Viewer** | Read-only — can comment if the Space allows viewer suggestions |
+
+### What each role can do by app
+
+| Capability | Owner | Admin | Member | Viewer |
+|---|---|---|---|---|
+| Create and edit pages | ✅ | ✅ | ✅ | ❌ |
+| Publish / verify pages | ✅ | ✅ | ✅ | ❌ |
+| Create test cases and suites | ✅ | ✅ | ✅ | ❌ |
+| Start test runs | ✅ | ✅ | ✅ | ❌ |
+| Record test results | ✅ | ✅ | ✅ | ❌ |
+| Create and edit automations | ✅ | ✅ | ❌ | ❌ |
+| Run automations manually | ✅ | ✅ | ✅ | ❌ |
+| Manage Space members | ✅ | ✅ | ❌ | ❌ |
+| Change Space settings | ✅ | ❌ | ❌ | ❌ |
+| Delete the Space | ✅ | ❌ | ❌ | ❌ |
 
 ## How roles are additive
 
-Global roles and Space roles layer on top of each other. A global `VIEWER` who is invited to a Space as a **Member** can create and edit content in that Space, because the Space role grants additional permissions beyond the global baseline.
+Global roles and Space roles layer on top of each other. A global **Viewer** who is invited to a Space as a **Member** can create and edit content in that Space, because the Space role grants additional permissions beyond the global baseline.
 
-A global `ADMIN` has full access everywhere, regardless of their Space role in any individual Space.
+A global **Admin** has full access everywhere, regardless of their Space role in any individual Space.
 
 <Info>
-  When in doubt, grant users the global `COLLABORATOR` role and invite them to Spaces individually with the appropriate Space role. This gives you precise control without over-permissioning.
+  When in doubt, grant users the global **Collaborator** role and invite them to Spaces individually with the appropriate Space role. This gives you precise control without over-permissioning.
 </Info>
 
 ## Group access
@@ -42,7 +57,7 @@ For large teams, inviting users one at a time becomes impractical. Groups let yo
 
 <Steps>
   <Step title="Create a Group">
-    Go to **Admin → Groups** and create a new Group. Add the users who should belong to it.
+    Go to **Settings → Groups** and create a new Group. Add the users who should belong to it.
   </Step>
   <Step title="Grant the Group access to a Space">
     Open the Space settings and navigate to **Members**. Add the Group and assign it a Space role. Every member of the Group inherits that role in the Space.

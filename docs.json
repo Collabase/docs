@@ -16,9 +16,9 @@
 
   "logo": {
 
-    "light": "https://media.brand.dev/65133c69-e311-4244-b5db-175bf3a712d9.png",
+    "light": "/images/collabase_integrated_blackblue_cut.png",
 
-    "dark": "https://media.brand.dev/65133c69-e311-4244-b5db-175bf3a712d9.png"
+    "dark": "/images/collabase_integrated_blackblue_cut.png"
 
   },
 
@@ -68,9 +68,15 @@
 
               "concepts/spaces",
 
+              "concepts/space-settings",
+
               "concepts/permissions",
 
-              "concepts/search"
+              "concepts/search",
+
+              "concepts/ai",
+
+              "concepts/profile"
 
             ]
 
@@ -87,7 +93,8 @@
                 "pages": [
                   "docs/overview",
                   "docs/pages",
-                  "docs/templates"
+                  "docs/templates",
+                  "docs/suggestions"
                 ]
               },
 
@@ -107,7 +114,9 @@
                   "automation/overview",
                   "automation/triggers",
                   "automation/conditions",
-                  "automation/actions"
+                  "automation/actions",
+                  "automation/nodes",
+                  "automation/integrations"
                 ]
               },
 
@@ -145,7 +154,11 @@
 
               "admin/ai-configuration",
 
-              "admin/backup"
+              "admin/backup",
+
+              "admin/updates",
+
+              "admin/troubleshooting"
 
             ]
 
