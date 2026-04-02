@@ -12,13 +12,13 @@
     "dark": "#ffffff"
   },
 
-  "favicon": "https://media.brand.dev/dd2a0511-ba8c-46f2-9fe4-839b8d7e79ca.png",
+  "favicon": "/images/collabase-icon-v2_blue.png",
 
   "logo": {
 
-    "light": "/images/collabase_integrated_blackblue_cut.png",
+    "light": "/images/collabase-logo-v2.png",
 
-    "dark": "/images/collabase_integrated_blackblue_cut.png"
+    "dark": "/images/collabase-logo-v2-weiss.png"
 
   },
 
