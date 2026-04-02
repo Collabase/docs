@@ -1,0 +1,80 @@
+---
+title: "Trigger automation"
+description: "Manually trigger an automation by its ID."
+api: "POST /api/v1/automation/{automationId}/trigger"
+---
+
+Triggers the specified automation immediately, regardless of its configured trigger type. The execution runs asynchronously and returns an execution ID you can use to track the run.
+
+<Warning>
+  The automation must be **enabled** (`isEnabled: true`) to trigger it. Triggering a disabled automation returns a `400` error. You must have at least Member permissions in the space that owns the automation.
+</Warning>
+
+<Note>
+  This endpoint is suited for automations with `triggerType` of `MANUAL` or `WEBHOOK`. Automations with scheduled or event-based trigger types can also be triggered this way for testing purposes.
+</Note>
+
+## Path parameters
+
+<ParamField path="automationId" type="string" required>
+  The ID of the automation to trigger.
+</ParamField>
+
+## Request body
+
+<ParamField body="payload" type="object">
+  Optional data to pass into the first node of the automation flow. Send an empty object `{}` if no input data is needed.
+</ParamField>
+
+## Response
+
+<ResponseField name="executionId" type="string" required>
+  Unique identifier for this execution. Use this to look up the execution status or logs.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/automation/auto-abc123/trigger" \
+  -H "Authorization: Bearer cba_live_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "payload": {}
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 202
+{
+  "executionId": "exec-xyz789"
+}
+```
+
+```json 400
+{
+  "error": "Automation is disabled"
+}
+```
+
+```json 401
+{
+  "error": "Unauthorized"
+}
+```
+
+```json 403
+{
+  "error": "Forbidden"
+}
+```
+
+```json 404
+{
+  "error": "Not found"
+}
+```
+
+</ResponseExample>

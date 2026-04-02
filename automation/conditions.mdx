@@ -1,0 +1,101 @@
+---
+title: "Conditions"
+description: "Condition nodes filter whether an automation continues — if a condition fails, the pipeline stops at that branch."
+---
+
+A condition node sits between your trigger and your actions. It evaluates a value from the trigger output (or a previous action's output) against a rule you define. If the condition passes, execution continues to the next node. If it fails, the automation stops at that branch — no actions downstream of it run.
+
+Use conditions to make automations precise. Instead of notifying someone every time any test fails, you can add a condition to only proceed when the failing case has priority `CRITICAL`. Instead of creating a page for every event, you can limit it to events where a specific field matches a pattern.
+
+## Adding a condition node
+
+<Steps>
+  <Step title="Open the automation builder">
+    Open your automation and click the **+** button between two nodes in the visual canvas — or click **Add Condition** in the node panel on the right.
+  </Step>
+  <Step title="Choose the field to evaluate">
+    Select the field you want to test. The picker shows all fields available from your trigger and any upstream actions — for example, `testCaseTitle`, `priority`, `status`, or a webhook payload field like `payload.environment`.
+  </Step>
+  <Step title="Select a comparator">
+    Choose how to compare the field against your value. See the comparator reference below.
+  </Step>
+  <Step title="Enter the comparison value">
+    Type the value to compare against. Values are case-sensitive unless you use a text matcher like **contains** or **matches regex**.
+  </Step>
+</Steps>
+
+## Comparator types
+
+### Field comparators
+
+Use these to compare structured values like status enums, IDs, or numbers.
+
+| Comparator | Description |
+|---|---|
+| `equals` | The field value exactly matches the given value. |
+| `not equals` | The field value does not match the given value. |
+| `is empty` | The field is null, undefined, or an empty string. |
+| `is not empty` | The field has any non-empty value. |
+| `greater than` | The field value (numeric) is greater than the given number. |
+| `less than` | The field value (numeric) is less than the given number. |
+
+### Text matchers
+
+Use these when the field is a string and you need flexible matching.
+
+| Comparator | Description |
+|---|---|
+| `contains` | The field string includes the given substring (case-insensitive). |
+| `does not contain` | The field string does not include the substring. |
+| `starts with` | The field string begins with the given prefix. |
+| `ends with` | The field string ends with the given suffix. |
+| `matches regex` | The field string matches a regular expression. |
+
+### Boolean logic
+
+When you add multiple condition nodes in sequence, they are evaluated one after another — all must pass for execution to continue (AND logic).
+
+If you need OR logic — continue if any one condition passes — add a **Condition Group** node and place your conditions inside it. The group passes if at least one condition inside it passes.
+
+<Tip>
+  Keep conditions atomic. One rule per node is easier to debug in the execution history than a complex compound expression. If a run stops unexpectedly, you can see exactly which condition node failed and why.
+</Tip>
+
+## What happens when a condition fails
+
+When a condition node evaluates to false:
+
+- Execution stops at that node for that branch.
+- No action nodes below the failed condition run.
+- The execution is recorded with status `STOPPED` and the condition node is marked as the stopping point.
+- You can inspect the input value that was evaluated and the rule that failed from the execution history.
+
+<Note>
+  A stopped execution is not the same as a failed execution. Stopping at a condition is the expected, healthy behaviour — the automation worked correctly, and the event simply did not meet your criteria.
+</Note>
+
+## Examples
+
+**Only proceed if a test case priority is `CRITICAL`:**
+
+| Field | Comparator | Value |
+|---|---|---|
+| `priority` | `equals` | `CRITICAL` |
+
+**Only proceed if a page status is `PUBLISHED`:**
+
+| Field | Comparator | Value |
+|---|---|---|
+| `status` | `equals` | `PUBLISHED` |
+
+**Only proceed if a webhook environment field is `production`:**
+
+| Field | Comparator | Value |
+|---|---|---|
+| `payload.environment` | `equals` | `production` |
+
+**Only proceed if a test case title mentions a specific feature:**
+
+| Field | Comparator | Value |
+|---|---|---|
+| `testCaseTitle` | `contains` | `checkout` |

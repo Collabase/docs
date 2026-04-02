@@ -1,0 +1,80 @@
+---
+title: "Spaces"
+description: "Spaces are the top-level containers in Collabase. Everything — pages, test projects, automations, and members — lives inside a Space."
+---
+
+A Space is the top-level organizational unit in Collabase. Think of it as a department, a project, or a product area — whatever maps to how your teams are structured. A single Collabase instance can host as many Spaces as you need.
+
+## Properties of a Space
+
+Every Space has the following properties:
+
+| Property | Description |
+|---|---|
+| **Name** | The display name shown in the sidebar and header |
+| **Slug** | A URL-safe identifier used in all Collabase links (e.g. `/spaces/engineering`) |
+| **Icon** | An optional icon that appears next to the Space name |
+| **Visibility** | Controls who can see and access the Space (see below) |
+| **Mission statement** | A short description of what the Space is for — shown on the cockpit |
+| **Cockpit** | A configurable dashboard showing the Space's activity, pages, members, and test results |
+
+### Visibility settings
+
+| Setting | Who can access |
+|---|---|
+| `PRIVATE` | Only members explicitly invited to the Space |
+| `INTERNAL` | All logged-in users on the platform |
+| `PUBLIC` | Anyone, including unauthenticated visitors |
+
+<Note>
+  Visibility controls discoverability and read access. Even in an `INTERNAL` Space, only members with the appropriate Space role can create or edit content.
+</Note>
+
+## Spaces are independent
+
+Spaces do not share content with each other by default. Pages, test projects, automations, and member lists are all scoped to the Space they belong to. One team's work does not bleed into another team's Space.
+
+This isolation makes Spaces a reliable boundary for access control. You can grant a contractor access to one Space without exposing anything else on the platform.
+
+## Apps available in a Space
+
+Each Space gives its members access to four apps. The apps available depend on which ones have been enabled in the Space settings.
+
+<CardGroup cols={2}>
+  <Card title="Docs" icon="file-lines" href="/docs/overview">
+    Collaborative wiki with rich-text pages, page trees, templates, and content status tracking.
+  </Card>
+  <Card title="Test Management" icon="flask" href="/test-management/overview">
+    Test projects, suites, cases, runs, and result tracking — all linked to the documentation in the same Space.
+  </Card>
+  <Card title="Automation" icon="bolt" href="/automation/overview">
+    Visual workflow builder for trigger-condition-action pipelines. Automations run in the context of the Space and respect Space permissions.
+  </Card>
+  <Card title="Intranet" icon="bullhorn" href="/intranet/overview">
+    Announcements and blog posts scoped to the Space — useful for project updates and team news.
+  </Card>
+</CardGroup>
+
+## How to create a Space
+
+<Steps>
+  <Step title="Open the Space creation dialog">
+    Click the **"New Space"** button in the left sidebar. You need the global `ADMIN` role or the platform must be configured to allow `MEMBER` users to create Spaces.
+  </Step>
+
+  <Step title="Fill in the Space details">
+    Enter a **name** and optionally a **slug**, **icon**, and **mission statement**. The slug is generated from the name automatically but you can customize it. The slug cannot be changed after the Space is created.
+  </Step>
+
+  <Step title="Set the visibility">
+    Choose `PRIVATE`, `INTERNAL`, or `PUBLIC` based on who should have access. You can change visibility later in the Space settings.
+  </Step>
+
+  <Step title="Enable apps">
+    Select which apps to activate for this Space. You can enable or disable apps at any time from the Space settings.
+  </Step>
+
+  <Step title="Invite members">
+    Add members and assign them Space roles. You can also grant access to a Group to onboard multiple people at once. See [Permissions](/concepts/permissions) for details on roles.
+  </Step>
+</Steps>

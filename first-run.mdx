@@ -1,0 +1,47 @@
+---
+title: "First Run"
+description: "Complete the one-time setup wizard to initialize the database and create your administrator account."
+---
+
+After the containers are running, Collabase requires a one-time initialization to build the database schema and create the root administrator account. This wizard runs once — subsequent restarts go straight to the login page.
+
+<Steps>
+  <Step title="Open Collabase in your browser">
+    Navigate to the URL you configured during installation — for example, `https://collabase.example.com` or `https://localhost`.
+
+    The **Lifecycle Guard** detects that the system is uninitialized and redirects you to the Setup Wizard automatically. You do not need to navigate to a specific path.
+  </Step>
+
+  <Step title="Initialize the database">
+    You will see the **"Welcome to Collabase"** screen. Click **"Initialize System"**.
+
+    A terminal-style console appears and streams the live progress as the database schema is built. Wait for the green **"Success"** message before proceeding.
+
+    <Warning>
+      Do not close the browser tab or restart the containers while the migration is running. Interrupting the migration can leave the database in a partial state.
+    </Warning>
+  </Step>
+
+  <Step title="Create the administrator account">
+    Once the database is ready, the wizard transitions to the **Onboarding** view. Fill in the following fields:
+
+    | Field | Description |
+    |---|---|
+    | **Name** | Your display name |
+    | **Email** | Your login email address |
+    | **Password** | Minimum 8 characters |
+    | **Application title** | The name shown in the browser tab and header (e.g. "Company Knowledge Base") |
+
+    Click **"Finalize Setup"**.
+  </Step>
+
+  <Step title="Log in and start using Collabase">
+    You are redirected to the login page. Enter the email and password you just created.
+
+    The system is now in `READY` state. You can create your first Space, invite team members, and start adding content.
+
+    <Tip>
+      If you enabled demo data during installation (`HELVI_SEED_DEMO_DATA=true`), you will find pre-built Spaces and example content waiting for you. This is a good way to explore the product before adding real data.
+    </Tip>
+  </Step>
+</Steps>

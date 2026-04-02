@@ -1,0 +1,94 @@
+---
+title: "List projects"
+description: "Return all test projects in a space that your API key has access to."
+api: "GET /api/v1/test-management/{spaceSlug}"
+---
+
+Returns all test projects in the given space. Each project includes a count of its associated test suites and test runs.
+
+<Info>
+  Your API key must belong to a user with at least read access to the target space.
+</Info>
+
+## Path parameters
+
+<ParamField path="spaceSlug" type="string" required>
+  The slug of the space. Visible in the space URL.
+</ParamField>
+
+## Response
+
+Returns an array of test project objects.
+
+<ResponseField name="id" type="string" required>
+  Unique identifier of the test project.
+</ResponseField>
+
+<ResponseField name="name" type="string" required>
+  Display name of the test project.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Optional description of the test project.
+</ResponseField>
+
+<ResponseField name="icon" type="string">
+  Emoji icon representing the project.
+</ResponseField>
+
+<ResponseField name="_count" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="TestSuite" type="number" required>
+      Total number of test suites in this project.
+    </ResponseField>
+    <ResponseField name="TestRun" type="number" required>
+      Total number of test runs in this project.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/test-management/my-space" \
+  -H "Authorization: Bearer cba_live_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+[
+  {
+    "id": "proj-abc123",
+    "name": "Frontend QA",
+    "description": "All tests covering the frontend application",
+    "icon": "🧪",
+    "_count": {
+      "TestSuite": 4,
+      "TestRun": 12
+    }
+  }
+]
+```
+
+```json 401
+{
+  "error": "Unauthorized"
+}
+```
+
+```json 403
+{
+  "error": "Forbidden"
+}
+```
+
+```json 404
+{
+  "error": "Space not found"
+}
+```
+
+</ResponseExample>

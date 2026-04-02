@@ -1,0 +1,88 @@
+---
+title: "Overview"
+description: "Build visual no-code workflows that react to events, apply logic, and take action across Collabase apps and external services."
+---
+
+Automation is the workflow engine built into Collabase. It lets you connect Collabase apps and external services through visual pipelines — without writing a single line of code. When an event happens, Automation evaluates your conditions and executes your actions automatically.
+
+## How it works
+
+Every automation is built from three types of nodes connected in the visual builder.
+
+<CardGroup cols={3}>
+  <Card title="Triggers" icon="bolt" href="/automation/triggers">
+    A trigger starts the automation. It listens for an event — a test failure, a schedule, an incoming webhook, or a manual run — and fires the pipeline when that event occurs.
+  </Card>
+  <Card title="Conditions" icon="filter" href="/automation/conditions">
+    A condition evaluates data from the trigger or a previous action and decides whether to continue. If it fails, the automation stops at that branch.
+  </Card>
+  <Card title="Actions" icon="play" href="/automation/actions">
+    An action does something — creates a page, sends a notification, starts a test run, or calls an external API.
+  </Card>
+</CardGroup>
+
+## Execution model
+
+When a trigger fires, the automation engine runs these steps in order:
+
+1. Resolves the input data from the trigger event.
+2. Evaluates condition nodes in sequence — stopping the branch if any condition fails.
+3. Executes action nodes in sequence.
+4. Records the full execution with step-level status and output.
+
+Every execution is stored and visible from the automation detail page. Failed steps show the error, the input they received, and their expected output — enough to diagnose what went wrong without guessing.
+
+## Accessing Automation
+
+Open your Space and click **Automation** in the sidebar. The Automation dashboard lists all automations in the Space with their status, trigger type, and last execution time.
+
+## Creating an automation
+
+<Steps>
+  <Step title="Open the automation builder">
+    Navigate to your Space and click **Automation** in the sidebar. Then click **New Automation**.
+  </Step>
+  <Step title="Name your automation">
+    Give your automation a clear, descriptive name — for example, `Notify on critical test failure` or `Weekly regression run`.
+  </Step>
+  <Step title="Add a trigger">
+    Click **Add Trigger** and select the event that should start the workflow. Choose from Collabase events, a schedule, a webhook, or manual.
+  </Step>
+  <Step title="Add conditions (optional)">
+    Click **Add Condition** to filter when the automation continues. For example, only proceed if a failing test case has priority `CRITICAL`.
+  </Step>
+  <Step title="Add actions">
+    Click **Add Action** and configure what the automation does — send a notification, create a page, start a test run, or call an external API.
+  </Step>
+  <Step title="Activate">
+    Toggle the automation to **Active**. The trigger is now live and the pipeline runs on every matching event.
+  </Step>
+</Steps>
+
+<Tip>
+  Build and test your automation with the toggle set to **Inactive** first. Use the **Run** button on the automation detail page to fire it manually and verify each step before going live.
+</Tip>
+
+## Viewing execution history
+
+Every run is stored automatically. Open an automation and click the **Executions** tab to see all past runs. Each execution shows:
+
+- Overall status (`COMPLETED`, `FAILED`, `PARTIAL`)
+- Duration in milliseconds
+- A step-by-step breakdown with the input, output, and status for every node
+
+If a step fails, you can expand it to see the exact error message and the data that was passed in — making it straightforward to fix the configuration and re-run.
+
+## Connected apps
+
+<CardGroup cols={3}>
+  <Card title="Test Management" icon="flask">
+    Trigger on `FAILED` or `PASSED` test results. Start new test runs automatically from scheduled or webhook-driven pipelines.
+  </Card>
+  <Card title="Docs" icon="file-lines">
+    Create pages and update their status automatically when specific events occur in your workflows.
+  </Card>
+  <Card title="Intranet" icon="bullhorn">
+    Send notifications to users based on workflow outcomes, keeping your team informed without manual effort.
+  </Card>
+</CardGroup>

@@ -1,0 +1,123 @@
+---
+title: "Create test case"
+description: "Create a new test case inside a test project."
+api: "POST /api/v1/test-management/{spaceSlug}/{projectId}/cases"
+---
+
+Creates a new test case in the given test project. New cases start with status `DRAFT` and are not enrolled in test runs until their status is changed to `READY`.
+
+<Info>
+  You must hold write access to the target space to create a test case.
+</Info>
+
+## Path parameters
+
+<ParamField path="spaceSlug" type="string" required>
+  The slug of the space the project belongs to.
+</ParamField>
+
+<ParamField path="projectId" type="string" required>
+  The ID of the test project to add the case to.
+</ParamField>
+
+## Request body
+
+<ParamField body="title" type="string" required>
+  Title of the test case.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Optional description or steps for the test case.
+</ParamField>
+
+<ParamField body="priority" type="string" default="MEDIUM">
+  Priority level. Must be one of: `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`. Defaults to `MEDIUM`.
+</ParamField>
+
+<ParamField body="type" type="string" default="MANUAL">
+  Test case type. Must be one of: `MANUAL`, `AUTOMATED`, `EXPLORATORY`. Defaults to `MANUAL`.
+</ParamField>
+
+<ParamField body="suiteId" type="string">
+  ID of the test suite to assign this case to. Omit to leave the case unassigned.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string" required>
+  Unique identifier of the newly created test case.
+</ResponseField>
+
+<ResponseField name="title" type="string" required>
+  Title of the test case.
+</ResponseField>
+
+<ResponseField name="priority" type="string" required>
+  Priority level: `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`.
+</ResponseField>
+
+<ResponseField name="type" type="string" required>
+  Test case type: `MANUAL`, `AUTOMATED`, or `EXPLORATORY`.
+</ResponseField>
+
+<ResponseField name="status" type="string" required>
+  Initial status of the case. Always `DRAFT` on creation.
+</ResponseField>
+
+<ResponseField name="testProjectId" type="string" required>
+  ID of the test project this case belongs to.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/test-management/my-space/proj-abc123/cases" \
+  -H "Authorization: Bearer cba_live_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Verify login with valid credentials",
+    "priority": "HIGH",
+    "type": "MANUAL"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "id": "tc-001",
+  "title": "Verify login with valid credentials",
+  "priority": "HIGH",
+  "type": "MANUAL",
+  "status": "DRAFT",
+  "testProjectId": "proj-abc123"
+}
+```
+
+```json 400
+{
+  "error": "Missing required field or invalid enum value"
+}
+```
+
+```json 401
+{
+  "error": "Unauthorized"
+}
+```
+
+```json 403
+{
+  "error": "Forbidden"
+}
+```
+
+```json 404
+{
+  "error": "Space or project not found"
+}
+```
+
+</ResponseExample>

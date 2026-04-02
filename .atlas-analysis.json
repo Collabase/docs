@@ -1,0 +1,135 @@
+{
+  "projectType": "saas",
+  "projectName": "Collabase",
+  "projectDescription": "Collabase is a self-hosted collaboration platform combining wiki, test management, automation, and intranet — built for teams that require full data sovereignty and GDPR compliance.",
+  "theme": "almond",
+  "primaryColor": "#145fa0",
+  "lightColor": "#7494b4",
+  "darkColor": "#e3e9ed",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "first-run"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/spaces",
+              "concepts/permissions",
+              "concepts/search"
+            ]
+          },
+          {
+            "group": "Docs",
+            "pages": [
+              "docs/overview",
+              "docs/pages",
+              "docs/templates"
+            ]
+          },
+          {
+            "group": "Test Management",
+            "pages": [
+              "test-management/overview",
+              "test-management/test-cases",
+              "test-management/test-runs",
+              "test-management/milestones"
+            ]
+          },
+          {
+            "group": "Automation",
+            "pages": [
+              "automation/overview",
+              "automation/triggers",
+              "automation/conditions",
+              "automation/actions"
+            ]
+          },
+          {
+            "group": "Intranet",
+            "pages": [
+              "intranet/overview",
+              "intranet/blog-posts"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "admin/users-groups",
+              "admin/identity-providers",
+              "admin/ai-configuration",
+              "admin/backup"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/introduction"
+            ]
+          },
+          {
+            "group": "Pages",
+            "pages": [
+              "api/pages/create-page"
+            ]
+          },
+          {
+            "group": "Test Management",
+            "pages": [
+              "api/test-management/list-projects",
+              "api/test-management/create-project",
+              "api/test-management/create-test-case",
+              "api/test-management/create-test-run"
+            ]
+          },
+          {
+            "group": "Automation",
+            "pages": [
+              "api/automation/list-automations",
+              "api/automation/trigger-automation"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Self-hosted deployment with full data sovereignty",
+    "Collaborative wiki and knowledge base (Collabase Docs)",
+    "Quality assurance suite with test projects, cases, and runs (Test Management)",
+    "Visual no-code workflow builder (Automation)",
+    "Internal communication hub with announcements and blog feed (Intranet)",
+    "RBAC with global and space-level roles",
+    "Unified full-text search across all content",
+    "Local AI integration via Ollama and support for OpenAI, Anthropic, Azure, and Google",
+    "SAML and LDAP identity provider support",
+    "SCIM v2 user provisioning",
+    "GDPR compliant, 100% Swiss hosted",
+    "Docker-based one-command installation"
+  ],
+  "publicApiSurface": [
+    "POST /api/v1/pages — Create a page",
+    "GET /api/v1/automation — List automations",
+    "POST /api/v1/automation/:id/trigger — Trigger an automation",
+    "GET /api/v1/test-management/projects — List test projects",
+    "POST /api/v1/test-management/projects — Create a test project",
+    "POST /api/v1/test-management/cases — Create a test case",
+    "POST /api/v1/test-management/runs — Create a test run",
+    "GET /api/v1/spaces — List spaces",
+    "SCIM v2 /api/scim/v2/Users — User provisioning",
+    "SCIM v2 /api/scim/v2/Groups — Group provisioning"
+  ]
+}

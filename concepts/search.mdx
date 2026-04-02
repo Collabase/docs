@@ -1,0 +1,71 @@
+---
+title: "Search"
+description: "Collabase has a unified search index that spans all content you have access to — pages, test cases, test runs, tasks, and automations."
+---
+
+Collabase indexes all content in a single search index. The search bar is always visible in the header — you can reach it from anywhere in the application without navigating away from what you are working on.
+
+Search respects permissions. You only see results for content in Spaces you have access to.
+
+## What is searchable
+
+| Content type | What is indexed |
+|---|---|
+| Pages | Title, body text, and status |
+| Test cases | Name, description, and steps |
+| Test runs | Name, status, and associated test project |
+| Tasks | Title and description |
+| Automations | Rule name and trigger configuration |
+
+## Filtering results
+
+After running a search, you can narrow results using the following filters:
+
+- **Content type** — show only pages, test runs, automations, etc.
+- **Space** — limit results to a specific Space
+- **Status** — filter by content status (e.g. `PUBLISHED`, `DRAFT`, `FAILED`)
+- **Author** — show content created or last edited by a specific user
+- **Date** — filter by creation or last-modified date
+
+Filters can be combined. A filter for `type:page` and `status:published` in a specific Space gives you only published pages from that Space.
+
+## CQL — Collabase Query Language
+
+For precise queries, use CQL directly in the search bar. CQL lets you express filters inline without using the filter panel.
+
+### Syntax
+
+```
+field:value
+```
+
+You can combine multiple terms in a single query:
+
+```
+type:page status:published
+```
+
+### Examples
+
+| Query | What it returns |
+|---|---|
+| `type:page status:published` | All published pages across all accessible Spaces |
+| `type:page status:draft` | All draft pages |
+| `type:test_run` | All test runs |
+| `type:test_case` | All test cases |
+| `type:automation_rule` | All automation rules |
+
+<Note>
+  CQL terms are case-insensitive. `type:Page` and `type:page` return the same results.
+</Note>
+
+### Supported fields
+
+| Field | Accepted values |
+|---|---|
+| `type` | `page`, `test_case`, `test_run`, `task`, `automation_rule` |
+| `status` | `draft`, `in_progress`, `in_review`, `published`, `verified`, `passed`, `failed` |
+
+<Tip>
+  Use `type:test_run` during a release to quickly scan all recent test run results without navigating into individual Spaces.
+</Tip>

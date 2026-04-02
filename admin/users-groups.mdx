@@ -1,0 +1,173 @@
+---
+title: "Users & Groups"
+description: "Manage who has access to Collabase, set global roles, organise users into groups, and automate provisioning with SCIM v2."
+---
+
+Collabase gives you full control over who can access your instance, what they can do, and how they are provisioned. All user and group management lives under **Settings → Users** and **Settings → Groups**.
+
+## Global roles
+
+Every user in Collabase has a single global role that determines their baseline access to the platform.
+
+| Role | What they can do |
+|---|---|
+| **Admin** | Full access to all settings, spaces, and system configuration. Admins can manage users, groups, and identity providers. |
+| **Collaborator** | Can create and edit content in any space they are granted access to. Cannot access system settings. |
+| **Viewer** | Read-only access to spaces and pages they are explicitly granted. Cannot create or modify content. |
+
+<Info>
+  Global roles set the ceiling for what a user can do. Space-level roles further restrict access within a specific space. See [Permissions](/concepts/permissions) for the full model.
+</Info>
+
+## Managing users
+
+Navigate to **Settings → Users** to see all users in your instance. The users table shows each user's name, email, global role, creation date, last login, and directory source (Local, LDAP, Google, GitHub, Microsoft, etc.).
+
+### Adding a user
+
+<Steps>
+  <Step title="Open the add user dialog">
+    Click **Add New User** in the top-right corner of **Settings → Users**.
+  </Step>
+  <Step title="Enter the user's details">
+    Fill in the user's full name and email address.
+  </Step>
+  <Step title="Assign a global role">
+    Choose **Viewer**, **Collaborator**, or **Admin**. You can change this at any time.
+  </Step>
+  <Step title="Note the generated password">
+    Collabase generates a one-time password automatically. Copy the credentials and share them securely with the new user. The user must change their password on first login.
+  </Step>
+  <Step title="Click Onboard User">
+    The account is created immediately and appears in the users table.
+  </Step>
+</Steps>
+
+### Changing a user's role
+
+In the users table, use the role dropdown on any row to change that user's global role. The change takes effect immediately.
+
+### Disabling and re-enabling a user
+
+Click the disable button (the ban icon) on a user's row to prevent them from logging in without deleting their account. Their content and history are preserved. Click the enable button (the checkmark icon) to restore access.
+
+<Warning>
+  You cannot disable or delete your own account from the UI — this prevents accidental self-lockout.
+</Warning>
+
+### Editing a user's profile
+
+Click a user's name to open the profile panel. You can update their full name, email, phone, job title, and department. For users managed by an external identity provider (LDAP or SSO), profile fields are locked and can only be updated from your external directory.
+
+### Removing a user
+
+Click the trash icon on any user row to permanently delete the account. This action cannot be undone.
+
+### Unlocking a locked account
+
+If brute-force protection is enabled, accounts lock after too many failed login attempts. A locked indicator appears on the user's row. Open the user profile panel and click **Unlock Account** to restore access immediately.
+
+---
+
+## Groups
+
+A group is a named collection of users. Instead of granting space access to individual users, you grant access to the group — all members of the group inherit that access automatically.
+
+Use groups to manage access for teams, departments, or any logical set of users. When someone joins or leaves a team, you add or remove them from the group rather than updating every space individually.
+
+### Creating a group
+
+<Steps>
+  <Step title="Navigate to Settings → Groups">
+    Click **New Group** in the top-right corner.
+  </Step>
+  <Step title="Name the group">
+    Enter a name (required) and an optional description that explains the group's purpose.
+  </Step>
+  <Step title="Click Create">
+    The group appears in the group grid.
+  </Step>
+</Steps>
+
+### Adding members to a group
+
+<Steps>
+  <Step title="Open the group">
+    Click any group card to open the group detail panel.
+  </Step>
+  <Step title="Go to the Members tab">
+    The Members tab shows all current members. Scroll down to the **Add Member** section.
+  </Step>
+  <Step title="Search and add users">
+    Type a name or email in the search box and click **Add** next to the user you want.
+  </Step>
+</Steps>
+
+To remove a member, hover over their row and click the remove button.
+
+### Granting a group access to a space
+
+<Steps>
+  <Step title="Open the group and go to the Space Access tab">
+    This tab lists all spaces the group currently has access to.
+  </Step>
+  <Step title="Select a space">
+    Choose the space from the dropdown. Only spaces your instance knows about are listed.
+  </Step>
+  <Step title="Select a role">
+    Choose the role the group members will have within that space (available roles are defined in the space's role configuration).
+  </Step>
+  <Step title="Click Save Access">
+    Members of the group can now access the space with the assigned role.
+  </Step>
+</Steps>
+
+To revoke access, hover over the space row in the Space Access tab and click the remove button.
+
+---
+
+## SCIM v2 provisioning
+
+Collabase implements SCIM 2.0, which lets your identity provider (Okta, Microsoft Entra, JumpCloud, etc.) automatically provision and deprovision users and groups.
+
+**SCIM endpoints:**
+
+| Resource | Endpoint |
+|---|---|
+| Users | `/api/scim/v2/Users` |
+| Groups | `/api/scim/v2/Groups` |
+| Service provider config | `/api/scim/v2/ServiceProviderConfig` |
+| Schemas | `/api/scim/v2/Schemas` |
+
+All SCIM requests must include a bearer token in the `Authorization` header.
+
+### Generating a SCIM token
+
+<Steps>
+  <Step title="Navigate to Settings → Users">
+    Scroll to the SCIM section or look for the SCIM token management area in the settings page.
+  </Step>
+  <Step title="Generate a new token">
+    Click **Generate Token**. Collabase displays the token once — copy it immediately and store it securely.
+  </Step>
+  <Step title="Configure your identity provider">
+    Paste the token into your identity provider's SCIM bearer token field, and set the SCIM base URL to your Collabase instance URL.
+  </Step>
+</Steps>
+
+<Warning>
+  The plaintext token is shown only once at generation time. If you lose it, delete the token and generate a new one.
+</Warning>
+
+### How SCIM provisioning works
+
+When your identity provider pushes a user or group to Collabase via SCIM:
+
+- **New users** are created with the default global role configured on your identity provider connection.
+- **Updated users** have their profile fields (name, department, job title) synced from the directory.
+- **Deprovisioned users** have their accounts disabled in Collabase — their content is not deleted.
+- **Groups** are created or updated in Collabase and their memberships are kept in sync.
+
+<Tip>
+  Users provisioned via SCIM are marked with their external identity source in the Directory column of the users table. Their profile fields are locked in the Collabase UI — changes must be made in your identity provider.
+</Tip>

@@ -1,0 +1,130 @@
+---
+title: "Backup & Restore"
+description: "Back up and restore your Collabase instance. All content lives in PostgreSQL — a single database dump is all you need."
+---
+
+Collabase stores all content — pages, spaces, users, groups, test cases, automations, settings, and attachments metadata — in a single PostgreSQL database. Backing up your instance means backing up that database. There is nothing else you need to capture to reproduce your full Collabase state.
+
+<Tip>
+  Run daily backups for any production deployment. Store the backup files off-server — on an S3-compatible bucket, a NAS, or another remote location — so that a server failure does not take your backups with it.
+</Tip>
+
+---
+
+## Back up with Docker
+
+If you are running Collabase with the standard Docker Compose setup, the PostgreSQL container is named `collabase-postgres` by default.
+
+Run the following command on your host to export a full database dump:
+
+```bash
+docker exec collabase-postgres pg_dump -U collabase collabase > backup.sql
+```
+
+This writes a plain-SQL dump to `backup.sql` in your current directory. The file contains the full schema and all data.
+
+To include a timestamp in the filename (useful for automated scripts):
+
+```bash
+docker exec collabase-postgres pg_dump -U collabase collabase > "backup-$(date +%Y%m%d-%H%M%S).sql"
+```
+
+<Note>
+  Replace `collabase-postgres` with your actual container name if you customised the Docker Compose configuration. Replace `-U collabase collabase` if you changed the PostgreSQL username or database name.
+</Note>
+
+---
+
+## Restore from a backup
+
+To restore from a `.sql` dump file, run:
+
+```bash
+docker exec -i collabase-postgres psql -U collabase collabase < backup.sql
+```
+
+<Warning>
+  Restoring from a backup **overwrites all existing data** in the database. The restore target must be the same PostgreSQL version that created the dump, or a newer compatible version. Stop the Collabase application container before restoring to avoid conflicting writes.
+</Warning>
+
+A safe restore sequence with Docker Compose:
+
+```bash
+# 1. Stop the app (keep the database running)
+docker compose stop collabase
+
+# 2. Restore the dump
+docker exec -i collabase-postgres psql -U collabase collabase < backup.sql
+
+# 3. Restart the app
+docker compose start collabase
+```
+
+---
+
+## Automating backups
+
+For production deployments, schedule a daily backup using a cron job on the host server.
+
+Example cron entry (runs daily at 02:00, keeps 30 days of backups):
+
+```bash
+0 2 * * * docker exec collabase-postgres pg_dump -U collabase collabase > /backups/collabase-$(date +\%Y\%m\%d).sql && find /backups -name "collabase-*.sql" -mtime +30 -delete
+```
+
+Create the `/backups` directory first and ensure it is owned by the user running the cron job.
+
+---
+
+## Off-server storage
+
+Keeping backups on the same server as Collabase means a disk failure or server compromise could destroy both your data and your backups simultaneously. Always copy backups to at least one remote location.
+
+Common options:
+
+<AccordionGroup>
+  <Accordion title="Amazon S3 or S3-compatible storage (Cloudflare R2, MinIO, etc.)">
+    Use the AWS CLI or `rclone` to upload the dump file after generating it. Example with the AWS CLI:
+
+    ```bash
+    docker exec collabase-postgres pg_dump -U collabase collabase | \
+      aws s3 cp - s3://your-bucket/collabase-$(date +%Y%m%d).sql
+    ```
+  </Accordion>
+  <Accordion title="Network-attached storage (NAS)">
+    Mount a NAS share on the host and write backups directly to the mount point. Ensure the mount is available before the cron job runs.
+  </Accordion>
+  <Accordion title="Remote server via rsync or SFTP">
+    Generate the dump locally and then transfer it with `rsync` or `scp` to a separate backup server.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## In-app trash and restore
+
+Collabase also provides an in-app soft-delete and restore mechanism for pages and spaces. Deleted pages move to the trash rather than being permanently removed. Admins can restore or permanently delete trashed items from **Settings → Backup**.
+
+<Tabs>
+  <Tab title="Deleted pages">
+    Navigate to **Settings → Backup → Pages** to see all pages in the trash. Click the restore button on any row to move the page back to its original space and location. Click the delete button to permanently remove the page.
+  </Tab>
+  <Tab title="Deleted spaces">
+    Navigate to **Settings → Backup → Spaces** to see trashed spaces. You can restore or permanently delete entire spaces from this view.
+  </Tab>
+</Tabs>
+
+<Note>
+  In-app trash is separate from database-level backups. It protects against accidental deletions but does not replace regular database backups for disaster recovery.
+</Note>
+
+---
+
+## Recommended backup checklist
+
+| Task | Frequency |
+|---|---|
+| Database dump | Daily |
+| Copy to off-server storage | Daily, immediately after dump |
+| Test a restore in a staging environment | Monthly |
+| Verify backup file integrity | Weekly |

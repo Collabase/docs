@@ -1,0 +1,122 @@
+---
+title: "Installation"
+description: "Install Collabase on your own server using Docker and the one-command installer."
+---
+
+## Prerequisites
+
+Before you install, make sure your server meets the following requirements:
+
+| Requirement | Minimum version / spec |
+|---|---|
+| Docker | >= 20.10 |
+| Docker Compose | v2 |
+| RAM | 4 GB+ recommended |
+| Operating system | Linux, macOS, or Windows (WSL2) |
+
+The installer checks that ports **80** and **443** are free. Caddy uses both to provision TLS certificates automatically.
+
+## Install Collabase
+
+<Steps>
+  <Step title="Run the installer">
+    Run the one-command installer. It will check your environment, prompt you for configuration, generate secrets, and start all services.
+
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/briantrp/collabase/main/deployment/install.sh | bash
+    ```
+
+    If you prefer to inspect the script before running it, download it first:
+
+    ```bash
+    wget https://github.com/briantrp/collabase/releases/latest/download/install.sh
+    chmod +x install.sh
+    ./install.sh
+    ```
+  </Step>
+
+  <Step title="Answer the configuration prompts">
+    The installer asks for three things:
+
+    - **Domain / URL** — the URL where Collabase will be reachable (e.g. `https://collabase.example.com`). Use `https://localhost` for a local test.
+    - **Admin email** — the email address for the initial administrator account.
+    - **Admin password** — at least 8 characters.
+
+    It also asks whether you want to load demo data on first run.
+
+    The installer generates all cryptographic secrets automatically and writes them to a `.env` file.
+  </Step>
+
+  <Step title="Wait for services to start">
+    After the configuration prompts, the installer pulls the latest images from the GitHub Container Registry and starts all services. It then polls the health endpoint and prints a confirmation once Collabase is ready.
+
+    This typically takes one to two minutes on the first run.
+  </Step>
+
+  <Step title="Open Collabase in your browser">
+    Navigate to the URL you configured. You will be redirected to the setup wizard automatically.
+
+    Follow the [First Run](/first-run) guide to initialize the database and create your admin account.
+  </Step>
+</Steps>
+
+## What gets installed
+
+The installer starts three containers:
+
+| Container | Purpose |
+|---|---|
+| `collabase-app` | The Next.js application |
+| `collabase-postgres` | PostgreSQL 16 database |
+| `collabase-caddy` | Reverse proxy — handles HTTP/HTTPS and TLS |
+
+## Configuration
+
+All configuration lives in the `.env` file created by the installer. Edit it to change any value, then restart the app container.
+
+| Variable | Description |
+|---|---|
+| `NEXTAUTH_URL` | The URL where Collabase is reachable (e.g. `https://collabase.example.com`) |
+| `NEXTAUTH_SECRET` | Random secret used to sign session tokens — generated automatically |
+| `HELVI_ADMIN_EMAIL` | Email address for the initial admin account |
+| `HELVI_ADMIN_PASSWORD` | Password for the initial admin account |
+| `HELVI_SEED_DEMO_DATA` | Set to `true` to load demo Spaces and content on first run |
+
+<Note>
+  The installer generates `NEXTAUTH_SECRET` and other cryptographic keys automatically using `openssl`. You do not need to set these manually.
+</Note>
+
+## HTTPS and custom domains
+
+Caddy provisions TLS certificates automatically when you use a public domain name. For `localhost` or an IP address, it falls back to an internally signed certificate.
+
+To change the domain after installation:
+
+1. Edit the `Caddyfile` and update the domain block.
+2. Update `NEXTAUTH_URL` in `.env` to match.
+3. Restart the Caddy container:
+
+   ```bash
+   docker compose -f docker-compose.release.yml restart caddy
+   ```
+
+## Useful Docker commands
+
+```bash
+# View live logs
+docker compose -f docker-compose.release.yml logs -f
+
+# Stop all containers
+docker compose -f docker-compose.release.yml down
+
+# Update to the latest release
+docker compose -f docker-compose.release.yml pull
+docker compose -f docker-compose.release.yml up -d
+
+# Back up the database
+docker exec collabase-postgres pg_dump -U collabase collabase > backup.sql
+```
+
+<Tip>
+  Run backups before every update. The `pg_dump` command above produces a plain SQL file you can restore with `psql`.
+</Tip>

@@ -1,0 +1,93 @@
+---
+title: "Create page"
+description: "Create a new document or blog page within a space."
+api: "POST /api/v1/pages"
+---
+
+Creates a new page inside a space. The page type determines whether it appears in the space's document tree (`STANDARD`) or the intranet blog feed (`BLOG`).
+
+<Info>
+  You must hold write access to the target space. Pass your API key as a Bearer token in the `Authorization` header.
+</Info>
+
+## Request body
+
+<ParamField body="spaceSlug" type="string" required>
+  The unique slug identifier of the target space. Visible in the space URL.
+</ParamField>
+
+<ParamField body="title" type="string" required>
+  The title of the page. Must be between 1 and 500 characters.
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  The type of page. Must be `STANDARD` (document tree) or `BLOG` (intranet blog post).
+</ParamField>
+
+<ParamField body="parentId" type="string">
+  UUID of the parent page to nest this page under. Omit to create a top-level page.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string" required>
+  Unique identifier (UUID) of the newly created page.
+</ResponseField>
+
+<ResponseField name="title" type="string" required>
+  The title of the page as stored.
+</ResponseField>
+
+<ResponseField name="type" type="string" required>
+  The page type: `STANDARD` or `BLOG`.
+</ResponseField>
+
+<ResponseField name="url" type="string" required>
+  The full URL to view the page in Collabase.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/pages" \
+  -H "Authorization: Bearer cba_live_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "spaceSlug": "my-space",
+    "title": "My Page",
+    "type": "STANDARD"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "id": "e45b4129-650a-4a6c-9226-9d33261ea2a0",
+  "title": "My Page",
+  "type": "STANDARD",
+  "url": "https://collabase.ch/my-space/e45b4129-650a-4a6c-9226-9d33261ea2a0"
+}
+```
+
+```json 400
+{
+  "error": "Validation failed: title must be at least 1 character"
+}
+```
+
+```json 401
+{
+  "error": "Invalid or expired API Key"
+}
+```
+
+```json 403
+{
+  "error": "Forbidden"
+}
+```
+
+</ResponseExample>

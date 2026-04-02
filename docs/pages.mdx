@@ -1,0 +1,127 @@
+---
+title: "Pages"
+description: "A page is the fundamental unit of Collabase Docs — a rich-text document with a status, author, version history, and a place in the Space's page tree."
+---
+
+A page is a document. It can be anything — a technical spec, a retrospective, a runbook, an onboarding guide. Pages live in a tree structure inside their Space and can be nested to any depth to match the way your team thinks about information.
+
+## What a page contains
+
+Every page has the following fields.
+
+| Field | Description |
+|---|---|
+| **Title** | The name of the page, shown in the sidebar and search results |
+| **Body** | Rich text content powered by the Plate editor |
+| **Status** | Where the page is in its lifecycle (see below) |
+| **Author** | The member who created the page |
+| **Tags** | Optional labels for filtering and discovery |
+| **Custom fields** | Configurable key-value metadata for your team's workflows |
+| **Tasks** | Action items embedded directly in the page content |
+
+## Page statuses
+
+Pages move through a five-step lifecycle. The status tells every reader exactly how much to trust the content.
+
+<Steps>
+  <Step title="DRAFT">
+    The page is being written. It is visible to Space members but not yet ready for review.
+  </Step>
+  <Step title="IN_PROGRESS">
+    Active work is underway. Use this to signal that a page is being substantially revised.
+  </Step>
+  <Step title="IN_REVIEW">
+    The page is ready for feedback. Use this to request comments or approval from colleagues.
+  </Step>
+  <Step title="PUBLISHED">
+    The page is ready for its intended audience. It is fully indexed by global search.
+  </Step>
+  <Step title="VERIFIED">
+    The page has been reviewed, confirmed accurate, and approved. This is the highest-trust status.
+  </Step>
+</Steps>
+
+<Tip>
+  Change the status to `IN_REVIEW` when you want feedback, and to `PUBLISHED` when it is ready to share. Set `VERIFIED` after a formal review cycle to signal that the content has been signed off.
+</Tip>
+
+## Page tree structure
+
+Pages in a Space are arranged in a tree. You can create a top-level page or nest a page under any existing page to any depth. This lets you model your information architecture exactly — for example:
+
+```
+Engineering
+├── Architecture Decision Records
+│   ├── ADR-001: Database selection
+│   └── ADR-002: Authentication strategy
+└── Runbooks
+    ├── Incident response
+    └── Deployment checklist
+```
+
+Drag and drop pages in the sidebar to rearrange them. The tree is visible to all Space members based on their permissions.
+
+## How to create a page
+
+<Steps>
+  <Step title="Click New Page">
+    In the Docs sidebar, click **New Page** in the top bar. To create a nested page, right-click any existing page and select **New subpage**.
+  </Step>
+  <Step title="Give it a title">
+    Type a title. The title appears in the sidebar, search results, and browser tabs.
+  </Step>
+  <Step title="Choose a type">
+    Select **Standard** for regular documentation or **Blog** if you want the post to also appear in the Intranet feed.
+  </Step>
+  <Step title="Write your content">
+    Use the rich editor to write your page. Type `/` to open the command palette and insert any block — image, table, code block, callout, and more.
+  </Step>
+  <Step title="Set the status">
+    When the page is ready for others to read, change the status from `DRAFT` to the appropriate level. Use `IN_REVIEW` to request feedback or `PUBLISHED` to make it visible in search.
+  </Step>
+</Steps>
+
+## Rich editor capabilities
+
+The Plate editor supports a full range of content blocks.
+
+<AccordionGroup>
+  <Accordion title="Images and media">
+    Drag and drop images into the editor or use the `/image` command. Images are stored in your Collabase instance.
+  </Accordion>
+  <Accordion title="Tables">
+    Insert a table with `/table`. Add and remove rows and columns by right-clicking any cell. Tables support rich text inside each cell.
+  </Accordion>
+  <Accordion title="Code blocks">
+    Insert a code block with `/code`. Select the language for syntax highlighting. Code blocks are ideal for commands, scripts, and configuration snippets.
+  </Accordion>
+  <Accordion title="Callouts">
+    Insert a callout with `/callout`. Use callouts to highlight important information, warnings, tips, or notes so readers do not miss them.
+  </Accordion>
+  <Accordion title="Math">
+    Insert a math block with `/math`. The editor renders LaTeX equations inline and as display blocks.
+  </Accordion>
+  <Accordion title="Diagrams (Excalidraw)">
+    Insert a diagram with `/diagram`. Diagrams open the embedded Excalidraw editor and are saved directly in the page.
+  </Accordion>
+  <Accordion title="Embeds">
+    Paste any URL to embed external content — videos, Figma designs, and other supported providers render inline.
+  </Accordion>
+</AccordionGroup>
+
+## Permissions
+
+Pages inherit the permission model of their Space.
+
+- **Members** can create, edit, and comment on pages.
+- **Viewers** can read pages. If the Space allows viewer suggestions, Viewers can also leave comments and propose edits.
+
+Specific folders — meaning a page and all its subpages — can have their own access restrictions. This is useful for keeping sensitive runbooks or internal documents visible only to a subset of the Space membership.
+
+<Note>
+  Folder-level restrictions narrow access; they cannot grant access beyond what the Space permission already allows.
+</Note>
+
+## Version history
+
+Every time a page is saved, Collabase records a new version. To browse the history, open a page and click the **History** option from the page menu. You can compare any two versions side by side and restore any previous version with one click.

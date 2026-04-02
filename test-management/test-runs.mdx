@@ -1,0 +1,67 @@
+---
+title: "Test Runs"
+description: "A test run is an execution session that enrolls all READY test cases, lets testers record a result for each, and preserves the full history as an immutable snapshot."
+---
+
+A test run is an execution session. When you start a run, Collabase automatically enrolls every test case with `READY` status from the project and sets each result to `PENDING`. Testers then work through each case, record their result, and the run builds a complete record of what was tested, what passed, and what failed.
+
+Runs are snapshots — once a run is created, the set of enrolled cases does not change. You always have a faithful record of exactly what was tested in that session.
+
+## Result values
+
+When you work through a test case in a run, you record one of four results.
+
+| Result | Meaning |
+|---|---|
+| `PASSED` | The case behaved exactly as expected |
+| `FAILED` | The case did not behave as expected — the feature has a defect |
+| `BLOCKED` | The case could not be executed because of a dependency issue or environment problem |
+| `SKIPPED` | The case was intentionally not executed in this run |
+
+<Note>
+  Results start as `PENDING`. A run moves automatically to `IN_PROGRESS` as soon as the first result is recorded, and to `COMPLETED` when no results remain `PENDING`.
+</Note>
+
+## How to start a run and record results
+
+<Steps>
+  <Step title="Open your Test Project">
+    Navigate to your Space, click **Test Management** in the sidebar, and open the project you want to run.
+  </Step>
+  <Step title="Click Start Run">
+    Click the **Start Run** button. In the dialog, give the run a name — use something descriptive like "Sprint 42 — Regression" or "v2.1 Release candidate".
+  </Step>
+  <Step title="Optionally link a Milestone">
+    If you want this run to count toward a release or sprint, select a **Milestone** from the dropdown. You can also do this later.
+  </Step>
+  <Step title="Confirm">
+    Click **Start**. Collabase automatically enrolls all `READY` cases and opens the run view.
+  </Step>
+  <Step title="Work through each case">
+    In the run view, open each case in sequence. Read the preconditions, follow the steps, and compare the actual result against the expected result.
+  </Step>
+  <Step title="Record the result">
+    For each case, click **Passed**, **Failed**, **Blocked**, or **Skipped**. Add a comment if something noteworthy happened — this becomes part of the permanent record.
+  </Step>
+</Steps>
+
+<Tip>
+  Add a comment when marking a case as `FAILED` or `BLOCKED`. Describe what happened, what was expected, and any relevant environment details. This makes it much easier to triage the issue later.
+</Tip>
+
+## Run history and snapshots
+
+Every run is stored permanently. Open the **Test Runs** tab of any project to see the full history. Each run shows:
+
+- The run name and date
+- The linked milestone (if any)
+- A breakdown of results: passed, failed, blocked, skipped, pending
+- The overall pass rate
+
+Because runs are snapshots, updating or deprecating a test case does not affect past run records. If you need to compare quality across releases, the data is always there.
+
+## Linking a run to a Milestone
+
+You can link a run to a Milestone when you create the run, or by editing the run afterwards. A run linked to a Milestone contributes its results to the Milestone's aggregate pass rate, giving you a quality snapshot across all runs in that release.
+
+See [Milestones](/test-management/milestones) for more detail on how to create milestones and track per-release quality.

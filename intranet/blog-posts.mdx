@@ -1,0 +1,75 @@
+---
+title: "Blog Posts"
+description: "Blog posts are pages of type BLOG — they have the same rich editing capabilities as standard pages and automatically appear in the Intranet feed when published."
+---
+
+A blog post is a page with its type set to `BLOG`. It lives in a Space like any other page and has access to the full rich-text editor — images, callouts, tables, code blocks, and embedded content. The difference is visibility: when you publish a blog post, it automatically appears in the Intranet feed for everyone who has access to that Space.
+
+You write blog posts the same way you write standard pages. The routing to the feed is handled by the platform.
+
+## Creating a blog post
+
+<Steps>
+  <Step title="Open your Space">
+    Navigate to the Space where you want to publish the post. Use a Space with `INTERNAL` visibility if the post is meant for the whole organisation, or a `PRIVATE` Space if it is for your department or team only.
+  </Step>
+  <Step title="Open Docs">
+    Click **Docs** in the Space sidebar to open the page tree.
+  </Step>
+  <Step title="Create a new page">
+    Click **New Page**. In the page creation dialog, set the **type** to **Blog**. Give the page a clear, descriptive title.
+  </Step>
+  <Step title="Write your post">
+    Use the editor to write your content. Blog posts support all the same formatting as standard pages — headings, bold and italic text, bullet lists, numbered lists, tables, images, callouts, code blocks, and more.
+  </Step>
+  <Step title="Publish">
+    When your post is ready, open the **Status** menu at the top of the page and set the status to **Published**. The post immediately appears in the Intranet feed for all users with access to the Space.
+  </Step>
+</Steps>
+
+<Tip>
+  Write in `DRAFT` status while you are working. Only set the status to `Published` when the post is ready to be seen. Drafts do not appear in the Intranet feed.
+</Tip>
+
+## Pinning a post as an announcement
+
+Announcements are pinned posts that stay at the top of the Intranet feed, above the chronological list of regular posts. Use them for time-sensitive, high-visibility communication.
+
+To pin a published blog post:
+
+1. Open the post in the editor or the Intranet feed.
+2. Open the context menu (the **···** button next to the post title or in the feed card).
+3. Select **Pin to Intranet**.
+
+The post moves to the announcements section at the top of the feed immediately.
+
+<Note>
+  You must have at least **Editor** permissions in the Space to pin or unpin a post. Viewers cannot manage announcement pins.
+</Note>
+
+## Unpinning and archiving
+
+**To unpin an announcement** without removing it from the feed, open the context menu and select **Unpin from Intranet**. The post returns to its chronological position in the regular feed.
+
+**To remove a post from the feed entirely**, change its status back to `DRAFT` or set it to a non-published status. The post remains accessible inside the Space but no longer appears in the Intranet feed.
+
+<Warning>
+  Archiving or unpublishing a post removes it from the feed for all users — including those who may have bookmarked the announcement. Make sure the content is no longer needed before depublishing.
+</Warning>
+
+## Blog post vs. standard page
+
+| | Standard page | Blog post |
+|---|---|---|
+| Rich-text editor | Yes | Yes |
+| Status tracking | Yes | Yes |
+| Appears in Space Docs | Yes | Yes |
+| Appears in Intranet feed | No | Yes (when Published) |
+| Can be pinned as announcement | No | Yes |
+| Indexed in search | Yes | Yes |
+
+## Using Automation with blog posts
+
+You can trigger automations when a blog post is published. For example, automatically notify a Slack channel or send an in-app notification to a distribution list when a new post goes live.
+
+See [Automation — Overview](/automation/overview) to set up a workflow, or [Automation — Triggers](/automation/triggers) for the available event triggers.

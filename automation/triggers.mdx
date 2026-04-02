@@ -1,0 +1,141 @@
+---
+title: "Triggers"
+description: "Triggers are the starting point of every automation — they listen for an event and fire the pipeline when it occurs."
+---
+
+A trigger is what starts an automation. Every automation has exactly one trigger node. When the trigger fires, it passes data downstream to your condition and action nodes.
+
+## Trigger types
+
+<CardGroup cols={2}>
+  <Card title="Collabase event" icon="bell">
+    Fires when something happens inside Collabase — for example, when a test case is marked `FAILED` or a test suite is created.
+  </Card>
+  <Card title="Schedule" icon="clock">
+    Fires on a recurring schedule — for example, every Monday at 09:00. Use cron syntax or the schedule picker in the builder.
+  </Card>
+  <Card title="Webhook" icon="webhook">
+    Fires when an external system sends a `POST` request to the automation's unique webhook URL. Any JSON payload is passed downstream.
+  </Card>
+  <Card title="Manual" icon="hand-pointer">
+    Fires when you click **Run** from the automation dashboard. Useful for testing or one-off workflows you want to control explicitly.
+  </Card>
+</CardGroup>
+
+### Getting the webhook URL
+
+To use a webhook trigger, you need the automation's unique endpoint. Open the automation, click on the trigger node, and copy the **Webhook URL** shown in the node configuration panel. Send a `POST` request with a JSON body to that URL from any external system to fire the automation.
+
+```bash
+curl -X POST "https://your-collabase.example/api/v1/automation/auto-abc123/webhook" \
+  -H "Content-Type: application/json" \
+  -d '{"event": "deployment.completed", "environment": "production"}'
+```
+
+The full payload body is available to subsequent condition and action nodes as `{{payload.*}}`.
+
+---
+
+## Collabase event triggers
+
+These four event triggers are built into Collabase and require no external configuration. Add one to your automation by clicking **Add Trigger** and selecting it from the **Collabase** category.
+
+### Test case failed
+
+Fires every time a tester marks a test result as `FAILED` during an active test run. Use this to react to quality failures immediately — notify the right person, open a bug page, or escalate to an external system.
+
+**When it fires:** Each time a tester records a `FAILED` result for a test case in an active run. Does not fire for `BLOCKED`, `SKIPPED`, or `PASSED` results. Fires once per failing result — if the same case fails in multiple runs, it fires each time.
+
+| Field | Type | Description |
+|---|---|---|
+| `testRunId` | `string` | ID of the test run that contains the result |
+| `testCaseId` | `string` | ID of the test case that failed |
+| `testCaseTitle` | `string` | Human-readable title of the failed test case |
+
+**Example use:**
+```
+[Trigger: Test Case Failed]
+    ↓
+[Condition: testCaseTitle contains "checkout"]
+    ↓
+[Action: Send Notification]
+    userId: qa-lead-user-id
+    title: "Critical test failure"
+    message: "{{testCaseTitle}} failed in run {{testRunId}}"
+```
+
+---
+
+### Test case passed
+
+Fires every time a tester marks a test result as `PASSED` during an active test run. Use this to track quality milestones, update reports, or log progress to an external dashboard.
+
+**When it fires:** Each time a tester records a `PASSED` result for a test case in an active run. Does not fire for `FAILED`, `BLOCKED`, or `SKIPPED` results.
+
+| Field | Type | Description |
+|---|---|---|
+| `testRunId` | `string` | ID of the test run |
+| `testCaseId` | `string` | ID of the test case that passed |
+| `testCaseTitle` | `string` | Human-readable title of the test case |
+
+**Example use:**
+```
+[Trigger: Test Case Passed]
+    ↓
+[Action: Send Notification]
+    userId: test-lead-user-id
+    title: "Test passed"
+    message: "{{testCaseTitle}} passed in run {{testRunId}}"
+```
+
+---
+
+### Test run started
+
+Fires the moment a new test run is created — whether a team member starts it manually or an automation creates it via the **Create Test Run** action. Use this to kick off parallel workflows, notify stakeholders, or create a tracking page for the run.
+
+**When it fires:** Once per test run, at the moment of creation. Does not fire when the run status changes later (for example, when it completes).
+
+| Field | Type | Description |
+|---|---|---|
+| `testRunId` | `string` | ID of the newly created test run |
+| `testRunName` | `string` | Name given to the run |
+| `testProjectId` | `string` | ID of the test project this run belongs to |
+
+**Example use:**
+```
+[Trigger: Test Run Started]
+    ↓
+[Action: Create Page]
+    spaceId: your-space-id
+    title: "Run Report — {{testRunName}}"
+```
+
+---
+
+### Test suite created
+
+Fires when a new test suite is added to a test project. Use this to react to structural changes in your test project — notify suite owners, create linked documentation, or pre-populate cases automatically.
+
+**When it fires:** Once per suite creation event. Does not fire when a suite is renamed or deleted.
+
+| Field | Type | Description |
+|---|---|---|
+| `suiteId` | `string` | ID of the newly created suite |
+| `suiteName` | `string` | Name of the suite |
+| `testProjectId` | `string` | ID of the parent test project |
+
+**Example use:**
+```
+[Trigger: Test Suite Created]
+    ↓
+[Action: Create Page]
+    spaceId: your-space-id
+    title: "Test Suite: {{suiteName}}"
+```
+
+---
+
+<Note>
+  The trigger node passes its output fields to every downstream node. Reference them in condition values or action inputs using double-brace syntax: `{{testCaseTitle}}`, `{{testRunId}}`, etc.
+</Note>

@@ -1,0 +1,74 @@
+---
+title: "Milestones"
+description: "Milestones group test runs to a release, sprint, or delivery event so you can see a per-release quality snapshot across all linked runs."
+---
+
+A milestone is a named event — a release, a sprint, a beta, a go-live — that you can attach test runs to. When multiple runs are linked to a milestone, Collabase aggregates their results to give you a single pass rate, a failure count, and a pending count for that milestone. This tells you, at a glance, how ready a release actually is.
+
+## Milestone fields
+
+| Field | Required | Description |
+|---|---|---|
+| **Name** | Yes | A short label for the milestone (e.g., "v2.0 Release", "Sprint 42") |
+| **Description** | No | Optional context about what this milestone represents |
+| **Due date** | No | The target date for this milestone — shows as overdue if passed while the milestone is open |
+
+## Milestone statuses
+
+| Status | Meaning |
+|---|---|
+| `open` | The milestone is active and accepting new run results |
+| `completed` | The milestone is finished — mark it complete when the release ships |
+| `archived` | The milestone is no longer relevant and hidden from the default view |
+
+## How to create a milestone
+
+<Steps>
+  <Step title="Open your Test Project">
+    Navigate to your Space, click **Test Management** in the sidebar, and open the project.
+  </Step>
+  <Step title="Click the Milestones tab">
+    Inside the project, click the **Milestones** tab in the navigation bar.
+  </Step>
+  <Step title="Click New Milestone">
+    Click **New Milestone** in the top-right corner.
+  </Step>
+  <Step title="Fill in the details">
+    Give the milestone a name and optionally a description and a due date. Click **Create**.
+  </Step>
+</Steps>
+
+## How to link a test run to a milestone
+
+You can link a run to a milestone at creation time or after the run has started.
+
+<Tabs>
+  <Tab title="When creating a run">
+    In the **Start Run** dialog, select the milestone from the **Milestone** dropdown before clicking **Start**. The run is linked immediately and its results count toward the milestone from the first result recorded.
+  </Tab>
+  <Tab title="After a run is created">
+    Open the run from the **Test Runs** tab, click the run's settings or edit menu, and select the milestone from the **Milestone** field. The run's existing results are added to the milestone's aggregate immediately.
+  </Tab>
+</Tabs>
+
+## Tracking per-release quality
+
+Once you have one or more runs linked to a milestone, open the milestone to see the aggregate view:
+
+- **Pass rate** — the percentage of all results across all linked runs that are `PASSED`
+- **Passed / Failed / Pending** counts — a breakdown of total results across all runs
+- **Linked runs** — each individual run listed with its own pass rate and status
+
+This gives you a single answer to the question: "How good is this release?" — backed by actual execution data, not gut feel.
+
+<Tip>
+  Create a milestone for every sprint or release before you start test runs. Linking runs as you go means the milestone view always reflects the latest state without any manual aggregation.
+</Tip>
+
+## Marking a milestone as complete
+
+When a release ships, open the milestone and click **Mark as complete**. The milestone moves to `completed` status and is hidden from the default view. You can still access it at any time by showing completed milestones.
+
+<Note>
+  Completing a milestone does not change any of its linked runs or their results. The historical record is always preserved.
+</Note>

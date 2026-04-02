@@ -1,0 +1,81 @@
+---
+title: "Templates"
+description: "Templates are saved pages you can reuse when creating new pages — keeping content consistent and saving teams from starting from scratch every time."
+---
+
+A template is a page saved specifically for reuse. When a team member creates a new page, they can choose a template instead of starting from a blank document. The new page is pre-filled with the template's title, body structure, and any custom fields — ready to fill in.
+
+Templates are especially useful for content that follows a predictable structure: meeting notes, architecture decision records, incident reports, runbooks, and test specifications.
+
+## How to save a page as a template
+
+<Steps>
+  <Step title="Open the page you want to save">
+    Navigate to any existing page in Docs that you want to turn into a template.
+  </Step>
+  <Step title="Open the page menu">
+    Click the **...** menu in the top-right corner of the page.
+  </Step>
+  <Step title="Select Save as template">
+    Click **Save as template**. Give the template a name and optionally a description so others know when to use it.
+  </Step>
+  <Step title="Choose the scope">
+    Select whether the template is available to **this Space only** or **all Spaces** in the Collabase instance.
+  </Step>
+</Steps>
+
+<Tip>
+  Clean up the page before saving it as a template. Remove any content specific to that document — keep only the structure and placeholder text.
+</Tip>
+
+## How to use a template when creating a page
+
+<Steps>
+  <Step title="Click New Page">
+    In the Docs sidebar, click **New Page** or right-click any page and select **New subpage**.
+  </Step>
+  <Step title="Choose a template">
+    In the new page dialog, click **Use a template** instead of starting blank. Browse or search for the template you want.
+  </Step>
+  <Step title="Select the template">
+    Click the template to preview it, then click **Use this template** to apply it.
+  </Step>
+  <Step title="Fill in the content">
+    The new page opens pre-filled with the template's structure. Replace the placeholder text with your actual content.
+  </Step>
+</Steps>
+
+## Template scope
+
+Templates can be scoped in two ways.
+
+| Scope | Who can see it |
+|---|---|
+| **Space-private** | Only members of the Space where the template was created |
+| **Shared across Spaces** | All members of the Collabase instance, in any Space |
+
+Space-private templates are useful for team-specific formats that would not make sense to others. Shared templates are useful for organisation-wide standards like incident report formats or onboarding checklists.
+
+<Note>
+  Only Space Admins and instance Admins can publish a template as shared across Spaces.
+</Note>
+
+## Common use cases
+
+<AccordionGroup>
+  <Accordion title="Meeting notes">
+    A standard structure with sections for agenda, attendees, discussion, and action items. Set the type to `STANDARD` and mark the template with a `Meeting Notes` tag so it is easy to find.
+  </Accordion>
+  <Accordion title="Technical spec">
+    A spec template with sections for problem statement, proposed solution, alternatives considered, open questions, and an approval status field. Engineers fill in the structure rather than deciding it each time.
+  </Accordion>
+  <Accordion title="Runbook">
+    A runbook template with sections for scope, prerequisites, step-by-step procedure, rollback instructions, and an escalation path. Consistent runbooks are easier to follow under pressure.
+  </Accordion>
+  <Accordion title="Architecture decision record">
+    An ADR template with fields for the decision, the context, the options considered, the outcome, and the date. Useful for building a searchable history of architectural choices.
+  </Accordion>
+  <Accordion title="Incident report">
+    A post-incident template with a timeline, impact summary, root cause analysis, and action items. Consistent structure across incidents makes them comparable over time.
+  </Accordion>
+</AccordionGroup>

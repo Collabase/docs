@@ -1,0 +1,253 @@
+---
+title: "Actions"
+description: "Action nodes perform operations when triggered — create pages, send notifications, start test runs, or call external APIs."
+---
+
+An action node is where the automation does something. Actions run in sequence after your trigger fires and your conditions pass. Each action receives the output of the node before it, and produces its own output that subsequent nodes can use.
+
+## Two categories of actions
+
+<CardGroup cols={2}>
+  <Card title="Collabase native" icon="house">
+    Built-in actions that work with your Collabase apps directly. No setup required — they run under the automation engine's session and respect your Space permissions. If you have permission to do something in Collabase, the automation can do it on your behalf.
+  </Card>
+  <Card title="External (HTTP)" icon="arrow-up-right-from-square">
+    Make `GET` or `POST` requests to any external API. Use saved credentials for authenticated endpoints. Useful for integrations with services like Slack, GitHub, Jira, or your own internal tools.
+  </Card>
+</CardGroup>
+
+---
+
+## Native Collabase actions
+
+### Create page
+
+Creates a new page inside a Collabase Space. The page is created with an empty body and the title you provide. You can optionally nest it under an existing parent page.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `spaceId` | `string` | Yes | ID of the target Space |
+| `title` | `string` | No | Title of the new page. Defaults to `"Untitled"` |
+| `parentId` | `string` | No | ID of an existing page to nest this one under |
+
+**Output:** `id` (string) — the ID of the newly created page.
+
+<Note>
+  Pages are created with `DRAFT` status. Chain a **Update page status** action immediately after if you need the page published right away.
+</Note>
+
+**Example:**
+```
+[Trigger: Test Run Started]
+    ↓
+[Action: Create Page]
+    spaceId: your-space-id
+    title: "Run Report — {{testRunName}}"
+```
+
+---
+
+### Update page status
+
+Changes the status of an existing Collabase page. Use this to advance content through its lifecycle automatically — for example, moving a page to `PUBLISHED` once a review condition is met.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `pageId` | `string` | Yes | ID of the page to update |
+| `status` | `enum` | Yes | New status: `DRAFT`, `IN_PROGRESS`, `IN_REVIEW`, `PUBLISHED`, or `VERIFIED` |
+
+**Output:** `id` (string) — the ID of the updated page.
+
+<AccordionGroup>
+  <Accordion title="Status reference">
+    | Status | Meaning |
+    |---|---|
+    | `DRAFT` | Work in progress — not ready for review |
+    | `IN_PROGRESS` | Actively being written |
+    | `IN_REVIEW` | Ready for someone to review |
+    | `PUBLISHED` | Visible and ready to read |
+    | `VERIFIED` | Reviewed and approved — the authoritative version |
+  </Accordion>
+</AccordionGroup>
+
+**Example — chain with Create Page to move a new page straight to review:**
+```
+[Action: Create Page] → outputs id
+    ↓
+[Action: Update Page Status]
+    pageId: {{previous.id}}
+    status: IN_REVIEW
+```
+
+---
+
+### Create test case
+
+Creates a new test case inside a Collabase test project. Useful when you want to automatically generate test cases from external events — for example, creating a regression case every time a bug is filed through a webhook.
+
+| Field | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `testProjectId` | `string` | Yes | — | ID of the target test project |
+| `title` | `string` | Yes | — | Title of the test case |
+| `description` | `string` | No | — | Optional detailed description |
+| `priority` | `enum` | No | `MEDIUM` | `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL` |
+| `type` | `enum` | No | `MANUAL` | `MANUAL`, `AUTOMATED`, or `EXPLORATORY` |
+| `suiteId` | `string` | No | — | ID of the test suite to place this case in |
+
+**Output:** `id` (string) — the ID of the created test case.
+
+<Note>
+  New test cases are created with status `DRAFT`. They are not included in a test run until their status is set to `READY`. Chain an **Update test case status** action to promote the case immediately.
+</Note>
+
+---
+
+### Update test case status
+
+Changes the status of an existing test case. This controls whether the case is enrolled in future test runs — only `READY` cases are included when a test run starts.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `testCaseId` | `string` | Yes | ID of the test case to update |
+| `status` | `enum` | Yes | New status: `DRAFT`, `READY`, or `DEPRECATED` |
+
+**Output:** `id` (string) — the ID of the updated test case.
+
+| Status | Meaning |
+|---|---|
+| `DRAFT` | Being written — not ready to run yet |
+| `READY` | Approved and available for test runs |
+| `DEPRECATED` | Outdated — excluded from all future runs |
+
+---
+
+### Create test run
+
+Creates a new test run inside a test project and automatically enrolls all test cases in `READY` status. This is the automation equivalent of clicking **Start Run** manually — the run is created and all eligible cases are enrolled in a single transaction.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `testProjectId` | `string` | Yes | ID of the test project to run |
+| `name` | `string` | Yes | Name of the test run (e.g., `"Regression — Sprint 42"`) |
+| `description` | `string` | No | Optional description |
+| `milestoneId` | `string` | No | ID of a milestone to associate this run with |
+
+**Output:** `id` (string) — the ID of the created test run.
+
+<Note>
+  Only `READY` test cases are enrolled. `DRAFT` and `DEPRECATED` cases are skipped automatically. If the project has no `READY` cases, the run is still created but will have no results to record.
+</Note>
+
+**Example — start a regression run every Monday at 09:00:**
+```
+[Trigger: Schedule — Weekly, Monday 09:00]
+    ↓
+[Action: Create Test Run]
+    testProjectId: your-project-id
+    name: "Weekly Regression — {{date}}"
+```
+
+---
+
+### Search test cases
+
+Searches for test cases within a project by keyword. Returns up to 20 matches. Use this to look up cases before updating them or referencing them in a subsequent action.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `testProjectId` | `string` | Yes | ID of the test project to search in |
+| `query` | `string` | Yes | Keyword matched against title and description (case-insensitive) |
+
+**Output:** `results` (array) — each item has `id` and `title`.
+
+```json
+{
+  "results": [
+    { "id": "tc-001", "title": "Verify checkout with discount code" },
+    { "id": "tc-002", "title": "Checkout with expired card should fail" }
+  ]
+}
+```
+
+<Note>
+  Results are limited to 20 matches. Use a more specific query if you expect a large result set.
+</Note>
+
+---
+
+### Search test runs
+
+Looks up test runs within a project by name or status. Returns up to 20 matches ordered by creation date (newest first). Use this to find a specific run before taking action on it.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `testProjectId` | `string` | Yes | ID of the test project to search in |
+| `query` | `string` | No | Keyword matched against the run name (case-insensitive) |
+| `status` | `enum` | No | Filter by status: `PENDING`, `IN_PROGRESS`, `COMPLETED`, or `ABORTED` |
+
+**Output:** `results` (array) — each item has `id`, `name`, and `status`.
+
+---
+
+### Send notification
+
+Sends an in-app notification to a Collabase user. The notification appears in the user's notification centre immediately. No external service or API key required.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `userId` | `string` | Yes | ID of the Collabase user to notify |
+| `title` | `string` | Yes | Short title shown in the notification badge |
+| `message` | `string` | Yes | Full message body |
+| `link` | `string` | No | URL to open when the user clicks the notification |
+
+**Output:** `id` (string) — the ID of the created notification record.
+
+<Note>
+  This action delivers in-app notifications only. There is no email fallback. The `link` field accepts a Collabase-internal path (e.g., `/my-space/page-id`) or a full URL to an external resource.
+</Note>
+
+**Example:**
+```json
+{
+  "userId": "b85d8e76-3791-47fa-b775-3c1fd19cbde8",
+  "title": "Test run failed",
+  "message": "Login Flow failed in run 'Sprint 42 — Regression'",
+  "link": "/test-space/test-management/runs/run-id-here"
+}
+```
+
+---
+
+## HTTP action
+
+The HTTP action lets you call any external API from within an automation — useful for sending data to Slack, posting to GitHub, triggering a CI pipeline, or updating a record in an external tool.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `method` | `enum` | Yes | `GET` or `POST` |
+| `url` | `string` | Yes | The full URL to call |
+| `headers` | `object` | No | Key-value pairs to include as request headers |
+| `body` | `object` | No | JSON body for `POST` requests |
+| `credentialId` | `string` | No | ID of a saved credential to use for authentication |
+
+The response body is available to downstream nodes as `{{previous.body}}` and the status code as `{{previous.status}}`.
+
+### Saving credentials
+
+If the external API requires authentication, save the credentials once and reference them by ID — rather than hardcoding API keys into action configurations.
+
+<Steps>
+  <Step title="Open Space Settings">
+    Navigate to your Space and click **Settings** in the sidebar, then open the **Credentials** tab.
+  </Step>
+  <Step title="Add a new credential">
+    Click **New Credential**, give it a name, and enter the key-value pairs — for example, `Authorization: Bearer your-api-key`.
+  </Step>
+  <Step title="Reference it in the HTTP action">
+    In the HTTP action configuration, select your saved credential from the **Credential** dropdown. The headers are injected automatically at runtime and never exposed in execution logs.
+  </Step>
+</Steps>
+
+<Warning>
+  Credential values are stored encrypted and are never shown in plain text after saving. If you need to update a key, delete the existing credential and create a new one.
+</Warning>

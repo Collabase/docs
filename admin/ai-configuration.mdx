@@ -1,0 +1,145 @@
+---
+title: "AI Configuration"
+description: "Connect Collabase Brain to a local or cloud AI provider and configure the model used for AI-assisted writing, summarisation, and semantic search."
+---
+
+Collabase Brain is the AI assistant built into the editor. It lets users summarise long pages, generate content from a prompt, translate text, improve writing, and more — without leaving Collabase. You configure and enable these features under **Settings → AI**.
+
+## Collabase Brain
+
+Brain is the master switch for all AI features across the platform. When Brain is disabled, the AI command in the editor is hidden and no AI requests are sent to any provider.
+
+Toggle **Collabase Brain** on or off in **Settings → AI**. All other AI settings take effect only when Brain is enabled.
+
+---
+
+## Supported AI providers
+
+Collabase works with both local (self-hosted) and cloud providers. Choose the option that fits your privacy and infrastructure requirements.
+
+<CardGroup cols={3}>
+  <Card title="Ollama" icon="monitor">
+    Run models locally on your server. No data leaves your infrastructure. Ideal for air-gapped or privacy-sensitive deployments.
+  </Card>
+  <Card title="OpenAI" icon="globe">
+    Use GPT-4o, GPT-4o-mini, or any model available through the OpenAI API.
+  </Card>
+  <Card title="Google Gemini" icon="sparkles">
+    Use Gemini 2.0 Flash and other Gemini models via the Google AI API.
+  </Card>
+  <Card title="Azure AI Foundry" icon="cloud">
+    Enterprise Azure OpenAI models deployed in your Azure subscription. Supports custom endpoint URLs.
+  </Card>
+  <Card title="Groq" icon="zap">
+    Fast cloud inference. Groq offers a generous free tier and low-latency responses.
+  </Card>
+</CardGroup>
+
+<Note>
+  Select **Disabled** to turn off AI processing entirely without disabling Collabase Brain globally. This is useful when you want to keep Brain enabled in principle but pause the provider connection temporarily.
+</Note>
+
+---
+
+## Configuring a provider
+
+Navigate to **Settings → AI** and select your provider from the grid.
+
+### Ollama (local)
+
+Ollama runs models on your own server. Install Ollama separately and pull the models you want to use before configuring it here.
+
+| Field | Description | Default |
+|---|---|---|
+| **Ollama Base URL** | The URL where your Ollama server is running. | `http://localhost:11434` |
+| **Model** | The name of the Ollama model to use. | `llama3.2` |
+
+<Tip>
+  When using Ollama, all AI processing stays entirely on your server. No content is sent to any external service. This is the recommended option for organisations with strict data residency requirements.
+</Tip>
+
+After entering the Ollama Base URL, click **Test Connection** to verify that Collabase can reach your Ollama server and that the specified model is available.
+
+### OpenAI
+
+| Field | Description | Example |
+|---|---|---|
+| **API Key** | Your OpenAI API key. Stored encrypted, never displayed after saving. | `sk-...` |
+| **Model** | The OpenAI model name to use. | `gpt-4o-mini` |
+
+### Google Gemini
+
+| Field | Description | Example |
+|---|---|---|
+| **API Key** | Your Google AI Studio API key. | `AIza...` |
+| **Model** | The Gemini model name to use. | `gemini-2.0-flash` |
+
+### Azure AI Foundry
+
+| Field | Description | Example |
+|---|---|---|
+| **Azure Endpoint URL** | The base URL of your Azure AI Foundry deployment. | `https://resource.services.ai.azure.com/openai` |
+| **API Key** | Your Azure API key. | `...` |
+| **Model** | The deployed model name as configured in Azure. | `gpt-4o` |
+
+### Groq
+
+| Field | Description | Example |
+|---|---|---|
+| **API Key** | Your Groq API key from console.groq.com. | `gsk_...` |
+| **Model** | The Groq model name. | `llama-3.3-70b-versatile` |
+
+---
+
+## Saving and testing
+
+After filling in your provider's fields, click **Test Connection** to verify that the credentials and model configuration are correct. Then click **Save** to apply the settings.
+
+<Warning>
+  API keys are encrypted before being stored in the database. After saving, the key is masked in the UI. To rotate a key, enter the new value and save again.
+</Warning>
+
+---
+
+## The AI command in the editor
+
+Once Brain is enabled and a provider is configured, users can trigger AI actions anywhere in the editor using the **`/ai`** slash command.
+
+Type `/ai` on any line to open the AI action menu. Available actions include:
+
+- **Summarise** — Compress the current page or selection into a concise summary.
+- **Generate** — Write content from a prompt.
+- **Translate** — Translate selected text to a target language.
+- **Improve writing** — Refine grammar, clarity, and tone.
+- **Fix spelling & grammar** — Correct errors in the selection.
+- **Make shorter / Make longer** — Adjust the length of the selected text.
+- **Continue writing** — Extend the text from the current cursor position.
+
+AI actions operate on the selected text when text is selected, or on the paragraph at the cursor when nothing is selected.
+
+---
+
+## RAG and semantic search
+
+Collabase supports Retrieval-Augmented Generation (RAG) to ground AI responses in your actual content. When RAG is enabled, page content is chunked into 512-token segments and indexed as vector embeddings. The Brain chat feature uses these embeddings to retrieve relevant context before generating a response.
+
+Enable **RAG / Semantic Search** in **Settings → AI** and choose an embedding source:
+
+<Tabs>
+  <Tab title="Same as AI provider">
+    Collabase reuses the same provider and model configured above for generating embeddings. This is the simplest option and works well when your AI provider supports embedding models.
+  </Tab>
+  <Tab title="Custom provider">
+    Configure a separate provider specifically for embeddings. This is useful if you want to use a dedicated embedding model (for example, `nomic-embed-text` on Ollama) while using a different model for generation.
+
+    Supported embedding providers: **Ollama**, **OpenAI**, **Groq**.
+
+    Recommended embedding models:
+    - Ollama: `nomic-embed-text`, `mxbai-embed-large`
+    - OpenAI: `text-embedding-3-small`
+  </Tab>
+</Tabs>
+
+<Note>
+  Embeddings are generated asynchronously when pages are saved. Newly created or updated pages become available for semantic search after the indexing job completes. Indexing typically takes a few seconds per page.
+</Note>

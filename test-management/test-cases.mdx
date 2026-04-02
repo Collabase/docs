@@ -1,0 +1,95 @@
+---
+title: "Test Cases"
+description: "A test case describes a single thing to verify. Learn how to create projects, suites, and cases — and how to get cases into READY status so they are included in runs."
+---
+
+A test case is the building block of Test Management. It describes one thing to verify: the action to take, the conditions it requires, and the result you expect. Every test case belongs to a Test Project and optionally to a Test Suite within that project.
+
+## Test case fields
+
+When you create or edit a test case, you configure the following fields.
+
+| Field | Description |
+|---|---|
+| **Title** | A short, clear description of what the case verifies |
+| **Description** | An optional explanation of the test's purpose or scope |
+| **Preconditions** | Conditions that must be true before the test can run (e.g., "User has an active account") |
+| **Steps** | An ordered list of actions and expected results |
+| **Estimated time** | How long the case is expected to take, in minutes |
+| **Linked page** | A Docs page describing the feature this case covers |
+
+### Status
+
+The status controls whether a test case is included in runs.
+
+| Status | Meaning |
+|---|---|
+| `DRAFT` | The case is being written. It is not included in test runs. |
+| `READY` | The case is complete and verified. It is automatically enrolled in new test runs. |
+| `DEPRECATED` | The case is no longer relevant. It is excluded from runs and hidden from the active case list. |
+
+<Warning>
+  Only test cases with status `READY` are enrolled when you start a test run. If a case is still `DRAFT`, it will not appear in the run — even if it belongs to the project.
+</Warning>
+
+### Priority
+
+Priority signals how critical it is to catch a failure in this case.
+
+| Priority | Use when |
+|---|---|
+| `LOW` | Nice to verify but unlikely to block a release if it fails |
+| `MEDIUM` | Standard coverage — the default for most cases |
+| `HIGH` | Important functionality that should rarely be skipped |
+| `CRITICAL` | Core behaviour — a failure here means the release should not ship |
+
+### Type
+
+Type describes how the case is executed.
+
+| Type | Meaning |
+|---|---|
+| `MANUAL` | A human tester follows the steps and records the result |
+| `AUTOMATED` | The test is run by an automated system (e.g., a CI pipeline) |
+| `EXPLORATORY` | Unscripted testing guided by the tester's judgment |
+
+## How to create your first test project, suite, and cases
+
+<Steps>
+  <Step title="Create a Test Project">
+    Open your Space and click **Test Management** in the sidebar. Click **New Project**, give it a name (e.g., "Frontend QA"), and click **Create**.
+  </Step>
+  <Step title="Open the project and create a Suite">
+    Open the project you just created. Click **New Suite** and give the suite a name that describes the area of the product it covers (e.g., "Authentication", "Checkout", "Search").
+  </Step>
+  <Step title="Add Test Cases to the Suite">
+    Open the suite and click **New Test Case**. Fill in the title, description, preconditions, and steps. Set the priority and type.
+  </Step>
+  <Step title="Set cases to READY">
+    When a test case is complete, change its status from `DRAFT` to `READY`. Only `READY` cases will be enrolled when you start a test run.
+  </Step>
+</Steps>
+
+<Note>
+  You can add test cases at the project level without assigning them to a suite. Suites are optional, but they make large projects much easier to navigate.
+</Note>
+
+## Writing good test cases
+
+<AccordionGroup>
+  <Accordion title="Keep each case focused on one thing">
+    A test case that verifies too many things at once is hard to diagnose when it fails. If a case tests both login and navigation, split it into two cases.
+  </Accordion>
+  <Accordion title="Write steps in the imperative">
+    Steps should be direct instructions: "Click **Sign in**", "Enter a valid email address in the email field", "Click **Submit**". Avoid vague steps like "complete the login flow".
+  </Accordion>
+  <Accordion title="Always include an expected result">
+    Every step should have a clear expected result. Without it, a tester cannot tell whether the step passed or failed.
+  </Accordion>
+  <Accordion title="Set priority accurately">
+    Over-using `CRITICAL` makes it meaningless. Reserve it for cases where a failure would genuinely block a release. Most cases should be `MEDIUM` or `HIGH`.
+  </Accordion>
+  <Accordion title="Link to the relevant Docs page">
+    Use the **Linked page** field to connect a test case to the specification or design doc that describes the feature. This creates a direct line between your requirements and your test coverage.
+  </Accordion>
+</AccordionGroup>

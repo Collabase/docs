@@ -1,0 +1,108 @@
+---
+title: "Create test run"
+description: "Start a new test run and automatically enrol all ready test cases."
+api: "POST /api/v1/test-management/{spaceSlug}/{projectId}/runs"
+---
+
+Creates a new test run for the given project. All test cases with status `READY` are automatically enrolled at the moment the run is created. The run begins immediately with status `IN_PROGRESS`.
+
+<Info>
+  Only test cases in `READY` status are enrolled. Cases in `DRAFT` or other statuses are excluded. You must hold write access to the target space.
+</Info>
+
+## Path parameters
+
+<ParamField path="spaceSlug" type="string" required>
+  The slug of the space the project belongs to.
+</ParamField>
+
+<ParamField path="projectId" type="string" required>
+  The ID of the test project to run.
+</ParamField>
+
+## Request body
+
+<ParamField body="name" type="string" required>
+  Name of the test run (e.g., `Sprint 42 — Regression`).
+</ParamField>
+
+<ParamField body="description" type="string">
+  Optional description of the test run.
+</ParamField>
+
+<ParamField body="milestoneId" type="string">
+  ID of a milestone to associate with this run.
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string" required>
+  Unique identifier of the newly created test run.
+</ResponseField>
+
+<ResponseField name="name" type="string" required>
+  Name of the test run.
+</ResponseField>
+
+<ResponseField name="status" type="string" required>
+  Status of the run. Always `IN_PROGRESS` on creation.
+</ResponseField>
+
+<ResponseField name="testProjectId" type="string" required>
+  ID of the test project this run belongs to.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string" required>
+  ISO 8601 timestamp of when the run was created.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/test-management/my-space/proj-abc123/runs" \
+  -H "Authorization: Bearer cba_live_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Sprint 42 — Regression"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "id": "run-001",
+  "name": "Sprint 42 — Regression",
+  "status": "IN_PROGRESS",
+  "testProjectId": "proj-abc123",
+  "createdAt": "2025-04-01T09:00:00.000Z"
+}
+```
+
+```json 400
+{
+  "error": "Missing required field: name"
+}
+```
+
+```json 401
+{
+  "error": "Unauthorized"
+}
+```
+
+```json 403
+{
+  "error": "Forbidden"
+}
+```
+
+```json 404
+{
+  "error": "Space or project not found"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,76 @@
+---
+title: "Introduction"
+description: "Learn how to interact with your Collabase instance programmatically using the REST API."
+---
+
+The Collabase REST API lets you automate workspace operations, manage spaces and pages, run test workflows, and build native integrations — all from your own scripts or applications.
+
+## Base URL
+
+All endpoints are available under the `/api/v1/` prefix of your Collabase instance:
+
+```
+https://<your-collabase-domain>/api/v1/<resource>
+```
+
+## Authentication
+
+Every API request requires authentication. You authenticate by passing an API key as a Bearer token in the `Authorization` header.
+
+**Generating an API key**
+
+<Steps>
+  <Step title="Open your profile settings">
+    Click your avatar in the top-right corner of the Collabase dashboard and select **Settings**.
+  </Step>
+  <Step title="Navigate to API Keys">
+    Select the **API Keys** section from the settings sidebar.
+  </Step>
+  <Step title="Generate a key">
+    Click **Generate** and copy the key. Store it securely — it will not be shown again.
+  </Step>
+</Steps>
+
+**Using your API key**
+
+Pass the key in the `Authorization` header of every request:
+
+```bash
+curl -X GET "https://your-collabase.ch/api/v1/spaces" \
+  -H "Authorization: Bearer cba_live_xYz123ABCD..."
+```
+
+<Warning>
+  Keep your API key secret. Anyone with your key can act on your behalf within the permissions your account holds.
+</Warning>
+
+## Permissions
+
+The API enforces Role-Based Access Control (RBAC). Your API key assumes the full identity of the user who generated it. Before any operation is executed, the API verifies that your account holds the necessary rights for the target resource.
+
+For example, creating a page inside a space requires write access to that space. Attempting an operation you do not have permission for returns a `403 Forbidden`.
+
+## Request validation
+
+Collabase validates all incoming request bodies using [Zod](https://zod.dev) schemas. If a request is missing required fields or contains incorrect data types, the API immediately returns a `400 Bad Request` with a description of the validation errors.
+
+## Status codes
+
+| Code | Status | Description |
+|---|---|---|
+| `200` | OK | The read or update operation was successful. |
+| `201` | Created | A new resource was successfully created. The response body contains the new object. |
+| `400` | Bad Request | The request body failed validation, or parameters were malformed. |
+| `401` | Unauthorized | No API key was provided, or the key is invalid or expired. |
+| `403` | Forbidden | The API key is valid, but your account does not have permission to act on the target resource. |
+| `404` | Not Found | The specified resource (UUID or slug) could not be found. |
+
+## Error format
+
+All error responses return a JSON body with a single `error` field describing what went wrong:
+
+```json
+{
+  "error": "Invalid or expired API Key"
+}
+```
