@@ -1,6 +1,6 @@
 ---
 title: "Identity Providers"
-description: "Connect Collabase to your organisation's identity provider using OAuth 2.0, LDAP, or SAML 2.0 for single sign-on."
+description: "Connect Collabase to your organization's identity provider using OAuth 2.0, LDAP, or SAML 2.0 for single sign-on."
 ---
 
 Collabase supports multiple authentication methods so users can sign in with their existing corporate credentials. You configure identity providers under **Settings → Identity Providers**.
@@ -39,9 +39,9 @@ Collabase supports the following OAuth 2.0 providers out of the box:
 | Provider | Notes |
 |---|---|
 | **Google** | Standard Google OAuth. Works for both personal and Workspace accounts. |
-| **GitHub** | GitHub OAuth App. Requires creating an OAuth App in your GitHub organisation. |
+| **GitHub** | GitHub OAuth App. Requires creating an OAuth App in your GitHub organization. |
 | **Microsoft** | Microsoft / Azure AD OAuth. Works with personal accounts and Entra tenants. |
-| **Okta** | Requires your Okta organisation domain URL. |
+| **Okta** | Requires your Okta organization domain URL. |
 | **Keycloak** | Requires your Keycloak realm issuer URL. |
 
 ### Configuring an OAuth provider
@@ -114,7 +114,7 @@ Select a preset to populate the fields, then adjust as needed for your schema.
 
 Click **Test Connection** after filling in the server details to verify that Collabase can bind to your directory and count matching users before saving. The test result shows the number of users found or the error message if the connection fails.
 
-### Sync behaviour
+### Sync behavior
 
 When LDAP sync is enabled, Collabase periodically pulls users from the directory:
 
@@ -189,7 +189,7 @@ Configure your IdP to include these attributes in the SAML assertion.
 
 ## SSO bypass policy
 
-When SSO is the primary authentication method for your organisation, you may still need certain admin accounts to be able to log in with a password — for example, a break-glass admin account.
+When SSO is the primary authentication method for your organization, you may still need certain admin accounts to be able to log in with a password — for example, a break-glass admin account.
 
 Configure this under **Settings → Security → Policies → SSO Bypass**:
 
