@@ -7,13 +7,13 @@ Collabase integrates AI throughout the platform under the **Collabase Brain** um
 
 <CardGroup cols={2}>
   <Card title="AI in the editor" icon="pen-to-square" href="#ai-in-the-editor">
-    Generate, summarise, translate, and improve text anywhere you write in Collabase.
+    Generate, summarize, translate, and improve text anywhere you write in Collabase.
   </Card>
   <Card title="Semantic search" icon="magnifying-glass" href="#semantic-search-rag">
     Ask questions in plain language and get answers grounded in your actual content.
   </Card>
   <Card title="AI in Automation" icon="bolt" href="#ai-in-automation">
-    Use the AI/LLM node to generate text, summarise inputs, and classify data inside pipelines.
+    Use the AI/LLM node to generate text, summarize inputs, and classify data inside pipelines.
   </Card>
   <Card title="AI logs" icon="list" href="#ai-logs">
     See every AI request made across the platform — tokens used, latency, and errors.
@@ -45,7 +45,7 @@ Type `/ai` on any line to open the AI action menu. The menu closes and the curso
 | Command | What it does |
 |---|---|
 | **Generate** | Write new content from a prompt you provide |
-| **Summarise** | Compress the selected text or current page into a concise summary |
+| **Summarize** | Compress the selected text or current page into a concise summary |
 | **Improve writing** | Refine grammar, clarity, and overall tone |
 | **Fix spelling & grammar** | Correct errors only — tone and structure are preserved |
 | **Make shorter** | Trim the selection to its essential points |
@@ -53,7 +53,7 @@ Type `/ai` on any line to open the AI action menu. The menu closes and the curso
 | **Continue writing** | Extend the text from the current cursor position |
 | **Translate** | Translate selected text — you choose the target language |
 
-**Selection behaviour:** If text is selected, the command operates on the selection. If nothing is selected, it operates on the paragraph at the cursor.
+**Selection behavior:** If text is selected, the command operates on the selection. If nothing is selected, it operates on the paragraph at the cursor.
 
 ### AI writing in custom fields
 
@@ -162,7 +162,7 @@ If an AI action in an automation fails, find the corresponding log entry and che
 
 <AccordionGroup>
   <Accordion title="Using Ollama (local)">
-    All AI processing stays entirely on your own server. No content is sent to any external service. This is the recommended option for organisations with strict data residency requirements (e.g. Swiss financial or healthcare data).
+    All AI processing stays entirely on your own server. No content is sent to any external service. This is the recommended option for organizations with strict data residency requirements (e.g. Swiss financial or healthcare data).
   </Accordion>
   <Accordion title="Using cloud providers (OpenAI, Gemini, Azure, Groq)">
     Content sent to AI actions is transmitted to the respective cloud provider's API. Review each provider's data processing agreement to understand how they handle your data. API keys are encrypted at rest in Collabase and are never logged.
