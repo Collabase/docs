@@ -28,7 +28,7 @@
 
       "type": "github",
 
-      "href": "https://github.com/briantrp/collabase"
+      "href": "https://github.com/Collabase/collabase"
 
     }
 
@@ -265,6 +265,15 @@
 
         ]
 
+      },
+
+      {
+        "tab": "Developer",
+        "groups": [
+          { "group": "Open Source", "pages": ["open-core", "open-source", "contributing"] },
+          { "group": "SDK & Libraries", "pages": ["developer/sdk", "developer/ui", "developer/api-client"] },
+          { "group": "Building Extensions", "pages": ["developer/plugins", "developer/nodes"] }
+        ]
       },
 
       {

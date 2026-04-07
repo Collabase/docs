@@ -1,0 +1,40 @@
+---
+title: "Contributing"
+description: "How to set up a development environment and submit pull requests to Collabase."
+---
+
+# Contributing
+
+Contributions to the Collabase community edition are welcome. By contributing you agree that your code will be licensed under BSL 1.1.
+
+## Development setup
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/Collabase/collabase.git
+    cd collabase
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    npm install
+    ```
+  </Step>
+  <Step title="Set up the environment">
+    Copy `.env.example` to `.env` and fill in a PostgreSQL connection string and a NextAuth secret.
+  </Step>
+  <Step title="Run the dev server">
+    ```bash
+    npm run dev
+    ```
+    The app is available at `http://localhost:3000`.
+  </Step>
+</Steps>
+
+## Pull request guidelines
+
+- Open an issue before starting significant work
+- Use conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`
+- New logic in `src/services/` requires unit tests (at least 80% coverage)
+- No hardcoded UI strings — use the i18n dictionary

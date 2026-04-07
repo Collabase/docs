@@ -1,0 +1,38 @@
+---
+title: "Open Core Model"
+description: "How Collabase balances open source with sustainable enterprise features."
+---
+
+# Open Core Model
+
+Collabase is built on an open-core model: the platform foundation is publicly available under the Business Source License 1.1, while advanced enterprise features are distributed as a separately licensed module.
+
+## Feature comparison
+
+| Feature | Community | Enterprise |
+|---|:---:|:---:|
+| Unlimited users | ✅ | ✅ |
+| Docs & Wiki | ✅ | ✅ |
+| Task management | ✅ | ✅ |
+| Automation (40+ connectors) | ✅ | ✅ |
+| Intranet, Registry, Service Desk | ✅ | ✅ |
+| Local AI / Brain | ✅ | ✅ |
+| Plugin system | ✅ | ✅ |
+| SAML 2.0 / SSO | — | ✅ |
+| SCIM 2.0 provisioning | — | ✅ |
+| LDAP / Active Directory | — | ✅ |
+| SSO enforcement | — | ✅ |
+| Immutable audit log | — | ✅ |
+
+## Activating Enterprise
+
+1. Purchase a license at [collabase.com/enterprise](https://collabase.com/enterprise)
+2. Enter your license key in **Admin → License**
+3. Click **Install Enterprise Module** — Collabase installs `@collabase/enterprise` automatically
+4. Restart your server — enterprise features are immediately active
+
+The enterprise module is distributed via a private npm registry. Your license key contains a scoped access token used transparently during installation.
+
+## Grace period
+
+If your license expires, Collabase enters a 30-day grace period. Enterprise features remain active and a renewal reminder is shown in the admin panel. After the grace period, the platform switches back to Community Edition automatically.

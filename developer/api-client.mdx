@@ -1,0 +1,28 @@
+---
+title: "API Client"
+description: "The official TypeScript client for the Collabase REST API."
+---
+
+# API Client
+
+`@collabase/api-client` is the official TypeScript SDK for the Collabase REST API.
+
+```bash
+npm install @collabase/api-client
+```
+
+```typescript
+import { CollabaseClient } from "@collabase/api-client";
+
+const collabase = new CollabaseClient({
+  baseUrl: "https://your-collabase.example.com",
+  apiKey: process.env.COLLABASE_API_KEY,
+});
+
+const result = await collabase.tasks.list({ projectId: "proj_abc" });
+if (result.ok) console.log(result.data);
+```
+
+Every method returns a `Result<T>` — no try/catch needed for API errors.
+
+[Source on GitHub](https://github.com/Collabase/api-client)

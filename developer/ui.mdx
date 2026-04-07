@@ -1,0 +1,28 @@
+---
+title: "UI library"
+description: "Use @collabase/ui to build plugin interfaces that look native to Collabase."
+---
+
+# UI library
+
+`@collabase/ui` re-exports the same components and design tokens that Collabase itself uses.
+
+```bash
+npm install @collabase/ui
+```
+
+```tsx
+import { Card, Button, Table } from "@collabase/ui";
+import "@collabase/ui/tokens";
+
+export function TaskList({ tasks }) {
+  return (
+    <Card>
+      <Table columns={["Title", "Status"]} rows={tasks.map((t) => [t.title, t.status])} />
+      <Button variant="primary" onClick={handleCreate}>New task</Button>
+    </Card>
+  );
+}
+```
+
+[Source on GitHub](https://github.com/Collabase/ui)

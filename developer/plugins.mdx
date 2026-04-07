@@ -1,0 +1,32 @@
+---
+title: "Building plugins"
+description: "Embed custom apps inside Collabase using the plugin system."
+---
+
+# Building plugins
+
+Collabase's plugin system lets you embed any web app inside the platform via a sandboxed iFrame with a permission-checked message bridge.
+
+## The manifest
+
+```json
+{
+  "id": "my-plugin",
+  "name": "My Plugin",
+  "version": "1.0.0",
+  "permissions": ["tasks:read", "tasks:write"],
+  "modules": {
+    "navigation": [{ "id": "main", "label": "My Plugin", "route": "/", "position": "sidebar" }]
+  },
+  "hosting": { "type": "remote", "url": "https://my-plugin.example.com" }
+}
+```
+
+## Installing a plugin
+
+<Steps>
+  <Step title="Host your app">Deploy to any public URL with `collabase.app.json` at the root.</Step>
+  <Step title="Open admin panel">Navigate to **Admin → Plugins → Install Plugin**.</Step>
+  <Step title="Paste manifest URL">Enter the URL of your `collabase.app.json`.</Step>
+  <Step title="Confirm">Review permissions and click **Install**.</Step>
+</Steps>

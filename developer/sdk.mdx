@@ -1,0 +1,60 @@
+---
+title: "SDK"
+description: "Build custom automation connectors and apps with the official @collabase/sdk."
+---
+
+# SDK
+
+The `@collabase/sdk` is the official toolkit for extending Collabase. It provides typed interfaces to build automation connectors and apps.
+
+```bash
+npm install @collabase/sdk
+```
+
+## Automation connectors
+
+```typescript
+import { defineConnector, defineAction } from "@collabase/sdk/connector";
+import { z } from "zod";
+
+const sendNotification = defineAction({
+  id: "send-notification",
+  name: "Send Notification",
+  fieldSchema: [
+    { key: "message", label: "Message", type: "text", required: true, supportsVariables: true },
+  ],
+  inputSchema: z.object({ message: z.string() }),
+  outputSchema: z.object({ id: z.string() }),
+  async execute(params, credentials) {
+    const res = await fetch("https://api.example.com/notifications", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${credentials.apiKey}` },
+      body: JSON.stringify({ text: params.message }),
+    });
+    return { id: (await res.json()).id };
+  },
+});
+
+export default defineConnector({
+  id: "my-service",
+  name: "My Service",
+  icon: "🔧",
+  category: "utility",
+  actions: [sendNotification],
+});
+```
+
+## Plugin bridge
+
+```typescript
+import { CollabaseApp } from "@collabase/sdk/app";
+
+const app = new CollabaseApp();
+const user = await app.users.getCurrent();
+const task = await app.tasks.create({ title: "Follow up", projectId: "proj_abc" });
+```
+
+<CardGroup cols={2}>
+  <Card title="Building a plugin" icon="plug" href="/developer/plugins">Full plugin guide</Card>
+  <Card title="API Client" icon="code" href="/developer/api-client">Server-to-server integrations</Card>
+</CardGroup>

@@ -1,0 +1,49 @@
+---
+title: "Building automation nodes"
+description: "Add custom actions to the Collabase automation engine using the @collabase/sdk."
+---
+
+# Building automation nodes
+
+An automation node is a single action that runs inside a Collabase flow.
+
+```bash
+npm install @collabase/sdk zod
+```
+
+```typescript
+import { defineConnector, defineAction } from "@collabase/sdk/connector";
+import { z } from "zod";
+
+export default defineConnector({
+  id: "my-service",
+  name: "My Service",
+  icon: "🎫",
+  category: "project-management",
+  credentials: [{ key: "apiKey", label: "API Key", type: "secret", required: true }],
+  actions: [
+    defineAction({
+      id: "create-ticket",
+      name: "Create ticket",
+      fieldSchema: [
+        { key: "title", label: "Title", type: "text", required: true, supportsVariables: true },
+      ],
+      inputSchema: z.object({ title: z.string() }),
+      outputSchema: z.object({ ticketId: z.string() }),
+      async execute(params, credentials) {
+        const res = await fetch("https://api.myservice.com/tickets", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${credentials.apiKey}` },
+          body: JSON.stringify(params),
+        });
+        return { ticketId: (await res.json()).id };
+      },
+    }),
+  ],
+});
+```
+
+<CardGroup cols={2}>
+  <Card title="SDK reference" icon="book" href="/developer/sdk">Full SDK API</Card>
+  <Card title="Built-in connectors" icon="plug" href="/automation/connectors/overview">Browse 40+ connectors</Card>
+</CardGroup>
