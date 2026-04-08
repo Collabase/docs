@@ -1,47 +1,148 @@
 ---
 title: "Building automation nodes"
-description: "Add custom actions to the Collabase automation engine using the @collabase/sdk."
+description: "Add custom actions to the Collabase automation engine using the @collabase/sdk"
 ---
 
 # Building automation nodes
 
-An automation node is a single action that runs inside a Collabase flow.
+An automation node is a single action that runs inside a Collabase flow. By defining custom nodes and connectors, you can deeply integrate internal systems or external third-party APIs into the visual workflow engine.
+
+## Setup
+
+First, install the required SDK packages:
 
 ```bash
 npm install @collabase/sdk zod
 ```
 
+## Connector definition
+
+Every node must belong to a Connector. A Connector groups related nodes together (for example, a "HubSpot" connector might contain "Create Company" and "Update Contact" nodes).
+
+Use `defineConnector` to create the root definition:
+
+```typescript
+import { defineConnector } from "@collabase/sdk/connector";
+
+export default defineConnector({
+  id: "stripe-internal",
+  name: "Stripe",
+  icon: "credit-card",
+  category: "finance",
+  credentials: [
+    { key: "apiKey", label: "Secret API Key", type: "secret", required: true }
+  ],
+  actions: [
+    // Nodes are defined here
+  ],
+});
+```
+
+### Connector fields
+
+| Field | Description | Possible values |
+|---|---|---|
+| **id** | The unique internal identifier for the connector. | Any URL-safe string (`my-erp`, `stripe-api`). |
+| **name** | The public label displayed in the UI. | `Stripe`, `Internal ERP`. |
+| **icon** | The visual representation in the node catalog. | FontAwesome class name (e.g., `plug`, `credit-card`) or Unicode emoji (`🎫`). |
+| **category** | Groups the connector in the catalog sidebar. | `communication`, `finance`, `utility`, `storage`, `project-management`. |
+
+## Defining actions
+
+An action represents an individual node. Use `defineAction` to construct it. You must define both the visual UI schema (`fieldSchema`) and the strict runtime validation schema (`inputSchema`).
+
+### Field mapping
+
+The `fieldSchema` generates the user interface when someone drags your node into the canvas. 
+
+| Field type | Renders as |
+|---|---|
+| `text` | A standard string input field |
+| `number` | A numeric stepper input |
+| `boolean` | A toggle switch |
+| `select` | A dropdown menu (requires an options array) |
+
+### Action example
+
+Here is a complete example of creating a custom action that integrates an external third-party REST API.
+
 ```typescript
 import { defineConnector, defineAction } from "@collabase/sdk/connector";
 import { z } from "zod";
 
-export default defineConnector({
-  id: "my-service",
-  name: "My Service",
-  icon: "🎫",
-  category: "project-management",
-  credentials: [{ key: "apiKey", label: "API Key", type: "secret", required: true }],
-  actions: [
-    defineAction({
-      id: "create-ticket",
-      name: "Create ticket",
-      fieldSchema: [
-        { key: "title", label: "Title", type: "text", required: true, supportsVariables: true },
-      ],
-      inputSchema: z.object({ title: z.string() }),
-      outputSchema: z.object({ ticketId: z.string() }),
-      async execute(params, credentials) {
-        const res = await fetch("https://api.myservice.com/tickets", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${credentials.apiKey}` },
-          body: JSON.stringify(params),
-        });
-        return { ticketId: (await res.json()).id };
-      },
-    }),
+const createInvoiceNode = defineAction({
+  id: "create-invoice",
+  name: "Create invoice",
+  
+  // 1. The UI Schema for the workflow builder
+  fieldSchema: [
+    { 
+      key: "customerId", 
+      label: "Customer ID", 
+      type: "text", 
+      required: true, 
+      supportsVariables: true 
+    },
+    { 
+      key: "amount", 
+      label: "Invoice Amount", 
+      type: "number", 
+      required: true 
+    }
   ],
+  
+  // 2. Runtime validation schema (Zod)
+  inputSchema: z.object({ 
+    customerId: z.string(),
+    amount: z.number().min(1)
+  }),
+  
+  // 3. Expected output data structure
+  outputSchema: z.object({ 
+    invoiceId: z.string(),
+    status: z.string()
+  }),
+
+  // 4. The execution context
+  async execute(params, credentials) {
+    // Both 'params' and 'credentials' are fully typed at runtime
+    const response = await fetch("https://api.stripe.com/v1/invoices", {
+      method: "POST",
+      headers: { 
+        "Authorization": `Bearer ${credentials.apiKey}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        customer: params.customerId,
+        amount: params.amount.toString()
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create invoice: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Data returned here automatically maps to the 'outputSchema'
+    // and becomes available as variables to subsequent automation nodes
+    return {
+      invoiceId: data.id,
+      status: data.status
+    };
+  },
 });
 ```
+
+## Handling incoming and output data
+
+### Variable interpolation
+
+When a user defines a node in the UI, they can use magic variables (e.g., `{{trigger.email}}`). As long as your `fieldSchema` marks a field with `supportsVariables: true`, the Collabase engine automatically resolves these variables into concrete strings or numbers **before** passing them into the `execute(params)` function.
+
+### Returning structured output
+
+The object you return from the `execute` block is instantly serialized and injected into the automation context. If you return `{ invoiceId: "inv_123" }`, any node placed underneath yours in the visual builder can instantly access this value using `{{steps.create-invoice.invoiceId}}`.
 
 <CardGroup cols={2}>
   <Card title="SDK reference" icon="book" href="/developer/sdk">Full SDK API</Card>
