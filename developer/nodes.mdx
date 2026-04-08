@@ -144,6 +144,30 @@ When a user defines a node in the UI, they can use magic variables (e.g., `{{tri
 
 The object you return from the `execute` block is instantly serialized and injected into the automation context. If you return `{ invoiceId: "inv_123" }`, any node placed underneath yours in the visual builder can instantly access this value using `{{steps.create-invoice.invoiceId}}`.
 
+## Registering your connector
+
+Once you have built your custom connector using the SDK, you must register it with your Collabase instance so it appears in the automation visual builder.
+
+Because custom connectors are **SDK apps**, you deploy them via the standard plugin system.
+
+<Steps>
+  <Step title="Update manifest">
+    In your `collabase.app.json` manifest, declare your connector inside the `modules.automation` array, pointing to your hosted endpoint.
+    ```json
+    {
+      "id": "stripe-internal",
+      "modules": {
+        "automation": [
+          { "id": "stripe-internal", "type": "connector", "endpoint": "/api/collabase/webhook" }
+        ]
+      }
+    }
+    ```
+  </Step>
+  <Step title="Deploy">Host the application and ensure the manifest is publicly served.</Step>
+  <Step title="Install">Navigate to **System Administration → Plugins** in Collabase, select **SDK Apps**, and paste your manifest URL.</Step>
+</Steps>
+
 <CardGroup cols={2}>
   <Card title="SDK reference" icon="book" href="/developer/sdk">Full SDK API</Card>
   <Card title="Built-in connectors" icon="plug" href="/automation/connectors/overview">Browse 40+ connectors</Card>
