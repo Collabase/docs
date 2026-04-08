@@ -1,11 +1,58 @@
 ---
 title: "Contributing"
-description: "How to set up a development environment and submit pull requests to Collabase."
+description: "How to set up a development environment and submit pull requests to Collabase"
 ---
 
 # Contributing
 
 Contributions to the Collabase community edition are welcome. By contributing you agree that your code will be licensed under BSL 1.1.
+
+<CardGroup cols={2}>
+  <Card title="Repository" icon="github" href="https://github.com/Collabase/collabase?tab=readme-ov-file#readme">View the source code</Card>
+  <Card title="License" icon="scale-balanced" href="https://github.com/Collabase/collabase?tab=License-1-ov-file#readme">BSL 1.1 terms and limits</Card>
+  <Card title="Code of conduct" icon="shield-check" href="https://github.com/Collabase/collabase?tab=coc-ov-file#readme">Our community guidelines</Card>
+  <Card title="Contributing guide" icon="code-pull-request" href="https://github.com/Collabase/collabase?tab=contributing-ov-file#readme">Technical PR guidelines</Card>
+</CardGroup>
+
+## Ecosystem architecture
+
+Collabase spans multiple repositories and package architectures, balancing our open BSL 1.1 core model with MIT-licensed developer tools and our proprietary enterprise packages.
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│                    Collabase Ecosystem                       │
+├──────────────────────────────┬───────────────────────────────┤
+│       BSL 1.1 (Public)       │     Proprietary (Private)     │
+│                              │                               │
+│ collabase-core               │ collabase-enterprise          │
+│ ├─ Wiki                      │ ├─ SAML SSO                   │
+│ ├─ Tasks                     │ ├─ SCIM 2.0                   │
+│ ├─ Docs                      │ ├─ LDAP / AD                  │
+│ ├─ Automation                │ ├─ OAuth Enterprise           │
+│ ├─ Intranet                  │ │  (Okta, Keycloak, AzureAD)  │
+│ ├─ Registry                  │ ├─ Security Policies          │
+│ ├─ Test Mgmt                 │ └─ Immutable Audit Log        │
+│ ├─ Service Desk              │                               │
+│ ├─ Time Tracking             │ Customers install via npm:    │
+│ ├─ Brain / AI                │ `@collabase/enterprise`       │
+│ └─ Plugin Engine             │ (token-secured)               │
+├──────────────────────────────┴───────────────────────────────┤
+│         MIT (Public) — Community Development Tools           │
+│                                                              │
+│ @collabase/sdk         @collabase/ui   @collabase/api-client │
+│ ├─ defineConnector()   ├─ Button       ├─ tasks.list()       │
+│ ├─ defineAction()      ├─ Table        ├─ pages.update()     │
+│ └─ CollabaseApp bridge └─ Theme Tokens └─ Result<T> handler  │
+│                                                              │
+├──────────────────────────────────────────────────────────────┤
+│          Community builds & publishes extensions             │
+│                                                              │
+│ @acme/collabase-crm (npm)   ← Custom Automation Connector    │
+│ acme-crm-app                ← Embedded iFrame SDK App        │
+│ custom.wasm                 ← High-performance WASM hook     │
+│ marketplace.collabase.com   ← Free Plugin Marketplace        │
+└──────────────────────────────────────────────────────────────┘
+```
 
 ## Development setup
 
@@ -34,7 +81,7 @@ Contributions to the Collabase community edition are welcome. By contributing yo
 
 ## Pull request guidelines
 
-- Open an issue before starting significant work
-- Use conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`
-- New logic in `src/services/` requires unit tests (at least 80% coverage)
-- No hardcoded UI strings — use the i18n dictionary
+- Open an issue before starting significant work.
+- Use conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`.
+- New logic in `src/services/` requires unit tests (at least 80% coverage).
+- No hardcoded UI strings — use the i18n dictionary.
