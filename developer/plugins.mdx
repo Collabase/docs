@@ -58,7 +58,7 @@ The manifest describes your plugin's permissions and how it integrates into the 
 
 ### Context passing and bridge
 
-When Collabase loads your SDK app, it embeds your `hosting.url` into an `<iframe>`. The `@collabase/sdk` manages a secure `postMessage` bridge, allowing your hosted app to request data from the parent Collabase instance.
+When Collabase loads your SDK app, it embeds your `hosting.url` into an `iframe`. The `@collabase/sdk` manages a secure `postMessage` bridge, allowing your hosted app to request data from the parent Collabase instance.
 
 ```typescript
 import { CollabaseApp } from "@collabase/sdk/app";
