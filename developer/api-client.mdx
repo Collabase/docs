@@ -30,7 +30,7 @@ const collabase = new CollabaseClient({
 
 Unlike raw fetch or Axios, the `@collabase/api-client` **never throws exceptions** for HTTP errors. This prevents untracked crashes in your background services.
 
-Instead, every single method returns a `Result<T>` union object: `{ ok: true, data: T }` or `{ ok: false, error: ErrorResponse }`. This forces you to explicitly handle failure cases.
+Instead, every single method returns a `Result` union object: `{ ok: true, data: T }` or `{ ok: false, error: ErrorResponse }`. This forces you to explicitly handle failure cases.
 
 ### Standard error handling
 
@@ -73,7 +73,7 @@ const result = await collabase.pages.update({
   pageId: "pg_9918x",
   data: {
     title: "Server Migration 2026",
-    content: "<h1>Server Migration</h1><p>Expected downtime: 2 hours.</p>"
+    content: "Server Migration: Expected downtime: 2 hours."
   }
 });
 ```
