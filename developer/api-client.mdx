@@ -1,28 +1,91 @@
 ---
 title: "API Client"
-description: "The official TypeScript client for the Collabase REST API."
+description: "The official, strictly-typed TypeScript client for the Collabase REST API"
 ---
 
 # API Client
 
-`@collabase/api-client` is the official TypeScript SDK for the Collabase REST API.
+If you need to connect to Collabase from a completely external service (like a background cron job on AWS, or a custom internal portal), you use the standard `@collabase/api-client`.
+
+It acts as a thin, extremely type-safe wrapper over the Collabase REST API structure.
 
 ```bash
 npm install @collabase/api-client
 ```
 
+## Initialization
+
+You instantiate the client by passing your workspace's Base URL and a Service Account API Key (generated via **System Administration → API Tokens**).
+
 ```typescript
 import { CollabaseClient } from "@collabase/api-client";
 
 const collabase = new CollabaseClient({
-  baseUrl: "https://your-collabase.example.com",
+  baseUrl: "https://your-workspace.collabase.com",
   apiKey: process.env.COLLABASE_API_KEY,
 });
-
-const result = await collabase.tasks.list({ projectId: "proj_abc" });
-if (result.ok) console.log(result.data);
 ```
 
-Every method returns a `Result<T>` — no try/catch needed for API errors.
+## The Result pattern
 
-[Source on GitHub](https://github.com/Collabase/api-client)
+Unlike raw fetch or Axios, the `@collabase/api-client` **never throws exceptions** for HTTP errors. This prevents untracked crashes in your background services.
+
+Instead, every single method returns a `Result<T>` union object: `{ ok: true, data: T }` or `{ ok: false, error: ErrorResponse }`. This forces you to explicitly handle failure cases.
+
+### Standard error handling
+
+```typescript
+const result = await collabase.tasks.get({ taskId: "TASK-123" });
+
+// The TypeScript compiler will prevent you from accessing `result.data` 
+// until you verify `result.ok`.
+if (!result.ok) {
+  console.error(`Failed to fetch task: ${result.error.message}`);
+  return;
+}
+
+// Inside this block, `result.data` is perfectly narrowed and typed.
+console.log(`Task Title is: ${result.data.title}`);
+```
+
+## Examples
+
+### 1. Creating a task
+```typescript
+const result = await collabase.tasks.create({
+  projectId: "PROJ_A512",
+  data: {
+    title: "Update security policies",
+    description: "Review quarter 3 changes.",
+    assigneeId: "usr_8fa",
+    typeId: "TT_TASK"
+  }
+});
+
+if (result.ok) {
+  console.log(`Task created with ID: ${result.data.id}`);
+}
+```
+
+### 2. Updating a document
+```typescript
+const result = await collabase.pages.update({
+  pageId: "pg_9918x",
+  data: {
+    title: "Server Migration 2026",
+    content: "<h1>Server Migration</h1><p>Expected downtime: 2 hours.</p>"
+  }
+});
+```
+
+### 3. Creating a test run pipeline
+```typescript
+const result = await collabase.testManagement.runs.create({
+  projectId: "PROJ_QA",
+  data: {
+    name: "Nightly Regression E2E",
+    suiteId: "suite_8x9",
+    environment: "Staging"
+  }
+});
+```

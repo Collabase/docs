@@ -1,17 +1,25 @@
 ---
-title: "SDK"
-description: "Build custom automation connectors and apps with the official @collabase/sdk."
+title: "The Node.js SDK"
+description: "Build custom automation connectors and frontend apps using the official @collabase/sdk."
 ---
 
-# SDK
+# The Node.js SDK
 
-The `@collabase/sdk` is the official toolkit for extending Collabase. It provides typed interfaces to build automation connectors and apps.
+The `@collabase/sdk` provides typed interfaces to build automation connectors and act as the primary bridge for SDK apps.
 
 ```bash
 npm install @collabase/sdk
 ```
 
-## Automation connectors
+## Writing Automation Connectors
+
+If you want Collabase's visual workflow builder to interact with an external third-party service (like Slack, GitHub, or internal ERPs), you define an Automation Connector.
+
+A Connector consists of **Triggers** (events that start a workflow) and **Actions** (steps executed during the workflow).
+
+### Defining an action
+
+Actions declare their inputs via `fieldSchema` (for the UI) and `inputSchema` (for runtime validation via Zod).
 
 ```typescript
 import { defineConnector, defineAction } from "@collabase/sdk/connector";
@@ -20,41 +28,73 @@ import { z } from "zod";
 const sendNotification = defineAction({
   id: "send-notification",
   name: "Send Notification",
+  // 1. Define the UI configuration fields for the drag-and-drop builder
   fieldSchema: [
-    { key: "message", label: "Message", type: "text", required: true, supportsVariables: true },
+    { 
+      key: "message", 
+      label: "Message Content", 
+      type: "text", 
+      required: true, 
+      supportsVariables: true 
+    },
   ],
+  // 2. Runtime validation
   inputSchema: z.object({ message: z.string() }),
   outputSchema: z.object({ id: z.string() }),
+  
+  // 3. Execution Logic
   async execute(params, credentials) {
-    const res = await fetch("https://api.example.com/notifications", {
+    const res = await fetch("https://api.internal.com/notify", {
       method: "POST",
       headers: { Authorization: `Bearer ${credentials.apiKey}` },
       body: JSON.stringify({ text: params.message }),
     });
-    return { id: (await res.json()).id };
+    
+    return { id: (await res.json()).messageId };
   },
 });
+```
 
+### Registering the connector
+
+Bundle your triggers and actions inside a `defineConnector` block and export it.
+
+```typescript
 export default defineConnector({
-  id: "my-service",
-  name: "My Service",
-  icon: "🔧",
+  id: "my-internal-service",
+  name: "Internal Push Service",
+  icon: "bell",
   category: "utility",
   actions: [sendNotification],
 });
 ```
 
-## Plugin bridge
+## The app bridge
+
+When building frontend plugins (SDK Apps) hosted inside Collabase via an iFrame, you use the `CollabaseApp` class. This handles all secure Cross-Origin messaging automatically, ensuring you don't need to deal with raw `window.postMessage`.
 
 ```typescript
 import { CollabaseApp } from "@collabase/sdk/app";
 
+// Initialize the bridge. Automatically connects to the parent React context.
 const app = new CollabaseApp();
+
+// Access current context
 const user = await app.users.getCurrent();
-const task = await app.tasks.create({ title: "Follow up", projectId: "proj_abc" });
+console.log(`Hello, ${user.name}`);
+
+// Perform authenticated mutations on behalf of the user
+const task = await app.tasks.create({ 
+  title: "Ship new feature", 
+  projectId: "proj_abc" 
+});
+
+// Navigate the parent application
+await app.navigation.goTo(`/projects/proj_abc/tasks/${task.id}`);
 ```
 
-<CardGroup cols={2}>
-  <Card title="Building a plugin" icon="plug" href="/developer/plugins">Full plugin guide</Card>
-  <Card title="API Client" icon="code" href="/developer/api-client">Server-to-server integrations</Card>
-</CardGroup>
+### Supported namespaces
+- `app.users`: Read user profiles and settings.
+- `app.tasks`: Full CRUD for tasks within allowed projects.
+- `app.space`: Fetch current Space context and configurations.
+- `app.navigation`: Issue commands to redirect the parent window.

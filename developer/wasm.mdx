@@ -1,0 +1,86 @@
+---
+title: "WASM Plugins"
+description: "Deploy sandboxed, ultra-fast backend logic and event processors via WebAssembly."
+---
+
+# WASM Plugins
+
+Collabase features a native WebAssembly (WASM) plugin engine that allows you to extend the core backend securely. Unlike Frontend SDK Apps which run visually in an iFrame, WASM plugins run completely offline on your server, directly interfacing with the Collabase engine via a high-performance sandbox.
+
+## Why WebAssembly
+
+- **Sandboxed Execution:** Plugins cannot bring down the main application thread. Memory leaks, infinite loops, or crashes run securely isolated.
+- **Zero Overhead Background Processing:** Ideal for listening to system events (e.g., when a task is updated) without the overhead of HTTP webhooks.
+- **Polyglot Freedom:** Write your backend plugins in AssemblyScript, Rust, Go, or C/C++ and compile to standard `.wasm`.
+
+## The Sandbox Environment
+
+When a WASM plugin is executed, it runs with strict boundaries:
+- **`memoryLimit`**: Configurable per plugin (default 64MB).
+- **`timeout`**: Configurable execution time limit (default 5000ms).
+
+Plugins do not have arbitrarily native file system or raw network socket access unless specifically granted via Host Functions.
+
+## Hook Points
+
+WASM Plugins are triggered by "Hook Points." A Hook Point is a subscription to a system event or an interception path within the main application.
+
+```json
+{
+  "hookPoints": ["task:created", "page:updated", "automation:custom_node"]
+}
+```
+
+When a user modifies a task or triggers a specific node in an automation workflow, the Collabase engine invokes your WASM module's entry point with the payload and context.
+
+## Host functions
+
+The engine provides specific "Host Functions" bridging your WASM sandbox to the Collabase platform.
+
+### Context and logging
+
+The most important host function is `collabase:log`. This allows you to stream execution logs directly to the Admin Dashboard's live log viewer.
+
+**AssemblyScript Example:**
+
+```typescript
+// Define the host function
+@external("collabase", "log")
+declare function collabaseLog(level: string, message: string): void;
+
+export function onActivate(): void {
+  collabaseLog("INFO", "WASM Plugin has been activated successfully!");
+}
+
+export function onEvent(eventName: string, payload: string): void {
+  collabaseLog("DEBUG", `Received event: ${eventName}`);
+  
+  if (eventName == "task:created") {
+    // Process the task
+    collabaseLog("INFO", "Processed new task creation.");
+  }
+}
+```
+
+### Building the plugin
+
+<Steps>
+  <Step title="Write logic">Write your logic.</Step>
+  <Step title="Compile">Compile to `.wasm` (e.g., using `asc` for AssemblyScript or `cargo build --target wasm32-unknown-unknown` for Rust).</Step>
+</Steps>
+
+## Installing and updating
+
+### Via the admin interface
+
+<Steps>
+  <Step title="Open plugins">Navigate to **System Administration → Plugins**.</Step>
+  <Step title="Select tab">Switch to the **WASM Plugins** tab.</Step>
+  <Step title="Click install">Click **Install WASM Plugin**.</Step>
+  <Step title="Upload">Upload your compiled `.wasm` file along with the metadata (`slug`, `name`, `version`).</Step>
+</Steps>
+
+### Reviewing live logs
+
+In the **WASM Plugins** tab, you can expand any installed plugin row. This reveals a **Live Log Viewer**.
+Every time your plugin calls `collabase:log` (or encounters a sandbox panic/timeout), it is instantly streamed here. You can filter logs by `Level` (INFO, ERROR, DEBUG) to easily monitor background execution in production.

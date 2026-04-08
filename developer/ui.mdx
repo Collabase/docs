@@ -1,28 +1,83 @@
 ---
-title: "UI library"
-description: "Use @collabase/ui to build plugin interfaces that look native to Collabase."
+title: "The UI Library"
+description: "Build plugin interfaces that look native to Collabase using the @collabase/ui toolkit."
 ---
 
-# UI library
+# The UI library
 
-`@collabase/ui` re-exports the same components and design tokens that Collabase itself uses.
+`@collabase/ui` is a specialized wrapper providing identically styled React components used inside the core Collabase application. 
+
+When you build SDK apps, importing from this library guarantees that your UI remains visually seamless and updates dynamically with the user's Theme preferences.
 
 ```bash
 npm install @collabase/ui
 ```
 
+## Setup and theming
+
+The core magic of `@collabase/ui` resides in bridging the CSS variables from the parent application into your standalone <iframe>.
+
+By importing the tokens file, a listener is registered that intercepts styling sync events from the parent `.collabase.app.json` bridge:
+
 ```tsx
-import { Card, Button, Table } from "@collabase/ui";
-import "@collabase/ui/tokens";
+import "@collabase/ui/tokens"; // Required to enable dynamic CSS sync
+```
+
+This ensures that if the user switches Collabase to "**Dark Mode**" or alters the Primary Accent Color in the Workspace Brand Settings, your plugin updates live — instantly.
+
+## Component catalog
+
+The UI library re-exports hundreds of components styled identically to the platform. 
+
+### Tables and data display
+
+A heavily optimized `Table` component tailored for dense data display.
+
+```tsx
+import { Card, Table } from "@collabase/ui";
 
 export function TaskList({ tasks }) {
   return (
-    <Card>
-      <Table columns={["Title", "Status"]} rows={tasks.map((t) => [t.title, t.status])} />
-      <Button variant="primary" onClick={handleCreate}>New task</Button>
+    <Card className="w-full h-full">
+      <Table 
+        columns={["Task ID", "Title", "Status"]} 
+        rows={tasks.map((t) => [t.id, t.title, t.status])} 
+      />
     </Card>
   );
 }
 ```
 
-[Source on GitHub](https://github.com/Collabase/ui)
+### Forms and input
+
+Use `Form`, `Input`, and `Button` to securely capture data without breaking structural design paradigms.
+
+```tsx
+import { Button, Input, Form } from "@collabase/ui";
+import { useState } from "react";
+
+export function CreateResource() {
+  const [name, setName] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Saving", name);
+  };
+
+  return (
+    <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <Input 
+        label="Resource Name" 
+        value={name} 
+        onChange={(e) => setName(e.target.value)} 
+      />
+      
+      <Button variant="primary" type="submit">
+        Save Resource
+      </Button>
+    </Form>
+  );
+}
+```
+
+**Note:** Always use `variant="primary"` for your primary Call To Action. The library will automatically tint this button with the user's custom brand color.
