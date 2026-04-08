@@ -21,7 +21,7 @@ When a WASM plugin is executed, it runs with strict boundaries:
 
 Plugins do not have arbitrarily native file system or raw network socket access unless specifically granted via Host Functions.
 
-## Hook Points
+## Hook points
 
 WASM Plugins are triggered by "Hook Points." A Hook Point is a subscription to a system event or an interception path within the main application.
 
@@ -32,6 +32,22 @@ WASM Plugins are triggered by "Hook Points." A Hook Point is a subscription to a
 ```
 
 When a user modifies a task or triggers a specific node in an automation workflow, the Collabase engine invokes your WASM module's entry point with the payload and context.
+
+### Available hook points
+
+Here is a complete list of hooks currently exposed to the WASM engine.
+
+| Hook | Payload description | Typical use case |
+|---|---|---|
+| `task:created` | The full `Task` object. | Automatic tagging, routing, or validation upon task creation. |
+| `task:updated` | The `Task` object and changed fields. | Auditing status transitions or computing derived states. |
+| `task:deleted` | The `taskId` string. | Cleaning up related external system records. |
+| `page:created` | The `Page` object (excluding content body). | Initiating approval workflows for new documentation. |
+| `page:updated` | The `Page` object and diff structure. | Tracking stale documentation or triggering translation tasks. |
+| `page:deleted` | The `pageId` string. | Archiving logic. |
+| `user:created` | The `User` profile object. | Provisioning the user in external LDAP or SCIM integrations. |
+| `project:created` | The `Project` object. | Bootstrapping default folders or task queues for new projects. |
+| `automation:custom_node` | The node `context`, `params`, and `variables`. | Executing highly specialized, memory-intensive logic required by an automation flowchart. |
 
 ## Host functions
 
