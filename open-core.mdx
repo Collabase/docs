@@ -1,6 +1,6 @@
 ---
 title: "Open Core Model"
-description: "How Collabase balances open source with sustainable enterprise features."
+description: "How Collabase balances open source with sustainable enterprise features"
 ---
 
 # Open Core Model
@@ -23,13 +23,16 @@ Collabase is built on an open-core model: the platform foundation is publicly av
 | LDAP / Active Directory | — | ✅ |
 | SSO enforcement | — | ✅ |
 | Immutable audit log | — | ✅ |
+| Security policies | — | ✅ |
 
-## Activating Enterprise
+## Activating enterprise
 
-1. Purchase a license at [collabase.com/enterprise](https://collabase.com/enterprise)
-2. Enter your license key in **Admin → License**
-3. Click **Install Enterprise Module** — Collabase installs `@collabase/enterprise` automatically
-4. Restart your server — enterprise features are immediately active
+<Steps>
+  <Step title="Purchase">Purchase a license at [collabase.com/enterprise](https://collabase.com/enterprise)</Step>
+  <Step title="Enter key">Enter your license key in **Admin → License**</Step>
+  <Step title="Install">Click **Install Enterprise Module** — Collabase installs `@collabase/enterprise` automatically</Step>
+  <Step title="Restart">Restart your server — enterprise features are immediately active</Step>
+</Steps>
 
 The enterprise module is distributed via a private npm registry. Your license key contains a scoped access token used transparently during installation.
 
