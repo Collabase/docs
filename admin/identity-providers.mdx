@@ -3,7 +3,11 @@ title: "Identity Providers"
 description: "Connect Collabase to your organization's identity provider using OAuth 2.0, LDAP, or SAML 2.0 for single sign-on."
 ---
 
-Collabase supports multiple authentication methods so users can sign in with their existing corporate credentials. You configure identity providers under **Settings → Identity Providers**.
+Collabase supports multiple authentication methods so users can sign in with their existing corporate credentials. You configure identity providers under **Admin → Identity Providers**.
+
+<Note>
+  LDAP, SAML 2.0, and SCIM provisioning require the Collabase Enterprise module. OAuth 2.0 providers (Google, GitHub, Microsoft, Okta, Keycloak) are available in all deployments.
+</Note>
 
 Supported provider types:
 
@@ -15,7 +19,7 @@ Supported provider types:
     LDAP authentication and automatic directory sync for on-premises identity stores.
   </Card>
   <Card title="SAML 2.0" icon="shield">
-    SAML-based single sign-on with any SAML 2.0 compliant identity provider.
+    SAML-based single sign-on with any SAML 2.0-compliant identity provider.
   </Card>
 </CardGroup>
 
@@ -27,112 +31,106 @@ After you enable an identity provider, users see a **Sign in with [provider]** b
 
 Collabase supports the following OAuth 2.0 providers out of the box:
 
-<CardGroup cols={5}>
-  <Card>
-    <img src="/images/keycloak.png" alt="Keycloak" style={{ height: '36px', objectFit: 'contain' }} />
-  </Card>
-  <Card>
-    <img src="/images/okta.webp" alt="Okta" style={{ height: '36px', objectFit: 'contain' }} />
-  </Card>
-</CardGroup>
-
 | Provider | Notes |
 |---|---|
 | **Google** | Standard Google OAuth. Works for both personal and Workspace accounts. |
-| **GitHub** | GitHub OAuth App. Requires creating an OAuth App in your GitHub organization. |
+| **GitHub** | GitHub OAuth App. Requires creating an OAuth App in your GitHub organization settings. |
 | **Microsoft** | Microsoft / Azure AD OAuth. Works with personal accounts and Entra tenants. |
 | **Okta** | Requires your Okta organization domain URL. |
-| **Keycloak** | Requires your Keycloak realm issuer URL. |
+| **Keycloak** | Requires your Keycloak realm issuer URL (including `/realms/<realm-name>`). |
 
 ### Configuring an OAuth provider
 
 <Steps>
   <Step title="Create an OAuth application in your provider">
-    Register a new OAuth app in your identity provider's developer console. You will need to supply a **redirect URI (callback URL)**.
+    Register a new OAuth app in your identity provider's developer console. You will need to provide a **redirect URI (callback URL)**.
 
     The callback URL for Collabase is:
     ```
     https://your-collabase-domain/api/auth/callback/<provider>
     ```
-    For example, for Google: `https://app.example.com/api/auth/callback/google`
+    Examples:
+    - Google: `https://app.example.com/api/auth/callback/google`
+    - GitHub: `https://app.example.com/api/auth/callback/github`
+    - Microsoft: `https://app.example.com/api/auth/callback/microsoft-entra-id`
   </Step>
   <Step title="Copy your Client ID and Client Secret">
-    Your provider will give you a Client ID and Client Secret once you create the app.
+    Your provider generates these once you create the OAuth app.
   </Step>
-  <Step title="Open Settings → Identity Providers">
-    Click the provider card (Google, GitHub, Microsoft, Okta, or Keycloak) in the **Add Identity Provider** section.
+  <Step title="Open Admin → Identity Providers">
+    Click the provider card (Google, GitHub, Microsoft, Okta, or Keycloak).
   </Step>
   <Step title="Enter your credentials">
-    Paste the **Client ID** and **Client Secret**. For Okta, enter your Okta domain URL. For Keycloak, enter the full realm issuer URL including `/realms/<realm-name>`.
+    Paste the **Client ID** and **Client Secret**. For Okta, enter your Okta domain URL. For Keycloak, enter the full realm issuer URL.
   </Step>
   <Step title="Set the default role">
-    Choose the global role (**Viewer**, **Collaborator**, or **Admin**) that new users created through this provider will receive.
+    Choose the global role (`User` or `Admin`) that new accounts created through this provider will receive.
   </Step>
   <Step title="Enable the provider and save">
-    Toggle the provider to **Enabled** and click **Save**. The sign-in button for this provider appears on the login page immediately.
+    Toggle the provider to **Enabled** and save. The sign-in button appears on the login page immediately.
   </Step>
 </Steps>
 
 <Note>
-  Client secrets are encrypted at rest and are never displayed again after saving. To rotate a secret, open the provider settings and enter a new secret.
+  Client secrets are encrypted at rest using AES-256 and are never displayed again after saving. To rotate a secret, open the provider settings and enter the new value.
 </Note>
 
 ---
 
 ## LDAP / Active Directory
 
-LDAP lets Collabase authenticate users against an on-premises or cloud LDAP server (OpenLDAP, Active Directory, FreeIPA, etc.) and periodically sync the user list.
+LDAP lets Collabase authenticate users against an on-premises or cloud LDAP server (OpenLDAP, Active Directory, FreeIPA, etc.) and periodically sync the user directory.
 
-Navigate to **Settings → Identity Providers** and click the **Active Directory / LDAP** row to configure it.
+Navigate to **Admin → Identity Providers** and click the **Active Directory / LDAP** row to configure it.
 
-### What you need
+### Configuration fields
 
 | Field | Description |
 |---|---|
-| **Host** | LDAP server hostname or IP address. |
-| **Port** | Default `389` for plain LDAP, `636` for LDAPS (TLS). |
-| **Use TLS** | Enable to connect over LDAPS. Automatically switches the port to `636`. |
-| **Bind DN** | The distinguished name of the service account Collabase uses to bind to the directory. Example: `cn=svc-collabase,ou=service-accounts,dc=example,dc=com` |
-| **Bind Password** | Password for the bind service account. |
-| **Base DN** | The root of the tree to search for users. Example: `ou=users,dc=example,dc=com` |
+| **Host** | LDAP server hostname or IP address |
+| **Port** | `389` for plain LDAP, `636` for LDAPS (TLS) |
+| **Use TLS** | Enable to connect over LDAPS — automatically switches the port to `636` |
+| **Bind DN** | Distinguished name of the service account. Example: `cn=svc-collabase,ou=service-accounts,dc=example,dc=com` |
+| **Bind Password** | Password for the bind service account |
+| **Base DN** | Root of the tree to search for users. Example: `ou=users,dc=example,dc=com` |
 | **User Search Filter** | LDAP filter to select user objects. Default: `(objectClass=person)` |
-| **Email Attribute** | LDAP attribute that maps to the user's email. Default: `mail` |
-| **Name Attribute** | LDAP attribute that maps to the user's display name. Default: `displayName` |
-| **Groups Attribute** | LDAP attribute used for group membership. Default: `memberOf` |
-| **Default Role** | The global role assigned to users synced from LDAP. |
+| **Email Attribute** | Attribute that maps to the user's email. Default: `mail` |
+| **Name Attribute** | Attribute that maps to the user's display name. Default: `displayName` |
+| **Groups Attribute** | Attribute used for group membership. Default: `memberOf` |
+| **Default Role** | Global role assigned to users synced from LDAP (`User` or `Admin`) |
 
 ### Directory presets
 
 The configuration panel includes presets to auto-fill common attribute mappings:
 
-- **Active Directory** — uses `userPrincipalName` for email, `displayName` for name, `(objectClass=user)` for filter.
-- **OpenLDAP** — uses `mail` for email, `cn` for name, `(objectClass=inetOrgPerson)` for filter.
+- **Active Directory** — uses `userPrincipalName` for email, `displayName` for name, `(objectClass=user)` as the filter.
+- **OpenLDAP** — uses `mail` for email, `cn` for name, `(objectClass=inetOrgPerson)` as the filter.
 
 Select a preset to populate the fields, then adjust as needed for your schema.
 
 ### Testing the connection
 
-Click **Test Connection** after filling in the server details to verify that Collabase can bind to your directory and count matching users before saving. The test result shows the number of users found or the error message if the connection fails.
+Click **Test Connection** after filling in the server details to verify that Collabase can bind to your directory and count matching users. The result shows the number of users found or the error message if the connection fails.
 
 ### Sync behavior
 
 When LDAP sync is enabled, Collabase periodically pulls users from the directory:
 
-- **New users** in LDAP are created in Collabase with the configured default role.
+- **New users** found in LDAP are created in Collabase with the configured default role.
 - **Existing users** have their name and LDAP DN updated on each sync.
-- **Users removed from LDAP** (no longer matching the search filter) are disabled in Collabase.
+- **Users removed from LDAP** (no longer matching the search filter) are disabled in Collabase — their content is not deleted.
 
-You can also trigger a manual sync at any time by clicking **Sync Now** in the LDAP settings panel. The sync result shows the number of users created, updated, and disabled.
+You can trigger a manual sync at any time by clicking **Sync Now**. The result shows how many users were created, updated, and disabled.
 
 <Tip>
-  LDAP users are shown with an **LDAP** badge in the **Directory** column of the users table. Their profile fields are read-only in Collabase — changes must be made in your directory and will be reflected on the next sync.
+  LDAP users appear with an **LDAP** badge in the Directory column of the users table. Their profile fields are read-only in Collabase — changes must be made in your directory and will be reflected on the next sync.
 </Tip>
 
 ---
 
 ## SAML 2.0
 
-SAML 2.0 is supported for enterprise single sign-on with identity providers such as Okta, Microsoft Entra (Azure AD), and any other SAML 2.0 compliant IdP.
+SAML 2.0 is supported for enterprise single sign-on with providers such as Okta, Microsoft Entra (Azure AD), and any other SAML 2.0-compliant IdP.
 
 ### What you provide to your IdP
 
@@ -144,33 +142,33 @@ Your identity provider needs two values to register Collabase as a service provi
 | **SP Entity ID** | `https://your-collabase-domain/api/auth/saml/metadata` |
 
 <Note>
-  You can also point your IdP to the metadata URL directly: `https://your-collabase-domain/api/auth/saml/metadata`. Most modern IdPs can import the SP metadata automatically from this URL.
+  Most modern IdPs can import SP metadata automatically from the metadata URL: `https://your-collabase-domain/api/auth/saml/metadata`.
 </Note>
 
 ### What you need from your IdP
 
 | Field | Where to find it |
 |---|---|
-| **IdP SSO URL** | The Single Sign-On URL from your IdP. In Okta, this is the **Identity Provider Single Sign-On URL**. In Entra, it is the **Login URL**. |
-| **IdP Certificate** | The X.509 certificate used by your IdP to sign assertions. Copy the PEM-encoded certificate from your IdP. |
-| **Entity ID** | The IdP's entity identifier (issuer). Usually a URL provided in your IdP's SAML settings. |
+| **IdP SSO URL** | The Single Sign-On URL. In Okta: **Identity Provider Single Sign-On URL**. In Entra: **Login URL**. |
+| **IdP Certificate** | The X.509 signing certificate (PEM-encoded) from your IdP's SAML settings. |
+| **Entity ID** | The IdP's entity identifier (issuer) — usually a URL from your IdP's SAML settings. |
 
 ### Configuring SAML
 
-Navigate to **Settings → Identity Providers** and open the SAML configuration panel.
+Navigate to **Admin → Identity Providers** and open the SAML configuration panel.
 
 <Steps>
   <Step title="Enter the IdP SSO URL">
     Paste the Single Sign-On URL from your identity provider.
   </Step>
   <Step title="Enter the IdP certificate">
-    Paste the PEM-encoded X.509 signing certificate from your IdP.
+    Paste the PEM-encoded X.509 signing certificate.
   </Step>
   <Step title="Set the Entity ID">
-    Enter the IdP entity ID (issuer) exactly as your IdP presents it.
+    Enter the IdP entity ID exactly as your IdP presents it.
   </Step>
   <Step title="Enable SAML and save">
-    Toggle SAML to **Enabled** and save the configuration. Users will see a **Sign in with SSO** button on the login page.
+    Toggle SAML to **Enabled** and save. Users see a **Sign in with SSO** button on the login page.
   </Step>
 </Steps>
 
@@ -187,15 +185,15 @@ Configure your IdP to include these attributes in the SAML assertion.
 
 ---
 
-## SSO bypass policy
+## Break-glass admin access
 
-When SSO is the primary authentication method for your organization, you may still need certain admin accounts to be able to log in with a password — for example, a break-glass admin account.
+When SSO is the primary authentication method, you may still need at least one admin account that can log in with a password — for example, if your IdP has an outage.
 
-Configure this under **Settings → Security → Policies → SSO Bypass**:
+The standard email/password login form is always accessible at `/auth/login`. To reach it when SSO is configured as the default:
 
-- Add specific users or groups that are exempt from the SSO requirement.
-- Generate a **bypass link** (`/auth/login?sso_bypass=1`) that bypasses SSO enforcement and shows the standard email/password login form.
+- Bookmark `/auth/login` and use it directly — it bypasses the SSO button.
+- Alternatively, use the SSO bypass parameter: `/auth/login?bypass=1`.
 
 <Warning>
-  Keep the bypass link confidential. Any user with the link can reach the password login form.
+  Ensure at least one `Admin`-role account with a local password exists at all times. If all admins authenticate exclusively via SSO and your IdP goes down, you will be locked out.
 </Warning>

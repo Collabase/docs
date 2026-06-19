@@ -1,47 +1,95 @@
 ---
 title: "First Run"
-description: "Complete the one-time setup wizard to initialize the database and create your administrator account."
+description: "What happens the first time Collabase starts, and what to expect on your first login."
 ---
 
-After the containers are running, Collabase requires a one-time initialization to build the database schema and create the root administrator account. This wizard runs once — subsequent restarts go straight to the login page.
+## How first run works
+
+When Collabase starts for the first time, the `collabase-app` container automatically runs migrations and seeds the database **before** the Next.js server starts — no browser-based wizard is required.
+
+The startup sequence is:
+
+1. Wait for PostgreSQL to be reachable
+2. Ensure the `pgvector` extension is installed
+3. Apply all pending migrations (`prisma migrate deploy`)
+4. **Seed on first run** — creates your admin account using `COLLABASE_ADMIN_EMAIL` and `COLLABASE_ADMIN_PASSWORD`; optionally loads demo data if `COLLABASE_SEED_DEMO_DATA=true`
+5. Start the Next.js server
+
+A marker file (`/app/storage/.seeded`) is written after the first successful seed to ensure this step never runs again on subsequent restarts.
+
+---
+
+## First login
+
+Once the app is running, navigate to your configured URL (e.g. `https://collabase.example.com`) and log in with the admin email and password you set during installation.
 
 <Steps>
-  <Step title="Open Collabase in your browser">
-    Navigate to the URL you configured during installation — for example, `https://collabase.example.com` or `https://localhost`.
+  <Step title="Log in with your admin credentials">
+    Go to your Collabase URL. You will be presented with the login page.
 
-    The **Lifecycle Guard** detects that the system is uninitialized and redirects you to the Setup Wizard automatically. You do not need to navigate to a specific path.
+    Enter the **admin email** and **password** you configured during installation.
   </Step>
 
-  <Step title="Initialize the database">
-    You will see the **"Welcome to Collabase"** screen. Click **"Initialize System"**.
+  <Step title="Set a new password">
+    The initial admin account is created with `mustChangePassword = true`. After your first successful login, Collabase will redirect you to `/auth/change-password` automatically.
 
-    A terminal-style console appears and streams the live progress as the database schema is built. Wait for the green **"Success"** message before proceeding.
+    Enter and confirm a new password (minimum 8 characters). Once saved, you are redirected back to the login page and can sign in normally.
 
-    <Warning>
-      Do not close the browser tab or restart the containers while the migration is running. Interrupting the migration can leave the database in a partial state.
-    </Warning>
+    <Note>
+      This forced password change only happens once per account and only applies to accounts created by the installer or by an administrator on behalf of another user. Accounts created by the user themselves through an invitation are not affected.
+    </Note>
   </Step>
 
-  <Step title="Create the administrator account">
-    Once the database is ready, the wizard transitions to the **Onboarding** view. Fill in the following fields:
+  <Step title="Create your first Space">
+    After logging in you land on the Collabase home page. Click **"New Space"** to create your first workspace — give it a name, an icon, and optionally a description.
 
-    | Field | Description |
-    |---|---|
-    | **Name** | Your display name |
-    | **Email** | Your login email address |
-    | **Password** | Minimum 8 characters |
-    | **Application title** | The name shown in the browser tab and header (e.g. "Company Knowledge Base") |
-
-    Click **"Finalize Setup"**.
+    A Space is the top-level container for all content (pages, tasks, test suites, automations). You can create as many Spaces as you need, each with its own member list and permissions.
   </Step>
 
-  <Step title="Log in and start using Collabase">
-    You are redirected to the login page. Enter the email and password you just created.
-
-    The system is now in `READY` state. You can create your first Space, invite team members, and start adding content.
-
-    <Tip>
-      If you enabled demo data during installation (`HELVI_SEED_DEMO_DATA=true`), you will find pre-built Spaces and example content waiting for you. This is a good way to explore the product before adding real data.
-    </Tip>
+  <Step title="Invite team members">
+    Go to **Admin → Users** and invite your team. Each user receives an email with a sign-in link. You can assign them a global role (`Admin` or `User`) and then add them to individual Spaces with a Space-level role.
   </Step>
 </Steps>
+
+---
+
+## Demo data
+
+If you installed with `COLLABASE_SEED_DEMO_DATA=true`, the seeder creates pre-built Spaces and example pages so you can explore the product before adding real content.
+
+To remove demo data later, delete the Spaces from the Collabase UI or via the Admin panel.
+
+---
+
+## The Setup Wizard (edge case)
+
+The `/setup` page is a fallback for installations where the Docker container was started **without running the installer** (e.g. a bare `docker run` without the `deployment/install.sh` script).
+
+In this case the app detects one of the following states at startup and redirects to `/setup` automatically:
+
+| State | What it means | What to do |
+|---|---|---|
+| `INITIAL_SETUP` | No migrations have been applied yet | Click **"Initialize System"** — a live log streams the migration progress |
+| `PENDING_UPDATE` | Migrations from a new release have not been applied | Click **"Apply Updates"** to run the pending migrations |
+| `NO_ADMIN` | Migrations are done but no admin account exists | Fill in instance settings and administrator credentials, then click **"Complete Setup"** |
+
+<Warning>
+  Do not close the browser tab or restart the containers while the migration log is streaming. An interrupted migration can leave the database schema in a partial state.
+</Warning>
+
+After completing the Setup Wizard you are redirected to the login page. The instance is now `READY`.
+
+If you used `install.sh`, you will never see this wizard — the installer handles migrations and seeding before the app starts.
+
+---
+
+## After setup
+
+| Task | Where |
+|---|---|
+| Invite users | Admin → Users |
+| Configure email (SMTP) | Admin → Settings → Mail |
+| Set up SSO (SAML/LDAP) | Admin → Settings → Authentication |
+| Enable or disable features per Space | Space Settings |
+| Change instance name or branding | Admin → Settings → Branding |
+| Check system health | Admin → System |

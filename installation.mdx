@@ -1,122 +1,340 @@
 ---
 title: "Installation"
-description: "Install Collabase on your own server using Docker and the one-command installer."
+description: "Deploy Collabase on your own server in minutes using Docker and the one-command installer."
 ---
 
 ## Prerequisites
 
-Before you install, make sure your server meets the following requirements:
+Collabase runs entirely in Docker. Before you start, make sure your server meets the following requirements.
 
-| Requirement | Minimum version / spec |
-|---|---|
-| Docker | >= 20.10 |
-| Docker Compose | v2 |
-| RAM | 4 GB+ recommended |
-| Operating system | Linux, macOS, or Windows (WSL2) |
+### System Requirements
 
-The installer checks that ports **80** and **443** are free. Caddy uses both to provision TLS certificates automatically.
+| Requirement | Minimum | Recommended |
+|---|---|---|
+| **Docker** | ≥ 24.0 | Latest stable |
+| **Docker Compose** | v2 (built-in with Docker Desktop) | — |
+| **RAM** | 2 GB | **4 GB+** (required for the AI Engine / Brain feature) |
+| **OS** | Ubuntu 22.04+, Debian 12+, RHEL 9+ | Ubuntu 24.04 LTS |
+| **Ports** | 80 and 443 must be free | — |
+
+> **macOS & Windows:** Supported for local/development installs. Use Docker Desktop with WSL2 on Windows.
+
+The installer checks Docker, Docker Compose, available RAM, and port availability automatically before it does anything else.
+
+---
 
 ## Install Collabase
 
 <Steps>
+  <Step title="Download the deployment package">
+    Clone the repository or download the latest deployment release zip:
+
+    ```bash
+    # Option A — release zip (recommended for production)
+    wget https://github.com/Collabase/collabase/releases/latest/download/collabase-deployment.zip
+    unzip collabase-deployment.zip
+    cd deployment
+    ```
+
+    ```bash
+    # Option B — git clone
+    git clone https://github.com/Collabase/collabase.git
+    cd collabase/deployment
+    ```
+  </Step>
+
   <Step title="Run the installer">
-    Run the one-command installer. It will check your environment, prompt you for configuration, generate secrets, and start all services.
-
     ```bash
-    curl -fsSL https://raw.githubusercontent.com/briantrp/collabase/main/deployment/install.sh | bash
-    ```
-
-    If you prefer to inspect the script before running it, download it first:
-
-    ```bash
-    wget https://github.com/briantrp/collabase/releases/latest/download/install.sh
     chmod +x install.sh
-    ./install.sh
+    bash install.sh
     ```
+
+    The installer is **interactive by default** — it will prompt you for your URL, admin email, and password. It then generates all cryptographic secrets automatically and writes them to a `.env` file.
+
+    <Note>
+      If you prefer to verify the script before running it, open `install.sh` in your editor. It performs no downloads other than Docker images from the GitHub Container Registry (`ghcr.io`).
+    </Note>
   </Step>
 
   <Step title="Answer the configuration prompts">
     The installer asks for three things:
 
-    - **Domain / URL** — the URL where Collabase will be reachable (e.g. `https://collabase.example.com`). Use `https://localhost` for a local test.
-    - **Admin email** — the email address for the initial administrator account.
-    - **Admin password** — at least 8 characters.
+    | Prompt | Description | Default |
+    |---|---|---|
+    | **Domain / URL** | The public URL where Collabase will be reachable | `https://localhost` |
+    | **Admin email** | Email address for the initial administrator account | `admin@collabase.local` |
+    | **Admin password** | Must be at least 8 characters, confirmed twice | — |
 
-    It also asks whether you want to load demo data on first run.
+    Optionally, you can choose to install **demo data** (sample spaces, tasks, and pages) to explore the product on first boot.
 
-    The installer generates all cryptographic secrets automatically and writes them to a `.env` file.
+    Once confirmed, the installer generates and saves the following secrets to `deployment/.env`:
+
+    - `NEXTAUTH_SECRET` — session signing key (48-byte base64)
+    - `POSTGRES_PASSWORD` — database password (24-byte hex)
+    - `AUTOMATION_ENCRYPTION_KEY` — connector credential encryption (32-byte hex)
+    - `AUTOMATION_WORKER_SECRET` — internal API authentication (32-byte hex)
+    - `ENCRYPTION_KEY` — field-level AES-256 key (32-byte hex)
+    - `MAIL_ENCRYPTION_KEY` — SMTP credential encryption (32-byte base64)
+    - `PDF_PRINT_TOKEN` — document-processor authentication (32-byte hex)
   </Step>
 
   <Step title="Wait for services to start">
-    After the configuration prompts, the installer pulls the latest images from the GitHub Container Registry and starts all services. It then polls the health endpoint and prints a confirmation once Collabase is ready.
+    The installer pulls the latest images from the GitHub Container Registry and starts all containers. It then polls `/api/health` and prints a confirmation once Collabase is responding.
 
-    This typically takes one to two minutes on the first run.
+    **First boot typically takes 1–3 minutes.** The app container runs Prisma migrations and seeds the database before the Next.js server starts.
+
+    <Note>
+      On servers with **less than 4 GB RAM**, the installer automatically uses the lightweight profile (`docker-compose.release.no-ai.yml`), which excludes the AI Engine. All other features — tasks, wiki, automation — are fully available. You can enable the AI Engine later by migrating to a larger server and re-running the installer.
+    </Note>
   </Step>
 
   <Step title="Open Collabase in your browser">
-    Navigate to the URL you configured. You will be redirected to the setup wizard automatically.
+    Navigate to the URL you configured. Log in with the admin email and password you set during installation.
 
-    Follow the [First Run](/first-run) guide to initialize the database and create your admin account.
+    If you used a real domain, Caddy has already provisioned a **free TLS certificate via Let's Encrypt** automatically. No manual Certbot setup is needed.
   </Step>
 </Steps>
 
-## What gets installed
+---
 
-The installer starts three containers:
+## Non-Interactive / CI Installation
 
-| Container | Purpose |
-|---|---|
-| `collabase-app` | The Next.js application |
-| `collabase-postgres` | PostgreSQL 16 database |
-| `collabase-caddy` | Reverse proxy — handles HTTP/HTTPS and TLS |
+To run the installer without prompts (e.g. in a CI pipeline or an automation script), set the following environment variables before calling the installer:
 
-## Configuration
+| Variable | Required | Description |
+|---|---|---|
+| `COLLABASE_URL` | ✅ | Your public URL — no trailing slash (e.g. `https://collabase.example.com`) |
+| `COLLABASE_ADMIN_PASSWORD` | ✅ | Admin password, minimum 8 characters |
+| `COLLABASE_ADMIN_EMAIL` | — | Admin email (default: `admin@collabase.local`) |
+| `COLLABASE_SEED_DEMO` | — | Load demo data on first run (`true` / `false`, default: `false`) |
 
-All configuration lives in the `.env` file created by the installer. Edit it to change any value, then restart the app container.
+```bash
+COLLABASE_URL=https://collabase.example.com \
+COLLABASE_ADMIN_EMAIL=admin@example.com \
+COLLABASE_ADMIN_PASSWORD=mySecurePassword123 \
+bash deployment/install.sh
+```
+
+<Warning>
+  The installer requires a real TTY for interactive prompts. If neither a TTY nor the required environment variables are present, it exits with an error rather than hanging or using insecure defaults.
+</Warning>
+
+---
+
+## What Gets Installed
+
+The installer starts the following containers. All images are pulled from `ghcr.io/collabase/`.
+
+### Full Profile (≥ 4 GB RAM)
+
+| Container | Image | Purpose |
+|---|---|---|
+| `collabase-app` | `collabase:latest` | Next.js application — wiki, tasks, pages, automation |
+| `collabase-postgres` | `pgvector/pgvector:pg16` | PostgreSQL 16 with pgvector extension (for Brain RAG) |
+| `collabase-redis` | `redis:7-alpine` | BullMQ job queue — automation execution and Brain indexing |
+| `collabase-caddy` | `caddy:2-alpine` | Reverse proxy — handles HTTP/HTTPS and automatic TLS |
+| `collabase-document-processor` | `collabase-document-processor:latest` | PDF generation and file parsing |
+| `collabase-code-runner` | `collabase-code-runner:latest` | Isolated V8 sandbox for automation Code nodes |
+| `collabase-ai-engine` | `collabase-ai-engine:latest` | LLM/RAG engine powering the Brain feature |
+
+### Lightweight Profile (2–4 GB RAM)
+
+The same stack as above **without** `collabase-ai-engine`. All features work normally except Brain (AI chat over your data). You can upgrade to the full profile by migrating to a larger server.
+
+---
+
+## First Boot Behaviour
+
+The `collabase-app` container runs a startup script (`entrypoint.sh`) on every boot that:
+
+1. **Waits for PostgreSQL** to be reachable on port 5432.
+2. **Ensures `pgvector` is installed** — runs `CREATE EXTENSION IF NOT EXISTS vector`.
+3. **Applies pending migrations** — `prisma migrate deploy` is idempotent and safe to run on every startup.
+4. **Seeds on first run only** — a marker file (`/app/storage/.seeded`) is created after the first successful seed to prevent accidental data resets on restarts.
+5. **Starts the Next.js server** — `node server.js`.
+
+<Note>
+  The seeder creates the initial admin account using `COLLABASE_ADMIN_EMAIL` and `COLLABASE_ADMIN_PASSWORD`. Once the account exists, those variables can be removed from `.env` for security.
+</Note>
+
+---
+
+## Configuration Reference
+
+All configuration lives in `deployment/.env`. Edit it to change any value, then restart the affected container.
+
+### Required Variables
 
 | Variable | Description |
 |---|---|
-| `NEXTAUTH_URL` | The URL where Collabase is reachable (e.g. `https://collabase.example.com`) |
-| `NEXTAUTH_SECRET` | Random secret used to sign session tokens — generated automatically |
-| `HELVI_ADMIN_EMAIL` | Email address for the initial admin account |
-| `HELVI_ADMIN_PASSWORD` | Password for the initial admin account |
-| `HELVI_SEED_DEMO_DATA` | Set to `true` to load demo Spaces and content on first run |
+| `NEXTAUTH_URL` | The public URL of your Collabase instance — no trailing slash |
+| `NEXTAUTH_SECRET` | Random secret for signing session tokens — auto-generated |
+| `AUTH_TRUST_HOST` | Set to `true` when running behind a reverse proxy (Docker, Nginx, etc.) |
+| `COLLABASE_ADMIN_EMAIL` | Email for the initial admin account |
+| `COLLABASE_ADMIN_PASSWORD` | Password for the initial admin account (min 8 chars; blocked if set to `admin123`) |
+| `POSTGRES_PASSWORD` | Password for the internal `collabase` PostgreSQL user — auto-generated |
 
-<Note>
-  The installer generates `NEXTAUTH_SECRET` and other cryptographic keys automatically using `openssl`. You do not need to set these manually.
-</Note>
+### Security Keys (Auto-Generated)
 
-## HTTPS and custom domains
+| Variable | Description |
+|---|---|
+| `AUTOMATION_ENCRYPTION_KEY` | 64-character hex key — encrypts automation connector credentials at rest |
+| `AUTOMATION_WORKER_SECRET` | Shared secret authenticating internal worker → API calls |
+| `ENCRYPTION_KEY` | 32-byte hex key for field-level AES-256 encryption of OAuth provider credentials |
+| `MAIL_ENCRYPTION_KEY` | 32-byte Base64 key — encrypts stored SMTP credentials at rest |
+| `PDF_PRINT_TOKEN` | Internal token authenticating PDF generation requests |
 
-Caddy provisions TLS certificates automatically when you use a public domain name. For `localhost` or an IP address, it falls back to an internally signed certificate.
+### Optional Variables
 
-To change the domain after installation:
+| Variable | Default | Description |
+|---|---|---|
+| `COLLABASE_SEED_DEMO_DATA` | `false` | Load demo spaces and tasks on first boot |
+| `OLLAMA_BASE_URL` | `http://host.docker.internal:11434` | Ollama endpoint for the AI Engine |
+| `ALLOW_INSECURE_TLS` | `false` | Skip TLS verification when polling health endpoint (useful for self-signed certs) |
 
-1. Edit the `Caddyfile` and update the domain block.
-2. Update `NEXTAUTH_URL` in `.env` to match.
-3. Restart the Caddy container:
+<Warning>
+  **Never commit `.env` to version control.** It contains database passwords and cryptographic keys. The installer adds it to `.gitignore` automatically.
+</Warning>
 
+---
+
+## HTTPS and Custom Domains
+
+Caddy handles TLS automatically:
+
+- **Public domain** → Let's Encrypt certificate provisioned automatically on first request.
+- **`localhost` or an IP address** → Caddy falls back to an internally signed certificate (`tls internal`). Your browser will show a security warning — this is expected for local installs.
+
+### Changing the Domain After Installation
+
+1. Edit `deployment/.env` — update `NEXTAUTH_URL` and `COLLABASE_DOMAIN`.
+2. Regenerate the Caddyfile, or edit it manually:
+   ```
+   your-new-domain.com {
+       reverse_proxy collabase-app:3000
+   }
+   ```
+3. Restart Caddy:
    ```bash
-   docker compose -f docker-compose.release.yml restart caddy
+   docker compose -f deployment/docker-compose.release.yml restart caddy
    ```
 
-## Useful Docker commands
+---
+
+## Updating Collabase
+
+Use the dedicated update script — **do not run `install.sh` again** on an existing installation.
 
 ```bash
-# View live logs
-docker compose -f docker-compose.release.yml logs -f
-
-# Stop all containers
-docker compose -f docker-compose.release.yml down
-
-# Update to the latest release
-docker compose -f docker-compose.release.yml pull
-docker compose -f docker-compose.release.yml up -d
-
-# Back up the database
-docker exec collabase-postgres pg_dump -U collabase collabase > backup.sql
+bash deployment/update.sh
 ```
 
+The update script:
+
+1. **Creates a compressed database backup** to `deployment/backups/collabase-<timestamp>.sql.gz` before pulling any new images.
+2. **Auto-migrates environment variables** — if your `.env` still uses the old `HELVI_*` variable names from an earlier version, they are automatically renamed to `COLLABASE_*`.
+3. **Provisions missing secrets** — new releases may require additional environment variables. The script generates and appends any that are missing so you never hit a 500 on upgrade.
+4. **Pulls latest images** and restarts all containers with `--remove-orphans` to clean up discontinued services.
+5. **Waits for migrations and health** — polls `/api/health` for up to 5 minutes.
+
 <Tip>
-  Run backups before every update. The `pg_dump` command above produces a plain SQL file you can restore with `psql`.
+  Backups are compressed with `gzip`. To restore from a backup:
+
+  ```bash
+  gunzip -c deployment/backups/collabase-20260101-120000.sql.gz | \
+    docker exec -i collabase-postgres psql -U collabase collabase
+  ```
 </Tip>
+
+### Reconfiguring an Existing Install
+
+To change your URL, admin credentials, or any other installer-managed setting:
+
+```bash
+bash deployment/install.sh --reconfigure
+```
+
+This removes the existing `.env`, runs the configuration prompts again, and generates a new Caddyfile. Existing data and secrets are preserved in the database — only the `.env` and Caddyfile are replaced.
+
+---
+
+## Useful Commands
+
+```bash
+# View live logs from all containers
+docker compose -f deployment/docker-compose.release.yml logs -f
+
+# View logs from a specific container
+docker compose -f deployment/docker-compose.release.yml logs -f collabase-app
+
+# Stop all containers (data is preserved)
+docker compose -f deployment/docker-compose.release.yml down
+
+# Stop and remove all data volumes (destructive — deletes all data)
+docker compose -f deployment/docker-compose.release.yml down -v
+
+# Restart a single container
+docker compose -f deployment/docker-compose.release.yml restart collabase-app
+
+# Check container health
+docker compose -f deployment/docker-compose.release.yml ps
+
+# Back up the database manually
+docker exec collabase-postgres \
+  pg_dump -U collabase collabase | gzip > backup-$(date +%Y%m%d).sql.gz
+
+# Open a psql shell
+docker exec -it collabase-postgres psql -U collabase collabase
+```
+
+---
+
+## Troubleshooting
+
+### The app did not start within the expected time
+
+The app runs database migrations on every boot. On first start or after a major upgrade, this can take longer than usual.
+
+```bash
+# Watch the startup sequence in real time
+docker compose -f deployment/docker-compose.release.yml logs -f collabase-app
+```
+
+Look for the line `🚀 Starting Collabase...` — everything before it is the migration and seed phase.
+
+### Port 80 or 443 is already in use
+
+The installer checks this before starting. If a port is in use, identify and stop the conflicting service:
+
+```bash
+# Find the process using port 80
+sudo ss -tlnp | grep :80
+# or
+sudo lsof -i :80
+```
+
+### Brain / AI features are unavailable
+
+The AI Engine is only started on servers with **4 GB+ RAM**. If you are on a larger server and Brain is still unavailable, check whether the AI Engine container is running:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml ps collabase-ai-engine
+```
+
+If it is absent, your install used the lightweight profile. Switch to the full profile by editing `docker-compose.release.yml` (or re-running the installer on a server with sufficient RAM).
+
+### POSTGRES_PASSWORD is set to `collabase`
+
+This warning appears when `update.sh` detects the default database password. To fix it:
+
+```bash
+# 1. Change the password in PostgreSQL
+docker exec -it collabase-postgres \
+  psql -U collabase -c "ALTER USER collabase PASSWORD 'new-secure-password';"
+
+# 2. Update .env
+sed -i "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=new-secure-password/" deployment/.env
+
+# 3. Restart the app
+docker compose -f deployment/docker-compose.release.yml restart collabase-app
+```

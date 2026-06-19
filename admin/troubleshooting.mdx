@@ -1,77 +1,159 @@
 ---
 title: "Troubleshooting"
-description: "Diagnose common issues with Collabase — connection errors, permission problems, and container management."
+description: "Diagnose and resolve common issues with your Collabase instance."
 ---
 
-Collabase reports errors before they cause data issues. Here is how to diagnose and resolve the most common problems.
+## Viewing logs
 
-## Connection lost overlay
-
-If you see a black **"Connection Lost"** screen:
-
-- **Cause:** The application cannot reach the Postgres database.
-- **Solution:**
-
-<Steps>
-  <Step title="Check if the database container is running">
-    ```bash
-    docker ps
-    ```
-    Look for the `db` container in the output. If it is not listed or shows `Exited`, the container has stopped.
-  </Step>
-  <Step title="Check database logs">
-    ```bash
-    docker compose logs db
-    ```
-    Look for any startup errors or disk-full messages.
-  </Step>
-  <Step title="Verify the DATABASE_URL">
-    Open your `.env` file and confirm that `DATABASE_URL` points to the correct host, port, and database name.
-  </Step>
-</Steps>
-
-## Logs and diagnostics
-
-To see what the application is doing in real time:
+The most useful first step for any issue is checking the application log:
 
 ```bash
-docker compose logs -f app
+# Follow all containers live
+docker compose -f deployment/docker-compose.release.yml logs -f
+
+# Follow a specific container
+docker compose -f deployment/docker-compose.release.yml logs -f collabase-app
+docker compose -f deployment/docker-compose.release.yml logs -f collabase-postgres
 ```
 
-### Health endpoint
+---
 
-Collabase exposes a built-in health endpoint used by Docker's health check. You can call it manually to confirm the system state:
+## Health endpoint
+
+Collabase exposes a health endpoint you can call to confirm the system state:
 
 ```bash
+curl https://your-collabase-domain/api/health
+# or locally:
 curl http://localhost:3000/api/health
 ```
 
 | Response | Meaning |
 |---|---|
 | `200 OK` | The system is `READY` and healthy |
-| `503 Service Unavailable` | The system is in a setup or update state — normal during first run or migration |
+| `503 Service Unavailable` | The system is in a setup or update state — normal during first boot or migration |
 
-## Container management
+---
+
+## App did not start
+
+The app runs database migrations on every boot. On first start or after a major upgrade this can take longer than usual (typically 30–90 seconds).
+
+Watch the startup sequence in real time:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml logs -f collabase-app
+```
+
+Look for the line `🚀 Starting Collabase...` — everything before it is the migration and seed phase.
+
+**Common causes:**
+- PostgreSQL is not reachable — the app will retry 30 times then exit with `Database not reachable`
+- `NEXTAUTH_SECRET` or `COLLABASE_ADMIN_PASSWORD` is missing — the entrypoint exits immediately with an error message
+- `COLLABASE_ADMIN_PASSWORD` is set to `admin123` — blocked on startup as a security guard
+
+---
+
+## Database connection lost
+
+If the app shows a **"Connection Lost"** screen or the health endpoint returns 503:
+
+<Steps>
+  <Step title="Check if the database container is running">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml ps
+    ```
+    Look for `collabase-postgres` in the output. If it shows `Exited`, the container stopped.
+  </Step>
+  <Step title="Check database logs">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml logs collabase-postgres
+    ```
+    Look for startup errors or disk-full messages.
+  </Step>
+  <Step title="Restart the database">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml restart collabase-postgres
+    ```
+    Then wait for the app container to reconnect automatically.
+  </Step>
+</Steps>
+
+---
+
+## Ports 80 or 443 in use
+
+Caddy binds to ports 80 and 443. If another service is using these ports, Caddy will fail to start.
+
+```bash
+# Find what is using port 80
+sudo ss -tlnp | grep :80
+# or
+sudo lsof -i :80
+```
+
+Stop the conflicting service, then restart Caddy:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml restart collabase-caddy
+```
+
+---
+
+## File uploads fail
+
+If uploads fail or the app cannot write files, the storage volume may have a permissions issue.
+
+The app writes uploaded files to the Docker volume `collabase_storage` (mounted at `/app/storage` inside the container). Verify the volume exists:
+
+```bash
+docker volume ls | grep collabase
+```
+
+If the volume is missing or the container reports permission errors, restart the app container — the entrypoint creates required directories automatically:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml restart collabase-app
+```
+
+---
+
+## Brain / AI features unavailable
+
+The AI Engine (`collabase-ai-engine`) is only started on servers with 4 GB+ RAM. If your install used the lightweight profile, the AI Engine is absent by design.
+
+Check whether the container is running:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml ps collabase-ai-engine
+```
+
+If it is missing and your server has sufficient RAM, you can switch to the full profile by updating your compose command to use `docker-compose.release.yml` (which includes the AI Engine service).
+
+---
+
+## Container management reference
 
 | Action | Command |
 |---|---|
-| Restart all containers | `docker compose restart` |
-| Hard reset (keep data) | `docker compose down && docker compose up -d` |
-| View running containers | `docker ps` |
-| Rebuild image (rarely needed) | `docker compose up -d --build` |
+| View all container statuses | `docker compose -f deployment/docker-compose.release.yml ps` |
+| View live logs | `docker compose -f deployment/docker-compose.release.yml logs -f` |
+| Restart all containers | `docker compose -f deployment/docker-compose.release.yml restart` |
+| Restart one container | `docker compose -f deployment/docker-compose.release.yml restart collabase-app` |
+| Stop all (data preserved) | `docker compose -f deployment/docker-compose.release.yml down` |
+| Stop and remove all data | `docker compose -f deployment/docker-compose.release.yml down -v` |
+| Pull latest images | `docker compose -f deployment/docker-compose.release.yml pull` |
 
-## Permission errors
+<Warning>
+  `down -v` removes all Docker volumes including the database. Use this only if you want to completely wipe the instance.
+</Warning>
 
-If uploads fail or the application cannot write files:
+---
 
-<Steps>
-  <Step title="Check folder permissions">
-    Confirm that `collabase_data` and `shared-home` on the host are writable by the user running Docker.
-  </Step>
-  <Step title="Re-run the migration script">
-    ```bash
-    ./migrate-data.sh
-    ```
-    This script resets the correct ownership and permissions on all data folders.
-  </Step>
-</Steps>
+## Getting help
+
+If the above steps do not resolve your issue:
+
+1. Capture the full log output: `docker compose -f deployment/docker-compose.release.yml logs > collabase-debug.log`
+2. Note your Docker version: `docker --version && docker compose version`
+3. Open an issue at [github.com/Collabase/collabase/issues](https://github.com/Collabase/collabase/issues) with the log file attached.
