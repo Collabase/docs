@@ -23,12 +23,6 @@
   },
 
   "navbar": {
-    "links": [
-      {
-        "label": "Release Notes",
-        "href": "/changelog/overview"
-      }
-    ],
     "primary": {
       "type": "github",
       "href": "https://github.com/Collabase/collabase"
@@ -284,9 +278,8 @@
       {
         "tab": "Developer",
         "groups": [
-          { "group": "Building Extensions", "pages": ["developer/wasm", "developer/plugins", "developer/nodes"] },
-          { "group": "Open Source", "pages": ["open-source", "contributing"] },
-          { "group": "SDK & Libraries", "pages": ["developer/sdk", "developer/ui", "developer/api-client"] }
+          { "group": "Building Extensions", "pages": ["developer/wasm"] },
+          { "group": "Open Source", "pages": ["contributing"] }
         ]
       },
 
