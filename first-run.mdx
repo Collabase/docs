@@ -1,53 +1,24 @@
 ---
-title: "First Run"
-description: "What happens the first time Collabase starts, and what to expect on your first login."
+title: "First Login"
+description: "What to do after Collabase is installed — your first login, initial setup, and next steps."
 ---
 
-## How first run works
+## Logging in for the first time
 
-When Collabase starts for the first time, the `collabase-app` container automatically runs migrations and seeds the database **before** the Next.js server starts — no browser-based wizard is required.
-
-The startup sequence is:
-
-1. Wait for PostgreSQL to be reachable
-2. Ensure the `pgvector` extension is installed
-3. Apply all pending migrations (`prisma migrate deploy`)
-4. **Seed on first run** — creates your admin account using `COLLABASE_ADMIN_EMAIL` and `COLLABASE_ADMIN_PASSWORD`; optionally loads demo data if `COLLABASE_SEED_DEMO_DATA=true`
-5. Start the Next.js server
-
-A marker file (`/app/storage/.seeded`) is written after the first successful seed to ensure this step never runs again on subsequent restarts.
-
----
-
-## First login
-
-Once the app is running, navigate to your configured URL (e.g. `https://collabase.example.com`) and log in with the admin email and password you set during installation.
+Once the installation is complete, open your Collabase URL in a browser. Log in with the admin email and password you set during installation.
 
 <Steps>
-  <Step title="Log in with your admin credentials">
-    Go to your Collabase URL. You will be presented with the login page.
-
-    Enter the **admin email** and **password** you configured during installation.
+  <Step title="Log in">
+    Go to your Collabase URL and enter your admin email and password.
   </Step>
-
   <Step title="Set a new password">
-    The initial admin account is created with `mustChangePassword = true`. After your first successful login, Collabase will redirect you to `/auth/change-password` automatically.
-
-    Enter and confirm a new password (minimum 8 characters). Once saved, you are redirected back to the login page and can sign in normally.
-
-    <Note>
-      This forced password change only happens once per account and only applies to accounts created by the installer or by an administrator on behalf of another user. Accounts created by the user themselves through an invitation are not affected.
-    </Note>
+    You will be asked to choose a new password on your first login. Enter and confirm it, then log in again with the new password.
   </Step>
-
   <Step title="Create your first Space">
-    After logging in you land on the Collabase home page. Click **"New Space"** to create your first workspace — give it a name, an icon, and optionally a description.
-
-    A Space is the top-level container for all content (pages, tasks, test suites, automations). You can create as many Spaces as you need, each with its own member list and permissions.
+    After logging in, click **New Space** to create your first workspace. Give it a name — this is the container for your team's pages, tasks, and test cases.
   </Step>
-
-  <Step title="Invite team members">
-    Go to **Admin → Users** and invite your team. Each user receives an email with a sign-in link. You can assign them a global role (`Admin` or `User`) and then add them to individual Spaces with a Space-level role.
+  <Step title="Invite your team">
+    Go to **Admin → Users** and add your colleagues. Each user gets access to the Spaces you assign them to.
   </Step>
 </Steps>
 
@@ -55,41 +26,19 @@ Once the app is running, navigate to your configured URL (e.g. `https://collabas
 
 ## Demo data
 
-If you installed with `COLLABASE_SEED_DEMO_DATA=true`, the seeder creates pre-built Spaces and example pages so you can explore the product before adding real content.
+If you chose to install demo data during setup, you will find pre-built Spaces and example content already in your instance. This lets you explore the product before adding real content.
 
-To remove demo data later, delete the Spaces from the Collabase UI or via the Admin panel.
-
----
-
-## The Setup Wizard (edge case)
-
-The `/setup` page is a fallback for installations where the Docker container was started **without running the installer** (e.g. a bare `docker run` without the `deployment/install.sh` script).
-
-In this case the app detects one of the following states at startup and redirects to `/setup` automatically:
-
-| State | What it means | What to do |
-|---|---|---|
-| `INITIAL_SETUP` | No migrations have been applied yet | Click **"Initialize System"** — a live log streams the migration progress |
-| `PENDING_UPDATE` | Migrations from a new release have not been applied | Click **"Apply Updates"** to run the pending migrations |
-| `NO_ADMIN` | Migrations are done but no admin account exists | Fill in instance settings and administrator credentials, then click **"Complete Setup"** |
-
-<Warning>
-  Do not close the browser tab or restart the containers while the migration log is streaming. An interrupted migration can leave the database schema in a partial state.
-</Warning>
-
-After completing the Setup Wizard you are redirected to the login page. The instance is now `READY`.
-
-If you used `install.sh`, you will never see this wizard — the installer handles migrations and seeding before the app starts.
+To remove demo data, delete the Spaces from the Collabase admin panel or from within the app.
 
 ---
 
-## After setup
+## Next steps
 
-| Task | Where |
+| What to do | Where |
 |---|---|
 | Invite users | Admin → Users |
-| Configure email (SMTP) | Admin → Settings → Mail |
-| Set up SSO (SAML/LDAP) | Admin → Settings → Authentication |
-| Enable or disable features per Space | Space Settings |
-| Change instance name or branding | Admin → Settings → Branding |
-| Check system health | Admin → System |
+| Set up email (SMTP) | Admin → Settings → Mail |
+| Connect your identity provider (SSO, LDAP) | Admin → Identity Providers |
+| Configure AI features | Admin → Settings → AI |
+| Enable or disable features per Space | Space → Settings → Apps |
+| Change the instance name or logo | Admin → Settings → Branding |

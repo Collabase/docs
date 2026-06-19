@@ -1,72 +1,68 @@
 ---
 title: "Permissions"
-description: "Collabase uses a two-layer permission model — global roles define platform access, and Space roles control what members can do inside each Space."
+description: "How access control works in Collabase — global roles and Space roles."
 ---
 
-Collabase has two layers of permissions that work together. Every user has a **global role** that governs platform-level access, and within each Space, members have a **Space role** that controls what they can do inside that Space.
+Collabase uses two layers of permissions. Every user has a **global role** that controls what they can do on the platform, and within each Space they have a **Space role** that controls what they can do inside that Space.
 
 ## Global roles
 
-A platform administrator assigns global roles. They determine what a user can access across the entire Collabase instance.
-
 | Role | What they can do |
 |---|---|
-| **Admin** | Full platform access — manage users, Spaces, and all global settings |
-| **Collaborator** | Normal user — can access Spaces they are invited to, and create content within them |
-| **Viewer** | Read-only access — can read content in Spaces they are explicitly invited to, but cannot create or edit anything |
+| **Admin** | Full access — manage users, Spaces, and all platform settings |
+| **Collaborator** | Normal user — can access and contribute to the Spaces they are invited to |
+| **Viewer** | Read-only — can read content in Spaces they are invited to, but cannot create or edit |
 
 ## Space roles
 
-Within each Space, members have a Space role that controls their permissions in that Space specifically.
+Within a Space, each member has one of these roles:
 
-| Role | Permissions |
+| Role | What they can do |
 |---|---|
-| **Owner** | Full control — manage members, configure all Space settings, and delete the Space |
-| **Admin** | Manage members, configure automations, create and edit all content |
-| **Member** | Create and edit content, run automations manually |
-| **Viewer** | Read-only — can comment if the Space allows viewer suggestions |
+| **Owner** | Full control of the Space — manage members, settings, and delete the Space |
+| **Admin** | Manage members and automations, create and edit all content |
+| **Member** | Create and edit content, run automations |
+| **Viewer** | Read-only access |
 
-### What each role can do by app
+### Permissions by role
 
-| Capability | Owner | Admin | Member | Viewer |
+| Action | Owner | Admin | Member | Viewer |
 |---|---|---|---|---|
 | Create and edit pages | ✅ | ✅ | ✅ | ❌ |
-| Publish / verify pages | ✅ | ✅ | ✅ | ❌ |
-| Create test cases and suites | ✅ | ✅ | ✅ | ❌ |
-| Start test runs | ✅ | ✅ | ✅ | ❌ |
+| Create test cases and runs | ✅ | ✅ | ✅ | ❌ |
 | Record test results | ✅ | ✅ | ✅ | ❌ |
-| Create and edit automations | ✅ | ✅ | ❌ | ❌ |
-| Run automations manually | ✅ | ✅ | ✅ | ❌ |
+| Build automations | ✅ | ✅ | ❌ | ❌ |
+| Run automations | ✅ | ✅ | ✅ | ❌ |
 | Manage Space members | ✅ | ✅ | ❌ | ❌ |
 | Change Space settings | ✅ | ❌ | ❌ | ❌ |
 | Delete the Space | ✅ | ❌ | ❌ | ❌ |
 
-## How roles are additive
+## How the two layers work together
 
-Global roles and Space roles layer on top of each other. A global **Viewer** who is invited to a Space as a **Member** can create and edit content in that Space, because the Space role grants additional permissions beyond the global baseline.
+Global roles and Space roles layer on top of each other. A global **Viewer** who is invited to a Space as a **Member** can create and edit content there — the Space role grants additional permissions within that Space.
 
-A global **Admin** has full access everywhere, regardless of their Space role in any individual Space.
+A global **Admin** has full access everywhere, regardless of their Space role.
 
 <Info>
-  When in doubt, grant users the global **Collaborator** role and invite them to Spaces individually with the appropriate Space role. This gives you precise control without over-permissioning.
+  When in doubt, give users the global **Collaborator** role and invite them to individual Spaces with the appropriate Space role. This gives you precise control without over-permissioning anyone.
 </Info>
 
-## Group access
+## Groups
 
-For large teams, inviting users one at a time becomes impractical. Groups let you grant Space access to many users at once.
+Instead of inviting users to Spaces one at a time, you can use Groups.
 
 <Steps>
   <Step title="Create a Group">
-    Go to **Settings → Groups** and create a new Group. Add the users who should belong to it.
+    Go to **Admin → Groups** and create a new Group. Add the users who belong to it.
   </Step>
   <Step title="Grant the Group access to a Space">
-    Open the Space settings and navigate to **Members**. Add the Group and assign it a Space role. Every member of the Group inherits that role in the Space.
+    In the Space settings, go to **Members**, add the Group, and assign it a Space role. Every member of the Group inherits that role.
   </Step>
-  <Step title="Manage membership centrally">
-    When you add a user to the Group, they automatically gain access to all Spaces the Group has been granted. When you remove them, access is revoked across all those Spaces simultaneously.
+  <Step title="Manage access centrally">
+    When you add someone to the Group, they automatically get access to all Spaces the Group has. When you remove them, access is revoked across all those Spaces at once.
   </Step>
 </Steps>
 
 <Tip>
-  Groups are useful for onboarding. Create a Group for each team and grant it access to the Spaces that team uses. New hires get access to the right Spaces as soon as you add them to the right Groups.
+  Groups are ideal for onboarding. Create a Group per team, grant it access to the right Spaces, and add new hires to the Group — done.
 </Tip>

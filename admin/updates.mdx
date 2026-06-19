@@ -1,83 +1,42 @@
 ---
 title: "Updates"
-description: "Update Collabase to a new version using the update script."
+description: "How to update Collabase to a new version."
 ---
 
-Collabase provides a dedicated update script — `deployment/update.sh` — that handles the full update process safely. Never use `install.sh` to update an existing installation.
+## Running an update
 
-## Running the update
+To update Collabase, run the update script on your server:
 
 ```bash
 bash deployment/update.sh
 ```
 
-The script performs the following steps automatically:
+The script handles everything automatically:
 
-1. **Migrates old variable names** — if your `.env` still uses `HELVI_*` variable names from an earlier version, they are renamed to `COLLABASE_*` automatically.
-2. **Provisions any missing secrets** — new releases may require additional environment variables. Any missing keys (e.g. `MAIL_ENCRYPTION_KEY`, `AI_ENGINE_URL`) are generated and appended to `.env` so you never hit a startup error after an upgrade.
-3. **Creates a pre-update database backup** — a compressed dump of the current database is saved to `deployment/backups/collabase-<timestamp>.sql.gz` before any images are pulled.
-4. **Pulls the latest images** from the GitHub Container Registry (`ghcr.io/collabase/`).
-5. **Restarts all containers** with `--remove-orphans` to remove containers for services that no longer exist in the current release.
-6. **Waits for the app to be healthy** — polls `/api/health` for up to 5 minutes, printing progress dots while waiting.
+1. **Creates a database backup** before doing anything else — saved to `deployment/backups/`.
+2. **Downloads the latest version** of Collabase.
+3. **Restarts all services** with the new version.
+4. **Waits until everything is healthy** before finishing.
 
-<Note>
-  Database migrations are applied automatically on container startup — the same `prisma migrate deploy` that runs on first boot also runs on every update. You do not need to apply migrations manually.
-</Note>
-
----
-
-## Pre-update backup
-
-`update.sh` always creates a backup before pulling new images:
-
-```
-deployment/backups/collabase-20260101-120000.sql.gz
-```
-
-To restore from this backup if an update goes wrong:
-
-```bash
-# 1. Stop the app (keep the database running)
-docker compose -f deployment/docker-compose.release.yml stop collabase-app
-
-# 2. Restore the compressed dump
-gunzip -c deployment/backups/collabase-20260101-120000.sql.gz | \
-  docker exec -i collabase-postgres psql -U collabase collabase
-
-# 3. Restart with the previous image (pin the image tag first)
-docker compose -f deployment/docker-compose.release.yml up -d
-```
+This typically takes 2–5 minutes depending on your internet connection.
 
 <Warning>
-  If the backup step fails (e.g. the database container is not running), `update.sh` prints a warning and continues. Verify the database is healthy before updating in that case.
+  Do not run `install.sh` on an existing installation. Always use `update.sh` for updates.
 </Warning>
 
 ---
 
-## Security warnings during update
+## If something goes wrong
 
-The script checks for common security issues and warns you inline:
+The update script saves a backup before it starts. If you need to roll back:
 
-| Warning | What to do |
-|---|---|
-| `POSTGRES_PASSWORD` is set to `collabase` | Change the password in both `.env` and PostgreSQL — see [Backup & Restore](/admin/backup) for the command |
+1. Contact Collabase support and share the backup file from `deployment/backups/`.
+2. The support team will guide you through the restore process.
 
 ---
 
 ## After the update
 
-Once the update completes, the script prints a summary:
+Once the update finishes, open your Collabase URL and verify everything is working. The script prints a confirmation when the update is complete.
 
-```
-✅ Collabase updated successfully!
-
-  URL:     https://collabase.example.com
-  Version: sha256:abc123 → sha256:def456
-  Backup:  deployment/backups/collabase-20260101-120000.sql.gz
-```
-
-Navigate to your Collabase URL and verify everything is working. If users report issues, check the application logs:
-
-```bash
-docker compose -f deployment/docker-compose.release.yml logs -f collabase-app
-```
+If users report issues after an update, [submit a support ticket](https://collabase.featurebase.app/en) with a description of the problem.

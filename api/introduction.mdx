@@ -1,41 +1,51 @@
 ---
 title: "API Reference"
-description: "The Collabase REST API — automate anything you can do in the UI."
+description: "The Collabase REST API — integrate and automate your Collabase instance."
 ---
 
-# API Reference
+<Warning>
+  **The Collabase API is currently in closed beta.** Access is available to selected customers only and is not yet generally available. If you are interested in API access, [reach out to us](https://collabase.featurebase.app/en) and we will add you to the beta program.
+</Warning>
 
-The Collabase REST API lets you integrate Collabase with external tools, build custom automations, and manage resources programmatically.
+The Collabase REST API lets you integrate Collabase with your other tools and automate tasks programmatically.
 
 ## Base URL
 
 ```
-https://your-collabase.example.com/api
+https://your-collabase-domain/api
 ```
-
-All `v1` routes are stable. Routes without a version prefix are internal BFF routes used by the Collabase web application.
 
 ## Authentication
 
-All API requests require a session token. Authenticate by passing your API key as a Bearer token:
+All API requests require an API key passed as a Bearer token in the `Authorization` header:
 
 ```bash
 Authorization: Bearer cba_live_xYz123ABCD...
 ```
 
-Use your Collabase session token from the developer tools → Application → Cookies → `next-auth.session-token`, or generate a token via the Admin API (coming soon).
+API key management is part of the beta program. Contact Collabase to get your key.
 
 ## Response format
 
-All responses return JSON. Successful responses use `2xx` status codes. Errors return a JSON object with an `error` field.
+All responses return JSON.
 
+**Success:**
+```json
+{ "data": { ... } }
+```
+
+**Error:**
 ```json
 { "error": "Unauthorized" }
 ```
 
 ## Rate limiting
 
-The API is rate-limited to 300 requests per minute per authenticated user. Exceeding this returns `429 Too Many Requests`.
+Requests are limited to 300 per minute per API key. If you exceed this, the API returns `429 Too Many Requests`.
+
+---
+
+## Available endpoints
 
 <CardGroup cols={2}>
   <Card title="Automation API" icon="wand-magic-sparkles" href="/api/automation/list-automations">
@@ -45,9 +55,9 @@ The API is rate-limited to 300 requests per minute per authenticated user. Excee
     Projects, test cases, test runs, results, and milestones.
   </Card>
   <Card title="Health" icon="heart-pulse" href="/api/health">
-    Service health check endpoint.
+    Service health check — no authentication required.
   </Card>
   <Card title="SCIM" icon="users" href="/api/scim/users">
-    User and group provisioning for Okta, Entra ID, and any SCIM 2.0 IdP.
+    User and group provisioning for Okta, Microsoft Entra, and any SCIM 2.0 provider.
   </Card>
 </CardGroup>

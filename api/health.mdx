@@ -1,20 +1,20 @@
 ---
 title: "Health check"
-description: "Check whether the Collabase API is reachable and what version is running."
+description: "Check whether your Collabase instance is running."
 api: "GET /api/health"
 ---
 
-Returns the operational status of the API. No authentication required. Use this endpoint for uptime monitoring, load-balancer health probes, and deployment verification.
+Returns the status of your Collabase instance. No authentication required. Use this for uptime monitoring or to verify that a deployment was successful.
 
 ## Response
 
 <ResponseField name="status" type="string">Always `ok` when the service is running.</ResponseField>
-<ResponseField name="version" type="string">Deployed application version. `"unknown"` if not set.</ResponseField>
+<ResponseField name="version" type="string">The deployed version of Collabase.</ResponseField>
 <ResponseField name="timestamp" type="string">Current server time in ISO 8601 format.</ResponseField>
 
 <RequestExample>
 ```bash
-curl "https://your-collabase.ch/api/health"
+curl "https://your-collabase-domain/api/health"
 ```
 </RequestExample>
 

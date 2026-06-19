@@ -1,29 +1,29 @@
 ---
 title: "Introduction"
-description: "Welcome to Collabase — the Swiss-made collaboration OS for teams that keep their data on their own infrastructure."
+description: "What Collabase is, who it is for, and how it is licensed."
 ---
 
-Collabase is a self-hosted collaboration platform built for teams that care about where their data lives. It combines knowledge management, task tracking, quality assurance, workflow automation, and internal communication into a single product — running entirely on your own servers.
+Collabase is a self-hosted collaboration platform built for teams that care about where their data lives. It combines a knowledge base, task tracking, test management, workflow automation, and internal communication — running entirely on your own servers.
 
-## Who Collabase is for
+## What Collabase is for
 
-Collabase is designed for engineering, product, and operations teams that need one place for documentation, tasks, and internal comms — without sending their data to third-party SaaS vendors.
+Collabase is designed for teams that need one place for documentation, tasks, and project work — without sending their data to external cloud services.
 
-It is especially well-suited for teams operating under:
+It is a good fit for organizations that:
 
-- **GDPR** and European data protection requirements
-- **Swiss data sovereignty** obligations (Collabase is built in Switzerland)
-- Internal compliance policies that prohibit storing sensitive content outside company infrastructure
+- Operate under GDPR or European data protection requirements
+- Have a policy against storing sensitive content outside company infrastructure
+- Want full control over their collaboration tools and data
 
 ## Why self-hosted
 
-When you run Collabase on your own infrastructure, you control the data entirely. There are no usage tiers, no vendor lock-in, and no questions about where your documentation or test results are stored. The **Swiss Vault philosophy** underpins the whole product: your data stays on your servers, under your control, subject only to your compliance requirements.
+When you run Collabase on your own infrastructure, your data stays on your servers — under your control. There is no usage-based billing, no vendor lock-in, and no third party involved in storing your documentation or test results.
 
 ---
 
-## The core apps
+## The apps
 
-Collabase is organized around integrated apps. Each app lives inside a Space and works seamlessly alongside the others.
+Collabase is organized around integrated apps. Each app lives inside a Space and works alongside the others.
 
 <CardGroup cols={2}>
   <Card title="Wiki & Docs" icon="file-lines" href="/docs/overview">
@@ -33,16 +33,16 @@ Collabase is organized around integrated apps. Each app lives inside a Space and
     Kanban, list, calendar, Gantt, sprints, story points, and time tracking — all in one place.
   </Card>
   <Card title="Test Management" icon="flask" href="/test-management/overview">
-    Quality operating system — organize test projects, suites, cases, runs, and result tracking.
+    Organize test projects, suites, cases, runs, and result tracking for your QA process.
   </Card>
   <Card title="Automation" icon="bolt" href="/automation/overview">
-    Visual workflow builder. Build trigger-condition-action pipelines with 40+ native connectors — no code required.
+    Visual workflow builder with 40+ native connectors — no code required.
   </Card>
-  <Card title="Brain" icon="brain" href="/brain/overview">
-    Semantic search and AI chat powered by your own Ollama instance. No external API calls. No data leaves your server.
+  <Card title="Brain (Local AI)" icon="brain" href="/brain/overview">
+    AI assistant and semantic search — powered entirely by your own AI model. No data leaves your server.
   </Card>
   <Card title="Intranet" icon="bullhorn" href="/intranet/overview">
-    Internal communication hub for announcements, blog posts, and company-wide updates.
+    Announcements, blog posts, and company-wide updates for your whole organization.
   </Card>
 </CardGroup>
 
@@ -50,9 +50,9 @@ Collabase is organized around integrated apps. Each app lives inside a Space and
 
 ## How it all fits together
 
-Everything in Collabase lives inside a **Space** — a top-level container for a department, project, or product area. Spaces have their own members, permissions, and app configurations. A single Collabase instance can host many independent Spaces.
+Everything in Collabase lives inside a **Space** — a container for a department, project, or product area. Spaces have their own members, permissions, and app settings. One Collabase instance can host as many Spaces as you need.
 
-A shared permission model and a unified search index connect every Space. A test run can link to the page that describes the feature. An automation can trigger when a page is published. A new team member can find everything about a project — docs, test results, tasks, changelogs — without switching tools.
+A shared permission model and a unified search bar connect every Space. A task can link to the page that describes the feature. An automation can notify your team when a test run fails. New team members can find everything about a project — documentation, tasks, and test results — without switching tools.
 
 ---
 
@@ -60,35 +60,15 @@ A shared permission model and a unified search index connect every Space. A test
 
 Collabase is licensed under the **[Business Source License 1.1 (BSL 1.1)](https://mariadb.com/bsl11/)**.
 
-> You may deploy and use Collabase for any internal business purpose, including commercial use, without restriction. You may not offer Collabase itself as a commercial SaaS product that directly competes with Collabase's own hosted offering.
+You may deploy and use Collabase for any internal business purpose, including commercial use, without restriction. You may not offer Collabase itself as a competing commercial SaaS product.
 
-On **1 April 2031**, the license automatically converts to **Apache License 2.0**, making the source permanently open.
+On **1 April 2031**, the license automatically converts to **Apache License 2.0**.
 
 | You can | You cannot |
 |---|---|
 | Self-host for your team or company | Sell Collabase as a competing SaaS |
 | Modify the source for internal use | Remove license or copyright notices |
-| Contribute back under the CLA | Sub-license the code independently |
-| Run it on customer infrastructure (professional services) | — |
-
-<Note>
-  The full license text is in [`LICENSE`](https://github.com/Collabase/collabase/blob/main/LICENSE) in the repository.
-</Note>
-
----
-
-## Extensibility
-
-Collabase is built as a platform, not just a product. It provides a plugin engine and SDK that lets you extend its functionality, build bespoke apps, and integrate deeply with internal systems.
-
-<CardGroup cols={2}>
-  <Card title="Developer Documentation" icon="code" href="/developer/plugins">
-    Explore the SDK, REST API, custom automation connectors, and the WASM plugin engine.
-  </Card>
-  <Card title="Automation Connectors" icon="plug" href="/automation/connectors">
-    40+ built-in connectors — Slack, Jira, GitHub, HubSpot, and more. Build your own with the SDK.
-  </Card>
-</CardGroup>
+| Run it on customer infrastructure (professional services) | Sub-license the code independently |
 
 ---
 
@@ -96,10 +76,10 @@ Collabase is built as a platform, not just a product. It provides a plugin engin
 
 <CardGroup cols={2}>
   <Card title="Installation" icon="server" href="/installation">
-    Deploy Collabase on your server in minutes with a single command using Docker.
+    Deploy Collabase on your server in minutes.
   </Card>
   <Card title="Core concepts" icon="book-open" href="/concepts/spaces">
-    Learn how Spaces, permissions, and search work before you dive in.
+    Learn how Spaces and permissions work before you dive in.
   </Card>
 </CardGroup>
 
@@ -107,16 +87,14 @@ Collabase is built as a platform, not just a product. It provides a plugin engin
 
 ## Feedback, roadmap & changelog
 
-Collabase is actively developed. Your feedback directly shapes what gets built next.
-
 <CardGroup cols={3}>
   <Card title="Submit feedback" icon="message-circle" href="https://collabase.featurebase.app/en">
-    Report bugs, request features, or upvote ideas from the community. All submissions are reviewed by the Collabase team.
+    Report bugs, request features, or upvote ideas from the community.
   </Card>
   <Card title="Public roadmap" icon="map" href="https://collabase.featurebase.app/en/roadmap">
-    See what is planned, in progress, and recently shipped. Track the status of features you care about.
+    See what is planned, in progress, and recently shipped.
   </Card>
   <Card title="Changelog" icon="list" href="https://collabase.featurebase.app/en/changelog">
-    A full history of every release — new features, improvements, and bug fixes.
+    A full history of every release — new features, improvements, and fixes.
   </Card>
 </CardGroup>

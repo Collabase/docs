@@ -1,60 +1,38 @@
 ---
 title: "Backup & Restore"
-description: "Back up and restore your Collabase instance. All content lives in PostgreSQL — a single database dump covers everything."
+description: "How to back up your Collabase data and restore it if needed."
 ---
 
-Collabase stores all content — pages, Spaces, users, groups, tasks, test cases, automations, settings, and attachment metadata — in a single PostgreSQL database. Backing up your instance means backing up that database.
+All your data — pages, tasks, users, test cases, automations, and settings — is stored in a single database. Backing up Collabase means backing up that database.
 
 <Tip>
-  Run daily backups for any production deployment. Store backup files off-server — on an S3-compatible bucket, a NAS, or another remote location — so that a server failure does not destroy your backups along with your data.
+  Run daily backups for any production deployment. Store backup files off-server — on a network share, cloud storage, or another remote location — so that a server failure does not destroy your backups along with your data.
 </Tip>
 
 ---
 
-## Creating a backup
+## Automatic backups (on every update)
 
-The PostgreSQL container is named `collabase-postgres`. Run the following on your host server to create a compressed dump:
+Every time you run `update.sh`, a backup is created automatically before the update begins. Backups are saved to `deployment/backups/` on your server.
+
+---
+
+## Creating a backup manually
+
+Run the following command on your server to create a backup:
 
 ```bash
 docker exec collabase-postgres pg_dump -U collabase collabase | \
   gzip > "backup-$(date +%Y%m%d-%H%M%S).sql.gz"
 ```
 
-This writes a gzip-compressed SQL dump to your current directory containing the full schema and all data.
-
-<Note>
-  The `update.sh` script automatically creates a backup to `deployment/backups/collabase-<timestamp>.sql.gz` before every update. You can use these as your baseline backups if you update regularly.
-</Note>
+This creates a compressed backup file in your current directory.
 
 ---
 
-## Restoring from a backup
+## Scheduling automatic backups
 
-<Warning>
-  Restoring from a backup **overwrites all existing data** in the database. Stop the Collabase application container before restoring to avoid conflicting writes.
-</Warning>
-
-```bash
-# 1. Stop the app container (keep the database running)
-docker compose -f deployment/docker-compose.release.yml stop collabase-app
-
-# 2. Restore the compressed dump
-gunzip -c backup-20260101-120000.sql.gz | \
-  docker exec -i collabase-postgres psql -U collabase collabase
-
-# 3. Start the app again
-docker compose -f deployment/docker-compose.release.yml start collabase-app
-```
-
-The app will run migrations on startup. Since you are restoring to a previous schema state, migrations may re-apply — this is safe and idempotent.
-
----
-
-## Automating backups
-
-For production deployments, schedule a daily backup with a cron job on the host server.
-
-Example cron entry (runs daily at 02:00, keeps 30 days of backups):
+For production systems, set up a daily automated backup. Add this to your server's cron jobs (`crontab -e`):
 
 ```bash
 0 2 * * * docker exec collabase-postgres pg_dump -U collabase collabase | \
@@ -62,29 +40,45 @@ Example cron entry (runs daily at 02:00, keeps 30 days of backups):
   find /backups -name "collabase-*.sql.gz" -mtime +30 -delete
 ```
 
-Create the `/backups` directory first and ensure it is owned by the user running the cron job.
+This runs daily at 2:00 AM and keeps backups for 30 days.
 
 ---
 
-## Off-server storage
+## Restoring from a backup
 
-Always copy backups to at least one remote location. A disk failure or server compromise would otherwise destroy both your data and your backups.
+<Warning>
+  Restoring overwrites all current data. Only do this if you intend to roll back to a previous state.
+</Warning>
+
+```bash
+# 1. Stop the application (keep the database running)
+docker compose -f deployment/docker-compose.release.yml stop collabase-app
+
+# 2. Restore the backup
+gunzip -c backup-20260101-120000.sql.gz | \
+  docker exec -i collabase-postgres psql -U collabase collabase
+
+# 3. Start the application again
+docker compose -f deployment/docker-compose.release.yml start collabase-app
+```
+
+---
+
+## Copying backups off-server
+
+Always store backups in a second location. Some options:
 
 <AccordionGroup>
-  <Accordion title="Amazon S3 or S3-compatible storage (Cloudflare R2, MinIO, etc.)">
-    Stream the dump directly to S3 using the AWS CLI:
-
+  <Accordion title="Cloud storage (S3, Cloudflare R2, etc.)">
     ```bash
     docker exec collabase-postgres pg_dump -U collabase collabase | \
       gzip | aws s3 cp - s3://your-bucket/collabase-$(date +%Y%m%d).sql.gz
     ```
   </Accordion>
   <Accordion title="Network-attached storage (NAS)">
-    Mount a NAS share on the host and write backups directly to the mount point. Ensure the mount is available before the cron job runs.
+    Mount your NAS share on the server and write backups directly to the mount point.
   </Accordion>
-  <Accordion title="Remote server via rsync or SFTP">
-    Generate the dump locally, then transfer it:
-
+  <Accordion title="Remote server">
     ```bash
     rsync -az /backups/collabase-$(date +%Y%m%d).sql.gz user@backup-server:/backups/
     ```
@@ -93,30 +87,16 @@ Always copy backups to at least one remote location. A disk failure or server co
 
 ---
 
-## In-app trash and restore
+## Recovering deleted pages and Spaces
 
-Collabase also provides soft-delete for pages and Spaces. Deleted pages and Spaces move to the trash rather than being permanently removed. Admins can restore or permanently delete trashed items from **Admin → Backup**.
-
-<Tabs>
-  <Tab title="Deleted pages">
-    Navigate to **Admin → Backup → Pages** to see all pages in the trash. Click **Restore** to move the page back to its original Space and location. Click **Delete permanently** to remove it for good.
-  </Tab>
-  <Tab title="Deleted spaces">
-    Navigate to **Admin → Backup → Spaces** to see trashed Spaces. You can restore or permanently delete entire Spaces from this view.
-  </Tab>
-</Tabs>
-
-<Note>
-  In-app trash is separate from database-level backups. It protects against accidental deletions but does not replace regular database backups for disaster recovery.
-</Note>
+If a page or Space was accidentally deleted, it may still be in the trash. Go to **Admin → Backup** to view and restore recently deleted pages and Spaces before they are permanently removed.
 
 ---
 
-## Recommended backup checklist
+## Backup checklist
 
 | Task | Frequency |
 |---|---|
-| Database dump | Daily |
-| Copy to off-server storage | Daily, immediately after dump |
-| Test a restore in a staging environment | Monthly |
-| Verify backup file integrity (`gunzip -t file.sql.gz`) | Weekly |
+| Database backup | Daily |
+| Copy to off-server storage | Daily |
+| Test a restore | Monthly |
