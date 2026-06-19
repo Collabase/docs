@@ -6,13 +6,18 @@ description: Standards and rules for writing and updating Collabase documentatio
 
 This document defines the rules for writing documentation and release notes in the Collabase documentation project.
 
-## 1. Persona & Perspective ("Peter from IT")
+## 1. Persona & Perspective
 
-All documentation is written for the customer — specifically the IT Administrator ("Peter from IT") who deploys, configures, and maintains Collabase, as well as the end-users.
-
-- **No Developer Jargon:** Do not use internal dependency names, library names, or architectural details (e.g., Prisma, BullMQ, Next.js, Vite, React Flow, internal container names, or internal code enums).
+**General Audience ("Peter from IT"):**
+For all general product, administration, and feature documentation, the target audience is the IT Administrator who deploys, configures, and maintains Collabase. 
+- **No Developer Jargon:** Do not use internal dependency names, library names, or architectural details (e.g., Prisma, BullMQ, Next.js, Vite, React Flow, internal container names).
 - **Focus on Action:** Explain clearly "What do I need to do?", "What do I type?", and "What happens if it fails?".
 - **Keep it Simple:** Use plain, professional language. The reader is setting up or using a product, not reading our source code.
+
+**Developer & API Audience ("Developers"):**
+Documentation located in the `developer/` or `api/` directories is the **exception**. This content is aimed at software engineers building extensions or integrating via APIs.
+- **Technically Detailed:** Code examples, compilation steps, internal mechanics, and architecture details are encouraged.
+- **Language:** Use precise technical language (e.g., host functions, hooks, WebAssembly, endpoints, webhooks).
 
 ## 2. General Writing Rules
 
@@ -25,7 +30,7 @@ All documentation is written for the customer — specifically the IT Administra
 Release notes must follow a strict, customer-facing format.
 
 - **No Stack Details for General Updates:** For general stability or layout updates, do not list dependency updates by library name (e.g., "Updated React to 18.3"). Summarize them generically.
-- **Transparent Security:** In the `Security & Vulnerabilities` section, you **must** be transparent and list the specific library names and versions that were patched.
+- **Enterprise Security Standards:** In the `Security & Vulnerabilities` section, focus on **business impact and CVEs**. Never list dev-dependencies (like `vite`, `vitest`, `playwright`). Only list production-relevant third-party libraries if they address critical, widely known vulnerabilities. Otherwise, summarize them generically or by the affected product component.
 
 ### Standard Categories
 
@@ -38,15 +43,23 @@ Always use the following categories (in this exact order) for release notes. If 
 
 ### Security & Vulnerabilities Format
 
-When reporting security patches, you **must** use a Markdown table to list the fixed vulnerabilities. The table must include the vulnerability identifier, the severity level, and a brief explanation.
+When reporting specific security patches, use a Markdown table focusing on the CVE or affected component. Do not list raw package bumps. If there are no specific CVEs but general updates, use a simple summary sentence instead of a table.
 
-**Example Format:**
+**Example Format (if CVEs/critical patches exist):**
 
 ```md
 ### 🔒 Security & Vulnerabilities
 
-| Vulnerability | Severity | Description |
+| Vulnerability / CVE | Severity | Affected Component / Description |
 |---|---|---|
-| CVE-202X-XXXX | High (8.5) | Resolves an issue where user input was not properly sanitized during import. |
-| Library Update | Medium | Patched a vulnerability in a third-party document parsing library. |
+| CVE-202X-XXXX | High (8.5) | Resolves a remote code execution vulnerability in the document processor. |
+| Third-Party | Medium | Patched a vulnerability in a third-party AI module (LangChain) to prevent potential data leakage. |
+```
+
+**Example Format (for routine maintenance without critical CVEs):**
+
+```md
+### 🔒 Security & Vulnerabilities
+
+* Performed routine security updates and patched non-critical third-party dependencies in the backend and AI services.
 ```

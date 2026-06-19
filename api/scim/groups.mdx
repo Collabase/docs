@@ -1,50 +1,46 @@
 ---
-title: "SCIM Groups"
-description: "Sync groups from your identity provider to Collabase via the SCIM 2.0 Groups endpoint."
+title: "Managing Groups via SCIM"
+description: "How groups and their members are synchronized automatically via the API."
 ---
 
-# SCIM Groups
+<Warning>
+  **Closed Beta:** The SCIM API is currently in Closed Beta and requires an Enterprise license.
+</Warning>
 
-## List groups — `GET /api/scim/v2/Groups`
+# Managing Groups via SCIM
 
-Returns all groups in SCIM ListResponse format.
+Groups allow you to organize users efficiently. When your identity provider synchronizes groups, Collabase will create them and automatically assign the correct users. Here is what happens behind the scenes.
 
-**Query parameters:** `filter`, `startIndex`, `count` (same as Users)
+## 1. View all groups
 
-## Create group — `POST /api/scim/v2/Groups`
+To see which groups currently exist in Collabase, your provider calls this endpoint.
 
-Creates a Collabase group from the IdP group. Members included in the `members` array are added automatically.
+**Endpoint:** `GET /api/scim/v2/Groups`
 
-```bash
-curl -X POST "https://your-collabase.ch/api/scim/v2/Groups" \
-  -H "Authorization: Bearer <scim-token>" \
-  -H "Content-Type: application/scim+json" \
-  -d '{
-    "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Group"],
-    "displayName": "Engineering",
-    "members": [
-      { "value": "scim-user-id-1", "display": "Alice Smith" }
-    ]
-  }'
-```
+Just like with users, your provider can filter this list to find specific groups.
 
-## Update group — `PATCH /api/scim/v2/Groups/{id}`
+## 2. Create a new group
 
-Use SCIM PATCH to add or remove group members:
+When you assign a new group to Collabase in your identity provider, it sends the group name and a list of its members.
 
-```json
-{
-  "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
-  "Operations": [
-    {
-      "op": "add",
-      "path": "members",
-      "value": [{ "value": "scim-user-id-2" }]
-    }
-  ]
-}
-```
+**Endpoint:** `POST /api/scim/v2/Groups`
 
-## Delete group — `DELETE /api/scim/v2/Groups/{id}`
+Collabase will create the group and automatically add all the users you included in the request.
 
-Removes the group from Collabase. Users in the group are not deleted.
+## 3. Update group members
+
+If an employee joins or leaves a department, your provider will automatically update the group membership in Collabase.
+
+**Endpoint:** `PATCH /api/scim/v2/Groups/{id}`
+
+Your identity provider uses this endpoint to easily add new members or remove existing ones from the group.
+
+## 4. Delete a group
+
+If a department or project is closed, your provider might delete the group entirely.
+
+**Endpoint:** `DELETE /api/scim/v2/Groups/{id}`
+
+<Note>
+  **What happens to the users?** Deleting a group **does not** delete the users inside it. The users will just lose whatever permissions were attached to that specific group.
+</Note>

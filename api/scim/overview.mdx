@@ -1,51 +1,55 @@
 ---
-title: "SCIM 2.0"
-description: "Provision users and groups from any SCIM 2.0 identity provider — Okta, Microsoft Entra ID, Azure AD, Google Workspace SAML."
+title: "SCIM 2.0 Provisioning"
+description: "Automatically manage your users and groups from Okta, Microsoft Entra ID (Azure AD), or Google Workspace."
 ---
+
+<Warning>
+  **Closed Beta:** The SCIM integration is currently in Closed Beta. To use SCIM, you need a paid license, as the free tier (up to 10 users) does not support automated identity provisioning.
+</Warning>
 
 # SCIM 2.0 Provisioning
 
-Collabase implements the SCIM 2.0 (RFC 7644) protocol for automated user and group lifecycle management from any compatible identity provider.
+With SCIM (System for Cross-domain Identity Management), you don't have to manually create or remove users in Collabase. Your identity provider (like Okta or Microsoft Entra ID) will automatically push user and group changes to Collabase.
 
-## Base URL
+## What you need to do
 
-```
-https://your-collabase.ch/api/scim/v2
-```
+To connect your identity provider to Collabase, you need two things:
 
-## Authentication
+1. **The Base URL:** This is the address your provider will talk to.
+   ```text
+   https://your-collabase.ch/api/scim/v2
+   ```
+2. **The SCIM Token:** This is the secure key your provider uses to authenticate. 
 
-SCIM endpoints authenticate via Bearer token. Generate a SCIM token in **Admin → Identity Providers → SCIM Tokens**.
+### How to get your SCIM Token
 
-```
-Authorization: Bearer <scim-token>
-```
-
-## Supported endpoints
-
-| Endpoint | Methods | Description |
-|---|---|---|
-| `/Users` | GET, POST | List and create users |
-| `/Users/{id}` | GET, PATCH, PUT, DELETE | Manage individual users |
-| `/Groups` | GET, POST | List and create groups |
-| `/Groups/{id}` | GET, PATCH, PUT, DELETE | Manage individual groups |
-| `/Schemas` | GET | Return SCIM schema definitions |
-| `/ServiceProviderConfig` | GET | Return SCIM capability config |
-
-## Filter support
-
-List endpoints support SCIM filter syntax:
-- `filter=userName eq "user@example.com"`
-- `filter=displayName eq "Engineering"`
-- `filter=externalId eq "okta-user-id"`
+<Steps>
+  <Step title="Open Admin Settings">
+    Log in to Collabase as an Administrator and go to the Admin area.
+  </Step>
+  <Step title="Navigate to Identity Providers">
+    Click on **Identity Providers** in the sidebar.
+  </Step>
+  <Step title="Generate Token">
+    Scroll down to the **SCIM Tokens** section and click **Generate Token**. Copy this token immediately and paste it into your identity provider.
+  </Step>
+</Steps>
 
 ## Provider setup guides
 
+We have gathered the official setup guides for the most common providers to help you get started:
+
 <CardGroup cols={2}>
   <Card title="Okta" icon="shield" href="https://developer.okta.com/docs/guides/scim-provisioning-integration-connect/">
-    Configure Collabase as a SCIM app in Okta.
+    Follow the official Okta guide to add a new SCIM connection.
   </Card>
   <Card title="Microsoft Entra ID" icon="microsoft" href="https://learn.microsoft.com/en-us/entra/identity/app-provisioning/user-provisioning">
-    Provision users via Microsoft Entra ID (Azure AD).
+    Follow the official Microsoft guide to provision users via Azure AD.
   </Card>
 </CardGroup>
+
+## Troubleshooting
+
+If users are not syncing correctly, check the following:
+- Ensure the SCIM Token hasn't expired or been revoked.
+- Check the audit logs in your identity provider to see if the connection to your Collabase server is being blocked by your company firewall.

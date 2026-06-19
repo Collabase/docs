@@ -1,66 +1,70 @@
 ---
 title: "WASM Plugins"
-description: "Deploy sandboxed, ultra-fast backend logic and event processors via WebAssembly"
+description: "Deploy sandboxed, ultra-fast backend logic and event processors via WebAssembly."
 ---
 
 # WASM Plugins
 
-Collabase features a native WebAssembly (WASM) plugin engine that allows you to extend the core backend securely. Unlike Frontend SDK Apps which run visually in an iFrame, WASM plugins run completely offline on your server, directly interfacing with the Collabase engine via a high-performance sandbox.
+Collabase features a native WebAssembly (WASM) plugin engine that allows you to securely extend the core backend. Unlike Frontend SDK Apps which run visually in an iFrame, WASM plugins run completely headless on your server. They interface directly with the Collabase backend engine via a high-performance, strictly controlled execution sandbox.
 
-## Why WebAssembly
+## Why WebAssembly?
 
-- **Sandboxed Execution:** Plugins cannot bring down the main application thread. Memory leaks, infinite loops, or crashes run securely isolated.
-- **Zero Overhead Background Processing:** Ideal for listening to system events (e.g., when a task is updated) without the overhead of HTTP webhooks.
-- **Polyglot Freedom:** Write your backend plugins in AssemblyScript, Rust, Go, or C/C++ and compile to standard `.wasm`.
+- **Sandboxed Execution:** Plugins cannot crash the main Node.js event loop or application thread. Memory leaks, infinite loops, or segmentation faults inside the plugin are securely isolated.
+- **Zero Overhead Background Processing:** Ideal for listening to system events (e.g., synchronously mutating a task payload before it saves) without the latency and network overhead of traditional HTTP webhooks.
+- **Polyglot Freedom:** Write your backend logic in AssemblyScript, Rust, Go, or C/C++, and compile it down to a standard `.wasm` binary.
 
 ## The Sandbox Environment
 
-When a WASM plugin is executed, it runs with strict boundaries:
+When the Collabase engine executes a WASM plugin, it runs within strict boundaries enforced by the host:
 - **`memoryLimit`**: Configurable per plugin (default 64MB).
-- **`timeout`**: Configurable execution time limit (default 5000ms).
+- **`timeout`**: Configurable execution time limit to prevent CPU monopolization (default 5000ms).
 
-Plugins do not have arbitrarily native file system or raw network socket access unless specifically granted via Host Functions.
+Plugins **do not** have arbitrary native file system access, raw network socket access, or unrestricted environment variable access unless explicitly granted via Host Functions.
 
-## Hook points
+## Hook Points
 
-WASM Plugins are triggered by "Hook Points." A Hook Point is a subscription to a system event or an interception path within the main application.
+WASM Plugins are triggered by "Hook Points." A Hook Point is a subscription to a system event or an interception path within the main backend architecture.
+
+Define your hook points in your plugin's metadata manifest:
 
 ```json
 {
+  "name": "Task Auto-Tagger",
+  "version": "1.0.0",
   "hookPoints": ["task:created", "page:updated", "automation:custom_node"]
 }
 ```
 
-When a user modifies a task or triggers a specific node in an automation workflow, the Collabase engine invokes your WASM module's entry point with the payload and context.
+Whenever a user modifies a task or an automation flow hits your custom node, the Collabase engine invokes your WASM module's entry point, passing the serialized payload and execution context.
 
-### Available hook points
+### Available Hook Points
 
-Here is a complete list of hooks currently exposed to the WASM engine.
+Below is the list of hooks currently exposed to the WASM engine:
 
-| Hook | Payload description | Typical use case |
+| Hook | Payload Description | Typical Developer Use Case |
 |---|---|---|
-| `task:created` | The full `Task` object. | Automatic tagging, routing, or validation upon task creation. |
-| `task:updated` | The `Task` object and changed fields. | Auditing status transitions or computing derived states. |
-| `task:deleted` | The `taskId` string. | Cleaning up related external system records. |
-| `page:created` | The `Page` object (excluding content body). | Initiating approval workflows for new documentation. |
-| `page:updated` | The `Page` object and diff structure. | Tracking stale documentation or triggering translation tasks. |
-| `page:deleted` | The `pageId` string. | Archiving logic. |
-| `user:created` | The `User` profile object. | Provisioning the user in external LDAP or SCIM integrations. |
-| `project:created` | The `Project` object. | Bootstrapping default folders or task queues for new projects. |
-| `automation:custom_node` | The node `context`, `params`, and `variables`. | Executing highly specialized, memory-intensive logic required by an automation flowchart. |
+| `task:created` | Full `Task` object. | Automatic tagging, custom routing, or strict validation upon creation. |
+| `task:updated` | `Task` object and `changedFields`. | Auditing specific status transitions or computing derived states. |
+| `task:deleted` | `taskId` string. | Triggering cleanup jobs in related external system databases. |
+| `page:created` | `Page` object (excluding MDX body). | Initiating external approval workflows for new documentation. |
+| `page:updated` | `Page` object and diff AST. | Tracking stale content or automatically triggering translation tasks. |
+| `page:deleted` | `pageId` string. | Archiving logic. |
+| `user:created` | `User` profile object. | Provisioning the user automatically in external LDAP or SCIM integrations. |
+| `project:created` | `Project` object. | Bootstrapping default folders, task queues, or sprint schedules for new projects. |
+| `automation:custom_node` | Node `context`, `params`, and `variables`. | Executing highly specialized, memory-intensive logic required by an automation flowchart. |
 
-## Host functions
+## Host Functions
 
-The engine provides specific "Host Functions" bridging your WASM sandbox to the Collabase platform.
+The engine provides specific "Host Functions" that bridge your isolated WASM sandbox to the underlying Collabase platform APIs.
 
-### Context and logging
+### Context and Logging
 
-The most important host function is `collabase:log`. This allows you to stream execution logs directly to the Admin Dashboard's live log viewer.
+The most important host function is `collabase:log`. This allows your plugin to stream execution logs directly to the Admin Dashboard's live log viewer.
 
 **AssemblyScript Example:**
 
 ```typescript
-// Define the host function
+// Import the host function from the Collabase environment
 @external("collabase", "log")
 declare function collabaseLog(level: string, message: string): void;
 
@@ -69,34 +73,52 @@ export function onActivate(): void {
 }
 
 export function onEvent(eventName: string, payload: string): void {
-  collabaseLog("DEBUG", `Received event: ${eventName}`);
+  collabaseLog("DEBUG", `Received event hook: ${eventName}`);
   
   if (eventName == "task:created") {
-    // Process the task
-    collabaseLog("INFO", "Processed new task creation.");
+    // Deserialize the payload and process the task
+    // TODO: Implement custom routing logic here
+    collabaseLog("INFO", "Processed new task creation via WASM.");
   }
 }
 ```
 
-### Building the plugin
+### Compiling Your Plugin
+
+Depending on your language of choice, compile your source code to the `wasm32-unknown-unknown` or equivalent target.
 
 <Steps>
-  <Step title="Write logic">Write your logic.</Step>
-  <Step title="Compile">Compile to `.wasm` (e.g., using `asc` for AssemblyScript or `cargo build --target wasm32-unknown-unknown` for Rust).</Step>
+  <Step title="Write Logic">
+    Implement your logic using the exposed Collabase host functions and your preferred language.
+  </Step>
+  <Step title="Compile (AssemblyScript)">
+    Use the AssemblyScript compiler:
+    ```bash
+    asc src/index.ts -b build/plugin.wasm --optimize
+    ```
+  </Step>
+  <Step title="Compile (Rust)">
+    Use the standard Cargo build target:
+    ```bash
+    cargo build --target wasm32-unknown-unknown --release
+    ```
+  </Step>
 </Steps>
 
-## Installing and updating
+## Installing and Updating
 
-### Via the admin interface
+Once your `.wasm` binary is compiled, you must deploy it to the Collabase instance.
+
+### Via the Admin Interface
 
 <Steps>
-  <Step title="Open plugins">Navigate to **System Administration → Plugins**.</Step>
-  <Step title="Select tab">Switch to the **WASM Plugins** tab.</Step>
-  <Step title="Click install">Click **Install WASM Plugin**.</Step>
-  <Step title="Upload">Upload your compiled `.wasm` file along with the metadata (`slug`, `name`, `version`).</Step>
+  <Step title="Open Plugins">Navigate to **System Administration → Plugins**.</Step>
+  <Step title="Select Tab">Switch to the **WASM Plugins** tab.</Step>
+  <Step title="Click Install">Click **Install WASM Plugin**.</Step>
+  <Step title="Upload">Upload your compiled `.wasm` file along with its metadata JSON.</Step>
 </Steps>
 
-### Reviewing live logs
+### Reviewing Live Execution Logs
 
-In the **WASM Plugins** tab, you can expand any installed plugin row. This reveals a **Live Log Viewer**.
-Every time your plugin calls `collabase:log` (or encounters a sandbox panic/timeout), it is instantly streamed here. You can filter logs by `Level` (INFO, ERROR, DEBUG) to easily monitor background execution in production.
+In the **WASM Plugins** tab, expand any installed plugin row to reveal the **Live Log Viewer**.
+Every time your plugin calls the `collabase:log` host function (or encounters a sandbox panic, segmentation fault, or timeout), the engine instantly streams the stdout/stderr here. You can filter logs by `Level` (INFO, ERROR, DEBUG) to monitor background execution in production environments.

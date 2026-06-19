@@ -24,8 +24,9 @@
 
   "navbar": {
     "primary": {
-      "type": "github",
-      "href": "https://github.com/Collabase/collabase"
+      "type": "button",
+      "label": "Website",
+      "href": "https://collabase.ch"
     }
   },
 
@@ -278,8 +279,7 @@
       {
         "tab": "Developer",
         "groups": [
-          { "group": "Building Extensions", "pages": ["developer/wasm"] },
-          { "group": "Open Source", "pages": ["contributing"] }
+          { "group": "Building Extensions", "pages": ["developer/wasm"] }
         ]
       },
 
