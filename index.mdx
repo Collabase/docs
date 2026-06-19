@@ -1,13 +1,16 @@
 ---
 title: "Welcome to Collabase"
-description: "The secure, self-hosted collaboration platform — wiki, test management, automation, and intranet in one place."
+description: "The Swiss-made, self-hosted collaboration platform — wiki, tasks, test management, automation, and local AI in one place."
 ---
 
-Collabase is a self-hosted collaboration suite that keeps your data on your own servers. It combines a rich-text knowledge base, a quality assurance test management system, a visual automation builder, and an internal communication hub — all in one platform. A shared permission model and unified search connect everything.
+Collabase is a **self-hosted collaboration OS** that keeps your data on your own servers. It combines a rich-text knowledge base, task management, quality assurance, visual automation, local AI, and an internal communication hub — all in one platform. A shared permission model and unified search connect everything.
 
 <CardGroup cols={2}>
-  <Card title="Installation" icon="rocket" href="/installation">
-    Deploy Collabase on your own server with a single command using Docker.
+  <Card title="Installation" icon="server" href="/installation">
+    Deploy Collabase on your own server in minutes with a single command using Docker.
+  </Card>
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    Learn what Collabase is, who it is for, and how it is licensed.
   </Card>
   <Card title="Core concepts" icon="lightbulb" href="/concepts/spaces">
     Understand Spaces, permissions, and how Collabase is structured.
@@ -15,52 +18,76 @@ Collabase is a self-hosted collaboration suite that keeps your data on your own 
   <Card title="API Reference" icon="code" href="/api/introduction">
     Automate and integrate using the Collabase REST API.
   </Card>
-  <Card title="Automation" icon="bolt" href="/automation/overview">
-    Build no-code workflows that connect Collabase apps and external services.
-  </Card>
 </CardGroup>
+
+---
 
 ## Get started in minutes
 
 <Steps>
   <Step title="Install Collabase">
-    Run the one-line installer on any Linux, macOS, or Windows (WSL2) machine with Docker installed.
+    Run the installer on any Linux server (or macOS / Windows WSL2) with Docker installed:
     ```bash
-    curl -fsSL https://raw.githubusercontent.com/briantrp/collabase/main/deployment/install.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/Collabase/collabase/main/deployment/install.sh | bash
     ```
+    The installer is interactive — it will ask for your domain, admin email, and password, then generate all secrets and start all containers automatically.
   </Step>
-  <Step title="Complete the setup wizard">
-    Open your browser, follow the setup wizard to initialize the database, and create your admin account.
+  <Step title="Log in and set your password">
+    Navigate to your Collabase URL and log in with the admin email and password you set during installation. You will be prompted to choose a new password on first login.
   </Step>
   <Step title="Create your first Space">
     Spaces are the top-level containers for your team's work. Create one for a project, department, or product area.
   </Step>
-  <Step title="Start collaborating">
-    Add pages, run tests, build automations, and invite your team — everything is in one place.
+  <Step title="Invite your team">
+    Go to **Admin → Users** and add team members. Assign them to Spaces with the appropriate role.
   </Step>
 </Steps>
 
-## Explore by app
+---
+
+## Explore the apps
 
 <CardGroup cols={2}>
-  <Card title="Collabase Docs" href="/docs/overview">
-    <img src="/images/docs.png" width="30" />
-    A collaborative wiki where your team writes, organizes, and maintains knowledge — with status tracking and version history.
+  <Card title="Wiki & Docs" icon="file-lines" href="/docs/overview">
+    Collaborative knowledge base with rich-text pages, templates, version history, comments, and full-text search.
   </Card>
-  <Card title="Test Management" href="/test-management/overview">
-    <img src="/images/test-management.png" width="30" />
-    Structured quality assurance — define test cases, run them in organized sessions, and track results over time.
+  <Card title="Task Management" icon="check-square" href="/tasks/overview">
+    Kanban, list, calendar, Gantt, sprints, story points, custom fields, and time tracking — all in one place.
   </Card>
-  <Card title="Automation" href="/automation/overview">
-    <img src="/images/automation.png" width="30" />
-    Visual trigger-condition-action pipelines with native Collabase integration and support for external APIs.
+  <Card title="Test Management" icon="flask" href="/test-management/overview">
+    Define test cases, run them in organized sessions, and track quality results over time.
   </Card>
-  <Card title="Intranet" href="/intranet/overview">
-    <img src="/images/intranet.png" width="30" />
-    Internal announcements and blog posts that reach the right people without getting lost in chat.
+  <Card title="Automation" icon="bolt" href="/automation/overview">
+    Visual trigger-condition-action pipelines with 40+ native connectors and support for external APIs — no code required.
   </Card>
-  <Card title="Registry" href="/registry/overview">
-    <img src="/images/registry.png" width="30" />
-    A custom data modeling and object management app — define schemas, populate them with objects, and connect them with typed relations.
+  <Card title="Brain (Local AI)" icon="brain" href="/brain/overview">
+    Semantic search and AI chat powered by your own Ollama instance. No data ever leaves your server.
+  </Card>
+  <Card title="Intranet" icon="bullhorn" href="/intranet/overview">
+    Internal announcements, blog posts, and a company hub — without getting lost in chat noise.
+  </Card>
+  <Card title="Registry" icon="database" href="/registry/overview">
+    Custom data modeling — define schemas, populate them with objects, and connect them with typed relations.
+  </Card>
+  <Card title="Automation Connectors" icon="plug" href="/automation/connectors">
+    Slack, Jira, GitHub, HubSpot, and 40+ more built-in integrations. Build your own with the SDK.
+  </Card>
+</CardGroup>
+
+---
+
+## Feedback, roadmap & changelog
+
+Collabase is actively developed. Your feedback shapes what gets built next.
+
+<CardGroup cols={3}>
+  <Card title="Submit feedback" icon="message-circle" href="https://collabase.featurebase.app/en">
+    Report bugs, request features, or upvote ideas. All submissions are reviewed by the Collabase team.
+  </Card>
+  <Card title="Public roadmap" icon="map" href="https://collabase.featurebase.app/en/roadmap">
+    See what is planned, in progress, and recently shipped.
+  </Card>
+  <Card title="Changelog" icon="list" href="https://collabase.featurebase.app/en/changelog">
+    A full history of every release — new features, improvements, and bug fixes.
   </Card>
 </CardGroup>
