@@ -1,0 +1,83 @@
+---
+sidebarTitle: "Overview"
+description: "An overview of Time Tracking in Collabase — log time against tasks, manage monthly timesheets, configure billing rules, and run detailed reports."
+---
+
+# Time Tracking
+
+<img src="/images/time-tracking.png" style={{ borderRadius: '8px', marginBottom: '24px' }} />
+
+Collabase Time Tracking lets your team log hours directly against tasks and projects, work through a structured monthly approval workflow, and produce billable reports for clients or internal cost centers. Everything is connected — time logged on a task appears in reports, rolls up into timesheet periods, and is priced according to your billing rules.
+
+---
+
+## Core features
+
+<CardGroup cols={3}>
+  <Card title="Log Time" icon="clock" href="/time-tracking/logging-time">
+    Use the calendar view to log entries by day, week, or month. Start a live timer or enter duration manually.
+  </Card>
+  <Card title="Timesheets" icon="calendar-check" href="/time-tracking/timesheets">
+    Group entries into monthly periods. Submit for review, get approved or rejected, and finalize the record.
+  </Card>
+  <Card title="Reports" icon="chart-bar" href="/time-tracking/reports">
+    Drilldown summaries by account, space, project, task, and user — with billable totals and flexible filters.
+  </Card>
+</CardGroup>
+
+<CardGroup cols={3}>
+  <Card title="Teams" icon="users" href="/time-tracking/teams">
+    Group users for approval routing, report filtering, and individual billable targets.
+  </Card>
+  <Card title="Billing Rules" icon="receipt" href="/time-tracking/billing-rules">
+    Define hourly rates, multipliers, flat fees, and non-billable overrides per space, team, user, or activity type.
+  </Card>
+  <Card title="Accounts" icon="folder" href="/time-tracking/accounts">
+    Named billing containers that group time entries by client, retainer, or cost center.
+  </Card>
+</CardGroup>
+
+---
+
+## Admin setup
+
+Configure the building blocks for time tracking before users start logging time.
+
+<CardGroup cols={2}>
+  <Card title="Holiday & Workload Schemes" icon="calendar" href="/time-tracking/holiday-workload-schemes">
+    Define non-working days and set daily hour targets per user or team. These drive the workload progress bar on the time calendar.
+  </Card>
+  <Card title="Worklog Attributes" icon="sliders" href="/time-tracking/worklog-attributes">
+    Add custom fields to every time entry — activity type, service category, or any metadata needed for billing and reporting.
+  </Card>
+</CardGroup>
+
+<Note>
+  All admin configuration lives under **Admin → Time Tracking**. You need instance admin access to create and manage accounts, teams, billing rules, holiday schemes, workload plans, and worklog attributes. See [Time Tracking — Admin Setup](/admin/time-tracking) for the full configuration checklist.
+</Note>
+
+---
+
+## Who can see what
+
+Access to time entries is scoped by role. The table below summarizes what each role can view.
+
+| Role | Own entries | Team entries | All entries |
+|---|---|---|---|
+| **User** | Yes | No | No |
+| **Team Lead** | Yes | Yes (own team only) | No |
+| **Admin** | Yes | Yes | Yes |
+
+Users can always log, edit, and delete their own entries — unless the relevant timesheet period has been submitted or approved, in which case entries are locked. Team leads can additionally approve or reject timesheets for their own team members. Admins have full visibility across all users and all periods.
+
+---
+
+## Getting started
+
+1. An admin configures at least one [Account](/time-tracking/accounts) to use as a billing container.
+2. An admin creates [Teams](/time-tracking/teams) and assigns members with entry dates.
+3. An admin sets up [Workload Plans](/time-tracking/holiday-workload-schemes) so users see daily targets on their calendar.
+4. Users navigate to **Times** in the sidebar and start [logging time](/time-tracking/logging-time).
+5. At the end of each month, users [submit their timesheet](/time-tracking/timesheets) for review.
+6. Admins or team leads approve timesheets from the **Pending Approvals** gadget on the Home page.
+7. Admins run [reports](/time-tracking/reports) to review billable hours by account, project, and user.

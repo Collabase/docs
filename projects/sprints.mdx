@@ -1,55 +1,111 @@
 ---
-title: "Sprints"
-description: "Organize and time-box work into sprints. Plan, run, and review sprints with a dedicated backlog and velocity tracking."
+sidebarTitle: "Sprints"
+description: "Group tasks into time-boxed iterations. Plan, run, and review sprints with burndown charts, velocity tracking, and story points."
 ---
 
 # Sprints
 
-Sprints let you group tasks into time-boxed iterations — typically 1–2 weeks. The Sprint view shows the active sprint's scope, team capacity, and progress toward completion.
+Sprints let you group tasks into time-boxed iterations — typically one to two weeks. Each sprint has a defined start date, end date, and an optional goal. When a sprint starts, the committed story points are snapshotted so you can detect scope changes over the course of the sprint.
 
-## Backlog vs. active sprint
+## Sprint lifecycle
 
-Every project has a **backlog** — the holding area for all planned work not yet in a sprint. When you're ready to plan an iteration, create a sprint and drag tasks from the backlog into it.
-
-Only one sprint can be **active** at a time. You can have multiple sprints in **planned** state ready to activate next.
+| Status | Meaning |
+|---|---|
+| **Planned** | Sprint is created and tasks are being added. Not yet active. Multiple planned sprints can exist at once. |
+| **Active** | Sprint is underway. Only one sprint can be active at a time. Story points are snapshotted at activation. |
+| **Completed** | Sprint is closed. Incomplete tasks are moved to the backlog or the next sprint. Velocity data is recorded. |
 
 ## Creating a sprint
 
-1. Open the project → **Sprint** view
-2. Click **+ New Sprint**
-3. Set a name, start date, and end date
-4. Drag tasks from the backlog into the sprint (or create new tasks directly in it)
-5. Click **Start Sprint** to activate it
+<Steps>
+  <Step title="Open the Sprint view">
+    Navigate to your project and select the **Sprints** view from the top navigation.
+  </Step>
+  <Step title="Create a new sprint">
+    Click **+ New Sprint** above the sprint list. A new sprint card appears in Planned status.
+  </Step>
+  <Step title="Set the sprint details">
+    Give the sprint a name (e.g., "Sprint 14 — Billing Module"). Set the start date and end date. Add a sprint goal if your team uses them.
+  </Step>
+  <Step title="Add tasks">
+    Drag tasks from the Backlog into the sprint panel. Alternatively, open individual tasks and set their Sprint field directly.
+  </Step>
+</Steps>
 
 ## Sprint fields
 
 | Field | Description |
 |---|---|
-| **Name** | e.g. "Sprint 12 — Auth Hardening" |
-| **Start Date** | When the sprint begins |
-| **End Date** | Sprint deadline |
-| **Goal** | Optional plain-text sprint goal shown at the top of the Sprint view |
+| **Name** | Descriptive label for the sprint, e.g., "Sprint 12 — Auth Hardening". |
+| **Start Date** | The date the sprint begins. |
+| **End Date** | The sprint deadline. Used to calculate days remaining. |
+| **Goal** | Optional plain-text description of what the sprint aims to achieve. Shown at the top of the Sprint view during the sprint. |
+
+## Starting a sprint
+
+<Steps>
+  <Step title="Review the sprint scope">
+    Confirm all tasks intended for the sprint are included. Check story point totals against team capacity.
+  </Step>
+  <Step title="Click Start Sprint">
+    On the sprint card, click **Start Sprint**. A confirmation dialog appears showing the number of tasks and total story points.
+  </Step>
+  <Step title="Confirm activation">
+    Confirm to activate the sprint. The sprint moves to Active status and the committed story points are snapshotted. Any tasks added after this point are counted as scope creep.
+  </Step>
+</Steps>
+
+<Note>
+  Collabase records the committed story points at the moment the sprint starts. If tasks are added later, the burndown chart reflects the original commitment separately from the added scope.
+</Note>
 
 ## Running a sprint
 
-During the sprint, the board shows only tasks in the active sprint. Team members move tasks through status columns as they work. The sprint header shows:
+While a sprint is active, the board and sprint view show only the tasks in that sprint. The sprint header displays:
 
-- **Remaining tasks** — pending + in-progress count
-- **Completed tasks** — done count
-- **Days remaining** — countdown to end date
+- **Remaining tasks** — tasks still in a non-Done status
+- **Completed tasks** — tasks in a Done-category status
+- **Days remaining** — countdown to the sprint end date
+- **Sprint goal** — displayed at the top for team alignment
+
+Team members move tasks through status columns as work progresses. The burndown chart updates as tasks are completed.
+
+## Burndown chart
+
+The burndown chart tracks how many story points remain each day of the sprint. It shows:
+
+- **Ideal burndown line** — a straight diagonal from the committed point total at day one to zero at the end date
+- **Actual burndown line** — the real story points remaining each day based on completed tasks
+
+When the actual line is above the ideal line, the sprint is at risk of not completing on time. When it is below, the team is ahead of schedule.
 
 ## Completing a sprint
 
-Click **Complete Sprint** when the end date arrives:
+<Steps>
+  <Step title="Click Complete Sprint">
+    At the end of the sprint period, click **Complete Sprint** on the active sprint card.
+  </Step>
+  <Step title="Handle incomplete tasks">
+    A dialog shows all tasks that did not reach a Done status. Choose to move them to the backlog or to a specific upcoming sprint.
+  </Step>
+  <Step title="Review the sprint summary">
+    After completing, a sprint review summary is generated showing: total tasks completed, story points delivered, velocity for this sprint, and a comparison to recent sprints.
+  </Step>
+</Steps>
 
-1. Tasks with a `Done` status are marked as completed
-2. Tasks still open are moved back to the backlog (or to the next sprint — your choice)
-3. A **Sprint Review** summary is generated showing velocity and completion rate
-
-<Tip>
-  Use Automation to send a Slack message when a sprint is completed — trigger: `scheduleTime`, action: Collabase `searchTasks` + Slack `sendMessage`.
-</Tip>
+<Warning>
+  Completing a sprint is final. Incomplete tasks are moved out of the sprint immediately. If you need to extend the sprint, update the end date before clicking Complete.
+</Warning>
 
 ## Velocity tracking
 
-The Sprint view's velocity chart plots completed task counts (or story points if configured) across the last 6 sprints. Use this for capacity planning in sprint planning sessions.
+Velocity is the average number of story points completed per sprint, calculated across the last six completed sprints. It is shown in the Sprint view's velocity chart.
+
+Use velocity to set realistic sprint goals. If your team consistently completes 40 story points per sprint, planning a sprint with 60 points will likely result in carry-over.
+
+| Metric | Description |
+|---|---|
+| **Velocity** | Average story points completed per sprint (last 6 sprints). |
+| **Health: On track** | Actual burndown is at or below the ideal line. |
+| **Health: At risk** | Actual burndown is above the ideal line but within range. |
+| **Health: Off track** | Sprint is significantly behind — unlikely to complete on time at current pace. |

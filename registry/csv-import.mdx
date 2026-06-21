@@ -1,0 +1,88 @@
+---
+sidebarTitle: "CSV Import"
+description: "Bulk-create registry objects by uploading a CSV file. Map columns to attributes, validate row by row, and create relations in the same import."
+---
+
+# Importing Objects from CSV
+
+Use CSV import to bulk-create objects in a Registry schema. Instead of entering records one by one through the object browser, prepare a spreadsheet and import hundreds of objects in a single step.
+
+## Preparing your CSV
+
+Before importing, make sure your CSV file is structured correctly.
+
+**Column headers** should match the attribute names defined on the object type you are importing into. For example, if your `Vendor` object type has attributes named `Company Name`, `Website`, and `Contract Value`, your CSV headers should be `Company Name`, `Website`, and `Contract Value`.
+
+**The label attribute must be included.** Every object type has one attribute designated as its label — the display name shown throughout the UI. This column is required. Objects missing a label value will fail validation.
+
+**Multi-line values** must be wrapped in double quotes in the CSV. For example: `"Line one\nLine two"`.
+
+**Relation columns** — if you want to create relations during import, include a column containing the label value of the related object. The related objects must already exist in the schema before the import.
+
+**Header-less CSVs** are supported. If your file has no header row, columns are mapped by position during the mapping step rather than by name.
+
+<Note>
+  You do not need to include all attributes in your CSV — only the columns you have data for. Unmapped or missing columns are left blank on the created objects.
+</Note>
+
+## Importing objects
+
+<Steps>
+  <Step title="Open the object type">
+    In the Registry browser, select the object type you want to import objects into from the left panel.
+  </Step>
+  <Step title="Click Import CSV">
+    Click the **Import CSV** button above the table (next to the Export button).
+  </Step>
+  <Step title="Upload your CSV file">
+    Drag your CSV file into the upload area or click **Browse** to select it from your file system. The file is read in the browser — it is not stored until you confirm the import.
+  </Step>
+  <Step title="Map columns to attributes">
+    A column mapping screen appears. Each column from your CSV is listed on the left. For each column, select the corresponding attribute from the dropdown on the right.
+
+    If your CSV has headers that match attribute names exactly, the mapping is pre-filled automatically. Review the auto-mapping before proceeding.
+
+    Unmapped columns are shown with **Ignore** selected. Any column you set to Ignore will not be imported.
+  </Step>
+  <Step title="Review validation results">
+    After mapping, the import runs a validation pass on every row. Errors are shown row by row. Common errors include:
+    - Missing value for a required attribute
+    - Duplicate value for a unique attribute
+    - Relation value that doesn't match any existing object's label
+    - Value that doesn't match the expected attribute type (for example, text in a Number field)
+
+    You can download the error list as a CSV to fix the rows in your original file.
+  </Step>
+  <Step title="Confirm the import">
+    If the validation results are acceptable, click **Confirm Import**. Objects are created immediately. The browser table updates to show the new records.
+  </Step>
+</Steps>
+
+<Warning>
+  Imports cannot be undone. There is no bulk-delete after an import. Review the validation step carefully and fix all errors before confirming. If you are unsure, test with a small sample CSV first.
+</Warning>
+
+## Column mapping details
+
+Each CSV column maps to one attribute. The following rules apply:
+
+- A column can only be mapped to one attribute.
+- The same attribute cannot receive values from two different columns.
+- The **label attribute** must be mapped. Leaving it unmapped causes all rows to fail validation.
+- Unmapped columns are silently ignored.
+
+## Importing relations
+
+To create relations during import, include a column in your CSV containing the label value of the related object.
+
+**Example:** Your `Contract` type has a `Vendor` relation attribute pointing to the `Vendor` object type. Your CSV has a column called `Vendor Name` containing values like `Acme Corp`. During mapping, map the `Vendor Name` column to the `Vendor` relation attribute.
+
+During validation, Collabase looks up each value in the relation column against the label attribute of the target object type. If a match is found, the relation is created. If no match is found, the row errors with "Related object not found."
+
+<Note>
+  Related objects must already exist in the schema before you run the import. If you need to import both the related objects and the objects that reference them, import the related type first.
+</Note>
+
+## Header-less CSV support
+
+If your CSV file has no header row, select **No header row** during the mapping step. The mapping screen will show columns as **Column 1**, **Column 2**, etc. Map each positional column to the appropriate attribute manually.

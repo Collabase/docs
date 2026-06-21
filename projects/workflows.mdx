@@ -1,49 +1,109 @@
 ---
-title: "Custom Workflows"
-description: "Define task statuses, transitions, and task types to match how your team works."
+sidebarTitle: "Workflows"
+description: "Configure custom statuses, transition rules, task types, and per-type field rules to match how your team works."
 ---
 
-# Custom Workflows
+# Workflows
 
-Every project has its own workflow — a set of statuses that tasks move through. You can customize the statuses, their display order, and which transitions are valid.
+Every project has its own workflow — a set of statuses that tasks move through and rules that govern which transitions are allowed. You can fully customize statuses, define which transitions are valid, and configure task types with per-field rules.
 
 ## Statuses
 
-A status represents the current state of a task in the workflow. Each project starts with a default set of statuses, but you can add, rename, reorder, and remove them.
+A status represents the current state of a task. Each status has a name, a color, and a category.
 
-### Status types
+### Status categories
 
-Every status maps to one of three **categories**:
+Every status must be assigned to one of three categories:
 
 | Category | Meaning |
 |---|---|
-| **Todo** | Work not yet started. Tasks in this category count as backlog. |
-| **In Progress** | Work actively in progress. Used for velocity calculations. |
-| **Done** | Completed work. Tasks in this category are excluded from SLA tracking. |
+| **TODO** | Work not yet started. Tasks in this category appear in the backlog. |
+| **IN_PROGRESS** | Work actively underway. Used for velocity calculations and sprint health metrics. |
+| **DONE** | Completed work. Tasks in this category are excluded from SLA tracking and are counted toward sprint velocity. |
 
 ### Configuring statuses
 
-Open the project → **Settings → Statuses**:
+<Steps>
+  <Step title="Open project settings">
+    Navigate to your project, click **Settings** in the sidebar, then select **Statuses**.
+  </Step>
+  <Step title="Add a new status">
+    Click **+ New Status**. Enter a name (e.g., "In Review", "Blocked", "Waiting on Customer").
+  </Step>
+  <Step title="Set the category">
+    Choose TODO, IN_PROGRESS, or DONE. This determines how the status is treated in velocity, burndown, and SLA calculations.
+  </Step>
+  <Step title="Choose a color">
+    Select a color to distinguish the status visually on the board and in lists.
+  </Step>
+  <Step title="Order the statuses">
+    Drag statuses to reorder them. The order here matches the left-to-right order of columns on the board.
+  </Step>
+</Steps>
 
-1. Click **+ New Status** to add a status
-2. Name it (e.g. "In Review", "Blocked", "Waiting on Customer")
-3. Select the category (Todo / In Progress / Done)
-4. Choose a color
-5. Drag to reorder — status order matches the board column order
+## Transition rules
+
+By default, tasks can move from any status to any other status. You can restrict this by configuring explicit transition rules.
+
+| Mode | Behavior |
+|---|---|
+| **Free select** | Tasks can be moved to any status at any time. No restrictions. |
+| **Governed workflow** | Only explicitly configured transitions are permitted. Any attempt to move a task to a status that is not a valid transition is blocked. |
+
+To configure transitions, open **Settings → Transitions** and define which statuses can move to which. For each status, select the statuses it is allowed to transition into.
+
+<Note>
+  Governed workflows are recommended for regulated or audit-sensitive processes where task progression must follow a defined path.
+</Note>
 
 ## Task types
 
-Task types let you categorize different kinds of work in a project. Each task type can have custom fields attached to it.
+Task types categorize different kinds of work. Each type has a name, an icon, and a color. Types control which custom fields are required, optional, or hidden on a task.
 
-Default task types: `Task`, `Bug`, `Story`, `Epic`
+### Inheritance chain
 
-Admins can define additional global task types under **Admin → Task Types**, which become available across all projects.
+Task types follow a three-level inheritance chain:
 
-## Admin: Global task types
+| Level | Where configured | Who configures it |
+|---|---|---|
+| **Global** | Admin → Task Types | Instance administrator |
+| **Space** | Space Settings → Task Types | Space administrator |
+| **Project** | Project Settings → Task Types | Project owner |
 
-In **Admin → Task Types**, administrators can define organization-wide task types with:
-- Custom name and icon
-- Required and optional custom fields
-- Default priority
+Global types are available in every project. Space types extend the global set for a specific Space. Project types extend the space set for a specific project. Each level can add new types but cannot remove or override types from levels above.
 
-Space-level task types can also be defined per Space to complement the global set.
+### Creating a task type
+
+<Steps>
+  <Step title="Navigate to the correct level">
+    For a global type, go to **Admin → Task Types**. For a project type, go to **Project → Settings → Task Types**.
+  </Step>
+  <Step title="Add a new type">
+    Click **+ New Task Type**. Enter a name (e.g., "Incident", "Change Request", "Feature").
+  </Step>
+  <Step title="Set the icon and color">
+    Choose an icon from the icon picker and a color. These appear on task cards and in lists.
+  </Step>
+  <Step title="Configure field rules">
+    Add field rules to control how standard and custom fields behave for this task type (see below).
+  </Step>
+  <Step title="Save">
+    Click **Save**. The new type is immediately available when creating tasks at the configured level.
+  </Step>
+</Steps>
+
+## Task type field rules
+
+Field rules let you control how each field behaves for a specific task type. For example, a "Bug" type might require a "Steps to Reproduce" custom field, while an "Epic" type might hide the "Story Points" field entirely.
+
+| Rule | Effect |
+|---|---|
+| **Required** | The field must be filled before the task can be saved. |
+| **Hidden** | The field is not shown in the task form or detail view for this type. |
+| **Ordered** | Sets the display position of the field within the task detail view. |
+
+To add a field rule, open a task type's configuration page and click **+ Add Field Rule**. Select the field, choose the rule type, and save.
+
+<Note>
+  Field rules apply to both standard fields (such as Story Points or Due Date) and custom fields configured by your admin. A field marked as Hidden for a task type cannot be set even through the API.
+</Note>

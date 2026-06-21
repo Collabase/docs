@@ -1,64 +1,123 @@
 ---
-title: "Schema Designer"
-description: "A visual ER-diagram canvas to build your data model — create Object Types, define Attributes, and draw typed Relations."
+sidebarTitle: "Schema Designer"
+description: "Design your Registry data model visually — create object types, define attributes, and draw relations between types on an interactive canvas."
 ---
 
 # Schema Designer
 
-The Schema Designer is a full-screen visual canvas where you design the structure of your data model. Object Types appear as cards, Relations appear as connecting arrows, and the canvas gives you a live view of your model before any objects are created.
+The Schema Designer is the visual tool for building your data model. Object types appear as nodes on a canvas, and relations between them appear as connecting arrows. You can see the full structure of your schema at a glance and edit it by clicking directly on the canvas.
+
+Open a schema and click the **Designer** tab to enter the canvas view.
 
 ## The canvas
 
-Open a Schema → click the **Designer** tab to enter the canvas.
+The canvas gives you a live visual representation of your data model.
 
 | Action | How |
 |---|---|
-| Add Object Type | Click **+ Object Type** in the toolbar |
-| Move types | Drag a card to reposition it |
-| Add Relation | Hover a card → click the **→** handle and drag to another card |
-| Zoom | Scroll or pinch |
-| Pan | Click and drag the canvas background |
-| Auto-layout | Click **Auto layout** in the toolbar to tidy the diagram |
+| Move an object type | Drag the node to a new position. The position is saved automatically. |
+| Zoom in or out | Scroll or use the zoom controls in the bottom right corner. |
+| Pan | Click and drag the canvas background. |
+| Open an object type for editing | Click the node. |
+| Add a new object type | Click **+ Add Object Type** in the top toolbar. |
 
-## Creating an Object Type
+## Creating a schema
 
-1. Click **+ Object Type**
-2. Enter a name (e.g. `Customer`)
-3. Optionally choose an icon and color
-4. Click **Create**
+<Steps>
+  <Step title="Go to Registry">
+    Open the Space where you want the schema. Click **Registry** in the left navigation.
+  </Step>
+  <Step title="Create a new schema">
+    Click **+ New Schema**. Enter a name, optionally choose an icon and color, and click **Create**.
+  </Step>
+  <Step title="Open the designer">
+    The new schema opens with an empty canvas. Click **Designer** to start building your model.
+  </Step>
+</Steps>
 
-The new type appears as a card on the canvas. Click it to open the attribute editor.
+## Creating object types
 
-## Defining Attributes
+<Steps>
+  <Step title="Click + Add Object Type">
+    In the Designer toolbar, click **+ Add Object Type**.
+  </Step>
+  <Step title="Fill in the details">
+    Enter the object type name (for example, `Customer` or `Server`). Optionally choose an icon and a color to help visually distinguish this type on the canvas and in the browser. Set a **key prefix** if you plan to use CSV import — this prefix appears in auto-generated IDs.
+  </Step>
+  <Step title="Create">
+    Click **Create**. The new object type appears as a node on the canvas.
+  </Step>
+</Steps>
 
-With an Object Type selected, click **+ Attribute** in the side panel:
+Repeat for each object type in your schema. A typical schema has two to six object types.
 
-| Field | Description |
-|---|---|
-| **Name** | Attribute name (e.g. `Annual Revenue`) |
-| **Type** | Data type — text, number, date, boolean, select, url, email |
-| **Required** | Whether this attribute must be filled when creating an object |
-| **Unique** | Enforce uniqueness across all objects of this type |
-| **Prefix** | For `select` types — define allowed options |
+## Adding attributes to an object type
 
-## Creating Relations
+<Steps>
+  <Step title="Open the object type">
+    Click the object type node on the canvas. A side panel opens showing the type's current attributes.
+  </Step>
+  <Step title="Click + Add Attribute">
+    Click **+ Add Attribute** in the side panel.
+  </Step>
+  <Step title="Configure the attribute">
+    Fill in the attribute settings:
 
-Relations connect two Object Types with a typed edge.
+    | Setting | Description |
+    |---|---|
+    | **Name** | The field label shown in forms and the object browser (for example, `Annual Revenue` or `IP Address`). |
+    | **Type** | The data type. See the [attribute types table](/registry/overview#attribute) for the full list. |
+    | **Required** | If enabled, this field must be filled when creating a new object. |
+    | **Unique** | If enabled, no two objects of this type can have the same value for this attribute. |
+    | **Label attribute** | Mark one attribute per type as the label. This attribute's value becomes the object's display name throughout the UI — in relation pickers, search results, the browser table, and linked task views. Only one attribute per object type can be the label. |
+  </Step>
+  <Step title="Save">
+    Click **Save**. The attribute is added to the object type immediately.
+  </Step>
+</Steps>
 
-1. Hover over the source Object Type card
-2. Click the **→** arrow handle
-3. Drag to the target Object Type
-4. Configure:
-   - **Label** — e.g. "has many", "belongs to"
-   - **Cardinality** — `1:1`, `1:N`, or `N:M`
-   - **Direction** — unidirectional or bidirectional (navigable from both types)
+<Note>
+  Every object type should have exactly one attribute marked as the label. If no label attribute is set, objects of that type display their internal ID instead of a meaningful name.
+</Note>
 
-Relations with `1:N` cardinality show the `1` side and the `N` side in the object form automatically.
+<Warning>
+  Deleting an attribute permanently removes all stored values for that attribute across every object of this type. This cannot be undone. Rename or archive attributes instead of deleting them when possible.
+</Warning>
+
+## Defining relations between object types
+
+A relation is a directed link from one object type to another, defined through an attribute of type **Relation**.
+
+<Steps>
+  <Step title="Open the source object type">
+    Click the object type node that will hold the relation field (the "from" side). For example, `Contract` if you want to link contracts to customers.
+  </Step>
+  <Step title="Add a Relation attribute">
+    Click **+ Add Attribute** and set the type to **Relation**.
+  </Step>
+  <Step title="Select the target type">
+    In the **Relates to** field, select the object type this relation points to (for example, `Customer`).
+  </Step>
+  <Step title="Name the attribute">
+    Give the attribute a descriptive name (for example, `Customer` or `Linked Customer`). This name appears as a field label in object forms.
+  </Step>
+  <Step title="Save">
+    Click **Save**. An arrow now appears on the canvas connecting the two object types, representing the relation.
+  </Step>
+</Steps>
+
+Multiple relation attributes can be defined between the same two object types if there are different relationship meanings to express.
+
+## Editing the canvas layout
+
+Drag any node to reposition it on the canvas. The layout is saved automatically and is per-schema — each schema has its own canvas arrangement. Repositioning nodes is purely visual; it does not change the data model.
 
 ## Editing an existing schema
 
-Click any Object Type card to edit its attributes. Click any Relation arrow to edit its configuration. All changes are applied immediately — no draft/publish cycle.
+You can modify a schema's data model at any time:
 
-<Warning>
-  Deleting an Attribute removes all stored values for that attribute across all existing objects. This cannot be undone.
-</Warning>
+- **Add attributes** — click the object type node and use **+ Add Attribute**.
+- **Edit an attribute** — click the attribute name in the side panel to change its settings. You can rename it, change whether it is required, or change its unique constraint. You cannot change an attribute's type after it has been created.
+- **Delete an attribute** — click the trash icon next to the attribute. See the warning above.
+- **Delete an object type** — click **Delete type** in the side panel. This permanently deletes all objects of that type and all their field values.
+- **Edit a relation** — click the arrow on the canvas to open and edit the relation attribute.

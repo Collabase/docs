@@ -1,81 +1,90 @@
 ---
 sidebarTitle: "Overview"
-description: "The Registry is Collabase's structured data modeling app — define custom schemas, populate them with objects, and connect them with typed relations."
+description: "The Registry is Collabase's built-in structured data store — define custom object types, create records, and link them together with typed relations."
 ---
 
 # Registry
 
-<img src="/images/registry.png" alt="Collabase Registry" style={{ borderRadius: '8px', marginBottom: '24px' }} />
+The Registry is Collabase's flexible internal data store. Use it to build a structured database for any kind of information your organization needs to track — customers, assets, vendors, servers, contracts, products, configurations — without needing a separate tool or writing any code.
 
-The Registry is Collabase's flexible data modeling app. Use it to build a structured internal database for any kind of information your organization needs to track — customers, assets, vendors, products, configurations, contracts — without writing code or managing a database.
+Think of it like a CRM or a custom database that lives inside Collabase and connects directly to your tasks, pages, and automation workflows.
 
-## Core concepts
+## What you can build
 
-<CardGroup cols={2}>
-  <Card title="Schema Designer" icon="diagram-project" href="/registry/schema-designer">
-    A visual canvas to define Object Types, Attributes, and Relations. Think of it as your ER diagram.
+<CardGroup cols={3}>
+  <Card title="Schema Designer" icon="git-branch" href="/registry/schema-designer">
+    Design your data model visually. Define object types, add attributes, and draw relations between types on an interactive canvas.
   </Card>
-  <Card title="Object Browser" icon="table" href="/registry/object-browser">
-    A structured table view for browsing, creating, filtering, and managing the actual objects in a schema.
+  <Card title="Object Browser" icon="database" href="/registry/object-browser">
+    Browse, search, create, and manage the actual records in your schema. Filter by type, view related objects, and see linked tasks.
   </Card>
-  <Card title="Settings & Visibility" icon="sliders" href="/registry/settings">
-    Control access, enable API access, and configure schema metadata.
-  </Card>
-  <Card title="Relations" icon="arrow-right-arrow-left" href="/registry/schema-designer#relations">
-    Typed connections between Object Types — one-to-many, many-to-many, with cardinality constraints.
+  <Card title="CSV Import" icon="upload" href="/registry/csv-import">
+    Bulk-create objects by uploading a CSV file. Map columns to attributes, validate before import, and create relations in the same step.
   </Card>
 </CardGroup>
 
-## Key concepts
+<CardGroup cols={2}>
+  <Card title="Relations" icon="link" href="/registry/schema-designer#relations">
+    Connect objects to each other with directed, typed relations. View connected objects as a graph or a list from any object's detail view.
+  </Card>
+  <Card title="Settings" icon="settings" href="/registry/settings">
+    Control schema visibility, rename the schema, change its icon and color, or delete it entirely.
+  </Card>
+</CardGroup>
+
+## Core concepts
 
 ### Schema
-A Schema is a self-contained data model. Each schema has its own Object Types, Attributes, and Relations. Schemas are space-scoped — they belong to one Space and are accessible to that Space's members.
 
-### Object Type
-An Object Type defines a category of record — like a database table. Example Object Types: `Customer`, `Server`, `Contract`, `Product`.
+A schema is the top-level container for your data model. It groups one or more object types, their attributes, and the relations between them. You can have multiple schemas — for example, one for IT assets and another for vendor management.
+
+Schemas can be **public** (visible to all users in the Collabase instance) or **private** (visible only to you). See [Settings](/registry/settings) for details.
+
+### Object type
+
+An object type defines a category of record — similar to a table in a database. Examples: `Customer`, `Server`, `Contract`, `Vendor`, `Product`.
+
+Each object type has a name, icon, color, and a set of attributes. One attribute is designated as the **label** — this is the display name shown for objects of that type throughout the UI.
 
 ### Attribute
-An Attribute is a field on an Object Type. Supported attribute types:
+
+An attribute is a field on an object type. The following attribute types are supported:
 
 | Type | Description |
 |---|---|
-| `text` | Single-line or multi-line text |
-| `number` | Integer or decimal |
-| `date` | Date picker |
-| `boolean` | True/false toggle |
-| `select` | Single or multi-select from a defined list |
-| `relation` | Link to an object in another Object Type |
-| `url` | Validated URL |
-| `email` | Validated email address |
+| **Text** | Single-line text |
+| **Textarea** | Multi-line text |
+| **Number** | Integer or decimal value |
+| **Date** | Date picker |
+| **Checkbox** | True/false toggle |
+| **Select** | Single selection from a defined list of options |
+| **Multi-select** | Multiple selections from a defined list |
+| **User** | A Collabase user picker |
+| **URL** | A validated web address |
+| **Email** | A validated email address |
+| **Phone** | A phone number |
+| **Currency** | A monetary value |
+| **Rating** | A star rating |
+| **Progress** | A percentage or progress bar value |
+| **Relation** | A link to an object in another (or the same) object type |
 
 ### Object
-An Object is a record — a single instance of an Object Type. Like a database row.
+
+An object is a single record — one instance of an object type. For example, "Acme Corp" is an object of type `Customer`. Objects have field values for each attribute defined on their type.
 
 ### Relation
-A Relation defines a typed connection between two Object Types. Example: `Customer` has many `Contracts`. Relations are navigable from both sides.
 
-## Use cases
+A relation is a directed link from one object to another. Relations are defined at the schema level (between object types) and populated at the object level (between individual records). Multiple relation types can exist between the same two object types.
 
-| Use case | Schemas to build |
+## Example schemas
+
+| Use case | Object types |
 |---|---|
-| **Customer database** | Customer, Contact, Contract |
-| **IT asset management** | Server, Software, License, Owner |
-| **Vendor management** | Vendor, Contract, Product, Invoice |
-| **Product catalog** | Product, Category, SKU, Attribute |
+| IT asset management | Server, Software License, Owner, Department |
+| Vendor management | Vendor, Contract, Contact, Invoice |
+| Customer database | Customer, Contact, Deal, Support ticket |
+| Product catalog | Product, Category, SKU, Supplier |
 
-## Automation integration
+## Integration with tasks
 
-Registry events trigger Automations:
-
-| Trigger | Description |
-|---|---|
-| `collabase.registry.objectCreated` | A new registry object is created |
-| `collabase.registry.objectUpdated` | A registry object's fields are changed |
-
-And Automation can write back to the Registry:
-
-| Action | Description |
-|---|---|
-| Create Registry Object | Create a new object in any schema |
-| Update Registry Object | Update an object's fields |
-| Search Registry Objects | Find objects by keyword |
+Registry objects can be linked to project tasks. When a custom field of type **Registry Object** is configured on a project, tasks in that project can reference a specific registry object. Linked tasks are visible from the object's detail view in the browser.

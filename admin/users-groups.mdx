@@ -1,24 +1,29 @@
 ---
-title: "Users & Groups"
-description: "Add users, assign roles, organize teams into groups, and set up automated provisioning."
+sidebarTitle: "Users & Groups"
+description: "Invite users, assign roles, organize teams into groups, and set up automated provisioning with SCIM."
 ---
 
 All user and group management is under **Admin → Users** and **Admin → Groups**.
 
-## User roles
+---
 
-Every user has one of two global roles:
+## Instance roles
+
+Every user in Collabase has one of three instance-level roles. This role controls what the user can do across the entire platform.
 
 | Role | What they can do |
 |---|---|
-| **Admin** | Full access to all admin settings, all Spaces, and all system configuration |
-| **User** | Access only to Spaces they are invited to — cannot access admin settings |
+| **Admin** | Full access to all admin settings, all spaces, all system configuration, and all content |
+| **User** | Standard access — can work in any space they are invited to; cannot access admin settings |
+| **Viewer** | Read-only access across all spaces they are invited to; cannot create or edit content |
 
-Within each Space, members also have a Space role that controls what they can do there. See [Permissions](/concepts/permissions) for details.
+<Note>
+  Instance roles and space roles work together. A user with the instance role of Viewer can be given the space role of Member in a specific space, which allows them to create content there. See [Permissions](/concepts/permissions) for how the layers interact.
+</Note>
 
 ---
 
-## Adding users
+## Inviting users
 
 <Steps>
   <Step title="Open Admin → Users">
@@ -28,13 +33,13 @@ Within each Space, members also have a Space role that controls what they can do
     Fill in their name and email address.
   </Step>
   <Step title="Set a temporary password">
-    Enter a temporary password. The user will be asked to choose a new one on their first login.
+    Enter a temporary password. The user will be prompted to set their own password on first login.
   </Step>
-  <Step title="Assign a role">
-    Choose **User** or **Admin**.
+  <Step title="Assign an instance role">
+    Choose **User**, **Viewer**, or **Admin**. Most new users should receive the **User** role.
   </Step>
   <Step title="Click Create User">
-    The account is created immediately. Share the login credentials with the new user.
+    The account is created immediately. Share the Collabase URL and temporary credentials with the new user.
   </Step>
 </Steps>
 
@@ -42,30 +47,32 @@ Within each Space, members also have a Space role that controls what they can do
 
 ## Managing existing users
 
-From **Admin → Users**, you can:
+From **Admin → Users**, you can take the following actions on any account:
 
-- **Change a user's role** — use the role dropdown on their row
-- **Disable a user** — prevents login without deleting the account or their content
-- **Re-enable a user** — restores access for a previously disabled account
-- **Edit a user's profile** — name, email, job title, and department
-- **Delete a user** — permanently removes the account; their content is kept
-- **Unlock a locked account** — if brute-force protection locked the account after failed login attempts
+| Action | What it does |
+|---|---|
+| **Change role** | Promote or demote a user's instance role using the dropdown on their row |
+| **Disable** | Prevents the user from logging in without deleting their account or content |
+| **Re-enable** | Restores access for a previously disabled account |
+| **Edit profile** | Update name, email, job title, and department |
+| **Unlock** | Removes a lockout caused by repeated failed login attempts |
+| **Delete** | Permanently removes the account; their content (pages, tasks, etc.) is kept |
 
 <Warning>
-  You cannot disable or delete your own account.
+  You cannot disable or delete your own account. Ask another admin to do this if needed.
 </Warning>
 
 <Note>
-  For users synced from LDAP or an identity provider, profile fields are managed in your directory — they cannot be edited in Collabase directly.
+  For users synchronized from LDAP or SCIM, profile fields such as name and email are managed in your company directory. Changes made in your directory will sync to Collabase automatically — editing them directly in Collabase is not possible for synchronized fields.
 </Note>
 
 ---
 
 ## Groups
 
-Groups let you manage Space access for entire teams at once. Instead of adding each person individually to every Space, you add them to a group — and the group gets access to the relevant Spaces.
+Groups let you grant space access to entire teams at once, instead of adding each person individually to every space.
 
-When someone joins the team, add them to the group. They immediately get access to all Spaces the group has. When they leave, remove them from the group and access is revoked everywhere at once.
+When you add someone to a group, they immediately gain access to all spaces the group has been granted access to. When you remove them from the group, that access is revoked across all those spaces at once.
 
 ### Creating a group
 
@@ -74,21 +81,33 @@ When someone joins the team, add them to the group. They immediately get access 
     Click **New Group**.
   </Step>
   <Step title="Name the group">
-    Enter a name and an optional description.
+    Enter a name (e.g. "Engineering", "Marketing") and an optional description.
   </Step>
   <Step title="Add members">
     Open the group and go to the **Members** tab. Search for users by name or email and add them.
   </Step>
-  <Step title="Grant Space access">
-    Go to the **Space Access** tab. Select a Space and the role group members will have there.
+  <Step title="Grant space access">
+    Go to the **Space Access** tab. Select a space and assign the space role that all members of this group will have there. Repeat for each space the group should access.
   </Step>
 </Steps>
 
+### Adding or removing a member from a group
+
+Open the group from **Admin → Groups**, go to the **Members** tab, and use the add or remove controls. Changes take effect immediately — the user gains or loses space access right away.
+
+### Using groups in space settings
+
+You can also manage group access from inside a space. Go to **Space Settings → Members → Add Group**, select the group, and assign a space role. See [Space Settings](/concepts/space-settings) for details.
+
 ---
 
-## Automated provisioning (SCIM)
+## Automated provisioning (SCIM 2.0)
 
-If you use an identity provider like Okta, Microsoft Entra, or JumpCloud, you can connect it to Collabase via SCIM. This automatically creates, updates, and deactivates user accounts based on your directory — without any manual work.
+<Warning>
+  SCIM provisioning requires an enterprise license. The SCIM section is not visible without a valid license key.
+</Warning>
+
+SCIM 2.0 connects your identity provider (Okta, Microsoft Entra, JumpCloud, etc.) to Collabase so user accounts are created, updated, and deactivated automatically — no manual steps required when someone joins or leaves the organization.
 
 ### Setting up SCIM
 
@@ -97,14 +116,30 @@ If you use an identity provider like Okta, Microsoft Entra, or JumpCloud, you ca
     Go to **Admin → Users** and scroll to the **SCIM Provisioning** section. Click **Generate Token**. Copy the token immediately — it is only shown once.
   </Step>
   <Step title="Configure your identity provider">
-    In your IdP, set:
+    In your IdP's SCIM settings, enter:
     - **SCIM base URL:** `https://your-collabase-domain/api/scim/v2`
+    - **Authentication method:** Bearer token
     - **Bearer token:** the token you just copied
+  </Step>
+  <Step title="Assign the Collabase application to your users">
+    In your IdP, assign the Collabase SCIM application to the users or groups that should have access. The IdP will automatically push those users to Collabase.
+  </Step>
+  <Step title="Verify provisioning">
+    Check **Admin → Users** to confirm that the expected users have been created. The source column on each user row shows whether the account was provisioned via SCIM.
   </Step>
 </Steps>
 
-Once connected, your IdP will automatically create users in Collabase when they are assigned to the app, update their profile when it changes in the directory, and deactivate them when they are removed.
-
 <Warning>
-  The SCIM token is shown only once. If you lose it, delete it and generate a new one — the old token stops working immediately.
+  The SCIM token is shown only once. If you lose it, delete it in **Admin → Users → SCIM Provisioning** and generate a new one. The old token stops working immediately when deleted.
 </Warning>
+
+### What SCIM manages automatically
+
+| Event in your IdP | What happens in Collabase |
+|---|---|
+| User is assigned to the Collabase app | A new Collabase account is created |
+| User's name or email changes in the directory | The Collabase profile is updated |
+| User is removed from the Collabase app | The Collabase account is deactivated |
+| User is re-assigned to the app | The account is re-activated |
+
+SCIM does not delete accounts — it only deactivates them. Content created by the user is preserved.

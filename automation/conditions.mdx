@@ -1,101 +1,144 @@
 ---
-title: "Conditions"
-description: "Condition nodes filter whether an automation continues — if a condition fails, the pipeline stops at that branch."
+sidebarTitle: "Conditions"
+description: "Condition nodes evaluate data and decide whether an automation branch continues, stops, or takes an alternate path."
 ---
 
-A condition node sits between your trigger and your actions. It evaluates a value from the trigger output (or a previous action's output) against a rule you define. If the condition passes, execution continues to the next node. If it fails, the automation stops at that branch — no actions downstream of it run.
+# Conditions
 
-Use conditions to make automations precise. Instead of notifying someone every time any test fails, you can add a condition to only proceed when the failing case has priority `CRITICAL`. Instead of creating a page for every event, you can limit it to events where a specific field matches a pattern.
+Condition nodes sit between your trigger and your actions. They evaluate a value — from the trigger, a previous action, or a stored variable — against a rule you define. Based on the result, execution continues, stops, or takes a different path.
 
-## Adding a condition node
+Use conditions to make automations precise. Instead of notifying someone every time any task changes, add a condition to proceed only when the priority is `HIGH`. Instead of creating a Jira issue for every webhook, limit it to requests where the environment is `production`.
 
-<Steps>
-  <Step title="Open the automation builder">
-    Open your automation and click the **+** button between two nodes in the visual canvas — or click **Add Condition** in the node panel on the right.
-  </Step>
-  <Step title="Choose the field to evaluate">
-    Select the field you want to test. The picker shows all fields available from your trigger and any upstream actions — for example, `testCaseTitle`, `priority`, `status`, or a webhook payload field like `payload.environment`.
-  </Step>
-  <Step title="Select a comparator">
-    Choose how to compare the field against your value. See the comparator reference below.
-  </Step>
-  <Step title="Enter the comparison value">
-    Type the value to compare against. Values are case-sensitive unless you use a text matcher like **contains** or **matches regex**.
-  </Step>
-</Steps>
+---
 
-## Comparator types
+## Two condition node types
 
-### Field comparators
-
-Use these to compare structured values like status enums, IDs, or numbers.
-
-| Comparator | Description |
+| Node | Behavior when the condition is false |
 |---|---|
-| `equals` | The field value exactly matches the given value. |
-| `not equals` | The field value does not match the given value. |
-| `is empty` | The field is null, undefined, or an empty string. |
-| `is not empty` | The field has any non-empty value. |
-| `greater than` | The field value (numeric) is greater than the given number. |
-| `less than` | The field value (numeric) is less than the given number. |
+| **Filter** | The branch stops silently. No downstream nodes run. No error is logged — a stopped branch is expected, healthy behavior. |
+| **IfElse** | Execution always continues — on the **true** path if the condition passes, on the **false** path if it does not. Both paths can have their own actions. |
 
-### Text matchers
-
-Use these when the field is a string and you need flexible matching.
-
-| Comparator | Description |
-|---|---|
-| `contains` | The field string includes the given substring (case-insensitive). |
-| `does not contain` | The field string does not include the substring. |
-| `starts with` | The field string begins with the given prefix. |
-| `ends with` | The field string ends with the given suffix. |
-| `matches regex` | The field string matches a regular expression. |
-
-### Boolean logic
-
-When you add multiple condition nodes in sequence, they are evaluated one after another — all must pass for execution to continue (AND logic).
-
-If you need OR logic — continue if any one condition passes — add a **Condition Group** node and place your conditions inside it. The group passes if at least one condition inside it passes.
-
-<Tip>
-  Keep conditions atomic. One rule per node is easier to debug in the execution history than a complex compound expression. If a run stops unexpectedly, you can see exactly which condition node failed and why.
-</Tip>
-
-## What happens when a condition fails
-
-When a condition node evaluates to false:
-
-- Execution stops at that node for that branch.
-- No action nodes below the failed condition run.
-- The execution is recorded with status `STOPPED` and the condition node is marked as the stopping point.
-- You can inspect the input value that was evaluated and the rule that failed from the execution history.
+Use **Filter** when you want the automation to do nothing if the condition is not met. Use **IfElse** when you want different actions depending on the outcome.
 
 <Note>
-  A stopped execution is not the same as a failed execution. Stopping at a condition is the expected, healthy behavior — the automation worked correctly, and the event simply did not meet your criteria.
+  A branch stopped by a Filter node does not count as a failed execution. The Runs tab shows it as stopped at that node, which is correct behavior.
 </Note>
+
+---
+
+## Operators
+
+| Operator | Works on | Description |
+|---|---|---|
+| `is` | Text, number, status | The value exactly matches what you enter (case-sensitive for text) |
+| `is not` | Text, number, status | The value does not match |
+| `contains` | Text | The value includes the given text anywhere |
+| `does not contain` | Text | The value does not include the given text |
+| `starts with` | Text | The value begins with the given text |
+| `ends with` | Text | The value ends with the given text |
+| `is empty` | Any | The field is blank, null, or missing |
+| `is not empty` | Any | The field has any value |
+| `greater than` | Number, date | The value is larger than the given number |
+| `less than` | Number, date | The value is smaller than the given number |
+| `greater than or equal` | Number, date | The value is at least the given number |
+| `less than or equal` | Number, date | The value is at most the given number |
+| `is in last N days` | Date | The date falls within the past N days from now |
+| `is in next N days` | Date | The date falls within the next N days from now |
+
+---
+
+## Expression syntax
+
+The field you evaluate can be any value from an upstream node. Use the same variable syntax as action fields:
+
+| Reference | Example |
+|---|---|
+| Trigger payload field | `{payload.environment}` |
+| Nested payload field | `{payload.task.priority}` |
+| Specific node output | `{stepOutputs.createTask.status}` |
+| Stored variable | `{variableName}` |
+
+**Example — check if a webhook came from production:**
+
+| Field | Operator | Value |
+|---|---|---|
+| `{payload.environment}` | `is` | `production` |
+
+**Example — check task priority:**
+
+| Field | Operator | Value |
+|---|---|---|
+| `{payload.task.priority}` | `is` | `HIGH` |
+
+---
+
+## AND / OR combinators
+
+A single condition node can contain multiple rules. Use the combinator setting to control how they combine:
+
+| Combinator | Behavior |
+|---|---|
+| **All conditions (AND)** | Every rule must pass for the node to pass |
+| **Any condition (OR)** | At least one rule must pass for the node to pass |
+
+The combinator applies to all rules within the same node. To mix AND/OR logic across groups of rules, chain multiple condition nodes.
+
+---
+
+## Router node — multi-way branching
+
+The **Router** node extends branching to more than two paths. Define as many routes as you need, each with its own set of conditions. When the router evaluates:
+
+- The first route whose conditions pass is followed.
+- Subsequent routes are not evaluated (first match wins).
+- If no route matches, the **default** path runs (if configured).
+
+Use a Router when you have three or more distinct outcomes — for example, routing a task based on priority:
+
+| Route | Condition | Actions |
+|---|---|---|
+| Critical | `{payload.priority}` is `CRITICAL` | Page on-call + create Jira incident |
+| High | `{payload.priority}` is `HIGH` | Send Slack alert |
+| Default | (no condition — always matches) | Log only |
+
+---
 
 ## Examples
 
-**Only proceed if a test case priority is `CRITICAL`:**
+**Only proceed if task priority is HIGH — stop otherwise:**
 
-| Field | Comparator | Value |
+Use a **Filter** node.
+
+| Field | Operator | Value |
 |---|---|---|
-| `priority` | `equals` | `CRITICAL` |
+| `{payload.priority}` | `is` | `HIGH` |
 
-**Only proceed if a page status is `PUBLISHED`:**
+---
 
-| Field | Comparator | Value |
+**Send a Slack alert for HIGH priority, log only for everything else:**
+
+Use an **IfElse** node.
+
+| Field | Operator | Value |
 |---|---|---|
-| `status` | `equals` | `PUBLISHED` |
+| `{payload.priority}` | `is` | `HIGH` |
 
-**Only proceed if a webhook environment field is `production`:**
+- **True path** → Slack: Send Message
+- **False path** → Data Store: Log event
 
-| Field | Comparator | Value |
+---
+
+**Only proceed if a webhook is from production and has a version set:**
+
+Use a **Filter** node with **All conditions (AND)**.
+
+| Field | Operator | Value |
 |---|---|---|
-| `payload.environment` | `equals` | `production` |
+| `{payload.environment}` | `is` | `production` |
+| `{payload.version}` | `is not empty` | — |
 
-**Only proceed if a test case title mentions a specific feature:**
+---
 
-| Field | Comparator | Value |
-|---|---|---|
-| `testCaseTitle` | `contains` | `checkout` |
+**Route a task by priority across three outcomes:**
+
+Use a **Router** node with three routes as shown in the table above.

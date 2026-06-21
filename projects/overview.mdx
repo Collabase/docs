@@ -1,63 +1,73 @@
 ---
 sidebarTitle: "Overview"
-description: "Projects is Collabase's agile project management app — tasks, sprints, queues, SLAs, and custom workflows in every Space."
+description: "Projects is Collabase's project management app — tasks, boards, sprints, queues, SLA policies, and custom workflows in every Space."
 ---
 
 # Projects
 
-<img src="/images/projects.png" alt="Collabase Projects board view" style={{ borderRadius: '8px', marginBottom: '24px' }} />
+Projects is the task and project management app built into every Collabase Space. It brings together a Kanban board, sprint planning, backlog management, a Gantt-style roadmap, queue-based helpdesk workflows, SLA tracking, and a customer portal — all in one place.
 
-Projects is the task and project management app built into every Collabase Space. It combines a flexible kanban board, sprint planning, queue-based helpdesk workflows, SLA tracking, and a full task history. Everything connects to Docs, Test Management, Automation, and the Registry.
+Every Space can have multiple Projects. Each Project is a self-contained workspace with its own workflow, task types, members, and settings. Tasks within a project move through custom statuses, can be organized into sprints or queues, and tracked against SLA targets.
 
-## How Projects is organized
-
-Every Space can have multiple Projects. Each Project is a self-contained workspace with its own workflow, task types, members, and settings.
+## Feature areas
 
 <CardGroup cols={3}>
   <Card title="Tasks" icon="circle-check" href="/projects/tasks">
-    The fundamental unit. Every piece of work is a task — it has a status, type, assignee, priority, due date, checklists, comments, and a full change history.
+    The fundamental unit of work. Every task has a status, type, assignee, priority, due date, rich-text description, comments, attachments, subtasks, linked tasks, and a full change history.
+  </Card>
+  <Card title="Board" icon="columns-3" href="/projects/board">
+    A Kanban board where columns represent statuses. Drag tasks between columns to update their status. Configure swimlanes, card fields, and color rules.
   </Card>
   <Card title="Sprints" icon="gauge-high" href="/projects/sprints">
-    Time-box work into sprints. Move tasks into a sprint, set start and end dates, and track velocity across sprint reviews.
+    Group tasks into time-boxed iterations. Track velocity with burndown charts and story points. Manage sprint scope with a dedicated backlog.
+  </Card>
+  <Card title="Backlog" icon="list-ul" href="/projects/backlog">
+    The holding area for all tasks not assigned to a sprint. Prioritize by dragging tasks, filter by any field, and assign tasks to upcoming sprints.
+  </Card>
+  <Card title="Roadmap" icon="chart-gantt" href="/projects/roadmap">
+    A Gantt-style timeline view. Tasks with start and due dates appear as bars. Sprint periods appear as colored bands in the background.
   </Card>
   <Card title="Queues" icon="layer-group" href="/projects/queues">
-    Organize tasks into named queues — ideal for support teams, review pipelines, or any multi-stage triage process.
+    Named filtered views within a project. Ideal for support teams, review pipelines, or any workflow that needs structured triage.
   </Card>
   <Card title="SLA Policies" icon="clock" href="/projects/sla">
-    Set response and resolution time targets per priority level. Collabase tracks breaches automatically.
+    Set response and resolution time targets per priority level. Collabase tracks breaches automatically and surfaces them in board and queue views.
   </Card>
-  <Card title="Custom Workflows" icon="arrow-right-arrow-left" href="/projects/workflows">
-    Define your own task statuses, transitions, and task types to match how your team actually works.
+  <Card title="Workflows" icon="arrow-right-arrow-left" href="/projects/workflows">
+    Define custom statuses with names, colors, and categories. Control which status transitions are allowed and configure task types with field rules.
   </Card>
   <Card title="Customer Portal" icon="globe" href="/projects/portal">
-    Give external customers a branded view into their tickets — no Collabase account required.
+    A branded external view for customers to submit tickets and track their status — no Collabase account required.
   </Card>
 </CardGroup>
 
 ## Views
 
-Projects supports multiple task views. Switch between them from the view toggle in the top-right of the board.
+Switch between views using the view toggle in the top bar of any project.
 
 | View | Best for |
 |---|---|
-| **Board** | Kanban-style drag-and-drop by status column |
-| **List** | Dense sortable table of all tasks |
-| **Sprint** | Sprint backlog and active sprint tracking |
-| **Queue** | Triage inbox organized by queue |
-| **Timeline** | Gantt-style view of tasks with due dates |
+| **Board** | Kanban-style drag-and-drop by status column. Supports swimlanes and card color rules. |
+| **List** | Dense sortable table of all tasks. Best for bulk editing and searching. |
+| **Sprints** | Active sprint tracking with scope, story points, and burndown progress. |
+| **Backlog** | Unassigned tasks waiting to be planned into sprints. |
+| **Roadmap** | Gantt-style timeline for tasks with start and due dates. |
+| **Queues** | Triage inbox organized by named filter sets. |
 
 ## Roles and access
 
-Project access is controlled per project, independent of Space membership.
+Project access is managed independently from Space membership. A Space member does not automatically have access to every project in that Space.
 
 | Role | Permissions |
 |---|---|
-| **Owner** | Full project configuration, archive, delete |
-| **Member** | Create, assign, and resolve tasks |
-| **Viewer** | Read-only access to tasks and boards |
+| **Owner** | Full project configuration, including workflow, members, SLA policies, and archive/delete. |
+| **Member** | Create, assign, update, and resolve tasks. Manage sprints and queues. |
+| **Viewer** | Read-only access to tasks, board, and all views. Cannot create or edit tasks. |
 
-Manage members from **Project → Settings → Members**.
+Manage project members from **Project → Settings → Members**.
 
 ## Admin configuration
 
-Admins can configure global task types, custom fields, and worklog attributes that apply across all projects in the instance. See **Admin → Task Types** and **Admin → Custom Fields**.
+<Note>
+  Administrators can configure global task types and custom fields that are available across all projects in the instance. Set these up in **Admin → Task Types** and **Admin → Custom Fields**. Global settings cascade down: global → space → project, with each level able to extend but not override the level above.
+</Note>

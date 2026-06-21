@@ -1,0 +1,106 @@
+---
+sidebarTitle: "Time Accounts"
+description: "How to create and manage time accounts in Collabase — billing containers that group time entries by client, retainer, or cost center for reporting and invoicing."
+---
+
+# Time Accounts
+
+Time accounts are named billing containers that group time entries for reporting and invoicing. Use accounts to separate time by client, retainer, or cost center so that reports show exactly what was logged against each one.
+
+All account configuration is in **Admin → Time Tracking → Accounts**.
+
+---
+
+## Account fields
+
+| Field | Description |
+|---|---|
+| **Name** | The display name shown on reports, in the entry dialog, and throughout the admin interface. Choose a name that is meaningful to your billing process — for example, "Acme Corp Retainer" or "Internal Infrastructure". |
+| **Lead User** | Optional. Assign a user responsible for this account. The lead user is informational — it appears in the account list and can be used to filter internally. |
+
+---
+
+## Assigning entries to accounts
+
+When creating or editing a time entry, select an **Account** from the account dropdown in the entry dialog. The field is optional. Entries without an account appear under a catch-all "No Account" group at the top of the Reports drilldown.
+
+Time entries can be reassigned to a different account at any time by editing the entry — as long as the timesheet period is not in SUBMITTED or APPROVED status.
+
+---
+
+## Accounts in reports
+
+Accounts are the top level of the [Reports](/time-tracking/reports) drilldown hierarchy. Every report result starts with the account level, even if only one account is selected in the filter.
+
+Expand an account row to drill down into:
+
+1. **Spaces** — which Collabase spaces contain the time.
+2. **Projects** — which projects within those spaces.
+3. **Tasks** — which tasks within each project.
+4. **Users** — who logged the time on each task.
+
+This structure makes it straightforward to produce a per-client summary that breaks down billable time from the top level all the way to individual tasks and contributors.
+
+---
+
+## Creating an account
+
+<Steps>
+  <Step title="Go to Admin → Time Tracking → Accounts">
+    You need instance admin access to create accounts.
+  </Step>
+  <Step title="Click + New Account">
+    The create dialog opens.
+  </Step>
+  <Step title="Enter the account name">
+    Choose a name that reflects the client, retainer, or cost center. This name appears in the entry dialog and all reports.
+  </Step>
+  <Step title="Assign a Lead User (optional)">
+    Search for and select the user responsible for this account. You can skip this field and assign it later.
+  </Step>
+  <Step title="Click Create">
+    The account is saved and immediately available for selection when logging time entries.
+  </Step>
+</Steps>
+
+---
+
+## Editing an account
+
+<Steps>
+  <Step title="Open the account">
+    Navigate to **Admin → Time Tracking → Accounts** and click the account name.
+  </Step>
+  <Step title="Update the fields">
+    Change the name or lead user as needed.
+  </Step>
+  <Step title="Click Save">
+    The updated name appears across all existing time entries and reports instantly.
+  </Step>
+</Steps>
+
+---
+
+## Deleting an account
+
+<Steps>
+  <Step title="Reassign or delete all linked time entries">
+    An account can only be deleted if no time entries reference it. Open the Reports view, filter by the account, then either edit each entry to point to a different account or delete the entries.
+  </Step>
+  <Step title="Open the account">
+    Navigate to **Admin → Time Tracking → Accounts** and click the account name.
+  </Step>
+  <Step title="Click Delete">
+    If all linked entries have been removed, the Delete button is available. Click it and confirm.
+  </Step>
+</Steps>
+
+<Warning>
+  Deleting an account is permanent. You must reassign or delete all time entries linked to the account before the delete option becomes available. Consider archiving or renaming inactive accounts instead of deleting them to preserve historical report data.
+</Warning>
+
+---
+
+## Using accounts for invoicing
+
+Accounts do not generate invoices directly inside Collabase. Use the **Reports** view to filter by account and date range, then export the results or read the totals to populate your invoicing tool. The report shows total hours, billable hours, billable percentage, and entry count for each account at every drilldown level.

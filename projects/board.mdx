@@ -1,0 +1,108 @@
+---
+sidebarTitle: "Board"
+description: "The Kanban board view — drag tasks between status columns, configure swimlanes, card fields, and color rules."
+---
+
+# The Board View
+
+The Board is the default view for any project. It organizes tasks as cards arranged in columns, where each column represents a status in your project's workflow. Moving a card from one column to another updates the task's status immediately.
+
+The Board is best for day-to-day work management — seeing what is in progress, what is blocked, and what is ready for review at a glance.
+
+## Columns
+
+Each status in your project workflow appears as a column on the board, in the order set under **Project → Settings → Statuses**. Cards represent individual tasks.
+
+- **Drag a card** from one column to another to change its status.
+- **Click a card** to open the task's full detail view.
+- **Click the column header** to collapse that column and give more screen space to others.
+
+The column order on the board matches the status order in your workflow settings. To change the column order, reorder the statuses in **Project → Settings → Statuses**.
+
+## Swimlanes
+
+Swimlanes add a second grouping dimension within each column. When a swimlane field is configured, each column is divided into horizontal rows — one row per value of the chosen field.
+
+You can group by any of the following fields:
+
+| Swimlane field | Groups tasks by |
+|---|---|
+| **Task type** | Each task type gets its own row (Bug, Story, Task, etc.) |
+| **Assignee** | One row per team member plus an Unassigned row |
+| **Priority** | Critical, High, Medium, Low, None |
+| **Label** | One row per label value |
+| **Custom field** | Any configured select or user-type custom field |
+
+Tasks that do not match any group value appear in the **Remaining** row at the bottom.
+
+To enable swimlanes, open **Board Settings** (the gear icon at the top right of the board) and select a field under **Swimlane Field**. Select "None" to disable swimlanes.
+
+## Card fields
+
+By default, cards show the task title, priority, and assignee avatar. You can configure which additional fields appear on each card.
+
+Available card fields:
+
+| Field | What it shows |
+|---|---|
+| **Assignee avatar** | Profile photo of the assigned team member |
+| **Priority** | Priority badge (Critical, High, Medium, Low) |
+| **Due date** | Due date, highlighted in red if overdue |
+| **Labels** | Label tags on the card |
+| **Story points** | Numeric story point estimate |
+| **Task type icon** | The icon for the task's type |
+| **Custom fields** | Any custom field configured for the project's task types |
+
+Configure card fields under **Board Settings → Card Fields**. Toggle each field on or off. Changes apply to all cards on the board.
+
+## Card color rules
+
+Card color rules let you apply a background color to cards based on their field values. Rules are evaluated in order — the first matching rule wins.
+
+Example rules you might configure:
+
+| Condition | Color |
+|---|---|
+| Priority = CRITICAL | Red |
+| Label = "Blocked" | Orange |
+| Assignee = (specific person) | Blue |
+| Due date is overdue | Dark red |
+
+Color rules are helpful for quickly identifying high-priority or blocked work without reading each card individually.
+
+## Quick filters
+
+The toolbar at the top of the board provides quick filters that apply instantly without changing the board configuration:
+
+| Filter | What it shows |
+|---|---|
+| **My Tasks** | Only tasks assigned to you |
+| **Unassigned** | Only tasks with no assignee |
+| **By Priority** | Filter to one or more priority levels |
+| **By Label** | Filter to tasks with a specific label |
+
+You can combine multiple quick filters — all active filters apply at the same time. Clear them with the **Clear Filters** button.
+
+## Configuring the board
+
+<Steps>
+  <Step title="Open Board Settings">
+    Click the gear icon labeled **Board Settings** at the top right of the board view.
+  </Step>
+  <Step title="Choose a Swimlane Field">
+    Under **Swimlane Field**, select the field to group tasks by within each column. Select "None" to show tasks without swimlane grouping.
+  </Step>
+  <Step title="Configure Card Fields">
+    Under **Card Fields**, toggle on the fields you want visible on task cards. Drag to reorder the fields.
+  </Step>
+  <Step title="Add Color Rules">
+    Under **Color Rules**, click **+ Add Rule**. Choose a field, an operator (equals, contains, is empty, etc.), and a value. Pick a color. Drag rules to set their evaluation priority.
+  </Step>
+  <Step title="Save">
+    Click **Save**. Changes take effect immediately for everyone viewing the board.
+  </Step>
+</Steps>
+
+<Note>
+  Board settings are saved per project and apply to all team members viewing that project's board. Individual members cannot override the shared board configuration.
+</Note>

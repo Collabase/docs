@@ -1,71 +1,101 @@
 ---
-title: "AI Configuration"
-description: "Connect Collabase to an AI provider and configure the Brain feature."
+sidebarTitle: "AI Configuration"
+description: "Connect Collabase to an AI provider and configure which AI features are available to your users."
 ---
 
-Collabase Brain is the built-in AI assistant. It lets users generate content, summarize pages, improve writing, translate text, and ask questions about your documentation — without leaving Collabase.
+Collabase includes AI-powered features across multiple modules — writing assistance in Docs, task description generation in Projects, AI nodes in Automation, and semantic search across all content. All of these share a single AI provider configuration that you set up once.
 
-All AI features are turned off by default. Enable them under **Admin → Settings → AI**.
-
----
-
-## Enabling Brain
-
-Go to **Admin → Settings → AI** and toggle **Collabase Brain** to **on**. Then choose and configure your AI provider below.
-
-When Brain is disabled, all AI features are hidden from users.
+All AI features are **off by default**. Enable them under **Admin → Settings → AI**.
 
 ---
 
-## Choosing an AI provider
+## Choosing a provider
 
-Collabase works with local and cloud AI providers. Choose the option that fits your requirements.
+Collabase supports both local and cloud AI providers. Choose the option that fits your organization's requirements.
 
 <CardGroup cols={3}>
-  <Card title="Ollama" icon="monitor">
-    Runs AI models on your own server. No data leaves your infrastructure. Recommended for organizations with strict data residency requirements.
+  <Card title="Ollama (Local)" icon="server">
+    Runs AI models on your own server. No data leaves your infrastructure. Recommended for organizations with strict data residency or privacy requirements.
   </Card>
   <Card title="OpenAI" icon="globe">
-    Use GPT-4o or other OpenAI models via the OpenAI API. Requires an API key.
+    Use GPT-4o, GPT-4o-mini, or other OpenAI models via the OpenAI API. Requires an API key from platform.openai.com.
   </Card>
-  <Card title="Google Gemini" icon="sparkles">
-    Use Gemini models via Google AI Studio. Requires an API key.
-  </Card>
-  <Card title="Azure AI Foundry" icon="cloud">
-    Enterprise OpenAI models deployed in your Azure subscription.
+  <Card title="Anthropic" icon="sparkles">
+    Use Claude models via the Anthropic API. Requires an API key from console.anthropic.com.
   </Card>
   <Card title="Groq" icon="zap">
-    Fast cloud inference with a generous free tier.
+    Fast cloud inference with a generous free tier. Requires an API key from console.groq.com.
+  </Card>
+  <Card title="Google Gemini" icon="star">
+    Use Gemini models via Google AI Studio. Requires an API key from aistudio.google.com.
+  </Card>
+  <Card title="Azure AI Foundry" icon="cloud">
+    Enterprise OpenAI models deployed in your own Azure subscription.
   </Card>
 </CardGroup>
 
 ---
 
-## Configuring a provider
+## Setting up a provider
 
-Navigate to **Admin → Settings → AI** and select your provider.
+<Steps>
+  <Step title="Go to Admin → Settings → AI">
+    Open the admin panel and navigate to the AI settings page.
+  </Step>
+  <Step title="Toggle Collabase Brain to Enabled">
+    This master switch controls all AI features. When it is off, the AI command is hidden from the editor and AI automation nodes will not run.
+  </Step>
+  <Step title="Select your provider">
+    Choose one of the available providers from the list. The configuration fields below update to match the selected provider.
+  </Step>
+  <Step title="Enter your credentials">
+    Fill in the required fields for your provider (see tables below).
+  </Step>
+  <Step title="Click Test Connection">
+    Collabase will attempt a short request to verify the credentials and model are reachable before you save.
+  </Step>
+  <Step title="Save">
+    The settings take effect immediately. Users can now use AI features throughout the platform.
+  </Step>
+</Steps>
 
-### Ollama (runs on your server)
+---
 
-Ollama runs AI models locally. [Install Ollama](https://ollama.com) on your server first and pull the model you want to use.
+## Provider configuration fields
+
+### Ollama (local)
+
+[Install Ollama](https://ollama.com) on your server first, then pull the model you want to use (e.g. `ollama pull llama3.2`).
 
 | Field | Description |
 |---|---|
 | **Ollama URL** | The address where Ollama is running — e.g. `http://localhost:11434` |
-| **Model** | The model name to use — e.g. `llama3.2` |
+| **Model** | The model name to use — e.g. `llama3.2` or `mistral` |
 
-Click **Test Connection** to verify the connection before saving.
-
-<Tip>
-  With Ollama, all AI processing stays on your server. No content is sent to any external service.
-</Tip>
+<Note>
+  With Ollama, all AI processing stays on your own server. No content is sent to any external service. This is the recommended choice for organizations that cannot allow data to leave their infrastructure.
+</Note>
 
 ### OpenAI
 
 | Field | Description |
 |---|---|
-| **API Key** | Your OpenAI API key |
-| **Model** | The model to use — e.g. `gpt-4o-mini` |
+| **API Key** | Your OpenAI API key from platform.openai.com |
+| **Model** | The model to use — e.g. `gpt-4o-mini` or `gpt-4o` |
+
+### Anthropic
+
+| Field | Description |
+|---|---|
+| **API Key** | Your Anthropic API key from console.anthropic.com |
+| **Model** | The model to use — e.g. `claude-3-5-haiku-20241022` |
+
+### Groq
+
+| Field | Description |
+|---|---|
+| **API Key** | Your Groq API key from console.groq.com |
+| **Model** | The model to use — e.g. `llama-3.3-70b-versatile` |
 
 ### Google Gemini
 
@@ -82,50 +112,76 @@ Click **Test Connection** to verify the connection before saving.
 | **API Key** | Your Azure API key |
 | **Model** | The deployed model name |
 
-### Groq
+---
 
-| Field | Description |
-|---|---|
-| **API Key** | Your Groq API key from console.groq.com |
-| **Model** | The model to use — e.g. `llama-3.3-70b-versatile` |
+## Space-level model override
+
+Individual spaces can override the global AI provider settings with a different model — useful if one team needs a more capable (or more cost-efficient) model than the default.
+
+<Steps>
+  <Step title="Open the space and go to Space Settings">
+    Click the gear icon in the space sidebar.
+  </Step>
+  <Step title="Select the AI tab">
+    This tab appears only when Collabase Brain is enabled globally.
+  </Step>
+  <Step title="Choose a different model">
+    Select any model available from the configured provider, or leave it set to the global default.
+  </Step>
+  <Step title="Save">
+    The override applies immediately for all AI requests made within this space.
+  </Step>
+</Steps>
 
 ---
 
-## What users can do with Brain
+## Where AI is used in Collabase
 
-Once configured, users can type `/ai` anywhere they write content to open the AI action menu:
+| Feature | Where it appears | Works with local Ollama? |
+|---|---|---|
+| **Writing assistant** | Docs editor, Intranet posts — type `/ai` to open the menu | Yes |
+| **Task description generation** | Projects — task detail panel | Yes |
+| **AI automation nodes** | Automation pipelines — AI/LLM connector | Yes |
+| **Semantic search** | Global search — plain-language question answering over your content | Yes (with an embedding model) |
 
-| Action | What it does |
+### Writing assistant commands
+
+Once AI is configured, users can type `/ai` in any text editor to open the AI action menu:
+
+| Command | What it does |
 |---|---|
-| **Generate** | Write content from a prompt |
+| **Generate** | Write new content from a prompt |
 | **Summarize** | Condense the current page or selected text |
 | **Improve writing** | Refine grammar, clarity, and tone |
-| **Fix spelling & grammar** | Correct errors only — tone is preserved |
-| **Make shorter / Make longer** | Adjust the length of the selected text |
-| **Translate** | Translate selected text to another language |
+| **Fix spelling & grammar** | Correct errors — tone is preserved |
+| **Make shorter / Make longer** | Adjust the length of selected text |
+| **Translate** | Translate selected text to a language you choose |
+| **Continue writing** | Extend the text from the current cursor position |
 
 ---
 
-## Semantic search (Brain chat)
+## Semantic search
 
-When **Semantic Search** is enabled in **Admin → Settings → AI**, users can ask questions about your Collabase content in plain language and get answers based on what is actually in your pages.
+When **Semantic Search** is enabled in **Admin → Settings → AI**, Collabase indexes all pages and allows users to ask plain-language questions and receive answers grounded in your actual content.
 
-Enable it and choose an embedding source:
+Configure the embedding source separately if needed:
 
-- **Same as AI provider** — uses the same provider you configured above. Works for most setups.
-- **Custom provider** — use a separate provider for search. Useful if you want a dedicated embedding model.
+| Option | Description |
+|---|---|
+| **Same as AI provider** | Uses the same model for both generation and embeddings. Works for most setups. |
+| **Custom provider** | Use a dedicated embedding model for better search accuracy. Recommended for Ollama: use `nomic-embed-text` or `mxbai-embed-large`. |
 
-Pages are indexed automatically when they are saved. New content is available for semantic search within a few seconds of being saved.
+Pages are indexed automatically when saved. New content is available in semantic search within a few seconds.
 
 ---
 
-## Data and privacy
+## Privacy and data handling
 
-<AccordionGroup>
-  <Accordion title="Using Ollama (local)">
-    All AI processing stays entirely on your own server. No content is sent to any external service. This is the recommended option for organizations with strict data residency requirements.
-  </Accordion>
-  <Accordion title="Using cloud providers (OpenAI, Gemini, Azure, Groq)">
-    Content processed by AI is sent to the respective provider's API. Review each provider's data processing agreement to understand how they handle your data. API keys are stored encrypted and are never logged.
-  </Accordion>
-</AccordionGroup>
+| Provider type | What happens to your content |
+|---|---|
+| **Ollama (local)** | All processing happens on your own server. Nothing is sent externally. |
+| **Cloud providers** (OpenAI, Anthropic, Groq, Gemini, Azure) | Content sent to AI actions is transmitted to the provider's API. Review each provider's data processing terms. API keys are encrypted at rest in Collabase and are never written to logs. |
+
+<Warning>
+  If your organization has data residency requirements — for example, data must stay within Switzerland or the EU — use Ollama. Cloud providers process data on their own infrastructure.
+</Warning>

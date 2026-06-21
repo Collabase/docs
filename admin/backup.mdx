@@ -1,38 +1,45 @@
 ---
-title: "Backup & Restore"
-description: "How to back up your Collabase data and restore it if needed."
+sidebarTitle: "Backup & Restore"
+description: "How to back up your Collabase data and restore it when needed. There is no built-in backup UI — backups are run from the command line."
 ---
 
-All your data — pages, tasks, users, test cases, automations, and settings — is stored in a single database. Backing up Collabase means backing up that database.
+All Collabase data — pages, tasks, users, settings, automations, test cases, and uploaded files — is stored in two places: a **PostgreSQL database** and a **file storage location**. A complete backup covers both.
 
-<Tip>
-  Run daily backups for any production deployment. Store backup files off-server — on a network share, cloud storage, or another remote location — so that a server failure does not destroy your backups along with your data.
-</Tip>
+<Warning>
+  There is no built-in backup screen in Collabase. Backups must be created by running commands on your server or through a scheduled job. Plan for this before going into production.
+</Warning>
 
----
-
-## Automatic backups (on every update)
-
-Every time you run `update.sh`, a backup is created automatically before the update begins. Backups are saved to `deployment/backups/` on your server.
+<Note>
+  Run backups daily for any production deployment. Store backup files off-server — on a network share, cloud storage, or a separate machine — so that a server failure does not destroy your backups at the same time as your data.
+</Note>
 
 ---
 
-## Creating a backup manually
+## What to back up
 
-Run the following command on your server to create a backup:
+| Data | Where it lives | How to back up |
+|---|---|---|
+| **All structured data** (pages, tasks, users, settings, etc.) | PostgreSQL database | `pg_dump` command |
+| **Uploaded files** (images, attachments) | Local filesystem or S3-compatible storage | Copy the files folder, or sync your S3 bucket |
+
+---
+
+## Backing up the database
+
+### Manual backup
+
+Run the following command on your server to create a compressed backup of the database:
 
 ```bash
 docker exec collabase-postgres pg_dump -U collabase collabase | \
   gzip > "backup-$(date +%Y%m%d-%H%M%S).sql.gz"
 ```
 
-This creates a compressed backup file in your current directory.
+This creates a timestamped `.sql.gz` file in your current directory.
 
----
+### Scheduled daily backup
 
-## Scheduling automatic backups
-
-For production systems, set up a daily automated backup. Add this to your server's cron jobs (`crontab -e`):
+For production systems, set up a daily automated backup using cron. Open the cron editor with `crontab -e` and add:
 
 ```bash
 0 2 * * * docker exec collabase-postgres pg_dump -U collabase collabase | \
@@ -40,63 +47,99 @@ For production systems, set up a daily automated backup. Add this to your server
   find /backups -name "collabase-*.sql.gz" -mtime +30 -delete
 ```
 
-This runs daily at 2:00 AM and keeps backups for 30 days.
+This runs at 2:00 AM every night and automatically removes backups older than 30 days. Adjust the retention period to match your requirements.
+
+---
+
+## Backing up file storage
+
+### Local filesystem
+
+If files are stored locally (the default), copy the file storage directory to your backup destination:
+
+```bash
+rsync -az /var/collabase/uploads/ /backups/uploads/
+```
+
+Run this as part of the same cron job as your database backup so the two are always in sync.
+
+### S3-compatible storage
+
+If you use S3 or a compatible provider (Cloudflare R2, MinIO, etc.), use your provider's sync or versioning features. Enable **object versioning** in your bucket settings so previous versions of files are retained automatically.
+
+---
+
+## Copying backups off-server
+
+Always store backups in a second location. Some common options:
+
+**Cloud storage (AWS S3, Cloudflare R2, etc.)**
+```bash
+docker exec collabase-postgres pg_dump -U collabase collabase | \
+  gzip | aws s3 cp - s3://your-bucket/collabase-$(date +%Y%m%d).sql.gz
+```
+
+**Remote server via rsync**
+```bash
+rsync -az /backups/collabase-$(date +%Y%m%d).sql.gz user@backup-server:/backups/
+```
+
+**Network-attached storage (NAS)**
+
+Mount your NAS share on the server and set the backup destination path to the mount point.
 
 ---
 
 ## Restoring from a backup
 
 <Warning>
-  Restoring overwrites all current data. Only do this if you intend to roll back to a previous state.
+  Restoring overwrites all current data in the database. Only proceed if you intend to roll back to a previous state. This cannot be undone.
 </Warning>
 
-```bash
-# 1. Stop the application (keep the database running)
-docker compose -f deployment/docker-compose.release.yml stop collabase-app
-
-# 2. Restore the backup
-gunzip -c backup-20260101-120000.sql.gz | \
-  docker exec -i collabase-postgres psql -U collabase collabase
-
-# 3. Start the application again
-docker compose -f deployment/docker-compose.release.yml start collabase-app
-```
+<Steps>
+  <Step title="Stop the application (keep the database running)">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml stop collabase-app
+    ```
+  </Step>
+  <Step title="Restore the database backup">
+    Replace the filename with your actual backup file:
+    ```bash
+    gunzip -c backup-20260101-120000.sql.gz | \
+      docker exec -i collabase-postgres psql -U collabase collabase
+    ```
+  </Step>
+  <Step title="Restore uploaded files (if applicable)">
+    Copy your file backup back to the storage location:
+    ```bash
+    rsync -az /backups/uploads/ /var/collabase/uploads/
+    ```
+    Skip this step if you use S3 storage — the files remain in your bucket.
+  </Step>
+  <Step title="Start the application">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml start collabase-app
+    ```
+  </Step>
+  <Step title="Verify the restore">
+    Open Collabase in a browser and confirm that content, users, and settings are as expected.
+  </Step>
+</Steps>
 
 ---
 
-## Copying backups off-server
+## Testing your backups
 
-Always store backups in a second location. Some options:
-
-<AccordionGroup>
-  <Accordion title="Cloud storage (S3, Cloudflare R2, etc.)">
-    ```bash
-    docker exec collabase-postgres pg_dump -U collabase collabase | \
-      gzip | aws s3 cp - s3://your-bucket/collabase-$(date +%Y%m%d).sql.gz
-    ```
-  </Accordion>
-  <Accordion title="Network-attached storage (NAS)">
-    Mount your NAS share on the server and write backups directly to the mount point.
-  </Accordion>
-  <Accordion title="Remote server">
-    ```bash
-    rsync -az /backups/collabase-$(date +%Y%m%d).sql.gz user@backup-server:/backups/
-    ```
-  </Accordion>
-</AccordionGroup>
-
----
-
-## Recovering deleted pages and Spaces
-
-If a page or Space was accidentally deleted, it may still be in the trash. Go to **Admin → Backup** to view and restore recently deleted pages and Spaces before they are permanently removed.
+A backup you have never tested is not a reliable backup. Perform a test restore on a separate (non-production) machine at least once a month to confirm the backup files are valid and the restore process works.
 
 ---
 
 ## Backup checklist
 
-| Task | Frequency |
+| Task | Recommended frequency |
 |---|---|
 | Database backup | Daily |
-| Copy to off-server storage | Daily |
-| Test a restore | Monthly |
+| File storage backup | Daily |
+| Copy to off-server location | Daily |
+| Test a full restore on a non-production machine | Monthly |
+| Review backup retention and storage space | Quarterly |

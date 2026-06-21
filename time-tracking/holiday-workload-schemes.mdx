@@ -1,0 +1,116 @@
+---
+sidebarTitle: "Holiday & Workload Schemes"
+description: "How to configure holiday schemes and workload plans in Collabase to define non-working days and set daily hour targets per user or team."
+---
+
+# Holiday & Workload Schemes
+
+Holiday schemes define the non-working days for your organization or a specific region. Workload plans use these schemes to calculate each user's daily hour target, which appears as a progress bar on the time calendar.
+
+Both are configured in **Admin → Time Tracking**.
+
+---
+
+## Holiday Schemes
+
+A holiday scheme is a named list of non-working dates for a specific country, region, and calendar year. When a workload plan references a holiday scheme, any dates that fall on a listed holiday show no daily target on the user's calendar.
+
+### Holiday scheme fields
+
+| Field | Description |
+|---|---|
+| **Name** | A descriptive label — for example, "Switzerland — Zurich 2026" or "Germany — Bavaria 2026". |
+| **Country** | The country this scheme applies to. |
+| **Region** | The specific region or state, if public holidays vary sub-nationally. |
+| **Year** | The calendar year this scheme covers. |
+| **Holidays** | Individual date entries, each with a date and a name (for example, "1 August 2026 — Swiss National Day"). |
+
+### Creating a holiday scheme
+
+<Steps>
+  <Step title="Go to Admin → Time Tracking → Holiday Schemes">
+    You need instance admin access to manage holiday schemes.
+  </Step>
+  <Step title="Click + New Scheme">
+    The create dialog opens.
+  </Step>
+  <Step title="Fill in the scheme details">
+    Enter the name, country, region, and year. Choose a naming convention that makes it easy to identify at a glance — include the region and year in the name.
+  </Step>
+  <Step title="Add individual holidays">
+    Click **+ Add Holiday** for each non-working day. Enter the date and the name of the holiday. Repeat for all public holidays in the year.
+  </Step>
+  <Step title="Click Save">
+    The scheme is saved and available for selection in workload plans.
+  </Step>
+</Steps>
+
+<Note>
+  Holiday schemes are year-specific. You need to create a new scheme for each calendar year. An easy workflow is to duplicate the previous year's scheme at the start of the year and update the dates.
+</Note>
+
+### Editing holidays in an existing scheme
+
+Click the scheme name to open it. You can add new holidays, edit existing ones, or remove dates that no longer apply. Changes take effect immediately for any workload plan linked to the scheme.
+
+---
+
+## Workload Plans
+
+A workload plan defines the expected working hours for a user or team. The plan generates a daily target that appears as a progress bar on the time calendar. When a user meets or exceeds their daily target, the bar turns green.
+
+### Workload plan fields
+
+| Field | Description |
+|---|---|
+| **Hours Per Day** | The expected number of working hours on a standard day — for example, `8` for a full day or `4` for part-time. |
+| **Days Per Week** | How many days per week the user or team works — for example, `5` for a Monday-to-Friday schedule. |
+| **Work Days** | Which specific weekdays are working days — for example, Monday, Tuesday, Wednesday, Thursday, Friday. |
+| **Valid From** | The date from which this plan applies. Plans before this date use a different plan (or no plan if none exists). |
+| **Valid To** | The date after which this plan no longer applies. Leave blank if the plan should remain active indefinitely. |
+| **Holiday Scheme** | Which holiday scheme to use. Dates in the scheme are skipped — no target is shown on those days. |
+| **User or Team** | Who this plan applies to. Assign to an individual user for individual plans, or to a team to apply the same plan to all team members. |
+
+### How workload plans work
+
+Each day the user opens their time calendar, Collabase checks whether an active workload plan exists for them. If it does, a progress bar appears at the top of the day column showing hours logged versus the daily target. The target is the **Hours Per Day** value, adjusted for weekends and holidays.
+
+- Days that fall outside the **Work Days** list show no target.
+- Dates listed in the linked **Holiday Scheme** show no target.
+- All other days show the standard **Hours Per Day** target.
+
+If a user is covered by both a personal plan and a team plan, the personal plan takes priority.
+
+### Creating a workload plan
+
+<Steps>
+  <Step title="Go to Admin → Time Tracking → Workload Plans">
+    You need instance admin access.
+  </Step>
+  <Step title="Click + New Plan">
+    The create dialog opens.
+  </Step>
+  <Step title="Assign to a User or Team">
+    Search for and select either an individual user or a team. Team plans apply the same hours and schedule to all current and future team members.
+  </Step>
+  <Step title="Set the hours and schedule">
+    Enter **Hours Per Day**, **Days Per Week**, and select the **Work Days** checkboxes for which weekdays count.
+  </Step>
+  <Step title="Link a Holiday Scheme">
+    Select the appropriate holiday scheme for the user's or team's location. If you have not created a scheme yet, see [Creating a holiday scheme](#creating-a-holiday-scheme) above.
+  </Step>
+  <Step title="Set the validity dates">
+    Enter a **Valid From** date. Set a **Valid To** date if the plan should expire — for example, if a part-time arrangement ends on a known date.
+  </Step>
+  <Step title="Click Create">
+    The plan is saved and the progress bar begins appearing on the user's time calendar for days within the validity period.
+  </Step>
+</Steps>
+
+<Note>
+  If a user has no active workload plan, the daily progress bar does not appear on their time calendar. This is expected behaviour — it means no target has been configured for that user.
+</Note>
+
+### Handling plan changes
+
+When a user's working hours change (for example, moving from full-time to part-time), create a new plan with the new hours and a **Valid From** date matching the change date. Set a **Valid To** date on the old plan to match. The two plans will cover different date ranges without overlap.

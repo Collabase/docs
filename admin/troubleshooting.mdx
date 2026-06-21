@@ -1,70 +1,268 @@
 ---
-title: "Troubleshooting"
-description: "Solutions to the most common issues with a Collabase installation."
+sidebarTitle: "Troubleshooting"
+description: "Solutions to the most common issues with a Collabase installation — database, authentication, email, AI, file uploads, and migrations."
 ---
 
-## Collabase is not responding
+This page covers the most common problems encountered when running a Collabase installation and how to fix them. Start with the quick-reference table, then follow the step-by-step fixes for your specific issue.
 
-The first start takes longer than usual — up to 3 minutes. If it still does not respond after that, check the logs:
+---
+
+## Quick reference
+
+| Problem | Most likely cause | Jump to fix |
+|---|---|---|
+| Collabase is not responding | Services not started, port conflict, or startup crash | [App not responding](#app-not-responding) |
+| Cannot connect to the database | Wrong connection settings or database service not running | [Database connection](#database-connection-failures) |
+| Cannot log in | Wrong credentials, SSO misconfiguration, or locked account | [Authentication problems](#authentication-problems) |
+| Emails are not being delivered | Mail provider not configured or incorrect SMTP settings | [Email delivery](#email-not-sending) |
+| AI features not working | Provider not configured, wrong API key, or Ollama not running | [AI not responding](#ai-features-not-responding) |
+| File uploads failing | Storage permissions, missing folder, or disk full | [File upload errors](#file-upload-errors) |
+| Migration failed during update | Database version mismatch or missing pgvector extension | [Migration failures](#migration-failures) |
+
+---
+
+## App not responding
+
+The first start after installation can take up to 3 minutes. If Collabase still does not respond after that, check the logs:
 
 ```bash
 docker compose -f deployment/docker-compose.release.yml logs -f
 ```
 
-Look for any error messages at the end of the output.
+Look for error messages near the end of the output. Common causes:
 
----
+- A required environment variable is missing (see [Environment variables](#environment-variables) below)
+- Port 80 or 443 is already in use by another service
+- The database service has not started yet
 
-## Port 80 or 443 is in use
-
-If the installer failed because a port is already in use, find which service is using it and stop it:
-
-```bash
-sudo ss -tlnp | grep ':80\|:443'
-```
-
-Then run the installer again.
-
----
-
-## File uploads are not working
-
-Try restarting Collabase:
-
-```bash
-docker compose -f deployment/docker-compose.release.yml restart
-```
-
-If the problem persists, check that your server has enough free disk space.
-
----
-
-## The AI / Brain feature is not available
-
-The AI feature requires at least 4 GB of RAM on your server. If your server meets this requirement and Brain is still not working, go to **Admin → Settings → AI** and verify that the AI provider is configured and the connection test passes.
-
----
-
-## I cannot log in
-
-- **Forgot your password?** Use the "Forgot password" link on the login page (requires email to be configured in **Admin → Settings → Mail**).
-- **Account locked?** An admin can unlock your account from **Admin → Users**.
-- **SSO not working?** The standard email/password login is always available at `/auth/login` — use that to log in as an admin and check the identity provider settings.
-
----
-
-## Checking if everything is running
-
-To see the status of all Collabase services:
+### Checking service status
 
 ```bash
 docker compose -f deployment/docker-compose.release.yml ps
 ```
 
-All services should show `running`.
+All services should show `running`. If any service shows `exited` or `restarting`, check its individual logs:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml logs collabase-app
+```
+
+### Port conflict
+
+If the installer failed because a port is already in use:
+
+```bash
+sudo ss -tlnp | grep ':80\|:443'
+```
+
+This shows which process is using the port. Stop that service and restart Collabase.
+
+---
+
+## Database connection failures
+
+Collabase connects to PostgreSQL using the `DATABASE_URL` environment variable.
+
+<Steps>
+  <Step title="Check that the database service is running">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml ps collabase-postgres
+    ```
+    The status should be `running`. If not, start it:
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml start collabase-postgres
+    ```
+  </Step>
+  <Step title="Verify the DATABASE_URL is set correctly">
+    Open your `.env` file and check the `DATABASE_URL` value. It should follow this format:
+    ```
+    DATABASE_URL=postgresql://collabase:password@localhost:5432/collabase
+    ```
+    The hostname, port, username, password, and database name must all match your PostgreSQL setup.
+  </Step>
+  <Step title="Check that the pgvector extension is installed">
+    The pgvector extension is required. If it is missing, connect to the database and install it:
+    ```bash
+    docker exec -it collabase-postgres psql -U collabase -c "CREATE EXTENSION IF NOT EXISTS vector;"
+    ```
+  </Step>
+  <Step title="Restart the application">
+    After fixing the configuration, restart all services:
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml restart
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Authentication problems
+
+### Forgot password
+
+Use the **Forgot password** link on the login page. This sends a reset email to the address on file. If no email arrives, check that your mail provider is configured correctly in **Admin → Settings → Mail**.
+
+### Account locked
+
+After several failed login attempts, an account may be locked by brute-force protection. An admin can unlock it from **Admin → Users** by clicking the account and selecting **Unlock**.
+
+### SSO not working (Google, GitHub, SAML)
+
+The standard email and password login is always available at `/auth/login`. Sign in there as an admin and check the identity provider settings under **Admin → Identity Providers**.
+
+<Steps>
+  <Step title="Verify the redirect URI matches exactly">
+    The redirect URI registered in your OAuth provider (Google Cloud Console, GitHub, etc.) must match the URL Collabase is actually running on — including `https://` and no trailing slash.
+  </Step>
+  <Step title="Check the Client ID and Client Secret">
+    In **Admin → Identity Providers**, re-enter the credentials and click **Test Connection** if available.
+  </Step>
+  <Step title="Check that NEXTAUTH_URL is set correctly">
+    Open your `.env` file and verify `NEXTAUTH_URL` is set to your Collabase URL exactly as users access it — e.g. `https://collabase.example.com`.
+  </Step>
+  <Step title="Verify NEXTAUTH_SECRET is set">
+    The `NEXTAUTH_SECRET` variable must be set to a long, random string. If it is missing or has changed since users last logged in, all sessions are invalidated.
+  </Step>
+</Steps>
+
+---
+
+## Email not sending
+
+Collabase sends emails for password resets, notifications, and invitations. These go through the mail provider configured in **Admin → Settings → Mail**.
+
+<Steps>
+  <Step title="Open Admin → Settings → Mail">
+    Check that a mail provider is configured and enabled.
+  </Step>
+  <Step title="Verify SMTP settings (if using SMTP)">
+    Double-check the host, port, username, and password. Common issues:
+    - Port 465 requires SSL; port 587 uses STARTTLS — make sure the setting matches your server
+    - Some providers require the full email address as the username, not just the local part
+  </Step>
+  <Step title="Send a test email">
+    Use the **Send Test Email** button in the mail settings to send a test message to your own address. Check your spam folder if it does not arrive.
+  </Step>
+  <Step title="Check the application logs">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml logs collabase-app | grep -i mail
+    ```
+    Error messages here will identify the exact problem.
+  </Step>
+</Steps>
+
+---
+
+## AI features not responding
+
+### Cloud provider (OpenAI, Anthropic, Groq, Gemini)
+
+<Steps>
+  <Step title="Verify the API key">
+    Go to **Admin → Settings → AI**. Re-enter the API key for your provider and click **Test Connection**. API keys expire or get revoked — generate a new one from your provider's dashboard if needed.
+  </Step>
+  <Step title="Check that Collabase Brain is toggled on">
+    The master switch at the top of the AI settings page must be enabled. If it is off, all AI features are hidden from users.
+  </Step>
+  <Step title="Check the model name">
+    Confirm the model name is spelled exactly as your provider expects — e.g. `gpt-4o-mini` not `gpt4o-mini`.
+  </Step>
+</Steps>
+
+### Local Ollama
+
+<Steps>
+  <Step title="Check that Ollama is running on your server">
+    ```bash
+    curl http://localhost:11434/api/tags
+    ```
+    This should return a list of installed models. If it fails, start Ollama:
+    ```bash
+    ollama serve
+    ```
+  </Step>
+  <Step title="Verify the model is pulled">
+    ```bash
+    ollama list
+    ```
+    If the model you configured in Collabase is not in the list, pull it:
+    ```bash
+    ollama pull llama3.2
+    ```
+  </Step>
+  <Step title="Check the Ollama URL in Collabase">
+    Go to **Admin → Settings → AI** and confirm the Ollama URL matches where Ollama is actually running. If Collabase is in Docker, use the host machine's IP address instead of `localhost` — e.g. `http://172.17.0.1:11434`.
+  </Step>
+</Steps>
+
+---
+
+## File upload errors
+
+<Steps>
+  <Step title="Check available disk space">
+    ```bash
+    df -h
+    ```
+    If the disk is full, free up space or expand the volume before retrying uploads.
+  </Step>
+  <Step title="Check file storage permissions">
+    The application must be able to write to the configured file storage directory. Check that the folder exists and that the process running Collabase has write permission.
+  </Step>
+  <Step title="Restart the application">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml restart collabase-app
+    ```
+    Some permission issues resolve after a clean restart.
+  </Step>
+</Steps>
+
+---
+
+## Migration failures
+
+Database migrations run automatically during installation and updates. If a migration fails:
+
+<Steps>
+  <Step title="Check whether pgvector is installed">
+    Migrations that involve vector fields fail if the pgvector extension is not present:
+    ```bash
+    docker exec -it collabase-postgres psql -U collabase -c "CREATE EXTENSION IF NOT EXISTS vector;"
+    ```
+  </Step>
+  <Step title="Apply the migration manually">
+    If the automated migration fails and the error message references a specific migration file, you can apply it directly:
+    ```bash
+    npx prisma db execute --file ./prisma/migrations/<migration-name>/migration.sql
+    ```
+    Replace `<migration-name>` with the folder name shown in the error output.
+  </Step>
+  <Step title="Check the database user has sufficient privileges">
+    The database user in `DATABASE_URL` must have permission to create tables, indexes, and extensions. If in doubt, grant full ownership:
+    ```bash
+    docker exec -it collabase-postgres psql -U postgres -c "GRANT ALL ON DATABASE collabase TO collabase;"
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Environment variables
+
+Missing or incorrect environment variables are the cause of many startup and authentication failures. Key variables to verify:
+
+| Variable | Purpose | Example |
+|---|---|---|
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://collabase:pass@localhost:5432/collabase` |
+| `NEXTAUTH_SECRET` | Session encryption key — must be long and random | 32+ character random string |
+| `NEXTAUTH_URL` | The public URL of your Collabase instance | `https://collabase.example.com` |
 
 ---
 
 ## Getting help
 
-If you cannot resolve the issue yourself, [submit a support request](https://collabase.featurebase.app/en) with a description of the problem.
+If you cannot resolve an issue using this guide, [submit a support request](https://collabase.featurebase.app/en) with:
+
+- A description of the problem
+- The relevant section of the application logs (`docker compose logs collabase-app`)
+- The Collabase version you are running

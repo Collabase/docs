@@ -1,75 +1,144 @@
 ---
-title: "Test Cases"
-description: "A test case describes a single verification. Learn how to create, structure, and get cases into READY status for execution."
+sidebarTitle: "Test Cases"
+description: "Test cases define what to verify — each has a name, priority, type, status, and a set of ordered steps with expected results."
 ---
 
 # Test Cases
 
-A test case is the building block of Test Management. It describes one thing to verify: the action to take, the conditions it requires, and the result you expect. Every test case belongs to a Test Project and optionally to a Test Suite within that project.
+A test case describes one thing to verify. It defines the steps a tester must follow and what they should observe at each step. Test cases belong to a Test Project and optionally to a Test Suite within that project.
+
+Only test cases with a status of **READY** are included in test runs. Cases in DRAFT or DEPRECATED status are excluded.
 
 ## Test case fields
 
 | Field | Required | Description |
 |---|---|---|
-| **Title** | Yes | Short, action-oriented description. E.g. "User can log in with valid credentials" |
-| **Type** | Yes | `MANUAL`, `AUTOMATED`, or `EXPLORATORY` |
-| **Status** | — | `DRAFT` (default) or `READY`. Only READY cases are enrolled in runs. |
-| **Priority** | Yes | `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL` |
-| **Description** | No | Rich-text body — use it for preconditions, steps, and expected results |
-| **Suite** | No | The test suite this case belongs to |
-| **Automated reference** | No | Link to a test file, CI job, or external reference for AUTOMATED type cases |
+| **Name** | Yes | A short, action-oriented description. For example: "User can log in with valid credentials" or "Order confirmation email is sent after checkout." |
+| **Description** | No | Additional context, preconditions, or background information for the tester. |
+| **Priority** | Yes | Indicates how critical this case is. See priority levels below. |
+| **Type** | Yes | Whether this case is MANUAL or AUTOMATED. See type descriptions below. |
+| **Status** | — | DRAFT, READY, or DEPRECATED. Set automatically to DRAFT on creation. |
+| **Linked Page** | No | A link to one page in Collabase Docs — typically a requirement, specification, or design document that this test case verifies. |
 
-## Writing good test cases
+## Priority levels
 
-Structure your description with three sections:
+| Priority | Meaning |
+|---|---|
+| **Low** | Nice to have. Failure is acceptable in most releases. |
+| **Medium** | Standard coverage. Should pass before release. |
+| **High** | Important functionality. Failures block the release unless justified. |
+| **Critical** | Core functionality or compliance requirement. Must pass before any release. |
 
-```
-**Preconditions**
-- Logged in as a standard user
-- Cart contains at least one item
+## Test case types
 
-**Steps**
-1. Click "Checkout"
-2. Fill in shipping address
-3. Click "Place Order"
-
-**Expected result**
-Order confirmation page appears with correct order number.
-```
+| Type | Meaning |
+|---|---|
+| **Manual** | A tester must perform the steps by hand and observe the results. These cases are executed through Collabase's test run interface. |
+| **Automated** | This case has automated test coverage in a CI/CD pipeline or test framework. The type is informational — it tells the team this case is covered externally. Automated cases still appear in test runs so their coverage is visible alongside manual cases, but execution results are typically recorded programmatically via the API rather than by a person. |
 
 ## Status lifecycle
 
+| Status | Meaning |
+|---|---|
+| **Draft** | The case is being written or has not yet been reviewed. Excluded from test runs. |
+| **Ready** | The case has been reviewed and is approved for execution. Included in test runs. |
+| **Deprecated** | The case is retired. Excluded from new test runs but preserved for history. |
+
 ```
-DRAFT → READY → DEPRECATED
+Draft → Ready → Deprecated
 ```
 
-- **DRAFT** — the case is still being written or reviewed. Excluded from runs.
-- **READY** — reviewed and approved. Included in the next run automatically.
-- **DEPRECATED** — retired case. Excluded from runs but preserved for history.
+Move a case from Draft to Ready once you are confident the steps are accurate and complete. Only Members and Owners can change a case's status.
 
-Only a Member or Owner can mark a case READY. This acts as a lightweight review gate.
+## Test steps
 
-## Creating test cases
+Each test case contains an ordered list of steps. A step has two fields:
+
+| Field | Description |
+|---|---|
+| **Action** | What the tester must do. Be specific and unambiguous. For example: "Click the Checkout button." |
+| **Expected result** | What the tester should observe after performing the action. For example: "The payment form opens and the item summary is shown." |
+
+Steps are numbered and executed in order during a test run.
+
+## Creating a test case
 
 <Steps>
   <Step title="Open the test project">
-    Navigate to the Space → **Test Management** → select the project.
+    Navigate to the Space → **Test Management** → click the test project.
   </Step>
-  <Step title="Click New Case">
-    Click **+ New Case** in the top bar or press **C** with the case list focused.
+  <Step title="Click + New Case">
+    Click **+ New Case** in the top bar. A creation form opens.
   </Step>
-  <Step title="Fill in the fields">
-    Title and Type are required. Add description using the structured format above.
+  <Step title="Fill in the required fields">
+    Enter the case name, select a priority, and select a type (Manual or Automated). Optionally assign it to a suite.
   </Step>
-  <Step title="Mark READY when reviewed">
-    Once the case has been reviewed, change status to **READY** to include it in future runs.
+  <Step title="Add a description (optional)">
+    Add preconditions or context in the description field. This is shown to testers during the run.
+  </Step>
+  <Step title="Save the case">
+    Click **Save**. The case is created with a status of DRAFT.
   </Step>
 </Steps>
 
-## Cloning cases
+## Adding test steps
 
-Duplicate an existing case to create a variation: right-click the case in the list → **Clone**. The clone is created as DRAFT so it can be reviewed before being activated.
+<Steps>
+  <Step title="Open the test case">
+    Click the case name in the project case list to open its detail view.
+  </Step>
+  <Step title="Go to the Steps tab">
+    Click the **Steps** tab in the case detail view.
+  </Step>
+  <Step title="Add a step">
+    Click **+ Add Step**. Enter the action and expected result for the first step.
+  </Step>
+  <Step title="Add more steps">
+    Click **+ Add Step** again for each subsequent step. Steps are numbered automatically in the order they are added.
+  </Step>
+  <Step title="Reorder steps">
+    Drag steps to reorder them using the handle on the left side of each step row.
+  </Step>
+  <Step title="Save">
+    Steps are saved automatically as you add them.
+  </Step>
+</Steps>
 
-## Importing cases
+## Linking to a requirement page
 
-Bulk-import test cases from CSV: **Project → Settings → Import → Upload CSV**. Required columns: `title`, `type`, `priority`. Optional: `description`, `suite`.
+Each test case can be linked to one page in Collabase Docs — typically a specification or requirement document that this case validates.
+
+<Steps>
+  <Step title="Open the test case detail view">
+    Click the case in the project list.
+  </Step>
+  <Step title="Click the Linked Page field">
+    In the case sidebar, click **Linked Page**.
+  </Step>
+  <Step title="Search for a page">
+    A page picker opens. Search by page title and select the page you want to link.
+  </Step>
+  <Step title="Save">
+    The link is saved immediately. Click the linked page name at any time to open it in Docs.
+  </Step>
+</Steps>
+
+## Marking a case as Ready
+
+Once you have written and reviewed a case, change its status to READY so it is included in test runs.
+
+1. Open the case detail view.
+2. Click the **Status** field in the sidebar.
+3. Select **Ready**.
+
+The case now appears with a READY badge and will be included in the next test run that covers this case or suite.
+
+## Deprecating a case
+
+When a test case no longer applies — because the feature was removed or the test was superseded — mark it as DEPRECATED rather than deleting it. This preserves its history in past runs while excluding it from future runs.
+
+1. Open the case detail view.
+2. Click the **Status** field.
+3. Select **Deprecated**.
+
+Deprecated cases remain visible in the case list with a DEPRECATED badge and can be filtered out using the status filter.

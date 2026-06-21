@@ -1,48 +1,81 @@
 ---
-title: "Customer Portal"
-description: "Give external customers a branded view into their support tickets — no Collabase account required."
+sidebarTitle: "Customer Portal"
+description: "Let external customers submit tickets and track their status without a Collabase account. Configure the portal per project."
 ---
 
 # Customer Portal
 
-The Customer Portal gives external stakeholders — clients, partners, end users — a read-only window into the tickets they submitted or that are relevant to them. They don't need a Collabase account.
+The Customer Portal gives external users — clients, partners, or end users — a branded interface to submit support tickets and track their progress. External users do not need a Collabase account.
+
+This is separate from your internal project workspace. External users see only their own tickets and only the comments your team explicitly marks as External.
+
+## What external users can do
+
+- Submit new tickets using the portal form
+- View the status and priority of their own tickets
+- Read comments posted with **External** visibility
+- See file attachments marked as public
+- Receive status update notifications if configured
+
+External users cannot see internal comments, other customers' tickets, or any other area of your Collabase instance.
 
 ## Enabling the portal
 
-1. Open the project → **Settings → Portal**
-2. Toggle **Enable Customer Portal**
-3. Configure the portal name and welcome message
-4. Copy the portal URL to share with your customers
+<Steps>
+  <Step title="Open project settings">
+    Navigate to your project and click **Settings** in the left sidebar. Select **Portal**.
+  </Step>
+  <Step title="Enable the portal">
+    Toggle **Enable Customer Portal** to on. The portal URL is generated immediately.
+  </Step>
+  <Step title="Configure branding">
+    Set the portal name and welcome message that external users will see on the portal home page.
+  </Step>
+  <Step title="Copy the portal URL">
+    Copy the generated portal URL and share it with your customers. The URL is Space-specific and does not require authentication to access.
+  </Step>
+</Steps>
 
-## What customers see
+## Configuring the submission form
 
-The portal shows only tasks tagged to the requesting customer's organization or email domain. Customers can:
+Enable the submission form to allow external users to create tickets directly from the portal.
 
-- View ticket status, priority, and last update
-- Read comments posted as **Public** (private comments are hidden)
-- See file attachments marked as public
-- Submit new tickets via the portal form (if enabled)
+<Steps>
+  <Step title="Enable the submission form">
+    In **Settings → Portal**, toggle on **Enable Submission Form**.
+  </Step>
+  <Step title="Choose visible fields">
+    Select which fields appear in the form — typically subject, description, priority, and attachment upload. Fields not selected here are hidden from external submitters.
+  </Step>
+  <Step title="Set the default task type">
+    Choose which task type portal submissions are created as (e.g., "Support Request").
+  </Step>
+  <Step title="Set email verification (optional)">
+    Enable **Require Email Verification** to confirm the submitter's email address before the ticket is created.
+  </Step>
+</Steps>
 
-## Portal form
-
-Enable the portal submission form to let external users create new tasks without logging into Collabase:
-
-1. **Settings → Portal → Enable Submission Form**
-2. Configure which fields to show (subject, description, priority, attachments)
-3. Set the default task type for portal submissions
-4. Optionally require email verification before submission
-
-Submitted tasks appear in the project queue tagged with the submitter's email and the source `PORTAL`.
+Tasks submitted through the portal appear in the project queue tagged with the submitter's email address and a `PORTAL` source label. They are treated like any other task and can be assigned, commented on, and tracked through your normal workflow.
 
 ## Comment visibility
 
-When commenting on a task, choose **Public** or **Internal**:
+When a team member comments on a task that has a portal submitter, they must choose the visibility for each comment:
 
-| Visibility | Portal customers see | Team members see |
+| Visibility | Visible to external users | Visible to team members |
 |---|---|---|
-| **Public** | ✅ Yes | ✅ Yes |
-| **Internal** | ❌ No | ✅ Yes |
+| **Internal** | No | Yes |
+| **External** | Yes | Yes |
+
+The default visibility is Internal. Switch to External only when the comment is intended for the customer to see. External comments appear in the customer's portal view alongside the ticket status.
+
+## Portal URL and access
+
+The portal URL is generated per project and is not password-protected. Access is controlled by task ownership — each visitor sees only tickets associated with their email address.
+
+<Warning>
+  Because the portal URL is not authenticated, do not include sensitive internal information in External comments or public attachments. Treat everything marked External as publicly accessible to the customer who submitted the ticket.
+</Warning>
 
 <Note>
-  The portal URL is not authenticated. It uses a Space-scoped token to show only the tasks relevant to the visitor. Ensure your portal does not contain sensitive information in public comments.
+  The portal is enabled and configured per project. A Space can have multiple projects, each with its own portal. If you run separate support projects for different products or regions, each project can have a distinct portal URL and configuration.
 </Note>

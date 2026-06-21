@@ -1,141 +1,155 @@
 ---
-title: "Triggers"
+sidebarTitle: "Triggers"
 description: "Triggers are the starting point of every automation — they listen for an event and fire the pipeline when it occurs."
 ---
+
+# Triggers
 
 A trigger is what starts an automation. Every automation has exactly one trigger node. When the trigger fires, it passes data downstream to your condition and action nodes.
 
 ## Trigger types
 
-<CardGroup cols={2}>
-  <Card title="Collabase event" icon="bell">
-    Fires when something happens inside Collabase — for example, when a test case is marked `FAILED` or a test suite is created.
-  </Card>
-  <Card title="Schedule" icon="clock">
-    Fires on a recurring schedule — for example, every Monday at 09:00. Use cron syntax or the schedule picker in the builder.
-  </Card>
-  <Card title="Webhook" icon="webhook">
-    Fires when an external system sends a `POST` request to the automation's unique webhook URL. Any JSON payload is passed downstream.
-  </Card>
-  <Card title="Manual" icon="hand-pointer">
-    Fires when you click **Run** from the automation dashboard. Useful for testing or one-off workflows you want to control explicitly.
-  </Card>
-</CardGroup>
+| Type | When it fires |
+|---|---|
+| **Collabase Event** | When something happens inside Collabase — a task is created, a page is updated, a registry object changes, etc. |
+| **Schedule** | On a recurring timer defined with a cron expression — for example, every weekday at 09:00. |
+| **Webhook** | When an external system sends a request to the automation's unique URL. |
+| **Manual** | When a user clicks **Run** from the automation dashboard, or via the API. |
+| **External Service Event** | When a connected service pushes an event to Collabase — for example, a GitHub push or a Stripe payment. Documented on each connector's page. |
+
+---
+
+## Collabase Events
+
+These triggers fire on activity inside Collabase. Select one from the **Collabase** category when adding a trigger node.
+
+| Event | When it fires | Key payload fields |
+|---|---|---|
+| `task.created` | A new task is created in any project | `taskId`, `taskTitle`, `taskKey`, `projectId`, `spaceId`, `createdBy` |
+| `task.updated` | A task field is changed (title, description, priority, due date, etc.) | `taskId`, `taskKey`, `changedField`, `oldValue`, `newValue` |
+| `task.status_changed` | A task moves to a different status column | `taskId`, `taskKey`, `taskTitle`, `oldStatus`, `newStatus`, `changedBy` |
+| `task.assigned` | A task is assigned or reassigned | `taskId`, `taskKey`, `taskTitle`, `assigneeId`, `assignedBy` |
+| `task.completed` | A task reaches a completed status | `taskId`, `taskKey`, `taskTitle`, `completedBy`, `completedAt` |
+| `page.created` | A new wiki page is created | `pageId`, `pageTitle`, `spaceId`, `createdBy` |
+| `page.updated` | A wiki page is edited | `pageId`, `pageTitle`, `spaceId`, `updatedBy` |
+| `page.commented` | A comment is posted on a wiki page | `pageId`, `pageTitle`, `commentId`, `commentBody`, `commentedBy` |
+| `test.run.completed` | A test run finishes | `testRunId`, `testRunName`, `totalCases`, `passed`, `failed`, `blocked` |
+| `registry.object.created` | A new object is created in a registry | `objectId`, `registryId`, `registryName`, `spaceId`, `createdBy` |
+| `registry.object.updated` | An existing registry object is edited | `objectId`, `registryId`, `changedField`, `oldValue`, `newValue` |
+| `comment.created` | A comment is posted anywhere in Collabase | `commentId`, `commentBody`, `entityType`, `entityId`, `authorId` |
+
+<Note>
+  All payload fields are available in downstream nodes using `{payload.fieldName}` — for example, `{payload.taskTitle}` or `{payload.oldStatus}`.
+</Note>
+
+---
+
+## Schedule (Cron)
+
+A schedule trigger fires on a recurring timer. Define the schedule using cron syntax or use the visual picker in the builder.
+
+### Cron expression examples
+
+| Expression | When it runs |
+|---|---|
+| `0 9 * * 1-5` | Every weekday at 09:00 |
+| `0 9 * * 1` | Every Monday at 09:00 |
+| `0 0 1 * *` | First day of every month at midnight |
+| `*/15 * * * *` | Every 15 minutes |
+| `0 8,17 * * *` | Every day at 08:00 and 17:00 |
+| `0 0 * * 0` | Every Sunday at midnight |
+
+<Note>
+  Schedule triggers always run in **UTC** unless you set a timezone in the trigger configuration. Set the **Timezone** field to your local timezone (e.g. `Europe/Zurich`) to have expressions evaluated in that zone.
+</Note>
+
+Schedule triggers produce no payload fields. Use **Set Variable** or **Data Store** nodes if you need to pass context through the automation.
+
+---
+
+## Webhook
+
+A webhook trigger fires when an external system sends a `POST` request to the automation's unique URL. Collabase generates one URL per automation — no additional configuration is required to receive requests.
 
 ### Getting the webhook URL
 
-To use a webhook trigger, you need the automation's unique endpoint. Open the automation, click on the trigger node, and copy the **Webhook URL** shown in the node configuration panel. Send a `POST` request with a JSON body to that URL from any external system to fire the automation.
+<Steps>
+  <Step title="Open the trigger node">
+    Open your automation and click the trigger node. The node panel opens on the right.
+  </Step>
+  <Step title="Copy the URL">
+    Copy the **Webhook URL** shown in the configuration panel. It looks like:
+    `https://your-collabase.example/api/v1/automation/auto-abc123/webhook`
+  </Step>
+  <Step title="Configure the sending system">
+    Paste the URL into your external service's webhook settings. The service will send a `POST` request to this URL when its event occurs.
+  </Step>
+</Steps>
+
+### Example request
 
 ```bash
 curl -X POST "https://your-collabase.example/api/v1/automation/auto-abc123/webhook" \
   -H "Content-Type: application/json" \
-  -d '{"event": "deployment.completed", "environment": "production"}'
+  -H "X-Webhook-Secret: your-secret-here" \
+  -d '{"event": "deployment.completed", "environment": "production", "version": "2.4.1"}'
 ```
 
-The full payload body is available to subsequent condition and action nodes as `{{payload.*}}`.
+The full request body is available in downstream nodes as `{payload.*}`:
+
+- `{payload.event}` → `deployment.completed`
+- `{payload.environment}` → `production`
+- `{payload.version}` → `2.4.1`
+
+### Webhook verification
+
+Set a **Secret** in the trigger configuration to protect your endpoint. When set, Collabase checks the `X-Webhook-Secret` header on every incoming request and rejects requests with a missing or incorrect value.
+
+<Warning>
+  Without a secret, anyone who knows the URL can trigger your automation. Always set a secret for production automations that receive external requests.
+</Warning>
 
 ---
 
-## Collabase event triggers
+## Manual
 
-These four event triggers are built into Collabase and require no external configuration. Add one to your automation by clicking **Add Trigger** and selecting it from the **Collabase** category.
+A manual trigger fires when a user explicitly starts the automation. This is useful for workflows you want to control — one-off tasks, testing, or on-demand processes that should not run automatically.
 
-### Test case failed
+### Triggering manually in the UI
 
-Fires every time a tester marks a test result as `FAILED` during an active test run. Use this to react to quality failures immediately — notify the right person, open a bug page, or escalate to an external system.
+<Steps>
+  <Step title="Open the automation">
+    Navigate to **Automation** in your Space sidebar and open the automation.
+  </Step>
+  <Step title="Click Run">
+    Click the **Run** button in the top-right of the automation builder. The automation fires immediately.
+  </Step>
+</Steps>
 
-**When it fires:** Each time a tester records a `FAILED` result for a test case in an active run. Does not fire for `BLOCKED`, `SKIPPED`, or `PASSED` results. Fires once per failing result — if the same case fails in multiple runs, it fires each time.
+### Triggering via the API
 
-| Field | Type | Description |
-|---|---|---|
-| `testRunId` | `string` | ID of the test run that contains the result |
-| `testCaseId` | `string` | ID of the test case that failed |
-| `testCaseTitle` | `string` | Human-readable title of the failed test case |
+You can also trigger a manual automation via the Collabase REST API:
 
-**Example use:**
+```bash
+POST /api/v1/automation/{automationId}/run
+Authorization: Bearer <your-api-token>
+Content-Type: application/json
+
+{
+  "inputs": {
+    "targetSpaceId": "space-abc123"
+  }
+}
 ```
-[Trigger: Test Case Failed]
-    ↓
-[Condition: testCaseTitle contains "checkout"]
-    ↓
-[Action: Send Notification]
-    userId: qa-lead-user-id
-    title: "Critical test failure"
-    message: "{{testCaseTitle}} failed in run {{testRunId}}"
-```
+
+Any fields passed in `inputs` are available in downstream nodes as `{payload.fieldName}`.
 
 ---
 
-### Test case passed
+## External service events
 
-Fires every time a tester marks a test result as `PASSED` during an active test run. Use this to track quality milestones, update reports, or log progress to an external dashboard.
+Several connectors support incoming events — they listen for activity in the external service and fire the automation when it occurs. These triggers are documented on each connector's individual page.
 
-**When it fires:** Each time a tester records a `PASSED` result for a test case in an active run. Does not fire for `FAILED`, `BLOCKED`, or `SKIPPED` results.
+Examples include GitHub push events, Stripe payment confirmations, and Microsoft Teams messages posted to a channel.
 
-| Field | Type | Description |
-|---|---|---|
-| `testRunId` | `string` | ID of the test run |
-| `testCaseId` | `string` | ID of the test case that passed |
-| `testCaseTitle` | `string` | Human-readable title of the test case |
-
-**Example use:**
-```
-[Trigger: Test Case Passed]
-    ↓
-[Action: Send Notification]
-    userId: test-lead-user-id
-    title: "Test passed"
-    message: "{{testCaseTitle}} passed in run {{testRunId}}"
-```
-
----
-
-### Test run started
-
-Fires the moment a new test run is created — whether a team member starts it manually or an automation creates it via the **Create Test Run** action. Use this to kick off parallel workflows, notify stakeholders, or create a tracking page for the run.
-
-**When it fires:** Once per test run, at the moment of creation. Does not fire when the run status changes later (for example, when it completes).
-
-| Field | Type | Description |
-|---|---|---|
-| `testRunId` | `string` | ID of the newly created test run |
-| `testRunName` | `string` | Name given to the run |
-| `testProjectId` | `string` | ID of the test project this run belongs to |
-
-**Example use:**
-```
-[Trigger: Test Run Started]
-    ↓
-[Action: Create Page]
-    spaceId: your-space-id
-    title: "Run Report — {{testRunName}}"
-```
-
----
-
-### Test suite created
-
-Fires when a new test suite is added to a test project. Use this to react to structural changes in your test project — notify suite owners, create linked documentation, or pre-populate cases automatically.
-
-**When it fires:** Once per suite creation event. Does not fire when a suite is renamed or deleted.
-
-| Field | Type | Description |
-|---|---|---|
-| `suiteId` | `string` | ID of the newly created suite |
-| `suiteName` | `string` | Name of the suite |
-| `testProjectId` | `string` | ID of the parent test project |
-
-**Example use:**
-```
-[Trigger: Test Suite Created]
-    ↓
-[Action: Create Page]
-    spaceId: your-space-id
-    title: "Test Suite: {{suiteName}}"
-```
-
----
-
-<Note>
-  The trigger node passes its output fields to every downstream node. Reference them in condition values or action inputs using double-brace syntax: `{{testCaseTitle}}`, `{{testRunId}}`, etc.
-</Note>
+→ [Browse connectors and their triggers](/automation/integrations)

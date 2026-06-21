@@ -1,75 +1,199 @@
 ---
-title: "Pages"
-description: "Pages are the fundamental unit of Collabase Docs — rich-text documents with status, version history, permissions, and a place in the Space tree."
+sidebarTitle: "Pages"
+description: "Pages are the core unit of Collabase Docs — rich-text documents with version history, per-page permissions, comments, labels, and attachments."
 ---
 
 # Pages
 
-A page is the fundamental unit of Collabase Docs. It can be anything — a technical spec, a retrospective, a runbook, an onboarding guide. Pages live in a hierarchical tree inside their Space and can be nested to any depth.
+A page is the core unit of Collabase Docs. It can hold any kind of documentation — a technical specification, a runbook, a meeting record, an onboarding guide. Pages are organized in a hierarchical tree inside their Space and can be nested to any depth.
 
-## What a page contains
+## Page types
 
-| Element | Description |
+| Type | Description |
 |---|---|
-| **Title** | Required. The page's display name in the tree and search results. |
-| **Body** | Rich-text content using the Collabase editor. |
-| **Status** | DRAFT, IN REVIEW, PUBLISHED, or ARCHIVED. |
-| **Author** | The user who created the page. |
-| **Last updated** | Timestamp and user of the most recent edit. |
-| **Custom fields** | Any custom fields your admin has configured for the Space. |
-| **Labels** | Free-form tags for search and filtering. |
+| **Standard** | General-purpose rich-text document. The default type for most documentation. |
+| **Blog** | A post with a publish date, displayed in reverse chronological order. Suitable for announcements and updates. |
+| **Canvas** | An infinite freeform drawing surface. Suitable for diagrams, wireframes, and visual planning. |
+
+## Page width modes
+
+| Mode | Effect |
+|---|---|
+| **Narrow** | Constrained reading width. Best for long prose documents. |
+| **Wide** | Default width. Balanced for mixed content. |
+| **Full** | Full browser width. Best for pages with wide tables or embeds. |
+
+Change the width mode from the page options menu (the `...` icon at the top right of the page).
 
 ## Creating a page
 
 <Steps>
-  <Step title="Navigate to the Space">
-    Open the target Space in the left sidebar.
+  <Step title="Open the target Space">
+    Navigate to the Space where you want to create the page using the left sidebar.
   </Step>
   <Step title="Click + New Page">
-    Click the **+** next to the parent page in the tree, or press `Ctrl+N` / `Cmd+N`.
+    Click the **+** icon next to the parent page in the tree where you want the new page to appear. To create a top-level page, click **+ New Page** at the bottom of the page tree.
   </Step>
-  <Step title="Choose a template (optional)">
-    Select a template from the template picker, or start blank.
+  <Step title="Enter a title">
+    Type the page title. Press Enter or click the editor body to begin writing.
   </Step>
-  <Step title="Write and save">
-    Auto-save is on — the page saves as DRAFT every 2 seconds. Publish when ready.
+  <Step title="Start editing">
+    The editor opens immediately. Content is auto-saved when you move focus away. You do not need to save manually.
   </Step>
 </Steps>
 
-## Publishing
+<Note>
+  To create a page from a template instead of starting blank, click **+ New Page** and then select **From template** in the dialog that appears. See [Templates](/docs/templates) for details.
+</Note>
 
-Change a page's status to **PUBLISHED** to make it the official live version. Only PUBLISHED pages appear in the Space's navigation tree by default (Drafts are shown only to editors).
+## Editor features
+
+The Docs editor supports the following content blocks:
+
+| Block type | How to insert |
+|---|---|
+| Heading (H1–H3) | `/heading1`, `/heading2`, `/heading3` or `#`, `##`, `###` |
+| Bulleted list | `/bulletedlist` or `-` followed by a space |
+| Numbered list | `/numberedlist` or `1.` followed by a space |
+| Task list | `/tasklist` |
+| Table | `/table` |
+| Code block | `/codeblock` or ` ``` ` |
+| Callout | `/callout` |
+| Image | `/image` or paste/drag a file |
+| Embed | `/embed` then paste a URL |
+| Divider | `/divider` or `---` |
+| Quote | `/blockquote` or `>` |
+
+Type `/` anywhere in the editor to open the full slash command menu and search for any block.
 
 ## Version history
 
-Every save creates a version snapshot. Access versions via **Page menu → History**:
+Every time you leave the editor (on blur), a version snapshot is saved automatically. You can view and restore any previous version at any time.
 
-- Browse previous versions by date and author
-- Preview any version in full
-- **Restore** a previous version — the current content becomes a new version, not overwritten
-- **Download as Markdown** — export any version as `.md`
+<Steps>
+  <Step title="Open page history">
+    Click the `...` options menu at the top right of the page, then select **Version History**. A panel opens on the right showing all saved versions, ordered from newest to oldest.
+  </Step>
+  <Step title="Select a version">
+    Click any version entry to preview its full content in the main editor area. The version's author and timestamp are shown next to each entry.
+  </Step>
+  <Step title="Restore the version">
+    Click **Restore this version** at the top of the preview. The current page content is saved as a new version first, then the selected version becomes the active content. No content is ever permanently overwritten.
+  </Step>
+</Steps>
+
+<Note>
+  Restoring a version does not delete the current version — it saves it as a snapshot first. You can always return to it later.
+</Note>
 
 ## Permissions
 
-By default, pages inherit their Space's permissions. Restrict an individual page further via **Page menu → Permissions**:
+Page permissions are set individually on each page. They are **not inherited** from the parent page or from the Space. If you restrict a parent page, child pages remain accessible to anyone who had access before unless you restrict them separately.
 
-| Setting | Effect |
+<Steps>
+  <Step title="Open page permissions">
+    Click the `...` options menu at the top right of the page, then select **Permissions**.
+  </Step>
+  <Step title="Switch to restricted access">
+    By default, the page uses the Space's access settings. Toggle to **Restricted** to define a custom access list.
+  </Step>
+  <Step title="Add users or groups">
+    Search for a user by name or select a group. Set their permission level to **View** or **Edit**.
+  </Step>
+  <Step title="Save">
+    Click **Save permissions**. The change takes effect immediately.
+  </Step>
+</Steps>
+
+<Warning>
+  Restricting a page does not automatically restrict its child pages. Each subpage must be configured separately if you want to limit access to the whole subtree.
+</Warning>
+
+## Comments
+
+Pages support two types of comments.
+
+| Type | Description |
 |---|---|
-| **Inherit Space permissions** | Default — same access as the Space |
-| **Restricted** | Only specified users or groups can view/edit this page |
+| **Inline thread** | Anchored to a specific selection of text in the page body. Select text, then click the comment icon that appears. |
+| **Footer comment** | Appears at the bottom of the page, below the content. Not anchored to specific text. |
 
-Restrictions do not affect child pages — each page is individually permissioned.
+Both types support threaded replies. Comments also have a **visibility** setting:
 
-## Page comments and discussions
+| Visibility | Who can see it |
+|---|---|
+| **Internal** | Team members only (Space members with at least View access) |
+| **External** | Shareable with external parties (visible when the page is shared publicly) |
 
-Comments appear in the right sidebar and support threaded replies and reactions. Use **Open Discussion** mode to create a longer-form comment thread with voting.
+## Labels
+
+Labels are tags you can add to any page for organization and filtering.
+
+- Click the **Labels** field in the page's information panel to add or remove labels.
+- Labels are free text — type a new label name to create it, or select an existing one.
+- Multiple labels per page are supported.
+- Use labels to filter pages in the Space sidebar or in search.
+
+## Attachments
+
+You can attach files to any page without embedding them in the content.
+
+- Click `...` → **Attachments** to open the attachments panel.
+- Drag files into the panel or click **Upload** to add files.
+- Attached files are listed at the bottom of the page and downloadable by anyone with view access.
+
+## Exporting to PDF
+
+<Steps>
+  <Step title="Open the export option">
+    Click `...` → **Export as PDF**.
+  </Step>
+  <Step title="Confirm the export">
+    A PDF is generated from the current page content and downloads to your browser automatically.
+  </Step>
+</Steps>
+
+The PDF export includes the page title, body content, and tables. Embeds and interactive blocks are rendered as static images where possible.
+
+## Moving a page
+
+<Steps>
+  <Step title="Open the move option">
+    Click `...` → **Move page**.
+  </Step>
+  <Step title="Select the new parent">
+    Choose a new parent page in the current Space, or select a different Space entirely. The page tree picker shows all Spaces and pages you have edit access to.
+  </Step>
+  <Step title="Confirm">
+    Click **Move**. The page and all its children are moved to the new location. Existing links to the page continue to work.
+  </Step>
+</Steps>
+
+## Archiving and deleting a page
+
+<Steps>
+  <Step title="Archive the page">
+    Click `...` → **Archive page**. The page is removed from the sidebar tree but is not permanently deleted. Archived pages can be found via **Space Settings → Archived Pages** and can be restored at any time.
+  </Step>
+  <Step title="Permanently delete">
+    From the archived pages list, select the page and click **Delete permanently**. This cannot be undone.
+  </Step>
+</Steps>
+
+<Warning>
+  Permanent deletion removes the page, all its versions, all its comments, and all its attachments. This action cannot be reversed. Archive the page first if you are not certain.
+</Warning>
 
 ## Keyboard shortcuts
 
 | Shortcut | Action |
 |---|---|
-| `Ctrl/Cmd + S` | Manually force a save |
-| `Ctrl/Cmd + Shift + P` | Publish the page |
-| `Ctrl/Cmd + /` | Toggle comment panel |
-| `/` | Open slash command menu |
+| `/` | Open the slash command menu |
 | `@` | Mention a team member |
+| `Cmd/Ctrl + B` | Bold |
+| `Cmd/Ctrl + I` | Italic |
+| `Cmd/Ctrl + U` | Underline |
+| `Cmd/Ctrl + K` | Insert or edit a link |
+| `Cmd/Ctrl + Z` | Undo |
+| `Cmd/Ctrl + Shift + Z` | Redo |
+| `Cmd/Ctrl + Enter` | Toggle task list item done/undone |

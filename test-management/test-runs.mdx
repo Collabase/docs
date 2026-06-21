@@ -1,56 +1,108 @@
 ---
-title: "Test Runs"
-description: "A test run executes all READY cases, lets testers record results, and creates an immutable quality snapshot."
+sidebarTitle: "Test Runs"
+description: "A test run is an execution session — select cases to test, record a result for each one, and capture a quality snapshot for that point in time."
 ---
 
 # Test Runs
 
-A test run is an execution session. When you start a run, Collabase automatically enrolls every test case with `READY` status and sets each result to `PENDING`. Testers work through each case, record their result, and the run builds a complete record of what was tested.
+A test run is an execution session. You select which test cases to include, and testers work through each case, perform the described steps, and record a result. When the run is complete, it becomes an immutable quality snapshot for that point in time.
 
-Runs are **immutable snapshots** — once created, the set of enrolled cases doesn't change, giving you a reliable historical record.
+Collabase does not run tests for you — it provides the structure for testers to record their observations. For automated cases, results can be submitted via the API from your CI/CD pipeline.
 
-## Starting a run
+## Result status values
 
-1. Open the Test Project → **Runs** tab
-2. Click **+ New Run**
-3. Name the run (e.g. "Sprint 14 — Regression")
-4. Optionally attach a **Milestone**
-5. Click **Create** — Collabase enrolls all READY cases immediately
+Each test case in a run receives one of the following result statuses:
 
-## Recording results
-
-Open the run to see the full case list with a result picker per case:
-
-| Result | Meaning |
+| Status | Meaning |
 |---|---|
-| ✅ **PASS** | Case executed and expected result was observed |
-| ❌ **FAIL** | Case executed and expected result was NOT observed |
-| ⛔ **BLOCKED** | Case could not be executed (environment issue, dependency) |
-| ⏭️ **SKIP** | Deliberately excluded from this run |
+| **Pending** | The case has not yet been executed in this run. This is the default status when a run is created. |
+| **Passed** | The tester performed the steps and all expected results were observed. |
+| **Failed** | The tester performed the steps and at least one expected result was not observed. |
+| **Blocked** | The case could not be executed because a prerequisite or dependency was not met (for example, a test environment was unavailable or a prior case failed in a way that makes this one impossible to run). |
+| **Skipped** | The case was deliberately excluded from this run session. Skipped cases do not count toward the pass rate. |
 
-Click the result and optionally add a **comment** — for FAIL results, describe what happened so developers can reproduce it.
+## Creating a test run
 
-## Run progress
+<Steps>
+  <Step title="Open the Test Runs tab">
+    In your test project, click the **Test Runs** tab in the top navigation.
+  </Step>
+  <Step title="Click + New Run">
+    Click **+ New Run** in the top right corner.
+  </Step>
+  <Step title="Name the run">
+    Enter a descriptive name for this run. Use a name that identifies the scope and date — for example, "Sprint 22 Regression – 2026-06-21" or "v3.0 Release Candidate – Full Smoke".
+  </Step>
+  <Step title="Select cases or suites to include">
+    By default, all READY cases in the project are included. To limit the run to specific cases or suites, click **Select cases** and choose which suites or individual cases to include. Cases with DRAFT or DEPRECATED status are never included.
+  </Step>
+  <Step title="Assign a milestone (optional)">
+    If this run belongs to a release or sprint milestone, select it from the **Milestone** dropdown. The run's results will contribute to the milestone's aggregate metrics.
+  </Step>
+  <Step title="Create the run">
+    Click **Create Run**. The run is created with status PLANNED and all included cases start with result status PENDING.
+  </Step>
+</Steps>
 
-The run header shows live progress:
+## Executing a test run
 
-- **Pass rate** — percentage of PASS results vs. total executed
-- **Pending** — cases not yet recorded
-- **Passed / Failed / Blocked / Skipped** — result counts
+<Steps>
+  <Step title="Open the run">
+    Click the run name in the Test Runs list. The run detail view shows all included cases with their current result status.
+  </Step>
+  <Step title="Start the run">
+    Click **Start Run**. The run status changes from PLANNED to IN_PROGRESS.
+  </Step>
+  <Step title="Work through each case">
+    Click a case to open its detail. Read the steps and expected results. Perform the described steps in your test environment.
+  </Step>
+  <Step title="Record the result">
+    At the top of the case detail in the run, click the result you observed: **Passed**, **Failed**, **Blocked**, or **Skipped**.
+  </Step>
+  <Step title="Add a note (recommended for failures)">
+    Click **Add note** to enter observations. For failed cases, describe exactly what went wrong — this information is visible to developers and helps them reproduce the issue. For blocked cases, describe what prevented execution.
+  </Step>
+  <Step title="Move to the next case">
+    Click **Next case** or select another case from the list on the left. Continue until all cases have a result.
+  </Step>
+</Steps>
+
+## Run status
+
+| Status | Meaning |
+|---|---|
+| **Planned** | The run has been created but execution has not started. Cases are enrolled and set to Pending. |
+| **In Progress** | Execution is underway. Results are being recorded. The run is editable. |
+| **Completed** | All cases have a result and the run has been closed. Results are locked and cannot be changed. |
 
 ## Completing a run
 
-Click **Complete Run** when all cases have a result (or when you're done with the session). Completed runs are locked — results can't be changed. The run's final pass rate is recorded and fed into milestone metrics.
+When you have recorded results for all cases (or when you want to close the run session), click **Complete Run**.
 
-## Failed case → Bug link
+- The run status changes to COMPLETED.
+- All results are locked — they cannot be changed after this point.
+- The final pass rate is calculated and stored with the run.
+- If the run is linked to a milestone, the milestone's metrics are updated.
 
-On a FAIL result, click **Create Bug** to automatically open a new Project task pre-filled with:
-- Title from the test case title
-- Description from the run comment
-- Link back to the test run
+<Note>
+  You can complete a run even if some cases are still Pending or Skipped. Pending cases will not count toward the pass rate. Only Passed and Failed cases are used in the rate calculation.
+</Note>
 
-This bridges Test Management and Projects with one click.
+## Run metrics
 
-## Re-running failed cases
+After a run is completed, its metrics panel shows:
 
-Create a new run specifically for failed cases: **New Run → Run failed cases from [previous run]**. Collabase copies only the FAIL results from the selected run as the starting case set.
+| Metric | How it is calculated |
+|---|---|
+| **Pass rate** | Passed ÷ (Passed + Failed) × 100. Blocked and Skipped cases are excluded from this calculation. |
+| **Passed** | Count of cases with PASSED result |
+| **Failed** | Count of cases with FAILED result |
+| **Blocked** | Count of cases with BLOCKED result |
+| **Skipped** | Count of cases with SKIPPED result |
+| **Pending** | Count of cases still in PENDING status (only in non-completed runs) |
+
+Metrics are computed on demand — they are not stored separately. Viewing a run or milestone triggers the calculation.
+
+<Note>
+  If a run contains zero Passed and zero Failed results (all cases are Blocked, Skipped, or Pending), the pass rate displays as N/A rather than 0%.
+</Note>

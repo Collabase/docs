@@ -1,65 +1,75 @@
 ---
 sidebarTitle: "Overview"
-description: "Test Management is the quality operating system built into every Collabase Space — structured test cases, execution runs, milestones, and result history all in one place."
+description: "Test Management is the built-in quality tool for Collabase — define test cases, run manual tests, record results, and track quality across releases with milestones."
 ---
 
 # Test Management
 
-<img src="/images/test-management.png" alt="Collabase Test Management" style={{ borderRadius: '8px', marginBottom: '24px' }} />
+Test Management is the built-in quality tool for every Collabase Space. Use it to organize test cases, execute manual test runs, track pass and fail results, and measure quality across releases — all without leaving Collabase.
 
-Test Management is the quality operating system built into every Collabase Space. It gives QA teams and developers a structured place to define what needs to be verified, execute it, and measure quality over time — all without leaving Collabase.
+Collabase stores your test specifications and results. Actual automated test execution happens in your CI/CD pipeline. For manual testing, testers work through cases directly in Collabase and record each result.
 
-## How it works
+## How it's organized
 
-<CardGroup cols={2}>
-  <Card title="Test Cases" icon="file-lines" href="/test-management/test-cases">
-    Define the steps, preconditions, and expected results for each thing to verify. Organize cases into suites by feature or component.
+<CardGroup cols={3}>
+  <Card title="Test Cases" icon="clipboard-list" href="/test-management/test-cases">
+    The building blocks of testing. Each case has a name, priority, type, status, and a set of ordered steps with expected results.
   </Card>
-  <Card title="Test Runs" icon="play" href="/test-management/test-runs">
-    Execute all READY cases in a single run session. Each result is recorded independently — pass, fail, blocked, or skipped.
+  <Card title="Test Suites" icon="folder-open" href="/test-management/suites">
+    Hierarchical folders for organizing test cases by feature, component, or priority. Unlimited nesting depth.
   </Card>
-  <Card title="Milestones" icon="flag" href="/test-management/milestones">
-    Group runs under a release or sprint milestone to get an aggregate quality view across all linked runs.
-  </Card>
-  <Card title="Suites" icon="folder" href="/test-management/suites">
-    Group test cases logically by feature, module, or priority to keep large projects organized.
+  <Card title="Test Runs" icon="play-circle" href="/test-management/test-runs">
+    An execution session. Select cases to run, go through each one, and record a result: Passed, Failed, Blocked, or Skipped.
   </Card>
 </CardGroup>
 
-## Quality workflow
+<CardGroup cols={2}>
+  <Card title="Milestones" icon="flag" href="/test-management/milestones">
+    Group test runs under a release or quality gate. See aggregate pass rates across all runs in a milestone.
+  </Card>
+  <Card title="Reports" icon="bar-chart-2">
+    Metrics computed from run results: pass rate, failure count, blocked count, and last run status per test project.
+  </Card>
+</CardGroup>
+
+## Hierarchy
 
 ```
-Define Cases → Mark READY → Create Run → Execute & Record → Attach to Milestone → Ship
+Test Project
+└── Test Suites (tree, unlimited depth)
+    └── Test Cases
+        └── Test Case Steps
+Test Runs → Test Results (one per case per run)
+Milestones (group one or more Test Runs)
 ```
 
-1. **Define** test cases for every user story or feature
-2. **Review and mark READY** — only verified cases are included in runs
-3. **Create a test run** — Collabase enrolls all READY cases automatically
-4. **Execute** — testers record PASS/FAIL/BLOCKED/SKIP for each case
-5. **Attach to milestone** — link to the release for an aggregate quality snapshot
-6. **Ship** — use milestone pass rates as your quality gate
+## Quality metrics
 
-## Automation integration
+The following metrics are computed from test run results. They are not pre-stored — they are calculated on demand whenever you view a run or milestone.
 
-Test Management integrates directly with the Automation engine:
-
-| Event | Trigger available |
+| Metric | Description |
 |---|---|
-| Test case fails | ✅ `collabase.testCase.failed` |
-| Test case passes | ✅ `collabase.testCase.passed` |
-| Test run started | ✅ `collabase.testRun.started` |
-| Test suite created | ✅ `collabase.testSuite.created` |
+| **Pass rate** | Percentage of PASSED results out of all executed results in a run or milestone |
+| **Failed count** | Number of cases that received a FAILED result |
+| **Blocked count** | Number of cases that could not be executed due to a prerequisite failure |
+| **Skipped count** | Number of cases deliberately excluded during the run |
+| **Pending count** | Number of cases not yet recorded in the current run |
+| **Last run status** | The final status (Planned, In Progress, or Completed) of the most recent run in a project |
 
-Use these to automatically notify Slack, create Jira issues for failures, or trigger CI pipelines on test completion.
+## Typical workflow
+
+1. **Create test cases** — define what needs to be verified with steps and expected results. Set status to DRAFT while writing.
+2. **Mark cases READY** — once reviewed, change each case's status to READY. Only READY cases are eligible for test runs.
+3. **Organize into suites** — group cases by feature or priority to keep the project navigable.
+4. **Create a test run** — select which cases or suites to include. Optionally assign a milestone.
+5. **Execute the run** — go through each case, perform the test, and record the result with a note.
+6. **Complete the run** — mark the run as Completed. Results are locked and contribute to milestone metrics.
+7. **Review the milestone** — check the aggregate pass rate before a release.
 
 ## Roles
 
-| Role | Can do |
+| Role | What they can do |
 |---|---|
-| **Space Owner / Admin** | Create projects, manage members, delete |
-| **Member** | Create cases, execute runs, record results |
-| **Viewer** | View cases, runs, and results (read-only) |
-
-## Admin configuration
-
-Admins can configure access to Test Management per Space under **Admin → Apps**. There are no instance-wide settings specific to Test Management beyond Space permissions.
+| **Space Owner / Admin** | Create and delete test projects, manage access, view all results |
+| **Member** | Create and edit test cases, create and execute test runs, record results |
+| **Viewer** | View test cases, runs, and results — read only |

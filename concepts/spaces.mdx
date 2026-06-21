@@ -1,57 +1,136 @@
 ---
-title: "Spaces"
-description: "Spaces are the top-level containers in Collabase. Everything — pages, tasks, test cases, and automations — lives inside a Space."
+sidebarTitle: "Spaces"
+description: "Spaces are the top-level workspaces in Collabase. Everything — pages, tasks, test cases, automations, and more — lives inside a space."
 ---
 
-A Space is the main organizational unit in Collabase. Think of it as a department, a project, or a product area. A single Collabase instance can have as many Spaces as you need, each with its own members and settings.
+A space is a self-contained workspace with its own members, modules, and content. Think of it as a department, a product area, a project, or a team. A single Collabase instance can have as many spaces as you need.
 
-## What a Space contains
+Spaces are isolated from each other. Content, members, and settings in one space do not affect any other space. This makes spaces a reliable boundary for access control — you can give a contractor access to one space without exposing anything else on your platform.
 
-Every Space can have four apps active inside it:
+---
 
-- **Docs** — pages, templates, and a collaborative knowledge base
-- **Test Management** — test cases, test runs, and quality tracking
-- **Automation** — workflow pipelines that run in the context of the Space
-- **Intranet** — announcements and team news
+## What a space contains
 
-You can enable or disable each app per Space in the Space settings.
+Each space can have the following modules enabled:
 
-## Who can see a Space
-
-Each Space has a visibility setting:
-
-| Setting | Who can access |
+| Module | What it provides |
 |---|---|
-| **Private** | Only members you explicitly invite |
-| **Internal** | All logged-in users on your Collabase instance |
-| **Public** | Anyone, including people without a Collabase account |
+| **Docs** | A collaborative wiki — pages, templates, and a page tree for organizing knowledge |
+| **Projects** | Tasks, boards, sprints, and project tracking |
+| **Test Management** | Test cases, test suites, test runs, and quality tracking |
+| **Automation** | Workflow pipelines that trigger on events and run actions |
+| **Intranet** | Announcements and team news posts |
+| **Registry** | A structured object database with custom fields and types |
+| **Time Tracking** | Time logging against tasks and projects, with reporting |
 
-Visibility controls who can discover and read the Space. Even in an Internal Space, only members with the right role can create or edit content.
+Each module can be enabled or disabled independently in the space settings. Disabled modules are hidden from the sidebar — existing data is preserved and restored when the module is re-enabled.
 
-## Spaces are isolated
+---
 
-Content, members, and settings in one Space do not affect any other Space. This makes Spaces a reliable boundary for access control — you can give a contractor access to one Space without exposing anything else on your platform.
+## Space visibility
 
-## Creating a Space
+Each space has a visibility setting that controls who can access it:
+
+| Visibility | Who can access |
+|---|---|
+| **Private** | Only members you explicitly invite. The space is not discoverable by other users. |
+| **Internal** | All logged-in users on your Collabase instance can see and read the space. |
+| **Public** | Anyone can access the space, including people without a Collabase account. |
+
+Visibility controls who can discover and read the space. Even in an Internal space, only members with an appropriate role can create or edit content. You can change the visibility at any time in the space settings.
+
+---
+
+## Space URL structure
+
+Every space has a unique short identifier called a **slug**. The slug appears in the URL for every page in that space:
+
+```
+https://your-collabase-domain/{slug}/docs
+https://your-collabase-domain/{slug}/projects
+https://your-collabase-domain/{slug}/tasks/{task-key}
+```
+
+<Warning>
+  The slug is set when the space is created and cannot be changed afterwards. All links within Collabase use the slug — changing it would break existing URLs. Choose the slug carefully.
+</Warning>
+
+---
+
+## Creating a space
 
 <Steps>
   <Step title="Click New Space in the sidebar">
-    You need the global Admin role, or the platform must be configured to allow all users to create Spaces.
+    The button is at the bottom of the space list in the left sidebar. You need the Admin instance role, or the platform must be configured to allow all users to create spaces.
   </Step>
-  <Step title="Fill in the Space details">
-    Enter a name and optionally a description. The URL slug is generated from the name automatically.
+  <Step title="Enter a name and description">
+    The name is displayed throughout the interface. The URL slug is generated from the name automatically — you can edit it before saving.
+  </Step>
+  <Step title="Choose an icon and color">
+    Select an icon and color to help users identify the space quickly in the sidebar.
   </Step>
   <Step title="Set the visibility">
-    Choose Private, Internal, or Public. You can change this later.
+    Choose Private, Internal, or Public. Private is the safest default for new spaces. You can change this later.
   </Step>
-  <Step title="Enable apps">
-    Select which apps to activate. You can change this at any time in the Space settings.
+  <Step title="Enable modules">
+    Select which modules to activate in this space. You can enable or disable modules at any time after creation in the space settings.
   </Step>
   <Step title="Invite members">
-    Add people and assign them a role. See [Permissions](/concepts/permissions) for what each role can do.
+    Add team members and assign each a space role. See [Permissions](/concepts/permissions) for what each role allows.
   </Step>
 </Steps>
 
-<Note>
-  The Space URL (slug) is set when the Space is created and cannot be changed afterwards.
-</Note>
+---
+
+## Space home (cockpit)
+
+When you open a space, the first page you see is the **space cockpit** — a summary view that shows:
+
+- Recent activity across all modules in the space
+- Tasks assigned to you within this space
+- Quick links to each enabled module
+- Pinned pages or announcements (if configured by the space owner)
+
+The cockpit gives team members a single starting point each day without needing to navigate into individual modules.
+
+---
+
+## Navigating between spaces
+
+The left sidebar lists all spaces you are a member of. Click any space to open its home page (cockpit), which shows a summary of recent activity, assigned tasks, and module shortcuts. Spaces you are not a member of are not visible in the sidebar unless the space is set to **Internal** or **Public** visibility.
+
+Use the space switcher at the top of the sidebar to jump quickly between spaces.
+
+---
+
+## Spaces vs. projects
+
+Spaces and projects serve different purposes:
+
+| | Space | Project |
+|---|---|---|
+| **Purpose** | A top-level workspace for a department or product area | A structured initiative with tasks, milestones, and a board |
+| **Members** | Managed independently from other spaces | Inherit from the space, with optional project-level role overrides |
+| **Modules** | Has multiple modules (Docs, Projects, Automation, etc.) | Lives inside the Projects module of a space |
+| **URL** | `/{slug}/` | `/{slug}/projects/{project-slug}/` |
+
+A space typically contains multiple projects. For example, a "Product" space might contain separate projects for different product releases.
+
+---
+
+## Archiving vs. deleting a space
+
+| Action | What it does | Reversible? |
+|---|---|---|
+| **Archive** | Makes the space read-only and removes it from the active sidebar | Yes — an admin can restore it |
+| **Delete** | Permanently removes the space and all its content | No — only recoverable via a database restore |
+
+Archive a space when work is complete but you want to keep the content for reference. Delete only when you are certain the content is no longer needed.
+
+---
+
+## Related pages
+
+- [Space Settings](/concepts/space-settings) — rename, manage members, enable modules, archive or delete a space
+- [Permissions](/concepts/permissions) — space roles and how they interact with instance roles
+- [Search](/concepts/search) — searching across all spaces you have access to

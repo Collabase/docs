@@ -1,41 +1,109 @@
 ---
-title: "Test Suites"
-description: "Suites organize test cases into logical groups within a project — by feature, module, or priority."
+sidebarTitle: "Test Suites"
+description: "Test suites are hierarchical folders for organizing test cases within a project — by feature, component, priority, or any other grouping that makes sense for your team."
 ---
 
 # Test Suites
 
-A Test Suite is a named folder for organizing test cases inside a Test Project. Suites have no effect on execution — they are purely organizational and help teams find cases quickly in large projects.
+Test suites are organizational containers for test cases inside a test project. They work like folders in a file system — you can nest them to any depth and move cases between them freely.
+
+Suites have no effect on test execution. They are purely for organization. When you create a test run, you can choose to include all cases from a specific suite, which makes suites a convenient way to scope a run to a particular area.
 
 ## When to use suites
 
-Use suites whenever a project has more than 20–30 test cases. Common groupings:
+Suites become valuable when a project grows beyond 20–30 test cases. Without them, the flat case list becomes difficult to navigate. Common grouping strategies:
 
-- **By feature** — Authentication, Checkout, Dashboard, Reports
-- **By type** — Smoke Tests, Regression, Edge Cases
-- **By priority** — P0 Critical, P1 High, P2 Normal
+| Strategy | Example suites |
+|---|---|
+| By feature | Login, Checkout, Dashboard, Reporting, Admin Panel |
+| By component | API Layer, Frontend, Database, Notifications |
+| By test type | Smoke Tests, Regression, Edge Cases, Performance |
+| By priority | P0 Critical, P1 High, P2 Standard |
+
+Choose the grouping strategy that matches how your team thinks about the product.
 
 ## Creating a suite
 
-1. Open the Test Project → **Suites** tab (left panel)
-2. Click **+ New Suite**
-3. Name the suite
-4. Optionally add a description
+<Steps>
+  <Step title="Open the test project">
+    Navigate to the Space → **Test Management** → select the project.
+  </Step>
+  <Step title="Open the Suites panel">
+    The left panel of the project shows the suite tree. If the project is new, the panel shows only the project root.
+  </Step>
+  <Step title="Click + New Suite">
+    Click **+ New Suite** at the top of the suites panel.
+  </Step>
+  <Step title="Enter a name">
+    Type the suite name. For example: "Checkout Flow" or "Authentication".
+  </Step>
+  <Step title="Create">
+    Press Enter or click **Create**. The suite appears in the left panel.
+  </Step>
+</Steps>
 
-## Moving cases between suites
+## Creating a sub-suite
 
-Drag a test case from the case list to a different suite in the left panel, or open the case and change its **Suite** field.
+Suites can be nested inside other suites to any depth. For example, you might have a suite called "Checkout Flow" with sub-suites "Guest Checkout", "Registered User Checkout", and "Payment Methods".
 
-## Suite stats
+<Steps>
+  <Step title="Hover over the parent suite">
+    In the left suites panel, hover over the suite you want to nest inside.
+  </Step>
+  <Step title="Click the + icon">
+    A **+** icon appears to the right of the suite name. Click it.
+  </Step>
+  <Step title="Enter the sub-suite name">
+    Type the name and press Enter. The sub-suite appears indented under the parent suite.
+  </Step>
+</Steps>
 
-The Suites panel shows a live count of cases per suite with status breakdown:
+## Adding test cases to a suite
+
+When creating a new test case, select the suite from the **Suite** dropdown in the creation form. The case is placed in that suite immediately.
+
+To move an existing case into a suite:
+
+1. Open the case detail view.
+2. Click the **Suite** field in the case sidebar.
+3. Select the target suite from the dropdown.
+4. The case moves to the new suite immediately.
+
+## Navigating the suite tree
+
+The left panel shows the full suite tree. Click any suite to filter the case list on the right to show only cases in that suite. Click the project root (the project name at the top of the tree) to see all cases regardless of suite.
+
+Suites that contain sub-suites show a collapse/expand arrow. Click it to toggle the sub-suites.
+
+## Reordering suites
+
+Drag any suite in the tree to reorder it. Drop it above or below another suite at the same level to change its position, or drag it onto a different suite to make it a sub-suite of that suite.
+
+## Suite statistics
+
+Each suite in the left panel shows a count of cases it contains. The count includes cases in sub-suites. Cases are broken down by status:
 
 | Indicator | Meaning |
 |---|---|
-| Gray count | Total cases in suite |
-| Green | READY cases (included in next run) |
-| Yellow | DRAFT cases (excluded from runs) |
+| Total count | All cases in this suite and its sub-suites |
+| Ready | Cases with READY status — included in the next run |
+| Draft | Cases with DRAFT status — excluded from runs |
+| Deprecated | Cases with DEPRECATED status — excluded from runs |
+
+## Deleting a suite
+
+<Steps>
+  <Step title="Right-click the suite">
+    Right-click the suite name in the left panel, or hover and click the `...` menu that appears.
+  </Step>
+  <Step title="Select Delete">
+    Click **Delete suite**.
+  </Step>
+  <Step title="Confirm">
+    Confirm the deletion in the dialog.
+  </Step>
+</Steps>
 
 <Note>
-  Deleting a suite does not delete the cases in it. Cases are moved to "No Suite" (the project root level).
+  Deleting a suite does not delete the test cases inside it. Cases from a deleted suite are moved to the project root (no suite). They remain in the project and can be reassigned to another suite at any time.
 </Note>

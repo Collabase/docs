@@ -1,40 +1,76 @@
 ---
-title: "Queues"
-description: "Queues organize tasks into named triage inboxes — ideal for support teams, review pipelines, and multi-stage workflows."
+sidebarTitle: "Queues"
+description: "Named filtered views within a project. Ideal for support teams, review pipelines, and multi-stage triage workflows."
 ---
 
 # Queues
 
-Queues are named task groups within a project that create structured inboxes — ideal for support teams handling incoming tickets, review pipelines that need clear ownership, or any workflow that needs staged triage.
+Queues are named filtered views within a project. Each queue shows a subset of tasks that match a set of filter conditions — for example, all unassigned high-priority tickets, or all tasks currently in review. Tasks can appear in multiple queues at the same time.
 
-## How queues work
+Queues are especially useful for support and helpdesk teams who need to triage incoming work into structured inboxes, but they work equally well for any team that needs predefined filtered views of their task list.
 
-A queue is a filtered view of tasks in the project. Each queue has a **name** and a set of **filters** that determine which tasks it shows. Tasks can belong to multiple queues simultaneously.
+## System queues vs. custom queues
 
-The Queue view shows all queues in the left sidebar. Selecting a queue shows only the tasks matching its filters, sorted by priority and due date by default.
+| Type | Description |
+|---|---|
+| **System queues** | Built-in queues created automatically by Collabase. Examples include "All Open Tasks" and "My Tasks". These cannot be deleted but can be reordered. |
+| **Custom queues** | Queues you create with your own name and filter conditions. Fully configurable and deletable. |
+
+## Filter expressions (CQL)
+
+Queue filters use CQL (Collabase Query Language) — a simple expression syntax for filtering tasks. You can write filters directly or use the filter builder, which generates the expression for you.
+
+Example filter expressions:
+
+| Filter | What it matches |
+|---|---|
+| `status = "Open"` | Tasks with a status named Open |
+| `assignee = me` | Tasks assigned to the current user |
+| `priority = "CRITICAL" and status != "Done"` | Critical tasks not yet completed |
+| `dueDate < today and status != "Done"` | Overdue open tasks |
+| `assignee = none` | Tasks with no assignee |
+
+Conditions can be combined with `and` and `or`. Parentheses control grouping.
 
 ## Creating a queue
 
-1. Open the project → **Queue** view
-2. Click **+ New Queue**
-3. Name the queue (e.g. "Tier 1 Support", "UX Review", "Blocked")
-4. Configure filters: status, type, assignee, label, priority
-5. Save
+<Steps>
+  <Step title="Open the Queue view">
+    Navigate to your project and select the **Queue** view from the top navigation bar.
+  </Step>
+  <Step title="Add a new queue">
+    Click **+ New Queue** in the left sidebar below the existing queue list.
+  </Step>
+  <Step title="Name the queue">
+    Give the queue a clear, descriptive name that reflects its purpose — for example, "Tier 1 Support", "UX Review", or "Escalated".
+  </Step>
+  <Step title="Set the filter conditions">
+    Use the filter builder to select field conditions, or switch to expression mode to write a CQL expression directly. Add as many conditions as needed.
+  </Step>
+  <Step title="Save the queue">
+    Click **Save**. The queue appears in the sidebar and immediately shows matching tasks.
+  </Step>
+</Steps>
 
-## Typical queue setups
+## Reordering queues
 
-| Queue name | Filters |
+Drag queues in the left sidebar to set the order they appear. Queues at the top of the list are shown first. System queues can be repositioned relative to custom queues.
+
+## Common queue setups
+
+| Queue name | Filter |
 |---|---|
-| **Unassigned** | assignee = none |
-| **Overdue** | dueDate < today, status ≠ Done |
-| **Critical open** | priority = CRITICAL, status ≠ Done |
-| **In Review** | status = "In Review" |
-| **My tasks** | assignee = me, status ≠ Done |
+| **Unassigned** | `assignee = none` |
+| **Overdue** | `dueDate < today and status != "Done"` |
+| **Critical open** | `priority = "CRITICAL" and status != "Done"` |
+| **In Review** | `status = "In Review"` |
+| **My tasks** | `assignee = me and status != "Done"` |
+| **Waiting on customer** | `status = "Waiting on Customer"` |
 
-## Queue-based SLA
+## Queues and SLA Policies
 
-Combine queues with **SLA Policies** to track response times per queue. When a task enters a queue, the SLA clock starts. If the task isn't picked up within the response window, it becomes SLA-breached and is highlighted in red.
+Combine queues with [SLA Policies](/projects/sla) to track response times per queue type. When a task enters a queue that has an SLA policy applied, the SLA clock tracks how long the task sits unattended. Breached tasks are highlighted in red at the top of the queue.
 
 <Note>
-  Queues are a view — they do not change a task's status or assignee. To automate queue membership, use Automation to update task fields (e.g. assignee or label) that your queue filters on.
+  Queues are views only — they do not change a task's fields. Moving a task out of a queue means updating a field the queue filters on (for example, changing the assignee or status). Use [Automation](/automation/overview) to trigger field updates automatically when tasks meet certain conditions.
 </Note>

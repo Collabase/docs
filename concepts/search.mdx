@@ -1,71 +1,136 @@
 ---
-title: "Search"
-description: "Collabase has a unified search index that spans all content you have access to — pages, test cases, test runs, tasks, and automations."
+sidebarTitle: "Search"
+description: "Find anything in Collabase instantly — tasks, pages, registry objects, and more — using global search."
 ---
 
-Collabase indexes all content in a single search index. The search bar is always visible in the header — you can reach it from anywhere in the application without navigating away from what you are working on.
+Collabase has a single unified search that spans all content you have access to. Open it from anywhere in the app — you do not need to navigate away from what you are working on.
 
-Search respects permissions. You only see results for content in Spaces you have access to.
+Search respects permissions. You only see results for content in spaces and projects you have access to.
 
-## What is searchable
+---
 
-| Content type | What is indexed |
+## Opening search
+
+| Platform | Keyboard shortcut |
 |---|---|
-| Pages | Title, body text, and status |
-| Test cases | Name, description, and steps |
-| Test runs | Name, status, and associated test project |
-| Tasks | Title and description |
-| Automations | Rule name and trigger configuration |
+| Mac | `Cmd + K` |
+| Windows / Linux | `Ctrl + K` |
+
+You can also click the **search icon** in the top navigation bar.
+
+---
+
+## What is indexed
+
+Collabase indexes the following content types:
+
+| Content type | What is searched |
+|---|---|
+| **Tasks** | Title, description, and comments |
+| **Pages** (Docs) | Title and full page content |
+| **Registry objects** | Object label and all field values |
+| **Test cases** | Name and description |
+| **Test runs** | Name and associated test project |
+| **Automations** | Rule name |
+
+Search matches on full words and partial words. Typing "onboard" will match "onboarding" and "onboarded".
+
+---
+
+## Navigating results
+
+Once search is open, results appear as you type.
+
+| Action | How to do it |
+|---|---|
+| Move between results | `Arrow Up` / `Arrow Down` |
+| Open the highlighted result | `Enter` |
+| Close search without navigating | `Escape` |
+| Open a result in a new tab | `Cmd + Enter` (Mac) / `Ctrl + Enter` (Windows) |
+
+Click any result with the mouse to open it directly.
+
+---
+
+## Understanding result types
+
+Each result shows an icon indicating its type, the content title, and the space it belongs to. Results are grouped or labeled so you can quickly see whether a match is a page, a task, a registry object, or another content type.
+
+---
 
 ## Filtering results
 
-After running a search, you can narrow results using the following filters:
+After entering a search term, use the filter options to narrow results:
 
-- **Content type** — show only pages, test runs, automations, etc.
-- **Space** — limit results to a specific Space
-- **Status** — filter by content status (e.g. `PUBLISHED`, `DRAFT`, `FAILED`)
-- **Author** — show content created or last edited by a specific user
-- **Date** — filter by creation or last-modified date
-
-Filters can be combined. A filter for `type:page` and `status:published` in a specific Space gives you only published pages from that Space.
-
-## CQL — Collabase Query Language
-
-For precise queries, use CQL directly in the search bar. CQL lets you express filters inline without using the filter panel.
-
-### Syntax
-
-```
-field:value
-```
-
-You can combine multiple terms in a single query:
-
-```
-type:page status:published
-```
-
-### Examples
-
-| Query | What it returns |
+| Filter | Options |
 |---|---|
-| `type:page status:published` | All published pages across all accessible Spaces |
-| `type:page status:draft` | All draft pages |
-| `type:test_run` | All test runs |
-| `type:test_case` | All test cases |
-| `type:automation_rule` | All automation rules |
+| **Type** | Pages, Tasks, Registry objects, Test cases, Test runs, Automations |
+| **Space** | Limit results to a specific space |
+| **Status** | Filter by the content's current status |
+
+Filters can be combined. For example, filtering by **Type: Tasks** and **Space: Engineering** shows only tasks in the Engineering space.
+
+---
+
+## Semantic search (AI-powered)
+
+When an admin has enabled **Semantic Search** under **Admin → Settings → AI**, you can ask questions in plain language and receive answers grounded in your actual content:
+
+- "What is our onboarding process for new hires?"
+- "Which test cases cover the payment module?"
+- "What did we decide about the API versioning policy?"
+
+Semantic search retrieves the most relevant content and generates a summary with links to the source pages. This is separate from keyword search — both run when semantic search is enabled.
 
 <Note>
-  CQL terms are case-insensitive. `type:Page` and `type:page` return the same results.
+  Semantic search only covers **pages** (Docs content). Tasks and registry objects are matched by keyword search only.
 </Note>
 
-### Supported fields
+For semantic search setup, see [AI Configuration](/admin/ai-configuration).
 
-| Field | Accepted values |
-|---|---|
-| `type` | `page`, `test_case`, `test_run`, `task`, `automation_rule` |
-| `status` | `draft`, `in_progress`, `in_review`, `published`, `verified`, `passed`, `failed` |
+---
 
-<Tip>
-  Use `type:test_run` during a release to quickly scan all recent test run results without navigating into individual Spaces.
-</Tip>
+## Search and permissions
+
+Search results are filtered automatically to show only content you have permission to see. If you search for something and get no results, it may exist but be in a space or project you are not a member of. Contact your administrator if you believe you are missing access.
+
+---
+
+## Recent searches and quick navigation
+
+The search panel also shows:
+
+- **Recent searches** — your last few search terms, for quick re-use
+- **Recent pages** — Docs pages you visited recently, listed before you start typing
+- **Quick links** — keyboard shortcut hints for navigating directly to common sections
+
+These appear when the search panel is open but no text has been entered yet.
+
+---
+
+## Tips for better results
+
+- **Be specific.** "Q3 budget approval" finds more precise results than "budget".
+- **Use the task key.** If you know a task's key (e.g. `ENG-42`), searching for it returns the exact task immediately.
+- **Filter by space.** In large installations with many spaces, adding the space filter dramatically reduces noise and speeds up finding what you need.
+- **Try different word forms.** If "onboard" returns no results, try "onboarding" — the index matches on word boundaries.
+- **Semantic search for questions.** If keyword search is not finding the answer to a question, try phrasing it as a question in the search bar — if semantic search is enabled, it will use your Docs content to answer it.
+
+---
+
+## Search shortcut reference
+
+| Action | Mac | Windows / Linux |
+|---|---|---|
+| Open search | `Cmd + K` | `Ctrl + K` |
+| Move through results | `↑` / `↓` | `↑` / `↓` |
+| Open selected result | `Enter` | `Enter` |
+| Open in new tab | `Cmd + Enter` | `Ctrl + Enter` |
+| Close search | `Escape` | `Escape` |
+
+---
+
+## Related pages
+
+- [AI Features](/concepts/ai) — how semantic search works and what it covers
+- [AI Configuration](/admin/ai-configuration) — enabling and configuring semantic search

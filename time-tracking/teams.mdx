@@ -1,0 +1,116 @@
+---
+sidebarTitle: "Teams"
+description: "How to create and manage time tracking teams in Collabase — including member entry dates, billable targets, and team lead approval workflows."
+---
+
+# Time Tracking Teams
+
+Teams group users together for time tracking purposes. They control who can approve whose timesheets, how entries are filtered in reports, and what individual billable targets are set for each member.
+
+A user can belong to more than one team. Timesheet approval routes to the lead of whichever team is associated with the time entry.
+
+---
+
+## Team structure
+
+Each team has a name and optionally a **Team Lead**. The team lead can approve and reject timesheets for members of their team.
+
+Each team member record has two settings that apply specifically to time tracking:
+
+| Setting | Description |
+|---|---|
+| **Entry Date** | The earliest timesheet period this member will see. Periods before this date are hidden from the member. Typically set to the member's start date or the date they began using time tracking. |
+| **Target Billable %** | The individual billable goal for this member. Shown as a target indicator in workload tracking and reports. Does not enforce a limit — it is informational only. |
+
+---
+
+## Creating a team
+
+<Steps>
+  <Step title="Go to Admin → Time Tracking → Teams">
+    You need instance admin access to create teams.
+  </Step>
+  <Step title="Click + New Team">
+    The create dialog opens.
+  </Step>
+  <Step title="Enter the team name">
+    Choose a name that reflects the group's function, department, or client alignment — for example, "Engineering", "Customer Support", or "Client A".
+  </Step>
+  <Step title="Assign a Team Lead (optional)">
+    Search for and select a user to act as Team Lead. The team lead can approve and reject their team members' timesheets. You can leave this blank and assign it later.
+  </Step>
+  <Step title="Click Create">
+    The team is created and appears in the Teams list. You can now add members.
+  </Step>
+</Steps>
+
+---
+
+## Adding members to a team
+
+<Steps>
+  <Step title="Open the team">
+    Click the team name in **Admin → Time Tracking → Teams** to open its detail view.
+  </Step>
+  <Step title="Click + Add Member">
+    The add member dialog opens.
+  </Step>
+  <Step title="Search for the user">
+    Start typing the user's name or email to find them. Select the user from the search results.
+  </Step>
+  <Step title="Set the Entry Date">
+    Enter the date from which this member's timesheet periods should start. Periods before this date will be hidden for this member. If you are unsure, use the first day of the current month.
+  </Step>
+  <Step title="Set the Target Billable %">
+    Enter the individual billable target for this member (for example, `80` for 80%). This is optional — leave it blank if you are not tracking individual billable goals.
+  </Step>
+  <Step title="Click Add">
+    The member is added to the team and appears in the member list with their entry date and billable target.
+  </Step>
+</Steps>
+
+---
+
+## Changing a member's settings
+
+To update an existing member's Entry Date or Target Billable %:
+
+<Steps>
+  <Step title="Open the team">
+    Navigate to **Admin → Time Tracking → Teams** and click the team name.
+  </Step>
+  <Step title="Click the member row">
+    Click the member's name or the edit icon next to them. The edit dialog opens.
+  </Step>
+  <Step title="Update the fields">
+    Change the Entry Date or Target Billable % as needed and click **Save**.
+  </Step>
+</Steps>
+
+---
+
+## Removing a member from a team
+
+Click the **•••** menu next to the member's name in the team detail view and select **Remove from Team**. Removing a member does not delete their time entries or timesheet periods — it only removes them from the team going forward.
+
+<Note>
+  Removing a member does not affect periods that are already SUBMITTED or APPROVED. The historical record remains intact.
+</Note>
+
+---
+
+## Team lead approval workflow
+
+When a team lead is assigned, they see pending timesheets from their team members in the **Pending Approvals** gadget on the Home page. They can approve or reject these directly without needing admin access.
+
+Team leads can only see and action timesheets for members of their own team. They cannot view timesheets for users in other teams. If a user needs approval and belongs to no team, or their team has no team lead, an admin must handle the approval.
+
+See [Timesheets](/time-tracking/timesheets) for the full approval workflow.
+
+---
+
+## Teams in reports
+
+In the **Reports** view, use the **Team** filter to show only time entries associated with members of a specific team. This is useful for producing per-team utilisation summaries or checking team-level billable percentages against targets.
+
+Admins can filter by any team. Non-admins only see their own entries regardless of team filters.

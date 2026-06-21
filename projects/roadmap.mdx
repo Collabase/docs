@@ -1,0 +1,66 @@
+---
+sidebarTitle: "Roadmap"
+description: "A Gantt-style timeline view. Tasks with start and due dates appear as bars. Sprint periods appear as colored bands in the background."
+---
+
+# Roadmap
+
+The Roadmap is a Gantt-style timeline view that shows tasks plotted against a calendar. Each task with a start date, a due date, or both appears as a horizontal bar spanning its duration. Sprint periods appear as colored bands in the background so you can see how tasks relate to sprint boundaries.
+
+The Roadmap is best for high-level planning and date management — identifying scheduling conflicts, adjusting timelines, and communicating delivery plans to stakeholders.
+
+## Reading the roadmap
+
+The Roadmap is divided into two panels:
+
+- **Left panel** — the task list. Shows task titles, with subtasks indented under their parent tasks. Click any task title to open its detail view.
+- **Right panel** — the timeline. Shows task bars, sprint bands, and a vertical red line marking today's date.
+
+Each element on the timeline:
+
+| Element | Appearance | Meaning |
+|---|---|---|
+| **Task bar** | Colored horizontal bar | Duration from start date to due date |
+| **Sprint band** | Colored background band | Time range of a sprint |
+| **Today line** | Red vertical line | The current date |
+
+## Editing dates
+
+You can change task dates directly on the roadmap without opening the task detail view.
+
+- **Drag the left edge** of a task bar to change the start date.
+- **Drag the right edge** of a task bar to change the due date.
+- **Drag the entire bar** to shift both the start date and due date by the same number of days, keeping the duration constant.
+
+Changes save immediately. The task's fields are updated in real time and the bar repositions on the timeline.
+
+## Zoom levels
+
+Toggle between three zoom levels using the controls at the top right of the timeline:
+
+| Zoom level | Best for |
+|---|---|
+| **Week** | Detailed day-by-day scheduling within a sprint or short planning window |
+| **Month** | Mid-range planning across sprints and milestones |
+| **Quarter** | High-level delivery planning across multiple sprints or releases |
+
+Start with Quarter to see the overall shape of work, then zoom into Month or Week for specific scheduling adjustments.
+
+## Tasks without dates
+
+Only tasks with a start date, a due date, or both appear on the Roadmap. Tasks without any dates are not shown.
+
+To add a task to the Roadmap:
+
+- Open the task detail view and set the Start Date or Due Date field.
+- In the List view, click the start or due date cell in the task row and enter a date.
+
+<Note>
+  Subtasks appear indented under their parent task in the left panel, and their bars appear at the corresponding vertical position on the timeline. If a subtask falls outside its parent's date range, this is highlighted visually so you can identify scheduling mismatches.
+</Note>
+
+## Planning with sprint bands
+
+Sprint bands in the background let you align task scheduling with sprint boundaries without switching views. When planning, aim to keep task bars within the sprint band they are assigned to. Task bars that extend past the sprint end date indicate scope or scheduling risk.
+
+Use the Roadmap alongside the [Backlog](/projects/backlog) and [Sprints](/projects/sprints) views for a complete planning workflow: plan sprint scope in the Backlog, track day-to-day progress in the Sprint or Board view, and use the Roadmap for date management and delivery visibility.

@@ -1,0 +1,115 @@
+---
+sidebarTitle: "Timesheets"
+description: "How monthly timesheet periods work in Collabase — submitting for approval, reviewing as a team lead or admin, and handling rejections."
+---
+
+# Timesheets
+
+Collabase groups your time entries into monthly timesheet periods. Each period covers a single calendar month and moves through a review workflow before being finalized. Once a period is approved, the entries inside it become a permanent record.
+
+The timesheet panel is available on the right side of the **Times** view. It shows the current month's period status, total logged hours, and submission controls.
+
+---
+
+## Period statuses
+
+| Status | What it means | Entries editable? |
+|---|---|---|
+| **DRAFT** | The period is open. You can still add, edit, and delete entries. | Yes |
+| **SUBMITTED** | You have submitted the period for review. A team lead or admin must approve or reject it. | No — locked |
+| **APPROVED** | The period has been reviewed and accepted. The record is finalized. | No — permanently locked |
+| **REJECTED** | The reviewer returned the period. Entries are unlocked so you can make corrections and re-submit. | Yes |
+
+---
+
+## Submitting your timesheet
+
+<Steps>
+  <Step title="Complete all entries for the month">
+    Log all your time entries before submitting. You cannot add or change entries once the period is submitted.
+  </Step>
+  <Step title="Open the Timesheet panel">
+    On the **Times** page, open the Timesheet panel on the right side. It shows your total hours for the current period and the current status (DRAFT).
+  </Step>
+  <Step title="Review your total hours">
+    Check that the total hours and entry breakdown look correct. Switch calendar views to review individual days if needed.
+  </Step>
+  <Step title="Click Submit for Approval">
+    Click the **Submit for Approval** button in the Timesheet panel. A confirmation prompt appears.
+  </Step>
+  <Step title="Confirm submission">
+    Click **Confirm**. The period status changes to SUBMITTED. All entries in the period are now locked.
+  </Step>
+</Steps>
+
+<Warning>
+  You cannot add, edit, or delete entries once a period is in SUBMITTED status. Submit only after you are certain all entries for the month are complete and accurate.
+</Warning>
+
+---
+
+## Approving or rejecting a timesheet (Admins and Team Leads)
+
+Pending timesheets appear in two places: the **Pending Approvals** gadget on the Home page, and the **Timesheets** section under Admin (for admins) or **Team Timesheets** panel (for team leads).
+
+<Steps>
+  <Step title="Open a pending period">
+    Go to the **Home** page and click a pending approval in the **Pending Approvals** gadget, or navigate to **Admin → Time Tracking → Timesheets** and select a period from the list.
+  </Step>
+  <Step title="Review the entries">
+    The period detail view shows all entries for the month — dates, tasks, durations, billable status, and total hours. Scroll through the list to check for completeness and accuracy.
+  </Step>
+  <Step title="Approve or reject">
+    Click **Approve** to finalize the period, or **Reject** to return it to the submitter for corrections.
+  </Step>
+  <Step title="Add a comment (optional on approve, recommended on reject)">
+    When rejecting, add a comment explaining what needs to be corrected. The submitter will see this comment when the period returns to their view.
+  </Step>
+  <Step title="Confirm your decision">
+    Click **Confirm**. The period status updates immediately. If approved, entries are permanently locked. If rejected, the period returns to DRAFT and the submitter is notified.
+  </Step>
+</Steps>
+
+---
+
+## What happens after a rejection
+
+When a period is rejected, the submitter receives a notification inside Collabase. The period returns to **DRAFT** status and entries become editable again.
+
+<Steps>
+  <Step title="Read the rejection comment">
+    Open the Timesheet panel on the Times page. The reviewer's comment is shown alongside the REJECTED status.
+  </Step>
+  <Step title="Correct the entries">
+    Add, edit, or delete entries as needed to address the reviewer's feedback.
+  </Step>
+  <Step title="Re-submit for approval">
+    Once corrections are complete, click **Submit for Approval** again. The period re-enters SUBMITTED status.
+  </Step>
+</Steps>
+
+---
+
+## Team lead approvals
+
+Team leads can approve and reject timesheets for members of their own team. They cannot approve timesheets for users in other teams or users not assigned to any team.
+
+The approval workflow for team leads is the same as for admins. Team leads see pending timesheets in the **Pending Approvals** gadget on the Home page, filtered to show only their team members' submissions.
+
+Admins can approve timesheets for all users regardless of team assignment.
+
+---
+
+## Entry Date and period visibility
+
+Each team member has an **Entry Date** set in their team membership settings. Periods earlier than the entry date are hidden from that user. This prevents users from seeing or submitting empty periods for months before they joined.
+
+<Note>
+  If you cannot see a period you expect to find, ask your administrator to check your Entry Date in your team's membership settings. See [Teams](/time-tracking/teams) for details.
+</Note>
+
+---
+
+## Navigating between months
+
+Use the left and right arrows at the top of the Timesheet panel to move between monthly periods. Older periods show their finalized status (APPROVED or REJECTED history). You can view past approved periods but cannot edit them.

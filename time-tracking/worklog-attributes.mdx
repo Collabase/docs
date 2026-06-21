@@ -1,0 +1,98 @@
+---
+sidebarTitle: "Worklog Attributes"
+description: "How to configure worklog attributes in Collabase — custom fields that appear on every time entry for activity type, service category, and billing metadata."
+---
+
+# Worklog Attributes
+
+Worklog attributes are custom fields that appear on every time entry. Use them to capture structured metadata that your billing or reporting requires — such as activity type, service category, travel indicator, or project phase.
+
+All worklog attribute configuration is in **Admin → Time Tracking → Worklog Attributes**.
+
+---
+
+## Attribute types
+
+| Type | What it stores | Use case |
+|---|---|---|
+| **TEXT** | Free-form text up to a reasonable length. | Notes, reference numbers, custom descriptions. |
+| **SELECT** | One value chosen from a predefined list of options. | Activity type (Consulting, Development, Support), service category, phase. |
+| **NUMBER** | A numeric value. | Travel distance, quantity, unit count. |
+| **BOOLEAN** | A yes/no checkbox. | Travel day indicator, on-call flag, internal flag. |
+| **URL** | A clickable web link. | Link to an external ticket, invoice, or reference document. |
+
+---
+
+## System attributes
+
+Some attributes are marked as **system attributes**. These are created by Collabase for internal use and cannot be deleted. Their type also cannot be changed. System attributes appear in the same attribute list and behave the same way for users — they are simply protected from accidental removal.
+
+---
+
+## Required attributes
+
+Mark an attribute as **Required** to prevent time entries from being saved without a value for that field. A required attribute without a value shows a validation message in the entry dialog.
+
+Use required attributes sparingly. Requiring too many fields slows down entry creation and reduces adoption.
+
+---
+
+## Creating a worklog attribute
+
+<Steps>
+  <Step title="Go to Admin → Time Tracking → Worklog Attributes">
+    You need instance admin access to manage worklog attributes.
+  </Step>
+  <Step title="Click + New Attribute">
+    The create dialog opens.
+  </Step>
+  <Step title="Enter a name and key">
+    The **Name** is the label shown to users in the entry dialog (for example, "Activity Type"). The **Key** is a short identifier used internally — it is auto-lowercased and cannot contain spaces (for example, `activity_type`). The key cannot be changed after creation.
+  </Step>
+  <Step title="Select the type">
+    Choose TEXT, SELECT, NUMBER, BOOLEAN, or URL based on what kind of value you need to capture.
+  </Step>
+  <Step title="Add options (SELECT type only)">
+    If you chose SELECT, click **+ Add Option** for each option in the dropdown. Enter the display label for each option. Options can be reordered and edited after creation.
+  </Step>
+  <Step title="Toggle Required if needed">
+    Turn on **Required** if the field must be filled in before a time entry can be saved.
+  </Step>
+  <Step title="Click Create">
+    The attribute is saved and immediately appears on all time entry dialogs (create and edit).
+  </Step>
+</Steps>
+
+<Note>
+  Worklog attributes appear on every time entry, for every user. Consider keeping the list concise — four to six attributes is a practical limit before the entry dialog becomes cumbersome. If you need different attributes for different contexts, use a SELECT attribute to let users classify the entry instead of adding more separate fields.
+</Note>
+
+---
+
+## Editing an attribute
+
+Click the attribute name in the list to open the edit dialog. You can change the name and, for SELECT attributes, add or remove options.
+
+You cannot change the type of an existing attribute. If you need a different type, create a new attribute with the correct type and deactivate or delete the old one.
+
+---
+
+## Deleting an attribute
+
+Click the attribute name, then click **Delete**. You can only delete an attribute that is not a system attribute. Deleting an attribute removes it from the entry dialog immediately. Existing time entries that already have a value for the deleted attribute retain the stored value in the database, but the attribute no longer appears in the UI.
+
+<Warning>
+  Deleting a worklog attribute is permanent. If the attribute is used in billing rule matching (for example, an Activity Type used in a billing rule scope), the billing rule will no longer match any entries. Review your billing rules before deleting any SELECT attribute that is referenced as a rule scope.
+</Warning>
+
+---
+
+## Where attributes appear
+
+Worklog attributes are visible in three places:
+
+| Location | How they appear |
+|---|---|
+| **Time entry dialog (create)** | All attributes appear as fields below the core entry fields (date, duration, task, etc.). Required attributes are marked with an asterisk. |
+| **Time entry dialog (edit)** | Same as create — all attributes shown with their saved values pre-filled. |
+| **Report exports** | Attribute values appear as additional columns when you export report data. This makes it possible to filter and group by activity type in spreadsheet tools. |

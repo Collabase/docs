@@ -1,46 +1,97 @@
 ---
-title: "Milestones"
-description: "Milestones group test runs to a release or sprint so you can see aggregate quality across all linked runs."
+sidebarTitle: "Milestones"
+description: "Milestones group test runs under a release or quality gate so you can see aggregate pass rates and failure counts across all linked runs."
 ---
 
 # Milestones
 
-A milestone is a named delivery event — a release, a sprint, a beta, a go-live — that you can attach test runs to. When multiple runs are linked to a milestone, Collabase aggregates their results into a single quality view: overall pass rate, failure count, and pending count.
+A milestone is a named marker — a release, a sprint, a beta, or any quality gate your team uses — that you can attach one or more test runs to. When runs are linked to a milestone, Collabase aggregates their results into a single quality view.
+
+Use milestones to answer questions like: "Is v3.0 ready to ship?" or "How did quality trend across the last four sprints?"
 
 ## Milestone fields
 
 | Field | Required | Description |
 |---|---|---|
-| **Name** | Yes | e.g. "v2.4 Release", "Sprint 12", "Q1 Beta" |
-| **Description** | No | Context about this milestone |
-| **Target Date** | No | Planned delivery date — shown in the milestone list |
+| **Name** | Yes | A short, recognizable name for the milestone. For example: "v2.0 Release", "Sprint 12", "Q2 Beta", "Go-Live June 2026". |
+| **Due Date** | No | The planned delivery date for this milestone. Shown in the milestone list to help prioritize active milestones. |
+| **Status** | — | Tracks whether the milestone is open or complete. Updated manually. |
 
 ## Creating a milestone
 
-1. **Test Project → Milestones → + New Milestone**
-2. Name it and set a target date
-3. Save
+<Steps>
+  <Step title="Open your test project">
+    Navigate to the Space → **Test Management** → select the project.
+  </Step>
+  <Step title="Click the Milestones tab">
+    Click **Milestones** in the project's top navigation bar.
+  </Step>
+  <Step title="Click + New Milestone">
+    Click **+ New Milestone** in the top right.
+  </Step>
+  <Step title="Fill in the details">
+    Enter a name and optionally set a due date. Click **Create**.
+  </Step>
+</Steps>
 
-Then link runs to it when creating them (or edit an existing run and set its Milestone field).
+The milestone is created and appears in the milestones list. It starts with no linked runs and empty metrics.
 
-## Milestone quality dashboard
+## Assigning a test run to a milestone
 
-Open a milestone to see the aggregated view:
+You assign a run to a milestone when you create the run — or you can update the assignment afterward.
 
-- **Overall pass rate** across all linked runs
-- **Failure breakdown** — which cases failed across the milestone
-- **Run list** — each linked run with its individual pass rate and case count
-- **Timeline** — when each run was executed
+**When creating a run:**
+
+In the New Run form, select the milestone from the **Milestone** dropdown before clicking **Create Run**. The run is linked to the milestone immediately.
+
+**After a run is created:**
+
+1. Open the run.
+2. Click the **Milestone** field in the run's sidebar.
+3. Select the milestone from the dropdown.
+4. The run is linked immediately and its results begin contributing to the milestone's metrics.
+
+A single milestone can have multiple runs linked to it. There is no limit on the number of runs per milestone.
+
+## Viewing all runs under a milestone
+
+<Steps>
+  <Step title="Open the milestone">
+    In the project's **Milestones** tab, click the milestone name.
+  </Step>
+  <Step title="Review the milestone detail">
+    The milestone detail view shows:
+    - **Aggregate pass rate** — the combined pass rate across all linked runs
+    - **Total passed / failed / blocked / skipped** — summed counts from all linked runs
+    - **Run list** — each linked run with its name, date, status, case count, and individual pass rate
+  </Step>
+  <Step title="Drill into a run">
+    Click any run in the list to open its full detail view and see individual case results.
+  </Step>
+</Steps>
+
+## Milestone metrics
+
+Milestone metrics are computed from the results of all linked runs. They update automatically whenever a linked run is completed or modified.
+
+| Metric | How it is calculated |
+|---|---|
+| **Aggregate pass rate** | Total Passed ÷ (Total Passed + Total Failed) across all linked runs |
+| **Total failed** | Sum of all FAILED results across all linked runs |
+| **Total blocked** | Sum of all BLOCKED results across all linked runs |
+| **Total skipped** | Sum of all SKIPPED results across all linked runs |
+| **Run count** | Number of test runs linked to this milestone |
+
+<Note>
+  Metrics are computed on demand when you view the milestone. They are not stored separately. A milestone with no linked runs or no completed runs shows N/A for the pass rate.
+</Note>
 
 ## Using milestones as quality gates
 
-Before shipping, check the milestone dashboard:
-- Pass rate ≥ your team's target (e.g. 95%)?
-- All CRITICAL priority failures resolved?
-- No BLOCKED cases in any of the linked runs?
+Before shipping a release, open the milestone and check:
 
-If yes, the milestone is shippable.
+- Is the aggregate pass rate at or above your team's target (for example, 95%)?
+- Are there any CRITICAL priority failures remaining?
+- Are there BLOCKED cases that indicate unresolved environment issues?
 
-<Tip>
-  Use Automation to enforce this: trigger a Slack message to the release channel when a milestone's pass rate crosses 95% — trigger: `testRunCompleted`, action: Collabase `getMilestoneStats` + Slack message.
-</Tip>
+If the milestone meets your quality criteria, it is ready to ship. If not, create a follow-up run to address the failures, link it to the same milestone, and re-check the metrics.

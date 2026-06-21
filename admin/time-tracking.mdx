@@ -1,0 +1,86 @@
+---
+sidebarTitle: "Time Tracking Setup"
+description: "Admin setup guide for the Time Tracking module in Collabase — accounts, teams, billing rules, holiday schemes, workload plans, and worklog attributes."
+---
+
+# Time Tracking — Admin Setup
+
+This page covers all admin-level configuration for the Time Tracking module. All settings are in **Admin → Time Tracking**. You need instance admin access to manage these settings.
+
+---
+
+## Admin controls at a glance
+
+| Setting | Location | Purpose |
+|---|---|---|
+| **Accounts** | Admin → Time Tracking → Accounts | Named billing containers for grouping time entries by client, retainer, or cost center. |
+| **Teams** | Admin → Time Tracking → Teams | User groups for timesheet approval routing, report filtering, and individual billable targets. |
+| **Billing Rules** | Admin → Time Tracking → Billing Rules | Rate types and pricing definitions applied per space, team, user, or activity type. |
+| **Holiday Schemes** | Admin → Time Tracking → Holiday Schemes | Non-working day calendars linked to workload plans. One scheme per region and year. |
+| **Workload Plans** | Admin → Time Tracking → Workload Plans | Daily hour targets per user or team, driving the calendar progress bar. |
+| **Worklog Attributes** | Admin → Time Tracking → Worklog Attributes | Custom fields added to every time entry for activity classification and billing metadata. |
+
+---
+
+## Permissions
+
+Time tracking access is divided across three levels:
+
+| Role | What they can do |
+|---|---|
+| **All users** | Log time, view and edit their own entries (while the period is in DRAFT), submit their monthly timesheet, and view their own reports. |
+| **Team Leads** | Everything a user can do, plus approve and reject timesheets for their own team members. Cannot approve timesheets outside their team. |
+| **Admins** | Full access — create and manage all admin settings, approve timesheets for any user, and view all entries in reports regardless of who logged them. |
+
+---
+
+## Recommended setup order
+
+Set up the building blocks in this order before asking users to start logging time:
+
+<Steps>
+  <Step title="Create accounts">
+    Go to **Admin → Time Tracking → Accounts** and create at least one account. Users cannot assign entries to an account that does not exist yet, and unassigned entries appear under "No Account" in reports. See [Time Accounts](/time-tracking/accounts).
+  </Step>
+  <Step title="Create teams and assign members">
+    Go to **Admin → Time Tracking → Teams**. Create teams, assign team leads, and add members with their Entry Dates and Target Billable % values. This also controls timesheet approval routing. See [Teams](/time-tracking/teams).
+  </Step>
+  <Step title="Create holiday schemes">
+    Go to **Admin → Time Tracking → Holiday Schemes** and create a scheme for each region your users are in. Add all public holidays for the current year. See [Holiday & Workload Schemes](/time-tracking/holiday-workload-schemes).
+  </Step>
+  <Step title="Create workload plans">
+    Go to **Admin → Time Tracking → Workload Plans** and create plans for each user or team. Link the appropriate holiday scheme. Users with an active plan will see a daily progress bar on their time calendar. See [Holiday & Workload Schemes](/time-tracking/holiday-workload-schemes).
+  </Step>
+  <Step title="Configure billing rules (if needed)">
+    Go to **Admin → Time Tracking → Billing Rules** and define rate types per scope. If your organization does not use billing rules, you can skip this step — time entries still support the per-entry Billable toggle and Billable % field without rules. See [Billing Rules](/time-tracking/billing-rules).
+  </Step>
+  <Step title="Add worklog attributes (optional)">
+    Go to **Admin → Time Tracking → Worklog Attributes** and create any custom fields users should fill in on each entry — for example, Activity Type. Required attributes block entry submission until filled. See [Worklog Attributes](/time-tracking/worklog-attributes).
+  </Step>
+</Steps>
+
+---
+
+## Timesheet approvals
+
+Submitted timesheets appear in two places:
+
+- **Home page — Pending Approvals gadget**: visible to admins and team leads. Shows all timesheets waiting for review. Click any pending item to open the period detail and approve or reject.
+- **Admin → Time Tracking → Timesheets** (admins only): a full list of all periods across all users with filtering by status, user, and date range.
+
+There are no automatic email notifications when a timesheet is submitted or actioned. Teams should agree on a monthly review cadence and check the Pending Approvals gadget at the appropriate time.
+
+<Note>
+  If you want to alert reviewers when a timesheet is submitted, use the Automation engine to create a trigger on the timesheet submission event and send an in-app notification or email to the team lead.
+</Note>
+
+---
+
+## Related configuration pages
+
+- [Time Accounts](/time-tracking/accounts) — create and manage billing containers
+- [Teams](/time-tracking/teams) — set up user groups and approval routing
+- [Billing Rules](/time-tracking/billing-rules) — define pricing per scope and time period
+- [Holiday & Workload Schemes](/time-tracking/holiday-workload-schemes) — configure non-working days and daily hour targets
+- [Worklog Attributes](/time-tracking/worklog-attributes) — add custom fields to time entries
+- [Time Reports](/time-tracking/reports) — understand how reports aggregate and filter data

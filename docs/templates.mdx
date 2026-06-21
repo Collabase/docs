@@ -1,81 +1,106 @@
 ---
-title: "Templates"
-description: "Templates are saved pages you can reuse when creating new pages — keeping content consistent and saving teams from starting from scratch every time."
+sidebarTitle: "Templates"
+description: "Templates are reusable page structures that speed up documentation. Create a template once and let the team use it every time they need that type of page."
 ---
 
-A template is a page saved specifically for reuse. When a team member creates a new page, they can choose a template instead of starting from a blank document. The new page is pre-filled with the template's title, body structure, and any custom fields — ready to fill in.
+# Templates
 
-Templates are especially useful for content that follows a predictable structure: meeting notes, architecture decision records, incident reports, runbooks, and test specifications.
+A template is a pre-built page structure that members of a Space can use when creating new pages. Instead of starting from a blank page each time, a team member picks a template and gets a pre-filled structure with headings, placeholder text, and optional variables to fill in.
 
-## How to save a page as a template
+Templates are useful for any documentation that follows a repeatable structure: meeting notes, architecture decision records, incident reports, runbooks, sprint retrospectives, onboarding checklists, and similar recurring formats.
 
-<Steps>
-  <Step title="Open the page you want to save">
-    Navigate to any existing page in Docs that you want to turn into a template.
-  </Step>
-  <Step title="Open the page menu">
-    Click the **...** menu in the top-right corner of the page.
-  </Step>
-  <Step title="Select Save as template">
-    Click **Save as template**. Give the template a name and optionally a description so others know when to use it.
-  </Step>
-  <Step title="Choose the scope">
-    Select whether the template is available to **this Space only** or **all Spaces** in the Collabase instance.
-  </Step>
-</Steps>
+## How templates work
 
-<Tip>
-  Clean up the page before saving it as a template. Remove any content specific to that document — keep only the structure and placeholder text.
-</Tip>
+When you create a template, you are saving a normal page as a reusable starting point. The template stores:
 
-## How to use a template when creating a page
+- The page **title** (or a placeholder title)
+- The full **body content** including headings, sections, tables, callouts, and code blocks
+- Any **placeholder variables** in `{{variable}}` format — these are prompted when the template is used
+
+When a team member creates a page from that template, they are prompted to fill in any `{{variable}}` placeholders. The new page is an independent copy — editing the page does not change the template, and future changes to the template do not affect pages already created from it.
+
+## Creating a template
 
 <Steps>
-  <Step title="Click New Page">
-    In the Docs sidebar, click **New Page** or right-click any page and select **New subpage**.
+  <Step title="Create or open a page">
+    Either write a new page from scratch with the structure you want, or open an existing page that already has the right format. Clean it up — remove any content specific to the original document and replace it with placeholder headings and instructional text.
   </Step>
-  <Step title="Choose a template">
-    In the new page dialog, click **Use a template** instead of starting blank. Browse or search for the template you want.
+  <Step title="Add placeholder variables (optional)">
+    In any place where the user should fill in a specific value, write `{{variable_name}}`. For example: `{{project_name}}`, `{{date}}`, `{{author}}`. These become prompted fields when the template is used.
   </Step>
-  <Step title="Select the template">
-    Click the template to preview it, then click **Use this template** to apply it.
+  <Step title="Open the page options menu">
+    Click the `...` menu at the top right of the page.
   </Step>
-  <Step title="Fill in the content">
-    The new page opens pre-filled with the template's structure. Replace the placeholder text with your actual content.
+  <Step title="Select Save as Template">
+    Click **Save as Template**. A dialog opens asking for the template name and an optional description.
+  </Step>
+  <Step title="Enter a name and description">
+    Give the template a clear name (for example, "Weekly Team Meeting Notes" or "Incident Report"). Add a short description so team members understand when to use it.
+  </Step>
+  <Step title="Save the template">
+    Click **Save**. The template is now available to all members of this Space.
   </Step>
 </Steps>
-
-## Template scope
-
-Templates can be scoped in two ways.
-
-| Scope | Who can see it |
-|---|---|
-| **Space-private** | Only members of the Space where the template was created |
-| **Shared across Spaces** | All members of the Collabase instance, in any Space |
-
-Space-private templates are useful for team-specific formats that would not make sense to others. Shared templates are useful for organization-wide standards like incident report formats or onboarding checklists.
 
 <Note>
-  Only Space Admins and instance Admins can publish a template as shared across Spaces.
+  Templates live in the Space where they are created and are available to all members of that Space. They are not automatically shared with other Spaces.
 </Note>
 
-## Common use cases
+## Using a template to create a page
 
-<AccordionGroup>
-  <Accordion title="Meeting notes">
-    A standard structure with sections for agenda, attendees, discussion, and action items. Set the type to `STANDARD` and mark the template with a `Meeting Notes` tag so it is easy to find.
-  </Accordion>
-  <Accordion title="Technical spec">
-    A spec template with sections for problem statement, proposed solution, alternatives considered, open questions, and an approval status field. Engineers fill in the structure rather than deciding it each time.
-  </Accordion>
-  <Accordion title="Runbook">
-    A runbook template with sections for scope, prerequisites, step-by-step procedure, rollback instructions, and an escalation path. Consistent runbooks are easier to follow under pressure.
-  </Accordion>
-  <Accordion title="Architecture decision record">
-    An ADR template with fields for the decision, the context, the options considered, the outcome, and the date. Useful for building a searchable history of architectural choices.
-  </Accordion>
-  <Accordion title="Incident report">
-    A post-incident template with a timeline, impact summary, root cause analysis, and action items. Consistent structure across incidents makes them comparable over time.
-  </Accordion>
-</AccordionGroup>
+<Steps>
+  <Step title="Click + New Page">
+    In the sidebar, click the **+** icon next to any page, or click **+ New Page** at the bottom of the page tree.
+  </Step>
+  <Step title="Select From Template">
+    In the new page dialog, click **From template**. A template picker opens showing all templates available in this Space.
+  </Step>
+  <Step title="Choose a template">
+    Browse or search for the template you want. Click a template to see a preview of its content on the right side of the picker.
+  </Step>
+  <Step title="Fill in placeholders">
+    If the template contains `{{variable}}` placeholders, a form appears asking you to provide values for each one. Fill them in and click **Continue**.
+  </Step>
+  <Step title="Start editing">
+    The new page opens pre-filled with the template structure and your variable values already substituted. Edit it as a normal page from here.
+  </Step>
+</Steps>
+
+## Placeholder variables
+
+Use `{{variable_name}}` anywhere in the template content — in headings, body text, table cells, or callouts. Variable names must contain only letters, numbers, and underscores.
+
+Examples:
+
+| Placeholder | Typical use |
+|---|---|
+| `{{project_name}}` | The name of the project this document relates to |
+| `{{date}}` | The meeting date or document date |
+| `{{author}}` | The person responsible for the document |
+| `{{sprint_number}}` | For sprint-related documents |
+| `{{review_date}}` | A scheduled review or expiry date |
+
+When a team member creates a page from the template, each `{{variable_name}}` appears as a labeled input field. The values they enter are substituted throughout the page before it opens for editing.
+
+## Managing templates
+
+To view all templates in a Space, go to **Space Settings → Templates**. From this list you can:
+
+- **Edit a template** — opens the template page for editing. Changes apply to future pages created from it; existing pages are not affected.
+- **Archive a template** — removes it from the template picker without deleting it. Archived templates can be restored from the same settings panel.
+- **Delete a template** — permanently removes the template. Pages already created from it are not affected.
+
+<Warning>
+  Deleting a template is permanent. Archive it first if you think you might need it again.
+</Warning>
+
+## Common template examples
+
+| Template name | Sections to include |
+|---|---|
+| Weekly meeting notes | Attendees, Agenda, Discussion, Decisions, Action items |
+| Architecture decision record | Context, Decision, Alternatives considered, Consequences, Date |
+| Runbook | Scope, Prerequisites, Steps, Rollback procedure, Escalation |
+| Incident report | Timeline, Impact, Root cause, Remediation, Follow-up tasks |
+| Sprint retrospective | What went well, What didn't, Action items, Team mood |
+| Onboarding checklist | First day, First week, First month tasks with `{{new_hire_name}}` |

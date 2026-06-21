@@ -1,44 +1,90 @@
 ---
 sidebarTitle: "Overview"
-description: "Build visual no-code workflows that react to events, apply logic, and take action across Collabase apps and 38 external services."
+description: "Build visual no-code workflows that react to events, apply logic, and take action across Collabase apps and 40+ external services."
 ---
 
 # Automation
 
 <img src="/images/automation.png" alt="Collabase Automation builder" style={{ borderRadius: '8px', marginBottom: '24px' }} />
 
-Automation is the workflow engine built into Collabase. Connect Collabase apps and external services through visual pipelines — without code. When an event happens, the automation evaluates your conditions and executes your actions automatically.
+Automation is the workflow engine built into Collabase. Connect Collabase apps and external services through a visual, drag-and-drop builder — no coding required. When an event happens, the automation evaluates your conditions and runs your actions automatically in the background.
+
+<Note>
+  Executions are **asynchronous**. When a trigger fires, it returns immediately and the workflow runs in the background. You can track every run in the **Runs** tab.
+</Note>
 
 ## How it works
 
-Every automation is built from nodes connected in a visual builder.
+Every automation is a graph of connected nodes. You start with a trigger, add logic, and chain actions.
 
 <CardGroup cols={3}>
   <Card title="Triggers" icon="bolt" href="/automation/triggers">
-    A trigger starts the automation — a Collabase event, a schedule, an incoming webhook, an external service event, or a manual run.
+    A trigger starts the automation — a Collabase event, a timer, an incoming request, an external service event, or a manual run by a user.
   </Card>
   <Card title="Conditions" icon="filter" href="/automation/conditions">
-    A condition evaluates data from the trigger or a previous action and decides whether to continue. If it fails, the branch stops.
+    Condition nodes evaluate data from the trigger or a previous action and decide whether to continue or branch. A failed condition stops that branch silently.
   </Card>
   <Card title="Actions" icon="play" href="/automation/actions">
-    An action does something — creates a page, sends a Slack message, creates a Jira issue, calls an API, runs AI, or updates a registry object.
+    An action does something — creates a task, sends a Slack message, opens a Jira issue, calls an external service, or runs AI. Each action passes its output forward.
   </Card>
 </CardGroup>
 
 ## Execution model
 
-When a trigger fires, the engine runs these steps in order:
+When a trigger fires, the engine runs these steps:
 
-1. **Trigger fires** — the event passes its output fields downstream
-2. **Conditions evaluate** — each condition either passes (continue) or fails (branch stops)
-3. **Actions execute** — each action runs, receives the previous output, and produces its own
-4. **Execution is logged** — every run appears in the Runs tab with per-step output
+1. **Trigger fires** — the event passes its output fields to every connected downstream node.
+2. **Conditions evaluate** — each condition node checks its rule. If it fails, that branch stops; other branches continue independently.
+3. **Actions execute** — actions run in graph order. Each action receives upstream data and produces its own output.
+4. **Every step is logged** — all runs appear in the **Runs** tab with per-node input, output, and status.
 
-Executions are **asynchronous** — the trigger returns immediately and the run proceeds in the background.
+## Execution statuses
 
-## 38 external connectors
+| Status | Meaning |
+|---|---|
+| `QUEUED` | The trigger fired; execution is waiting to start |
+| `RUNNING` | The automation is actively processing nodes |
+| `SUCCESS` | All nodes completed without error |
+| `FAILED` | One or more nodes encountered an unrecoverable error |
+| `PARTIAL` | Some branches succeeded, others failed — or execution is paused at an approval or wait node |
 
-Collabase ships with 38 pre-built connectors covering:
+A `PARTIAL` status is common when an automation is waiting for a human approval or a scheduled delay. It is not an error — check the Runs tab to see which node is waiting.
+
+## Variables
+
+Reference data from any upstream node in your action fields using these syntax forms:
+
+| Syntax | What it references |
+|---|---|
+| `{variableName}` | A value stored with a **Set Variable** node |
+| `{payload.fieldName}` | A field from the trigger payload (e.g. a webhook body or event data) |
+| `{stepOutputs.nodeId.fieldName}` | The output of a specific named node |
+
+Supports dot-notation for nested values (`{payload.task.priority}`) and array indexing (`{stepOutputs.parseResult.items[0].name}`).
+
+**Example:**
+```
+Task created by: {payload.assignee.name}
+Issue URL: {stepOutputs.createJiraIssue.url}
+Summary: {variableSummary}
+```
+
+## Node categories
+
+| Category | Node types |
+|---|---|
+| **Core** | Trigger, Action |
+| **Logic** | Filter, IfElse, Router, Split, ForEach, Set Variable, Transform, Code, Python Code |
+| **Flow Control** | Wait, Approval, Sub-flow, Merge, Error Handler |
+| **AI** | AI Prompt, AI Agent, MCP |
+| **Data** | Data Store |
+| **Utility** | Sticky note |
+
+→ [Full node reference](/automation/nodes)
+
+## 40+ connectors
+
+Collabase ships with 40+ pre-built connectors:
 
 <CardGroup cols={4}>
   <Card title="Slack, Teams, Discord" icon="comments" href="/automation/connectors/slack" />
@@ -51,23 +97,19 @@ Collabase ships with 38 pre-built connectors covering:
   <Card title="HTTP, Transform, Code" icon="wrench" href="/automation/connectors/http" />
 </CardGroup>
 
-→ [Browse all 38 connectors](/automation/connectors/overview)
+→ [Browse all connectors](/automation/integrations)
 
 ## Connections
 
-Before using a connector, create a **Connection** — a named, encrypted credential set. Go to **Automation → Connections → + New Connection**. Connections can be private, shared with a Space, or shared globally.
+Before using any connector, you create a **Connection** — a named, encrypted set of credentials. Connections are reusable across all automations in your Space.
 
-## Variables
+Go to **Automation → Connections → + New Connection** to set one up. Each connection can be:
 
-Reference data from any upstream node with `{{variable}}` syntax:
+- **Private** — visible only to you
+- **Shared with Space** — available to all automations in this Space
+- **Shared globally** — available to all Spaces on this Collabase instance
 
-```
-{{testCaseTitle}}      ← from the trigger
-{{previous.id}}        ← from the immediately preceding action
-{{payload.env}}        ← from a webhook payload
-```
-
-## Rate limits and quotas
+## Rate limits
 
 | Limit | Default |
 |---|---|
@@ -75,3 +117,4 @@ Reference data from any upstream node with `{{variable}}` syntax:
 | Max active automations per Space | 100 |
 | Max action nodes per automation | 50 |
 | Max execution duration | 5 minutes |
+| Approval node timeout | 72 hours |

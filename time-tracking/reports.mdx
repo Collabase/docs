@@ -1,0 +1,128 @@
+---
+sidebarTitle: "Time Reports"
+description: "How to use the Time Reports section in Collabase to filter, drilldown, and save billable time summaries by account, project, task, and user."
+---
+
+# Time Reports
+
+The **Reports** section aggregates your time entries into drilldown summaries. You can slice data by date range, space, project, account, team, and user, then collapse or expand results level by level to see exactly where time is being spent.
+
+Navigate to **Times → Reports** in the sidebar to open the Reports view.
+
+---
+
+## Drilldown hierarchy
+
+Reports are structured as a collapsible tree. Each level rolls up the totals from all rows beneath it.
+
+| Level | What it shows |
+|---|---|
+| **Account** | Top-level grouping. All time entries assigned to each billing account. |
+| **Space** | Within an account, time broken down by Collabase space. |
+| **Project** | Within a space, time broken down by project. |
+| **Task** | Within a project, time broken down by individual task. |
+| **User** | Within a task, time broken down by who logged it. |
+
+Click the expand arrow next to any row to reveal the next level. Each row shows:
+
+- **Total Hours** — all time at that level, in hours and minutes.
+- **Billable Hours** — only the time marked as billable.
+- **Billable %** — what proportion of total hours is billable.
+- **Entry Count** — how many individual time entries make up the total.
+
+---
+
+## Available filters
+
+Use the filter panel on the left to narrow the results. Filters combine — selecting a space and a date range returns only entries that match both.
+
+| Filter | Options |
+|---|---|
+| **Date Range** | This week, Last week, This month, Last month, or Custom range (pick start and end dates). |
+| **Space** | Multi-select. Shows only entries from the selected spaces. |
+| **Project** | Multi-select. Shows only entries from the selected projects. |
+| **Account** | Multi-select. Shows only entries assigned to the selected billing accounts. |
+| **Team** | Multi-select. Shows only entries logged by members of the selected teams. |
+| **User** | Multi-select. Shows only entries logged by the selected users. |
+| **Billable Only** | Toggle. When on, hides all non-billable entries and totals. |
+
+<Note>
+  Non-admin users can only see their own time entries. The **User** filter has no effect for non-admins — results always reflect only the logged-in user's entries. Admins see all users and can filter by any combination.
+</Note>
+
+---
+
+## Running a report
+
+<Steps>
+  <Step title="Open the Reports view">
+    Navigate to **Times → Reports** in the sidebar.
+  </Step>
+  <Step title="Set your filters">
+    Choose a date range and any additional filters from the left panel. Results update automatically as you change filters.
+  </Step>
+  <Step title="Expand the drilldown">
+    Click the arrow next to any Account row to see Spaces. Continue expanding to drill down to Tasks and Users.
+  </Step>
+  <Step title="Review totals">
+    Each level shows hours, billable hours, billable percentage, and entry count. The top row shows the grand total across all visible entries.
+  </Step>
+</Steps>
+
+---
+
+## Saving a report configuration
+
+If you run the same report regularly, save the filter combination so you can reload it in one click.
+
+<Steps>
+  <Step title="Set your filters">
+    Apply the date range, spaces, accounts, and any other filters you want to save.
+  </Step>
+  <Step title="Click Save Report">
+    Click the **Save Report** button above the results panel.
+  </Step>
+  <Step title="Enter a name">
+    Type a descriptive name for the report (for example, "Client A — Monthly Billable" or "Engineering Team — This Month").
+  </Step>
+  <Step title="Confirm">
+    Click **Save**. The saved configuration appears in the left panel under **Saved Reports**.
+  </Step>
+</Steps>
+
+---
+
+## Running a saved report
+
+Click any saved report name in the left panel. The filters load automatically and results update to match. You can adjust the filters after loading a saved report without overwriting the saved configuration — changes only take effect for the current view.
+
+---
+
+## Editing and deleting saved reports
+
+<Steps>
+  <Step title="Find the saved report">
+    Locate the report name in the **Saved Reports** section of the left panel.
+  </Step>
+  <Step title="Open the options menu">
+    Click the **•••** (three-dot) menu that appears when you hover over the report name.
+  </Step>
+  <Step title="Choose Edit or Delete">
+    Select **Edit** to rename the report or update its saved filters. Select **Delete** to remove the configuration permanently. Deleting a saved report does not affect any time entry data.
+  </Step>
+</Steps>
+
+---
+
+## Report metrics explained
+
+| Metric | How it is calculated |
+|---|---|
+| **Total Hours** | Sum of all entry durations at that level, regardless of billable status. |
+| **Billable Hours** | Sum of durations for entries where Billable is on, weighted by Billable % (e.g. 60 min at 50% = 30 billable minutes). |
+| **Billable %** | Billable Hours ÷ Total Hours × 100, rounded to one decimal place. |
+| **Entry Count** | Number of individual time log entries, not the number of tasks or users. |
+
+<Note>
+  Billable Hours are calculated from the **Billable %** field on each entry, not just the Billable toggle. An entry marked billable at 75% contributes 75% of its duration to the Billable Hours total.
+</Note>

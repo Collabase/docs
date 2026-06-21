@@ -1,68 +1,163 @@
 ---
-title: "Your profile"
-description: "Update your personal profile, change your password, and manage your notification preferences."
+sidebarTitle: "Your Profile"
+description: "Update your personal information, choose your language, manage notifications, change your password, and create API tokens."
 ---
 
-Your profile controls how you appear to other members in Collabase and how you receive notifications. All profile settings are personal — they only affect your own account.
+Your profile controls how you appear to others in Collabase and how you receive notifications. All profile settings are personal — they only affect your own account.
 
-Open your profile by clicking your **avatar** in the bottom-left corner of the sidebar and selecting **Profile**.
+Open your profile by clicking your **avatar** in the bottom-left corner of the sidebar and selecting **Profile** or **Settings**.
 
 ---
 
-## Personal information
+## Profile tab
+
+The **Profile** tab controls your identity within Collabase.
 
 | Field | Description |
 |---|---|
-| **Display name** | The name that appears next to your content and in member lists. |
-| **Email** | Your login email address. Used for password reset and notifications. |
-| **Phone** | Optional — shown in your profile card when others click your name. |
-| **Job title** | Optional — shown in your profile card. |
-| **Department** | Optional — used in member directories and filter views. |
-| **Avatar** | A profile picture shown next to your name throughout the app. Upload a new one by clicking your current avatar. |
+| **Display name** | The name shown next to your content, comments, and in member lists |
+| **Email** | Your login address — used for password resets and email notifications |
+| **Avatar** | A profile picture shown throughout the app. Click your current avatar to upload a new one. |
+| **Bio** | An optional short description about yourself, visible on your profile card |
+| **Timezone** | Used to display dates and times correctly for you |
+| **Language** | The interface language for your account |
 
 Click **Save** after making any changes.
 
+### Supported languages
+
+Collabase is fully translated into four languages. Choose yours from the **Language** dropdown:
+
+| Language | Code |
+|---|---|
+| English | EN |
+| German | DE |
+| French | FR |
+| Italian | IT |
+
+Changing your language takes effect immediately — the interface reloads in the selected language.
+
 <Note>
-  If your account was provisioned by an identity provider (LDAP, SAML, or SCIM), your name, email, and department fields may be locked. Changes to those fields must be made in your company directory — they will sync to Collabase on the next login or directory sync.
+  If your account was set up through an identity provider (LDAP, SAML, or SCIM), your name and email may be managed by your company directory. Those fields will be locked in Collabase — update them in your directory and they will sync automatically on your next login or directory sync.
 </Note>
 
 ---
 
-## Changing your password
+## Notifications tab
+
+The **Notifications** tab controls when and how Collabase notifies you about activity relevant to your work.
+
+### In-app notifications
+
+In-app notifications appear in the **bell icon** in the top navigation bar. Click the bell to open the notification panel. Unread notifications are highlighted. Click any notification to navigate directly to the relevant item and mark it as read.
+
+Click **Mark all as read** to clear all unread indicators at once.
+
+### Per-event notification toggles
+
+You can enable or disable notifications for specific events:
+
+| Event | What triggers it |
+|---|---|
+| **Task assigned to you** | Someone assigns a task to your account |
+| **Task mentioned you** | Your name is @mentioned in a task comment or description |
+| **Page commented** | A comment is added to a page you follow |
+| **Page mentioned you** | Your name is @mentioned in a page |
+| **Test run completed** | A test run you are watching finishes |
+| **Automation notification** | An automation pipeline sends you a direct notification |
+
+Toggle each event on or off to match your preferences.
+
+### Email digest
+
+If email is configured on your Collabase instance, you can receive a summary of unread notifications by email:
+
+| Option | What it sends |
+|---|---|
+| **Off** | No email notifications |
+| **Daily** | A digest of the previous day's unread notifications, sent in the morning |
+| **Weekly** | A digest of the past week's unread notifications, sent on Monday |
+
+---
+
+## Security tab
+
+The **Security** tab is where you manage your login credentials and API access.
+
+### Changing your password
 
 <Steps>
-  <Step title="Open your profile">
-    Click your avatar → **Profile**, then select the **Security** tab.
+  <Step title="Open your profile and select the Security tab">
+    Click your avatar → Profile → Security.
   </Step>
   <Step title="Enter your current password">
-    You must provide your current password to confirm your identity before setting a new one.
+    You must verify your identity before setting a new password.
   </Step>
   <Step title="Enter and confirm the new password">
-    Your new password must be at least 8 characters.
+    Type the new password and then type it again in the confirmation field. Passwords must be at least 8 characters.
   </Step>
   <Step title="Click Save">
-    Your password is updated immediately. All existing sessions remain active.
+    Your password is updated immediately. Active sessions on other devices remain open — only the password itself changes.
   </Step>
 </Steps>
 
 <Note>
-  Password change is not available for accounts that sign in exclusively through SSO (Google, Microsoft, SAML, etc.). Contact your administrator to manage those credentials through your identity provider.
+  Password change is not available for accounts that sign in exclusively through an external provider (Google, GitHub, SAML, or LDAP). To change those credentials, contact your identity provider or IT administrator.
 </Note>
 
 ---
 
-## Notification preferences
+## API tokens
 
-Collabase sends in-app notifications when events relevant to you occur — for example, when an automation notifies you, when someone mentions you in a page, or when a test run you started completes.
+API tokens allow you to access Collabase programmatically — for example, to integrate with other tools, run scripts, or use the Collabase API from automation workflows outside the platform.
 
-Open **Profile → Notifications** to configure when and how you receive them.
+<Warning>
+  API tokens grant the same access as your user account. Treat them like passwords. Never share a token or commit one to a code repository.
+</Warning>
 
-| Setting | Description |
+### Creating a token
+
+<Steps>
+  <Step title="Open your profile and select the Security tab">
+    Scroll to the **API Tokens** section.
+  </Step>
+  <Step title="Click New Token">
+    Enter a descriptive name that identifies what this token is used for (e.g. "CI Pipeline", "Zapier Integration").
+  </Step>
+  <Step title="Copy the token immediately">
+    The full token value is shown only once. Copy it and store it securely (for example, in a password manager or as an environment variable). After you close this dialog, the token cannot be retrieved again.
+  </Step>
+</Steps>
+
+### Managing tokens
+
+The Security tab lists all your active API tokens by name and creation date. The full token value is never shown again after creation.
+
+To revoke a token, click the **delete** button next to it. The token stops working immediately. If a token is lost or compromised, delete it and create a new one.
+
+| Attribute | Detail |
 |---|---|
-| **In-app notifications** | Controls the notification bell in the top bar. Always on — cannot be disabled. |
-| **Email digest** | Sends a summary of unread notifications to your email address. Choose **Off**, **Daily**, or **Weekly**. |
+| **Scope** | Tokens have the same permissions as your user account |
+| **Expiry** | Tokens do not expire automatically — revoke them manually when no longer needed |
+| **Storage** | Tokens are stored as a secure hash — Collabase cannot recover or display the original value |
 
-### Viewing and dismissing notifications
+---
 
-Click the **bell icon** in the top bar to open the notification panel. Unread notifications are highlighted. Click any notification to navigate to the relevant item and mark it as read. Click **Mark all as read** to clear all unread indicators at once.
+## Profile visibility
 
+Your profile information is visible to other members on your Collabase instance in the following places:
+
+- **Member lists** in spaces and projects show your display name and avatar
+- **Task and page assignments** show your avatar and name
+- **Comments and mentions** show your display name
+- **Profile card** (shown when someone clicks your name) displays your display name, avatar, bio, job title, and department
+
+Your email address, timezone, and language preference are not visible to other users — they are private to your account.
+
+---
+
+## Related pages
+
+- [Identity Providers](/admin/identity-providers) — how SSO accounts are managed (for accounts provisioned via Google, GitHub, SAML, or LDAP)
+- [Permissions](/concepts/permissions) — how your role affects what you can see and do
+- [Users & Groups](/admin/users-groups) — admin view of user accounts

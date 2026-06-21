@@ -1,0 +1,111 @@
+---
+sidebarTitle: "Billing Rules"
+description: "How to configure billing rules in Collabase to define hourly rates, multipliers, flat fees, and non-billable overrides per scope and time period."
+---
+
+# Billing Rules
+
+Billing rules tell Collabase how to price time entries. You can define different rates for different spaces, teams, users, or activity types, and set date ranges so that rates change over time without affecting historical records.
+
+All billing rule configuration is in **Admin → Time Tracking → Billing Rules**.
+
+---
+
+## Rate types
+
+Each rule uses one of four rate types:
+
+| Rate type | How it works | Example |
+|---|---|---|
+| **MULTIPLIER** | Multiplies a base rate by a factor. Useful for overtime or premium rates layered on top of a standard rule. | 1.5× (time and a half) |
+| **NOT_BILLABLE** | Forces matching entries to non-billable, overriding the per-entry billable toggle. Useful for internal overhead or excluded activity types. | — |
+
+---
+
+## Rule scope
+
+Each rule targets a specific scope — what it applies to:
+
+| Scope | What it covers |
+|---|---|
+| **Space** | All time entries logged in a particular Collabase space. |
+| **Team** | All time entries associated with members of a particular team. |
+| **User** | All time entries logged by a specific user, regardless of space or team. |
+| **Activity Type** | All time entries where a specific worklog attribute value matches (for example, a "Consulting" activity type). |
+
+---
+
+## Priority
+
+When more than one rule matches a time entry (for example, a space rule and a user rule both apply), Collabase uses the rule with the **highest priority number**. Use this to create specific overrides on top of general rates.
+
+**Example setup:**
+- Rule A: Space "Client A" — FIXED_HOURLY CHF 120 — Priority 10
+- Rule B: User "Jane Doe" — FIXED_HOURLY CHF 180 — Priority 20
+
+Any entry logged by Jane in Client A's space uses CHF 180/hr because Rule B has higher priority.
+
+<Note>
+  If two rules have the same priority and both match an entry, the result is undefined. Always assign distinct priority values to avoid ambiguous matches.
+</Note>
+
+---
+
+## Validity period
+
+Each rule can have a **Valid From** and **Valid To** date. Only entries within that date range are affected by the rule. This lets you change rates over time without rewriting existing billing history.
+
+**Example:** A rate increases on 1 January 2027. Create two rules with the same scope — one valid until 31 December 2026, and a new one valid from 1 January 2027. Both rules coexist and the correct rate applies automatically based on the entry date.
+
+Leave **Valid To** blank if the rule should apply indefinitely into the future.
+
+---
+
+## Relationship to the per-entry Billable % field
+
+Billing rules define the **price** of time. The per-entry **Billable** toggle and **Billable %** field define **how much** of the logged time is billed. These are separate controls that work together.
+
+For example: a user logs 2 hours at 50% billable. The billing rule applies CHF 150/hr. The billed amount is 1 hour × CHF 150 = CHF 150 — not 2 hours. The billing rule rates against the billable portion, not the gross duration.
+
+---
+
+## Creating a billing rule
+
+<Steps>
+  <Step title="Go to Admin → Time Tracking → Billing Rules">
+    You need instance admin access to manage billing rules.
+  </Step>
+  <Step title="Click + New Rule">
+    The create dialog opens.
+  </Step>
+  <Step title="Enter a name">
+    Give the rule a clear descriptive name — for example, "Client A Standard Rate" or "Senior Consultant Hourly".
+  </Step>
+  <Step title="Select the rate type and enter the value">
+    Choose FIXED_HOURLY, MULTIPLIER, FLAT_FEE, or NOT_BILLABLE. For rate types that need a value, enter the amount and select the currency (for example, CHF, EUR, USD).
+  </Step>
+  <Step title="Set the scope">
+    Choose whether this rule applies to a Space, Team, User, or Activity Type, then select the specific item from the search field.
+  </Step>
+  <Step title="Set the priority">
+    Enter a priority number. Higher numbers win when multiple rules match. A simple convention: use 10 for general rules, 20 for team rules, 30 for user overrides.
+  </Step>
+  <Step title="Set the validity period (optional)">
+    Enter a Valid From date if the rule should not apply retroactively. Enter a Valid To date if the rule should expire. Leave both blank for a rule that applies to all dates.
+  </Step>
+  <Step title="Click Create">
+    The rule is saved and begins applying to matching time entries immediately.
+  </Step>
+</Steps>
+
+---
+
+## Editing and deleting rules
+
+Click a rule name in the **Billing Rules** list to open the edit dialog. Modify any field and click **Save**.
+
+To delete a rule, open it and click **Delete**. Deleting a rule does not change any historical time entry data — it only removes the pricing configuration going forward.
+
+<Warning>
+  Deleting an active billing rule (one with no Valid To date, or whose Valid To is in the future) will mean that entries previously matched by the rule may no longer have a matching rate. Review your remaining rules before deleting to avoid pricing gaps.
+</Warning>

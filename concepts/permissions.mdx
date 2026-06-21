@@ -1,68 +1,152 @@
 ---
-title: "Permissions"
-description: "How access control works in Collabase — global roles and Space roles."
+sidebarTitle: "Permissions"
+description: "How access control works in Collabase — three layers of permissions: instance roles, space roles, and resource-level permissions."
 ---
 
-Collabase uses two layers of permissions. Every user has a **global role** that controls what they can do on the platform, and within each Space they have a **Space role** that controls what they can do inside that Space.
+Collabase uses three layers of permissions. Understanding all three layers helps you give people exactly the access they need — no more, no less.
 
-## Global roles
+---
 
-| Role | What they can do |
-|---|---|
-| **Admin** | Full access — manage users, Spaces, and all platform settings |
-| **Collaborator** | Normal user — can access and contribute to the Spaces they are invited to |
-| **Viewer** | Read-only — can read content in Spaces they are invited to, but cannot create or edit |
+## Layer 1: Instance roles
 
-## Space roles
-
-Within a Space, each member has one of these roles:
+Every user account has an instance-level role. This is the broadest layer — it applies across the entire Collabase platform.
 
 | Role | What they can do |
 |---|---|
-| **Owner** | Full control of the Space — manage members, settings, and delete the Space |
-| **Admin** | Manage members and automations, create and edit all content |
-| **Member** | Create and edit content, run automations |
-| **Viewer** | Read-only access |
+| **Admin** | Full access to all admin settings, all spaces, all content, and all system configuration. Can manage users, groups, and identity providers. |
+| **User** | Standard access. Can work in any space they are invited to. Cannot access admin settings. |
+| **Viewer** | Read-only at the instance level. Can read content in spaces they are invited to, but cannot create or edit anything unless a space role grants more access. |
 
-### Permissions by role
+Instance roles are set by an admin under **Admin → Users**. A new user created manually receives the **User** role by default.
 
-| Action | Owner | Admin | Member | Viewer |
-|---|---|---|---|---|
-| Create and edit pages | ✅ | ✅ | ✅ | ❌ |
-| Create test cases and runs | ✅ | ✅ | ✅ | ❌ |
-| Record test results | ✅ | ✅ | ✅ | ❌ |
-| Build automations | ✅ | ✅ | ❌ | ❌ |
-| Run automations | ✅ | ✅ | ✅ | ❌ |
-| Manage Space members | ✅ | ✅ | ❌ | ❌ |
-| Change Space settings | ✅ | ❌ | ❌ | ❌ |
-| Delete the Space | ✅ | ❌ | ❌ | ❌ |
+---
+
+## Layer 2: Space roles
+
+Within each space, members have a space-level role that controls what they can do inside that space. This role is assigned when a user or group is added to the space.
+
+| Role | What they can do |
+|---|---|
+| **Owner** | Full control of the space — manage members, change settings, enable or disable modules, and delete the space |
+| **Member** | Create and edit all content within the space — pages, tasks, test cases, automations, registry objects |
+| **Viewer** | Read-only access within the space — cannot create or edit content |
+
+### Permissions by space role
+
+| Action | Owner | Member | Viewer |
+|---|---|---|---|
+| Read pages and tasks | Yes | Yes | Yes |
+| Create and edit pages | Yes | Yes | No |
+| Create and manage tasks | Yes | Yes | No |
+| Create test cases and record results | Yes | Yes | No |
+| Build and run automations | Yes | Yes | No |
+| Manage space members | Yes | No | No |
+| Change space settings (name, visibility, modules) | Yes | No | No |
+| Delete the space | Yes | No | No |
+
+---
 
 ## How the two layers work together
 
-Global roles and Space roles layer on top of each other. A global **Viewer** who is invited to a Space as a **Member** can create and edit content there — the Space role grants additional permissions within that Space.
+The two layers combine to determine what a user can actually do.
 
-A global **Admin** has full access everywhere, regardless of their Space role.
+- A user with the **Admin** instance role has full access everywhere, regardless of their space role.
+- A user with the **Viewer** instance role who is added to a space as **Member** can create and edit content in that space — the space role grants additional capability within the space.
+- A user with the **User** instance role who is not a member of a space cannot see or access that space at all (unless the space is set to Internal or Public visibility).
 
-<Info>
-  When in doubt, give users the global **Collaborator** role and invite them to individual Spaces with the appropriate Space role. This gives you precise control without over-permissioning anyone.
-</Info>
+When in doubt, assign users the **User** instance role and invite them to spaces with the appropriate space role. This gives you precise, per-space control.
+
+---
+
+## Layer 3: Resource-level permissions (pages)
+
+For pages in the Docs module, you can set explicit permissions per page — beyond what the space role grants.
+
+| Permission | What it allows |
+|---|---|
+| **View** | The user or group can read the page |
+| **Edit** | The user or group can edit the page |
+
+Page permissions are set from the **Share** button on a page. You can grant or restrict access to specific users or groups.
+
+<Note>
+  Page permissions are not inherited from the parent page or from the space. Each page's permissions are managed independently. A user must be a space member (or have explicit page-level access) to see a page.
+</Note>
+
+---
+
+## Project roles
+
+Within a project inside a space, members can also have a project-level role that controls their access to that specific project.
+
+| Role | What they can do |
+|---|---|
+| **Owner** | Full project access — manage project members and settings |
+| **Member** | Create and manage tasks within the project |
+| **Viewer** | Read-only access to project tasks |
+
+---
 
 ## Groups
 
-Instead of inviting users to Spaces one at a time, you can use Groups.
+Groups let you assign permissions to entire teams at once, instead of adding each person individually to every space.
 
 <Steps>
-  <Step title="Create a Group">
-    Go to **Admin → Groups** and create a new Group. Add the users who belong to it.
+  <Step title="Create a group">
+    Go to **Admin → Groups** and create a new group. Add the users who belong to it.
   </Step>
-  <Step title="Grant the Group access to a Space">
-    In the Space settings, go to **Members**, add the Group, and assign it a Space role. Every member of the Group inherits that role.
+  <Step title="Grant the group access to a space">
+    In the space settings, go to **Members**, add the group, and assign a space role. Every member of the group inherits that role.
   </Step>
   <Step title="Manage access centrally">
-    When you add someone to the Group, they automatically get access to all Spaces the Group has. When you remove them, access is revoked across all those Spaces at once.
+    When you add someone to the group, they automatically gain access to all spaces the group has. When you remove them, access is revoked everywhere at once.
   </Step>
 </Steps>
 
-<Tip>
-  Groups are ideal for onboarding. Create a Group per team, grant it access to the right Spaces, and add new hires to the Group — done.
-</Tip>
+Groups are ideal for onboarding. Create one group per team, grant it access to the relevant spaces, and add new hires to the group.
+
+---
+
+## Common permission scenarios
+
+| Scenario | Recommended setup |
+|---|---|
+| External contractor who needs read-only access to one space | Instance role: **User**, Space role: **Viewer** |
+| Developer who creates tasks and pages in their team's space | Instance role: **User**, Space role: **Member** |
+| Team lead who manages space membership | Instance role: **User**, Space role: **Owner** |
+| IT admin managing the whole platform | Instance role: **Admin** |
+| A page shared with a specific person who is not a space member | Add them as a space **Viewer**, then grant page-level **Edit** permission |
+
+---
+
+## Public and Internal spaces
+
+Space visibility affects whether non-members can see a space at all:
+
+| Visibility | Effect on non-members |
+|---|---|
+| **Private** | Non-members cannot see the space exists. They need an explicit invitation. |
+| **Internal** | All logged-in users can read the space without being a member. To create or edit content, they still need to be added as a Member. |
+| **Public** | Anyone — including people without a Collabase account — can read the space. |
+
+Even in an Internal or Public space, write access always requires an explicit Member or Owner role assignment.
+
+---
+
+## Permission inheritance rules
+
+Collabase does **not** automatically inherit permissions from parent to child in most cases:
+
+- A user with access to a space does **not** automatically get access to every page in it — page-level restrictions can block them from specific pages.
+- A project inside a space does **not** automatically give all space members the same project role — project roles are assigned separately.
+- A group given access to a space does **not** cascade to child groups — each group is managed individually.
+
+This explicit model gives administrators precise control but requires that permissions be set deliberately at each level.
+
+---
+
+## Related pages
+
+- [Users & Groups](/admin/users-groups) — create users, manage groups, and set instance roles
+- [Space Settings](/concepts/space-settings) — add or remove space members and change space roles
+- [Spaces](/concepts/spaces) — visibility settings (Private, Internal, Public)

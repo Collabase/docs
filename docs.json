@@ -103,6 +103,9 @@
                   "projects/queues",
                   "projects/sla",
                   "projects/workflows",
+                  "projects/board",
+                  "projects/backlog",
+                  "projects/roadmap",
                   "projects/portal"
                 ]
               },
@@ -213,6 +216,21 @@
               },
 
               {
+                "group": "Time Tracking",
+                "pages": [
+                  "time-tracking/overview",
+                  "time-tracking/logging-time",
+                  "time-tracking/timesheets",
+                  "time-tracking/reports",
+                  "time-tracking/teams",
+                  "time-tracking/billing-rules",
+                  "time-tracking/accounts",
+                  "time-tracking/holiday-workload-schemes",
+                  "time-tracking/worklog-attributes"
+                ]
+              },
+
+              {
                 "group": "Intranet",
                 "pages": [
                   "intranet/overview",
@@ -229,7 +247,8 @@
                   "registry/overview",
                   "registry/schema-designer",
                   "registry/object-browser",
-                  "registry/settings"
+                  "registry/settings",
+                  "registry/csv-import"
                 ]
               }
 
@@ -244,6 +263,8 @@
             "pages": [
 
               "admin/users-groups",
+
+              "admin/time-tracking",
 
               "admin/identity-providers",
 

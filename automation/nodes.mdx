@@ -1,56 +1,397 @@
 ---
-title: "Node reference"
-description: "Reference for all trigger and action node types in the Collabase Automation builder."
+sidebarTitle: "Node Reference"
+description: "Complete reference for every node type available in the Collabase Automation builder, organized by category."
 ---
 
-# Node reference
+# Node Reference
 
-Every automation is built from **nodes** connected in a visual graph. There are four node types:
+Every automation is a graph of connected nodes. This page describes every available node type, what it does, and how to configure it.
 
-| Node type | Role |
-|---|---|
-| **Trigger** | Starts the automation when an event occurs |
-| **Condition** | Evaluates a field and decides whether to continue |
-| **Action** | Performs an operation |
-| **Wait** | Pauses execution for a duration or until an approval |
-
-## Trigger nodes
-
-| Node | Description |
-|---|---|
-| **Collabase Event** | Fires on internal events — test failures, page updates, task changes |
-| **Schedule** | Fires on a cron schedule |
-| **Webhook** | Fires when an HTTP POST is received at a unique URL |
-| **Manual** | Fires when a user clicks Run from the automation dashboard |
-| **Form Submit** | Fires when a public form is submitted |
-| **Connector Trigger** | Fires on external service events (Slack message, GitHub push, etc.) |
-
-For connector-specific triggers, see the individual [connector pages](/automation/connectors/overview).
-
-## Condition node
-
-Evaluates a field from the trigger or a previous action's output against a comparator. If the condition fails, the automation stops at that branch.
-
-See [Conditions](/automation/conditions) for the full comparator reference.
-
-## Action nodes
+Nodes are organized into six categories:
 
 | Category | Nodes |
 |---|---|
-| **Collabase built-in** | Create/update Task, Page, Project, Registry Object; Send Notification; Test Management actions |
-| **External connectors** | 38 connectors — [browse all](/automation/connectors/overview) |
-| **HTTP** | [HTTP Request](/automation/connectors/http) — call any external REST API |
-| **Transform** | [Set Variable, Format Date, Filter Array, JSON Transform](/automation/connectors/transform) |
-| **Code** | [Run JavaScript](/automation/connectors/code) in an isolated sandbox |
-| **AI** | [OpenAI completion](/automation/connectors/openai), [Local AI](/automation/connectors/ai) |
+| **Core** | Trigger, Action |
+| **Logic** | Filter, IfElse, Router, Split, ForEach, Set Variable, Transform, Code, Python Code |
+| **Flow Control** | Wait, Approval, Sub-flow, Merge, Error Handler |
+| **AI** | AI Prompt, AI Agent, MCP |
+| **Data** | Data Store |
+| **Utility** | Sticky Note |
 
-## Wait nodes
+---
 
-| Node | Description |
+## Core nodes
+
+### Trigger
+
+Starts the automation when a specific event occurs. Every automation has exactly one trigger node.
+
+| Config field | Description |
 |---|---|
-| **Wait Duration** | Pause for a fixed time (e.g. 5 minutes, 24 hours) before continuing |
-| **Wait for Approval** | Send an approval request and pause until a user approves or rejects |
+| **Trigger type** | Collabase Event, Schedule, Webhook, Manual, or External Service Event |
+| **Event** (Collabase Event only) | The specific event to listen for (e.g. `task.created`) |
+| **Cron expression** (Schedule only) | The timer schedule in cron syntax |
+| **Timezone** (Schedule only) | The timezone to evaluate the cron in (default: UTC) |
+| **Secret** (Webhook only) | Optional header secret to verify incoming requests |
 
-The Approval node sends a one-time link to a reviewer. The automation resumes only after the reviewer responds. If the timeout passes without a response, the automation continues on the timeout branch.
+The trigger passes its output fields to all downstream nodes. Reference them with `{payload.fieldName}`.
 
-See the [Approval API](/api/automation/approval) for programmatic approval.
+→ [Full trigger documentation](/automation/triggers)
+
+---
+
+### Action
+
+Calls a connector to perform an operation — send a message, create a record, call an external service, and so on.
+
+| Config field | Description |
+|---|---|
+| **Node ID** | A short name for this node, used in `{stepOutputs.nodeId.field}` references |
+| **Connector** | The connector to use (e.g. Slack, GitHub, Collabase built-in) |
+| **Operation** | The specific action to perform (e.g. Send Message, Create Issue) |
+| **Connection** | The saved credential set to use for this connector |
+| **Input fields** | Operation-specific fields; support variable syntax |
+| **Retry policy** | No retry, linear backoff, or exponential backoff; set max attempts and wait interval |
+
+Output fields from this node are available downstream as `{stepOutputs.nodeId.fieldName}`.
+
+→ [Full actions documentation](/automation/actions)
+
+---
+
+## Logic nodes
+
+### Filter
+
+Evaluates one or more conditions. If all conditions pass (AND) or any condition passes (OR), execution continues. If the evaluation fails, the branch stops silently — no downstream nodes run and no error is recorded.
+
+| Config field | Description |
+|---|---|
+| **Conditions** | One or more rules: field → operator → value |
+| **Combinator** | **All (AND)** — every rule must pass; **Any (OR)** — at least one must pass |
+
+Use Filter when you want the automation to do nothing if the data does not match.
+
+→ [Conditions and operators](/automation/conditions)
+
+---
+
+### IfElse
+
+Evaluates conditions and routes execution to one of two paths: **true** or **false**. Unlike Filter, both paths always continue — the automation never stops at an IfElse node.
+
+| Config field | Description |
+|---|---|
+| **Conditions** | One or more rules: field → operator → value |
+| **Combinator** | **All (AND)** or **Any (OR)** |
+| **True path** | Nodes connected to the true output run when conditions pass |
+| **False path** | Nodes connected to the false output run when conditions fail |
+
+Use IfElse when you want different actions depending on the outcome (for example, send an urgent alert for HIGH priority, send a normal notification for everything else).
+
+---
+
+### Router
+
+Routes execution to one of N paths based on conditions. The first matching route runs; subsequent routes are not evaluated. A default route runs if no other route matches.
+
+| Config field | Description |
+|---|---|
+| **Routes** | An ordered list of named routes, each with its own conditions |
+| **Default route** | Optional path that runs when no route conditions match |
+
+Use Router instead of chaining multiple IfElse nodes when you have three or more distinct outcomes.
+
+---
+
+### Split
+
+Partitions an input array into multiple filtered subsets. Each subset is a separate output path containing only the items that match that path's filter.
+
+| Config field | Description |
+|---|---|
+| **Source array** | The array to partition (e.g. `{stepOutputs.search.results}`) |
+| **Paths** | Named paths, each with a filter condition on array item fields |
+
+Useful when a search action returns a mixed list and you need to handle different item types separately.
+
+---
+
+### ForEach
+
+Iterates over every item in an array and runs the connected nodes once per item. The current item is available inside the loop as `{item.fieldName}`.
+
+| Config field | Description |
+|---|---|
+| **Source array** | The array to iterate over (e.g. `{stepOutputs.listTasks.tasks}`) |
+| **Nodes inside loop** | Any nodes connected to the ForEach output; run once per array item |
+
+Inside the loop body, reference the current item with `{item.fieldName}` — for example, `{item.title}`, `{item.id}`, `{item.status}`.
+
+<Note>
+  ForEach loops run sequentially by default. Large arrays with slow actions may push against the 5-minute execution limit. Consider using Filter or Split to reduce the array before the loop.
+</Note>
+
+---
+
+### Set Variable
+
+Stores a value under a named key so downstream nodes can reference it by name instead of a long `{stepOutputs...}` path.
+
+| Config field | Description |
+|---|---|
+| **Variable name** | The key to store the value under |
+| **Value** | A static value or a variable expression (e.g. `{payload.taskTitle}`) |
+
+After this node runs, the value is available anywhere downstream as `{variableName}`.
+
+**Example:**
+```
+Variable name: taskLink
+Value: https://app.example.com/tasks/{payload.taskKey}
+```
+Downstream: `{taskLink}` → `https://app.example.com/tasks/PROJ-42`
+
+---
+
+### Transform
+
+Reshapes data between nodes using built-in operations. No external service is called.
+
+| Config field | Description |
+|---|---|
+| **Operation** | Format Date, Filter Array, JSON Pick (select specific fields from an object), or Merge Objects |
+| **Input** | The data to transform |
+| **Operation-specific fields** | Depend on the chosen operation |
+
+**Format Date** — converts an ISO date to a human-readable format. Set a locale (e.g. `de-CH`) and a format style (`short`, `long`, `relative`).
+
+**Filter Array** — returns only array items where a given field matches a value.
+
+**JSON Pick** — returns a new object containing only the fields you specify. Use this to clean up large action outputs before passing them forward.
+
+---
+
+### Code
+
+Runs a JavaScript snippet in a secure sandbox and returns the result. Use this for logic that cannot be expressed with the built-in nodes.
+
+| Config field | Description |
+|---|---|
+| **Code** | JavaScript to execute. Must `return` a value. |
+
+Inside the code, these objects are available:
+
+- `payload` — the trigger payload
+- `stepOutputs` — outputs from all named upstream nodes
+- `variables` — all values set with Set Variable nodes
+
+**Example:**
+```js
+const price = stepOutputs.getProduct.price;
+const tax = 0.077; // Swiss VAT
+return { total: (price * (1 + tax)).toFixed(2) };
+```
+
+The returned value is available downstream as `{stepOutputs.nodeId.fieldName}`.
+
+<Warning>
+  Code runs in an isolated sandbox with no access to the file system, network, or external services. To call external services from custom code, use an HTTP action node instead.
+</Warning>
+
+---
+
+### Python Code
+
+Runs a Python snippet in a secure sandbox. Equivalent to the Code node but uses Python syntax.
+
+| Config field | Description |
+|---|---|
+| **Code** | Python to execute. Must assign the result to a variable named `result`. |
+
+The `payload`, `step_outputs`, and `variables` dictionaries are available as inputs.
+
+**Example:**
+```python
+items = step_outputs["search"]["results"]
+high_priority = [i for i in items if i["priority"] == "HIGH"]
+result = {"count": len(high_priority), "items": high_priority}
+```
+
+---
+
+## Flow Control nodes
+
+### Wait
+
+Pauses the automation for a set duration or until a specific date and time, then resumes automatically.
+
+| Config field | Description |
+|---|---|
+| **Type** | **Duration** — pause for a fixed amount of time; **Until date** — pause until a specific date/time |
+| **Duration** | Number and unit: seconds, minutes, hours, or days |
+| **Until date** | A date/time value or variable (e.g. `{payload.scheduledAt}`) |
+
+The automation status shows as `PARTIAL` while waiting. No resources are consumed during the pause.
+
+---
+
+### Approval
+
+Pauses the automation until a designated person approves or rejects it. When the node runs, it sends a notification to the approver with an approve/reject link.
+
+| Config field | Description |
+|---|---|
+| **Approver** | The user to notify and request approval from |
+| **Message** | Optional instructions shown to the approver |
+| **Timeout** | How long to wait for a response (default: 72 hours) |
+| **On approve** | Nodes connected to the approved output |
+| **On reject** | Nodes connected to the rejected output |
+| **On timeout** | Nodes connected to the timeout output |
+
+**Approval states:**
+
+| State | Description |
+|---|---|
+| `PENDING` | Waiting for the approver to respond |
+| `APPROVED` | The approver clicked Approve — execution continues on the approved path |
+| `REJECTED` | The approver clicked Reject — execution continues on the rejected path |
+| `TIMED_OUT` | The timeout elapsed without a response — execution continues on the timeout path |
+
+The automation status shows as `PARTIAL` while approval is pending.
+
+---
+
+### Sub-flow
+
+Calls another automation as a child workflow and optionally waits for it to complete before continuing.
+
+| Config field | Description |
+|---|---|
+| **Automation** | The automation to call |
+| **Input mapping** | Key-value pairs to pass into the child automation as its payload |
+| **Wait for completion** | If enabled, the parent automation pauses until the child finishes |
+
+The child automation receives the mapped inputs as its `{payload.*}`. Its outputs (if any) are returned to the parent and available via `{stepOutputs.nodeId.fieldName}`.
+
+Use Sub-flow to modularize complex workflows — define reusable building blocks as separate automations and call them from multiple places.
+
+---
+
+### Merge
+
+Combines multiple incoming branches into a single outgoing path. Execution continues only after all connected branches have completed.
+
+| Config field | Description |
+|---|---|
+| **Inputs** | The branches to wait for (configured automatically by the connections you draw) |
+
+Use Merge after a Router or IfElse node when you want to run a shared set of actions regardless of which path was taken.
+
+---
+
+### Error Handler
+
+Catches errors thrown by any upstream node in the same branch and routes them to a recovery path instead of failing the execution.
+
+| Config field | Description |
+|---|---|
+| **Error output fields** | `{error.message}`, `{error.nodeId}`, `{error.code}` are available downstream |
+
+Connect the Error Handler to the node whose failures you want to catch. Downstream nodes on the error path can log the failure, send an alert, or attempt a fallback action.
+
+Without an Error Handler, an action failure marks the execution as `FAILED` and stops the branch. With one, you control what happens next.
+
+---
+
+## AI nodes
+
+### AI Prompt
+
+Makes a single call to a language model with a prompt you define. Use this for text generation, summarization, classification, or extraction tasks within a workflow.
+
+| Config field | Description |
+|---|---|
+| **Model** | The AI model to use (configured via your Collabase AI settings) |
+| **System prompt** | Instructions that define the model's role and behavior |
+| **User prompt** | The main input, typically including variable references |
+| **Temperature** | Controls randomness: 0 = deterministic, 1 = creative |
+| **Max tokens** | Maximum length of the response |
+
+Output: `{stepOutputs.nodeId.content}` contains the model's response text.
+
+**Example:**
+```
+System: You are a concise technical writer.
+User: Summarize this bug report in one sentence: {payload.description}
+```
+
+---
+
+### AI Agent
+
+Runs a language model in an iterative loop with access to tools (connector actions). The agent reasons about a goal, calls tools as needed, and continues until it reaches an answer or hits the iteration limit.
+
+| Config field | Description |
+|---|---|
+| **Model** | The AI model to use |
+| **System prompt** | The agent's goal and constraints |
+| **Tools** | The connector actions the agent is allowed to call |
+| **Max iterations** | Maximum number of reasoning steps before the agent stops (prevents infinite loops) |
+
+Use AI Agent for open-ended tasks where the number of steps is not known in advance — for example, "find all overdue tasks in this project and assign them to the backup user."
+
+<Warning>
+  Each iteration counts against your execution time limit. Set a conservative Max Iterations value and test with small datasets before running on production data.
+</Warning>
+
+---
+
+### MCP
+
+Calls a tool registered on an external Model Context Protocol (MCP) server. MCP servers extend the automation engine with domain-specific capabilities beyond the built-in connectors.
+
+| Config field | Description |
+|---|---|
+| **MCP server** | The registered MCP server to connect to |
+| **Tool** | The specific tool to invoke on that server |
+| **Input fields** | The tool's required inputs; support variable syntax |
+
+MCP servers are registered in **Admin Settings → Automation → MCP Servers**. Each server exposes a list of tools; the node picker shows them automatically once the server is registered.
+
+---
+
+## Data nodes
+
+### Data Store
+
+Reads and writes persistent key-value data that survives across automation runs. Use this to share state between executions — for example, to track a counter, cache a lookup result, or remember the last processed record.
+
+| Operation | Description |
+|---|---|
+| **Get** | Read a value by key. Returns the stored value or empty if the key does not exist. |
+| **Set** | Write a value to a key. Overwrites any existing value. |
+| **Delete** | Remove a key and its value. |
+| **Increment** | Add a number to an existing numeric value (or start from 0 if the key does not exist). |
+
+| Config field | Description |
+|---|---|
+| **Operation** | Get, Set, Delete, or Increment |
+| **Key** | The name of the data slot to read or write (supports variable syntax) |
+| **Value** (Set/Increment only) | The value to store or add |
+| **Scope** | **Automation** — private to this automation; **Space** — shared across all automations in the Space |
+
+---
+
+## Utility nodes
+
+### Sticky Note
+
+Adds a text note directly on the canvas. Does not affect execution.
+
+| Config field | Description |
+|---|---|
+| **Text** | The content of the note |
+| **Color** | Background color for visual organization |
+
+Use sticky notes to document complex branching logic, explain why a particular node is configured a certain way, or leave instructions for other team members editing the automation.

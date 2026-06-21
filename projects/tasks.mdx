@@ -1,73 +1,127 @@
 ---
-title: "Tasks"
-description: "Tasks are the fundamental unit of work in Projects — learn how to create, triage, track, and close tasks effectively."
+sidebarTitle: "Tasks"
+description: "Tasks are the fundamental unit of work in Projects. Learn how to create, triage, link, and close tasks effectively."
 ---
 
 # Tasks
 
-A task represents a single unit of work. It can be a feature, a bug, a support ticket, a review item — anything your team needs to track. Every task lives inside a Project and has a structured set of fields that make it searchable, assignable, and automatable.
+A task represents a single unit of work — a feature request, bug report, support ticket, review item, or anything else your team needs to track. Every task lives inside a Project and has a structured set of fields that make it searchable, assignable, and automatable.
 
 ## Task fields
 
 | Field | Description |
 |---|---|
+| **Key** | Auto-generated identifier (e.g., `PROJ-42`). Unique within the project and permanent. |
 | **Title** | Required. Short description of the work. |
-| **Type** | Task type — `Task`, `Bug`, `Story`, `Epic`, or custom types your admin has defined. |
-| **Status** | Current workflow state (e.g. Todo, In Progress, In Review, Done). Configurable per project. |
-| **Priority** | `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`. |
-| **Assignee** | The team member responsible. |
-| **Due Date** | Optional deadline. Overdue tasks are flagged in all views. |
-| **Parent** | Nest tasks under an Epic or parent task for hierarchy. |
-| **Sprint** | Active sprint the task is in. |
-| **Queue** | Triage queue the task belongs to. |
-| **Description** | Full rich-text body — supports code blocks, images, tables, and callouts. |
-| **Custom Fields** | Any additional fields your admin has configured for the project's task type. |
+| **Status** | Current workflow state (e.g., Todo, In Progress, In Review, Done). Configured per project. |
+| **Type** | Task type — Task, Bug, Story, Epic, or custom types defined by your admin. |
+| **Priority** | `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`, or `NONE`. |
+| **Assignee** | The team member responsible for the task. |
+| **Reporter** | Who created or submitted the task. Set automatically on creation. |
+| **Parent** | Links this task as a subtask under a parent task. |
+| **Sprint** | The sprint this task belongs to. Empty means it is in the backlog. |
+| **Group** | Swimlane grouping field used on the board. |
+| **Story Points** | Numeric effort estimate used for sprint velocity tracking. |
+| **T-shirt Size** | Relative size estimate: XS, S, M, L, XL, XXL. |
+| **Time Estimate** | Planned effort in minutes. |
+| **Start Date** | When work on the task is expected to begin. Used on the Roadmap. |
+| **Due Date** | Deadline. Overdue tasks are flagged in all views. |
+| **Labels** | Free-form tags for filtering and grouping. |
+| **Description** | Full rich-text body — supports headings, code blocks, images, tables, callouts, and mentions. |
+| **Custom Fields** | Additional fields configured by your admin for specific task types. |
 
 ## Creating a task
 
 <Steps>
   <Step title="Open the project">
-    Navigate to your Space → **Projects** → select the project.
+    Navigate to your Space, select the project, and open any view — Board, List, Backlog, or Sprint.
   </Step>
-  <Step title="Click New Task">
-    Press **N** anywhere on the board, or click **+ New Task** in the top bar.
+  <Step title="Start a new task">
+    Click **+ New Task** in the top bar, or press **N** anywhere in the project to open the quick-create form.
   </Step>
   <Step title="Fill in the required fields">
-    Title and Type are required. All other fields are optional and can be set later.
+    Title is required. Type defaults to the project's default task type. All other fields are optional and can be updated later.
   </Step>
   <Step title="Save">
-    Press **Enter** or click **Create**. The task appears in the first status column.
+    Press **Enter** or click **Create**. The task is created and appears in the first status column on the board.
   </Step>
 </Steps>
 
 ## Task detail view
 
-Open any task to see its full detail panel:
+Click any task to open its full detail view. The detail view is organized into sections:
 
-- **Activity feed** — full change history with who changed what and when
-- **Comments** — threaded comments with @mentions, reactions, and rich text
-- **Checklists** — create sub-task checklists within a task
-- **Child tasks** — link child tasks for multi-step work
-- **Attachments** — attach files directly to the task
-- **Worklogs** — log time spent (if enabled by admin)
+| Section | What it contains |
+|---|---|
+| **Description** | Rich-text editor (Plate.js). Edits auto-save when you click away. |
+| **Comments** | Threaded comments with @mentions, reactions, and rich text. Mark each comment as Internal or External. |
+| **Attachments** | Files attached directly to the task. Drag-and-drop or browse to upload. |
+| **Activity log** | Full change history — who changed what, and when. Every field update is recorded. |
+| **Subtasks** | Child tasks nested under this task. Create subtasks directly from the detail view. |
+| **Linked tasks** | Tasks connected by a relationship type (see below). |
+| **Custom fields** | Task type-specific fields shown in the right sidebar. |
+| **Time log** | Time entries logged against this task (if time tracking is enabled). |
+
+## Comments: Internal vs. External
+
+Every comment has a visibility setting:
+
+| Setting | Who can see it |
+|---|---|
+| **Internal** | Team members only. Hidden from the Customer Portal. Use this for team-only discussion. |
+| **External** | Visible to both team members and external customers via the Customer Portal. |
+
+Default visibility is Internal. Switch before posting if the comment is intended for the customer.
+
+## Subtasks
+
+Subtasks are tasks nested under a parent task. They have all the same fields as a regular task and appear in the task list and board like any other task — with an indented parent indicator.
+
+To add a subtask, open a task's detail view and click **+ Add Subtask**. The new subtask is linked to the parent and inherits the same project and sprint.
+
+## Linked tasks
+
+Link tasks to show relationships between them. Four link types are available:
+
+| Link type | Meaning |
+|---|---|
+| **Depends on** | This task cannot proceed until the linked task is complete. |
+| **Blocks** | This task is blocking the linked task from proceeding. |
+| **Relates to** | Related context — no dependency implied. |
+| **Duplicates** | This task is a duplicate of the linked task. |
+
+To add a link, open a task → **Linked Tasks** section → click **+ Add Link**, choose the type, and search for the task to link.
 
 ## Keyboard shortcuts
 
 | Shortcut | Action |
 |---|---|
-| `N` | New task |
-| `T` | Change task type |
-| `P` | Set priority |
-| `A` | Assign to yourself |
-| `D` | Set due date |
-| `Space` | Open task detail |
-| `Esc` | Close panel |
+| `N` | Create a new task |
+| `T` | Open the task type picker |
+| `S` | Change the task's status |
+| `A` | Assign the task |
+| `Cmd/Ctrl + Enter` | Save a comment |
 
 ## Bulk actions
 
-Select multiple tasks using the checkbox in list view, then use the bulk action bar to:
-- Change status
-- Reassign
-- Set priority
-- Move to sprint
-- Delete
+Select multiple tasks using the checkbox in List view, then use the bulk action bar to apply changes to all selected tasks at once:
+
+| Action | Description |
+|---|---|
+| **Update status** | Move all selected tasks to a new status. |
+| **Update assignee** | Reassign all selected tasks to a different team member. |
+| **Update priority** | Set the same priority on all selected tasks. |
+| **Move to sprint** | Assign all selected tasks to a sprint. |
+| **Delete** | Permanently delete all selected tasks. |
+
+<Warning>
+  Bulk delete is permanent and cannot be undone. Confirm the selection before proceeding.
+</Warning>
+
+## Custom fields
+
+Custom fields extend the standard field set with fields specific to your workflow. They are configured by an admin and attached to task types. The following field types are available:
+
+Text, Textarea, Select, Multi-select, User, Multi-user, Date, Checkbox, Number, Rating, Progress, Location, Registry Object, Relation, Object Relation, Priority, URL, Email, Phone, Currency.
+
+Custom field values appear in the right sidebar of the task detail view. Admins configure which fields apply to which task types under **Admin → Custom Fields**.

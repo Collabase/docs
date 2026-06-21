@@ -1,59 +1,105 @@
 ---
-title: "Object Browser"
-description: "Browse, create, filter, sort, and manage registry objects in a structured table view."
+sidebarTitle: "Object Browser"
+description: "Browse, search, create, and manage registry objects. Filter by object type, view relations, and see tasks linked to each object."
 ---
 
 # Object Browser
 
-The Object Browser is where you work with actual data — the individual records that populate your Schema. Each Object Type gets its own table view, with columns for every Attribute you have defined.
+The Object Browser is where you work with the actual records in your schema. Select an object type from the left panel to see all its objects in a table view, create new objects, edit existing ones, and navigate relations between them.
 
-## Navigating the browser
+Open a schema and click the **Browse** tab to enter the object browser.
 
-Open a Schema → click the **Browse** tab. The left sidebar lists all Object Types. Select one to see its objects in the main table.
+## Browsing objects
 
-## Creating objects
+The left panel lists all object types in the schema. Click any type to display its objects in the main table. Each column in the table corresponds to an attribute defined on that object type.
 
-Click **+ New Object** in the top bar:
+Use the **search bar** above the table to filter objects by their label or any text attribute value.
 
-1. Fill in the required attributes (marked with `*`)
-2. Fill in optional attributes
-3. Link related objects via Relation fields — a picker shows existing objects of the target type
-4. Click **Create**
+## Creating an object
 
-The new object appears in the table immediately.
+<Steps>
+  <Step title="Select the object type">
+    In the left panel, click the object type you want to create a record for.
+  </Step>
+  <Step title="Click + New Object">
+    Click **+ New Object** in the top right of the table area.
+  </Step>
+  <Step title="Fill in the attributes">
+    A creation form opens with all attributes for this object type. Required attributes are marked with an asterisk. Fill in as many fields as you have information for.
 
-## Filtering
+    For **Relation** attributes, a picker appears showing existing objects of the target type. Search by label to find the right record and select it.
+  </Step>
+  <Step title="Create">
+    Click **Create**. The object appears in the table immediately.
+  </Step>
+</Steps>
 
-Use the **Filters** button above the table to add attribute filters:
+## Editing an object
 
-- Text: `contains`, `equals`, `starts with`
-- Number: `=`, `>`, `<`, `between`
-- Date: `is`, `before`, `after`, `this week/month`
-- Select: `is any of`
-- Boolean: `is true/false`
-
-Multiple filters are combined with AND logic. Save filter combinations as **Saved Views** using the star icon.
-
-## Sorting
-
-Click any column header to sort by that attribute. Shift+click to add a secondary sort.
-
-## Bulk actions
-
-Select multiple objects using the row checkboxes:
-- **Delete** selected
-- **Export** to CSV
-- **Bulk update** a shared attribute across selected objects
+Click any row in the table to open the object's full detail view. All attributes are displayed in an editable form. Click any field to edit it. Changes are saved automatically when you click away from the field.
 
 ## Object detail view
 
-Click any row to open the object's full detail view:
+The detail view shows all information about a single object, organized in tabs:
 
-- All attributes in an editable form
-- **Related objects** — objects connected via Relations, navigable from here
-- **Change history** — full audit log of every field change with timestamp and user
-- **Comments** — internal notes on this object
+### Attributes tab
 
-## Export
+All attribute fields for this object, editable in place.
 
-Click **Export → CSV** above the table to download all objects of the current type as a CSV. The export respects active filters.
+### Relations tab
+
+All objects linked to this object through relation attributes. Displayed as a list or as an interactive graph showing the connected objects and the types of connections between them.
+
+- Click any related object in the list or graph to navigate to its own detail view.
+- To add a new relation, edit the relation attribute in the Attributes tab and select a related object.
+
+### Linked Tasks tab
+
+If a project in your Space has a custom field of type **Registry Object** pointing to this object type, any tasks that reference this specific object appear here. This gives you a direct connection between your data records and the work your team is doing on them.
+
+### Activity tab
+
+A log of every change made to this object's attribute values, including the user who made the change and the timestamp.
+
+## Searching and filtering
+
+Use the **search bar** to filter objects by their label value or any text attribute value across the current object type.
+
+For more precise filtering, click **Filters** above the table:
+
+| Attribute type | Available filter conditions |
+|---|---|
+| Text | Contains, equals, starts with, is empty |
+| Number | Equals, greater than, less than, is empty |
+| Date | Is, before, after, is empty |
+| Select | Is any of, is none of |
+| Checkbox | Is true, is false |
+| User | Is any of |
+| Relation | Is linked to |
+
+Multiple filters are combined with AND logic — all conditions must be met for an object to appear.
+
+## Deleting an object
+
+<Warning>
+  Deleting an object is permanent. It removes the object and all its field values, and unlinks it from any related objects. This cannot be undone.
+</Warning>
+
+To delete an object:
+
+1. Open the object's detail view by clicking its row in the table.
+2. Click the `...` menu at the top right of the detail view.
+3. Select **Delete object**.
+4. Confirm the deletion in the dialog that appears.
+
+To delete multiple objects at once, check the boxes on the left of each row in the table, then click **Delete selected** in the action bar that appears.
+
+## Exporting objects
+
+To export all objects of the current type to a CSV file:
+
+1. Select the object type in the left panel.
+2. Click **Export → CSV** above the table.
+3. The CSV downloads to your browser immediately.
+
+The export includes all attribute columns and respects any active filters — filtered exports only include objects currently visible in the table.

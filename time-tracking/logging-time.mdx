@@ -1,0 +1,123 @@
+---
+sidebarTitle: "Logging Time"
+description: "How to log, edit, and manage time entries in the Collabase time calendar using manual entry or the live timer."
+---
+
+# Logging Time
+
+The **Times** view is a calendar where you create and manage time entries. You can switch between day, week, and month views to see your logged hours, and entries are colour-coded to show whether they are billable.
+
+Navigate to **Times** using the sidebar. If you do not see it, ask your administrator to check that the Time Tracking module is enabled for your space.
+
+---
+
+## Creating a time entry
+
+<Steps>
+  <Step title="Open the Times view">
+    Click **Times** in the main sidebar. The calendar opens in week view by default.
+  </Step>
+  <Step title="Open the entry dialog">
+    Click any empty time slot on the calendar to open the entry dialog pre-filled with that date and time, or click **+ Log Time** in the top-right corner to open a blank dialog.
+  </Step>
+  <Step title="Fill in the entry details">
+    Complete the fields as needed (see the field reference below). At minimum, enter a duration and a date.
+  </Step>
+  <Step title="Save the entry">
+    Click **Save**. The entry appears on the calendar immediately. Billable entries display a green badge showing the billable percentage.
+  </Step>
+</Steps>
+
+---
+
+## Entry fields
+
+| Field | Description |
+|---|---|
+| **Date** | The date the work was performed. Defaults to today. |
+| **Duration** | How long the work took. Accepts several formats — see the note below. |
+| **Description** | Optional free-text note about what was done. |
+| **Task** | Link the entry to a specific task. Start typing to search across all projects you have access to. |
+| **Project** | The project this time belongs to. Auto-filled when you select a task, or select manually. |
+| **Team** | Associate the entry with a time tracking team for filtered reporting and approval routing. |
+| **Account** | The billing account (client, retainer, or cost center) this time should roll up into. |
+| **Billable** | Toggle on to mark this entry as billable. |
+| **Billable %** | What percentage of the logged time is billed to the client. Defaults to 100 when Billable is on. |
+| **Custom Attributes** | Any worklog attributes configured by your admin (activity type, service category, etc.). |
+
+<Note>
+  **Duration formats** — Collabase accepts any of these: `1h 30m`, `1:30`, `90` (treated as minutes), or `1.5h`. All formats are converted to minutes internally.
+</Note>
+
+<Note>
+  **Billable % over 100** — entering a value above 100 is intentional for round-up billing scenarios where clients are billed for more than the actual time logged. For example, a 45-minute call billed as a full hour would be `133%`.
+</Note>
+
+---
+
+## Using the timer
+
+The built-in timer lets you track time as you work instead of entering it manually after the fact.
+
+<Steps>
+  <Step title="Start the timer">
+    Click the **Start Timer** button at the top of the Times view. The button changes to a live counter showing elapsed time in HH:MM:SS format.
+  </Step>
+  <Step title="Work normally">
+    The timer continues running in the background as you navigate around Collabase. The elapsed time is shown in the sidebar button so you always know it is active.
+  </Step>
+  <Step title="Stop the timer">
+    Click the timer button again to stop it. The entry dialog opens automatically with the duration pre-filled based on the elapsed time.
+  </Step>
+  <Step title="Complete and save the entry">
+    Fill in the remaining fields (task, project, account, etc.) and click **Save**. The entry is added to today's calendar.
+  </Step>
+</Steps>
+
+<Note>
+  Only one timer can run at a time. Starting a new timer will prompt you to stop the current one first.
+</Note>
+
+---
+
+## Editing and deleting entries
+
+To modify or remove an existing entry:
+
+<Steps>
+  <Step title="Find the entry on the calendar">
+    Switch to the day, week, or month view that shows the entry. Entries are displayed as coloured blocks labelled with the description or task name.
+  </Step>
+  <Step title="Open the entry dialog">
+    Click the entry block to open the edit dialog with all fields populated.
+  </Step>
+  <Step title="Make your changes or delete">
+    Edit any field and click **Save**, or click **Delete** at the bottom of the dialog to remove the entry permanently.
+  </Step>
+</Steps>
+
+<Warning>
+  Entries in a **SUBMITTED** or **APPROVED** timesheet period are locked and cannot be edited or deleted. If you need to correct a submitted entry, ask your administrator or team lead to reject the period and return it to Draft status.
+</Warning>
+
+---
+
+## Workload progress
+
+If your administrator has set up a [Workload Plan](/time-tracking/holiday-workload-schemes) for you or your team, a progress bar appears at the top of each day column in the calendar. The bar shows how many hours you have logged against your daily target.
+
+- **Grey bar** — below target for the day.
+- **Green bar** — target reached or exceeded.
+
+Days that fall on a public holiday (from the linked Holiday Scheme) show no target and no progress bar.
+
+---
+
+## Viewing billable status
+
+Each calendar entry displays a small badge showing the billable percentage when **Billable** is on:
+
+- **Green badge** — entry is marked billable. The number shows the billable percentage (e.g. `100%` or `75%`).
+- **No badge** — entry is non-billable.
+
+Switch to month view for a condensed summary that shows total hours logged per day without the per-entry detail.

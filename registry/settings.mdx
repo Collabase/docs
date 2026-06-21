@@ -1,80 +1,78 @@
 ---
-title: "Settings & Visibility"
-description: "Control who can access a Registry Schema, enable public API access, and manage Schema details like name, icon, and description."
+sidebarTitle: "Settings"
+description: "Configure schema details, control who can see your schema, and manage schema-level actions including deletion."
 ---
 
-Each Registry Schema has its own settings panel where you can control its name, description, visibility, and API access. Open a Schema and click the **Settings** tab to access it.
+# Schema Settings
+
+Each Registry schema has its own settings panel where you can update its name, icon, color, and description, and control who can access it. Open a schema and click the **Settings** tab to access these options.
 
 ## Schema details
 
 | Field | Description |
 |---|---|
-| **Name** | The display name of the Schema, shown in the Registry sidebar and in the Schema list |
-| **Description** | An optional summary of what this Schema models and what it is used for |
-| **Icon** | A visual identifier for the Schema, shown in the sidebar and object headers |
-| **Color** | An accent color applied to the Schema's icon and cards across the UI |
+| **Name** | The display name of the schema. Shown in the Registry sidebar and the schema list. |
+| **Description** | An optional summary explaining what this schema models and what it is used for. Helps other users understand the schema's purpose when browsing the Registry. |
+| **Icon** | A visual identifier shown in the sidebar and in object headers throughout the Registry. |
+| **Color** | An accent color applied to the schema's icon and cards across the UI. |
 
-Click **Save** after making changes to any detail field.
+Click **Save** after changing any detail field.
 
-## Visibility
+## Schema visibility
 
-Visibility controls who can see the Schema and the objects inside it.
+Visibility controls who can see this schema and the objects inside it.
 
-| Level | Who has access |
+| Setting | Who has access |
 |---|---|
-| `PRIVATE` | Only the Schema owner and Space admins |
-| `INTERNAL` | All members of the Space |
-| `PUBLIC` | Anyone with access to the Collabase instance, including unauthenticated users if API access is enabled |
+| **Private** | Only you (the schema creator). Other users, including Space admins, cannot see it. |
+| **Public** | All authenticated users across the entire Collabase instance, regardless of which Space they belong to. |
+
+To change visibility, select the setting you want and click **Save**.
 
 <Note>
-  Visibility applies to the Schema as a whole. There is no per-Object-Type or per-Object visibility setting. If a Schema is Internal, all its Object Types and Objects are visible to all Space members.
+  Visibility applies to the entire schema. There is no per-object-type or per-object visibility setting. If a schema is public, all its object types and all objects within them are visible to all users.
 </Note>
 
-## Public API access
+## Renaming a schema
 
-When enabled, the Schema's objects are accessible over the Collabase REST API at:
+1. Open the schema and click the **Settings** tab.
+2. Edit the **Name** field.
+3. Click **Save**.
 
-```
-GET /api/v1/mcp-registry
-```
+The new name appears in the Registry sidebar and throughout the UI immediately.
 
-This allows external systems — CI pipelines, integrations, third-party tools — to read Registry objects without a user session.
+## Changing the icon or color
+
+1. Open the schema settings.
+2. Click the **Icon** field to open the icon picker and select a new icon.
+3. Click the **Color** field to choose a new accent color.
+4. Click **Save**.
+
+## Schema ownership
+
+The user who created a schema is its owner. Schema ownership determines the **Private** visibility behavior — a private schema is visible only to its owner. There is currently no way to transfer ownership of a schema to another user.
+
+Space admins can see and manage all schemas in a Space regardless of ownership.
+
+## Deleting a schema
 
 <Warning>
-  Public API access should only be enabled on Schemas with `PUBLIC` visibility. Enabling API access on a `PRIVATE` or `INTERNAL` Schema exposes its data to anyone with a valid API token.
+  Deleting a schema permanently and irreversibly removes all object types, all attribute definitions, all objects, all field values, and all relations within the schema. This cannot be undone. Export any important data before proceeding.
 </Warning>
-
-To enable public API access:
 
 <Steps>
   <Step title="Open Schema Settings">
-    Open the Schema and click the **Settings** tab.
+    Open the schema you want to delete and click the **Settings** tab.
   </Step>
-  <Step title="Toggle Public API Access">
-    Find the **Public API Access** toggle and enable it.
+  <Step title="Scroll to the Danger Zone">
+    Scroll to the bottom of the settings page to find the **Danger Zone** section.
   </Step>
-  <Step title="Set visibility to Public">
-    Ensure the Schema visibility is set to `PUBLIC` before sharing the API endpoint externally.
+  <Step title="Click Delete Schema">
+    Click **Delete Schema**. A confirmation dialog appears.
   </Step>
-  <Step title="Save">
-    Click **Save** to apply the change.
+  <Step title="Confirm by typing the schema name">
+    Type the exact schema name in the confirmation field to confirm you intend to delete it, then click **Delete**.
   </Step>
 </Steps>
 
-## Danger zone
-
-The danger zone contains irreversible Schema-level actions.
-
-### Delete Schema
-
-Deleting a Schema permanently removes:
-
-- All Object Types and their Attribute definitions
-- All Objects and their field values
-- All Schema Relations and Object Relations
-
-<Warning>
-  Schema deletion cannot be undone. All data inside the Schema is permanently destroyed. Export or document any critical data before proceeding.
-</Warning>
-
-To delete a Schema, scroll to the bottom of the Settings tab, click **Delete Schema**, and confirm by typing the Schema name.
+After deletion, the schema no longer appears in the Registry sidebar. Any project tasks that had a Registry Object field pointing to objects in this schema will show an empty value for that field.

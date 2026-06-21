@@ -1,74 +1,80 @@
 ---
 sidebarTitle: "Overview"
-description: "Collabase Docs is the collaborative knowledge base built into every Space — versioned, status-tracked, and connected to the rest of Collabase."
+description: "Collabase Docs is the built-in wiki for every Space — hierarchical pages, rich text, version history, comments, and fine-grained permissions."
 ---
 
 # Collabase Docs
 
-<img src="/images/docs.png" alt="Collabase Docs interface" style={{ borderRadius: '8px', marginBottom: '24px' }} />
+Collabase Docs is the built-in knowledge base for every Space. Teams use it to write and maintain technical specifications, runbooks, onboarding guides, meeting notes, process documentation, and anything else that needs to be written down and found again later.
 
-Collabase Docs is the built-in knowledge base for every Space. It's where teams write, review, and maintain all their structured knowledge — technical specs, runbooks, design decisions, meeting notes, onboarding guides, and more.
+Every document is a **page**. Pages live in a nested tree inside their Space, support rich text with slash commands and embeds, track their full version history, and can be restricted to specific users or groups.
 
-Every document is a **page** — rich text with a status, author, version history, permissions, and a place in the Space's nested tree.
+## What's inside Docs
 
-## What makes Collabase Docs different
-
-<CardGroup cols={2}>
-  <Card title="Pages" icon="file" href="/docs/pages">
-    Rich-text documents with nested structure, custom fields, status tracking, and version history.
+<CardGroup cols={3}>
+  <Card title="Pages" icon="file-text" href="/docs/pages">
+    Rich-text documents organized in a hierarchical tree. Supports Standard, Blog, and Canvas page types with full version history.
   </Card>
-  <Card title="Templates" icon="copy" href="/docs/templates">
-    Reusable page templates for consistent documentation — meeting notes, ADRs, runbooks, post-mortems.
+  <Card title="Templates" icon="layout-template" href="/docs/templates">
+    Reusable page structures with placeholder variables. Create new pages from a template to save time and keep content consistent.
   </Card>
-  <Card title="Suggestions" icon="comment-dots" href="/docs/suggestions">
-    Readers propose inline edits. Page owners approve or reject — keeping control while enabling broad contribution.
-  </Card>
-  <Card title="Space-level permissions" icon="lock" href="/concepts/permissions">
-    Pages inherit Space permissions by default. Individual pages can be restricted further.
+  <Card title="Suggestions" icon="message-circle" href="/docs/suggestions">
+    Readers can propose edits to page content without overwriting it. Authors accept or reject each suggestion individually.
   </Card>
 </CardGroup>
 
+<CardGroup cols={2}>
+  <Card title="Version History" icon="clock" href="/docs/pages#version-history">
+    Every save creates a snapshot. Restore any previous version at any time — the restore creates a new version rather than overwriting the current one.
+  </Card>
+  <Card title="Page Permissions" icon="lock" href="/docs/pages#permissions">
+    Permissions are set per page. They are not inherited from the parent page or the Space. Restrict any page to specific users or groups independently.
+  </Card>
+</CardGroup>
+
+## Page hierarchy
+
+Pages are organized in a tree:
+
+```
+Space
+└── Page (top-level)
+    ├── Subpage
+    │   └── Sub-subpage
+    └── Subpage
+```
+
+There is no depth limit. Drag and drop pages in the sidebar to reorder them or change their parent. Moving a page to a different Space is also supported from the page options menu.
+
+## Page types
+
+| Type | Best for |
+|---|---|
+| **Standard** | Regular documentation — specs, guides, runbooks, notes |
+| **Blog** | Posts with a publish date, displayed in chronological order |
+| **Canvas** | Freeform drawing and diagramming on an infinite canvas |
+
 ## The editor
 
-The Collabase editor supports:
+The Docs editor supports:
 
-| Feature | How |
-|---|---|
-| **Rich text** | Bold, italic, underline, strikethrough, inline code |
-| **Headings** | H1–H3 with auto-generated anchor links |
-| **Code blocks** | Syntax highlighted, with language picker |
-| **Tables** | Full table editing with row/column add, delete, and resize |
-| **Images** | Upload or paste |
-| **Callouts** | Info, warning, tip, danger callout blocks |
-| **Embeds** | YouTube, Figma, Loom, and any URL-based embed |
-| **@Mentions** | Mention team members — they get an in-app notification |
-| **Slash commands** | Type `/` to insert any block type |
-| **Markdown shortcuts** | `**bold**`, `# Heading`, `` `code` `` |
+- **Headings** (H1–H3) with automatic anchor links
+- **Lists** — bulleted, numbered, task lists
+- **Tables** — add, delete, and resize rows and columns
+- **Code blocks** — syntax highlighting with language picker
+- **Callouts** — info, tip, warning, and danger block types
+- **Embeds** — YouTube, Figma, Loom, and any URL-based embed
+- **Images** — upload or paste directly
+- **Slash commands** — type `/` to insert any block type instantly
+- **@mentions** — mention team members to send them a notification
+- **Markdown shortcuts** — `**bold**`, `# Heading`, `` `code` ``, and more
 
-## Page status flow
+Content is auto-saved when you move focus away from the editor. There is no manual save required.
 
-```
-DRAFT → IN REVIEW → PUBLISHED → ARCHIVED
-```
+## Connected to the rest of Collabase
 
-- **DRAFT** — visible to editors only
-- **IN REVIEW** — flagged for review; visible to members
-- **PUBLISHED** — the live, canonical version
-- **ARCHIVED** — retained for history but not shown in navigation
-
-## AI features
-
-The **AI Assistant** in Docs provides:
-- **Slash → AI: Improve** — rewrite selected text to be clearer
-- **Slash → AI: Translate** — translate selected text to another language
-- **Slash → AI: Summarize** — generate a summary of the whole page
-- **Slash → AI: Continue** — generate continuation based on context
-
-AI runs via your configured AI model (Ollama or OpenAI) — see **Admin → AI Configuration**.
-
-## Integration with other Collabase apps
-
-- **Test Management** — Link test specs in Docs to test cases
-- **Projects** — Attach pages as project documentation
-- **Automation** — Trigger automations when pages are created or updated
-- **AI Brain** — Published pages are indexed and searchable via the AI Brain
+- **Test Management** — link a page as the requirement document for a test case
+- **Projects** — attach pages as project documentation
+- **Registry** — pages can document the purpose and usage of registry schemas
+- **Automation** — trigger automations when pages are created or updated
+- **AI Brain** — published pages are indexed and available through the AI assistant

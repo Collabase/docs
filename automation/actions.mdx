@@ -1,44 +1,152 @@
 ---
-title: "Actions"
+sidebarTitle: "Actions"
 description: "Action nodes perform operations when an automation runs — from native Collabase operations to external service integrations via connectors."
 ---
 
 # Actions
 
-An action node is where the automation does something. Actions run in sequence after your trigger fires and any conditions pass. Each action receives the output of the node before it, and produces its own output that subsequent nodes can use via `{{previous.fieldName}}`.
+An action node is where the automation does something. Actions run after your trigger fires and any conditions pass. Each action node calls a connector to perform a specific operation — sending a message, creating a task, posting to an external service, or anything else the connector supports.
 
-## Two types of actions
+Actions run in the order defined by the graph. Each action receives data from upstream nodes and produces its own output that downstream nodes can reference.
+
+---
+
+## Two types of action nodes
 
 <CardGroup cols={2}>
   <Card title="Collabase built-in" icon="house" href="/automation/connectors/collabase">
-    Native Collabase operations — create and update tasks, pages, and registry objects; run test cases; send in-app notifications. No connection setup required.
+    Native Collabase operations — create and update tasks, pages, and registry objects; send in-app notifications; trigger test runs. No connection setup required.
   </Card>
-  <Card title="Connector actions" icon="plug" href="/automation/connectors/overview">
-    Actions from your 38 external connectors — Slack, GitHub, Jira, Stripe, Datadog, and more. Require a saved Connection with credentials.
+  <Card title="Connector actions" icon="plug" href="/automation/integrations">
+    Actions from 40+ external connectors — Slack, GitHub, Jira, Stripe, Datadog, and more. Require a saved Connection with credentials.
   </Card>
 </CardGroup>
 
-## Variable references
+---
 
-All action input fields support `{{variable}}` syntax to reference data from upstream nodes:
+## Connections — credentials for connectors
+
+Before using an external connector in an action node, you must create a **Connection** for it. A connection is a named, encrypted set of credentials that you configure once and reuse across all automations.
+
+<Steps>
+  <Step title="Go to Automation → Connections">
+    Open your Space, select **Automation** in the sidebar, then click **Connections** in the top navigation bar.
+  </Step>
+  <Step title="Click + New Connection">
+    Click the **+ New Connection** button. A dialog opens.
+  </Step>
+  <Step title="Select the connector">
+    Choose the connector you want to connect (for example, Slack, GitHub, or Jira).
+  </Step>
+  <Step title="Enter your credentials">
+    Fill in the required fields. Each connector lists what it needs — typically an API key, a token, or OAuth credentials. See the connector's individual page for details.
+  </Step>
+  <Step title="Test and save">
+    Click **Test Connection** to verify the credentials work, then click **Save**. The connection is now available in the action node picker inside any automation.
+  </Step>
+</Steps>
+
+<Note>
+  Credentials are encrypted at rest. They are never shown in execution logs or run history.
+</Note>
+
+---
+
+## Adding an action node
+
+<Steps>
+  <Step title="Open the automation builder">
+    Open your automation. Click the **+** button on any connection in the canvas, or drag a node from the node panel.
+  </Step>
+  <Step title="Choose Action">
+    Select **Action** from the node type list.
+  </Step>
+  <Step title="Select a connector">
+    Pick the connector from the list (for example, Slack, Jira, or Collabase built-in).
+  </Step>
+  <Step title="Select an operation">
+    Pick the specific action the connector should perform (for example, **Send Message** or **Create Issue**).
+  </Step>
+  <Step title="Select a connection">
+    For external connectors, select the saved connection to use. If no connection exists yet, click **+ New Connection** to create one.
+  </Step>
+  <Step title="Fill in field values">
+    Configure each input field. Use variable syntax to reference data from upstream nodes.
+  </Step>
+</Steps>
+
+---
+
+## Field value syntax
+
+All action input fields support variable references. Use these forms to pull data from upstream nodes:
+
+| Syntax | What it references | Example |
+|---|---|---|
+| `{payload.fieldName}` | A field from the trigger payload | `{payload.taskTitle}` |
+| `{stepOutputs.nodeId.fieldName}` | The output of a specific named node | `{stepOutputs.createTask.id}` |
+| `{variableName}` | A value stored with a Set Variable node | `{summaryText}` |
+
+Supports dot-notation for nested values and array indexing:
 
 ```
-{{testCaseTitle}}           ← from the trigger
-{{previous.id}}             ← from the immediately preceding node
-{{stepId.fieldName}}        ← from a specific named node
-{{payload.environment}}     ← from a webhook payload
+{payload.assignee.name}
+{stepOutputs.searchResults.items[0].url}
 ```
 
-Chain outputs: the result of one action feeds into the next. If a Slack **Send Message** action returns `{{previous.ts}}` (the message timestamp), a subsequent **Update Message** action can reference it.
+You can mix static text and variable references in the same field:
+
+```
+Task {payload.taskKey} was assigned to {payload.assignee.name}
+```
+
+---
+
+## Action output
+
+Every action node produces output fields that downstream nodes can reference using `{stepOutputs.nodeId.fieldName}`. The node's ID is set in the node configuration panel — give it a short, descriptive name.
+
+For example, if you name a **Create Task** node `createTask`, downstream nodes can reference:
+
+- `{stepOutputs.createTask.id}` — the ID of the created task
+- `{stepOutputs.createTask.taskKey}` — the task key (e.g. `PROJ-42`)
+- `{stepOutputs.createTask.url}` — a direct link to the task
+
+Each connector's page lists the output fields available from each action.
+
+---
+
+## Retry policy
+
+Action nodes can be configured to retry automatically if they fail. Set the retry policy in the node's configuration panel.
+
+| Option | Description |
+|---|---|
+| **No retry** | If the action fails, the execution stops at that node |
+| **Linear backoff** | Retry N times, waiting a fixed interval between each attempt |
+| **Exponential backoff** | Retry N times, doubling the wait time after each attempt |
+
+| Field | Description |
+|---|---|
+| **Max attempts** | Total number of tries including the first (e.g. 3 = 1 attempt + 2 retries) |
+| **Initial wait** | Seconds to wait before the first retry |
+
+Retries are counted in the execution log. If all retries fail, the node is marked as failed and the execution status becomes `FAILED` or `PARTIAL`.
+
+<Warning>
+  Actions that are not idempotent (for example, sending a Slack message or creating a Jira issue) may produce duplicate results if retried. Only enable retries for actions where running the same operation twice is safe.
+</Warning>
+
+---
 
 ## Connector actions reference
 
 Each connector's available actions are documented on its individual page.
 
 <CardGroup cols={3}>
-  <Card title="Communication" icon="message" href="/automation/connectors/slack">Slack, Teams, Email, Telegram…</Card>
-  <Card title="Developer Tools" icon="code" href="/automation/connectors/github">GitHub, GitLab, Jira, Sentry…</Card>
-  <Card title="AI & Utilities" icon="wand-magic-sparkles" href="/automation/connectors/openai">OpenAI, HTTP, Transform, Code…</Card>
+  <Card title="Communication" icon="message" href="/automation/integrations">Slack, Teams, Discord, Email, Telegram…</Card>
+  <Card title="Developer Tools" icon="code" href="/automation/integrations">GitHub, GitLab, Jira, Sentry…</Card>
+  <Card title="AI & Utilities" icon="wand-magic-sparkles" href="/automation/integrations">OpenAI, HTTP, Transform, Code…</Card>
 </CardGroup>
 
-→ [View all 38 connectors](/automation/connectors/overview)
+→ [View all 40+ connectors](/automation/integrations)
