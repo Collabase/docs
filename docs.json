@@ -291,6 +291,7 @@
             "group": "Releases",
             "pages": [
               "changelog/overview",
+              "changelog/v0.9.0-rc",
               "changelog/v0.8.3"
             ]
           }

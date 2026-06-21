@@ -31,6 +31,7 @@ Release notes must follow a strict, customer-facing format.
 
 - **No Stack Details for General Updates:** For general stability or layout updates, do not list dependency updates by library name (e.g., "Updated React to 18.3"). Summarize them generically.
 - **Enterprise Security Standards:** In the `Security & Vulnerabilities` section, focus on **business impact and CVEs**. Never list dev-dependencies (like `vite`, `vitest`, `playwright`). Only list production-relevant third-party libraries if they address critical, widely known vulnerabilities. Otherwise, summarize them generically or by the affected product component.
+- **Navigation Updates:** Every time a new release note is created, you MUST add it to the `Release Notes` section of the sidebar in `docs.json` and add a corresponding `<Card>` link to the `changelog/overview.mdx` page.
 
 ### Standard Categories
 
