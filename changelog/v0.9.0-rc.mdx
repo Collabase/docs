@@ -1,0 +1,37 @@
+---
+title: "Version 0.9.0-rc"
+description: "Release Candidate 1 featuring GitHub integration, a Notification Center overhaul, and new Time Tracking UX."
+---
+
+<Update label="v0.9.0-rc" description="Release Candidate 1">
+  ## What's new in v0.9.0-rc?
+
+  This is our latest stable version and serves as the actual v1 release candidate. We have implemented feature flags for unfinished features to guarantee a stable experience.
+
+  ### ✨ New features & improvements
+  * **Time Tracking:** We improved the time tracking user experience. You can now use team entry dates and a new pending approvals gadget.
+  * **Notification Center:** We overhauled the notification center with a new design and additional event types.
+  * **Task Activity Feed:** You can now view a detailed activity feed directly on tasks. 
+  * **Email Enhancements:** We updated the email sender logic and refreshed the email templates.
+  * **Workflows & Projects:** We added workflow edge persistence and introduced a new project home experience.
+  * **Kanban Boards:** You can now use colored filters, swimlanes, customizable card fields, and quick actions on your boards.
+  * **Document Editor:** You can now embed a *Collabase Tasks* macro directly inside your wiki pages.
+  * **Registry:** You can clearly see linked tasks in the detail view of any custom Registry object.
+
+  ### 🎨 Layout & UX
+  * **Navigation:** We restructured the app sidebar and header layout for a cleaner user experience.
+  * **Dashboards:** We redesigned the Home and Space cockpit views to help you manage your work more efficiently.
+
+  ### 🛠 Stability & Maintenance
+  * **Database Performance:** We tuned the PostgreSQL connection pooling to improve overall system performance.
+  * **System Compatibility:** We restored API contract compatibility and resolved Content Security Policy (CSP) issues.
+  * **Custom Fields:** We fixed rendering for custom fields across the registry and workflow transitions.
+  * **Document Editor:** We rewrote the table resize engine and resolved various editor component bugs.
+  * **Automation:** We refactored the backend automation logic to increase stability.
+  * **Bug Fixes:** We resolved various known issues in the demo environment.
+
+  ### 🔒 Security & Vulnerabilities
+
+  * Performed routine security updates and patched non-critical third-party dependencies in the backend and AI services.
+  * Resolved multiple Dependabot security alerts to ensure ongoing platform stability.
+</Update>
