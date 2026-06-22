@@ -98,6 +98,8 @@
                 "group": "Projects",
                 "pages": [
                   "projects/overview",
+                  "projects/project-setup",
+                  "projects/templates",
                   "projects/tasks",
                   "projects/sprints",
                   "projects/queues",

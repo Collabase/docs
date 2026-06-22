@@ -1,0 +1,125 @@
+---
+sidebarTitle: "Project Templates"
+description: "Create and manage reusable project configurations that bundle a workflow, task types, and field collections."
+---
+
+# Project Templates
+
+A project template is a saved configuration that bundles a workflow, task types, field collections, and the set of views (board, backlog, sprints, etc.) enabled for a project. When a team creates a new project and selects a template, the full configuration is applied automatically — no manual setup needed.
+
+Templates are managed by administrators under **Admin → Project Templates**.
+
+## Template components
+
+| Component | What it controls |
+|---|---|
+| **Workflow** | The statuses tasks move through and transition rules (see [Workflows](/projects/workflows)). |
+| **Task types** | The kinds of work tracked in the project (Bug, Feature, etc.) and their per-field rules. |
+| **Field collections** | Groups of custom fields attached to the project. |
+| **Views** | Which project views are enabled: Board, List, Backlog, Sprints, Timeline, Calendar, Queues, Portal, SLA, Time, Docs, Files, Reports. |
+
+## Template scope
+
+| Scope | Description |
+|---|---|
+| **Global** | Available in every Space across the instance. Managed in **Admin → Project Templates**. |
+| **Space** | Available only within one Space. Created by Space administrators. |
+
+---
+
+## Creating a template
+
+<Steps>
+  <Step title="Open Project Templates">
+    Go to **Admin → Project Templates** and click **+ New Template**.
+  </Step>
+  <Step title="Set the name, icon, and description">
+    Give the template a clear name that describes the use case (e.g. "IT Service Desk", "Software Sprint", "Customer Onboarding"). Add an optional description so project creators know what the template is for.
+  </Step>
+  <Step title="Assign a workflow">
+    Select one or more workflows from the list of global workflows. Mark one as the **default** — this is the workflow applied when a project is created from the template.
+
+    <Note>
+      Only workflows created under **Admin → Workflows** appear here. Create your workflow there first if it does not appear in the list.
+    </Note>
+  </Step>
+  <Step title="Assign task types">
+    Select the task types to include. Mark one as the default type — new tasks will use this type unless the user changes it. Task types must exist at the global level (**Admin → Task Types**) before they can be added to a template.
+  </Step>
+  <Step title="Assign field collections">
+    Select one or more field collections to attach. All custom fields in those collections will be available on tasks in projects created from this template.
+  </Step>
+  <Step title="Choose enabled views">
+    Toggle which project views are enabled. Disabling a view removes it from the navigation for all projects created from this template.
+
+    | View | What it provides |
+    |---|---|
+    | **Board** | Kanban columns by status |
+    | **List** | Dense table of all tasks |
+    | **Backlog** | Unplanned tasks outside sprints |
+    | **Sprints** | Sprint planning and burndown |
+    | **Timeline** | Gantt-style roadmap |
+    | **Calendar** | Task dates in a calendar layout |
+    | **Queues** | Named filtered triage views |
+    | **Portal** | External customer submission form |
+    | **SLA** | Response and resolution time tracking |
+    | **Time** | Time entry and logging |
+    | **Docs** | Project-scoped documentation |
+    | **Files** | File attachments |
+    | **Reports** | Project-level reports |
+  </Step>
+  <Step title="Publish the template">
+    Enable the **Published** toggle to make the template available in the project creation gallery. Unpublished templates are only visible to administrators.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The template is now available when creating a project.
+  </Step>
+</Steps>
+
+---
+
+## Editing a template
+
+Open a template from the gallery and click **Edit**. You can change the name, description, workflow, task types, field collections, or enabled views at any time.
+
+### Propagating changes to linked projects
+
+Every time you save structural changes to a template (adding/removing a workflow, task type, or field collection), the template's version number increments. Collabase detects which linked projects are behind the current version.
+
+To push the updated configuration to all linked projects, click **Propagate to linked projects** on the template detail page. This applies the changes to every project that is still linked to this template and has not been detached.
+
+<Warning>
+  Propagation overwrites the workflow, task type, and field collection assignments on all linked projects with the current template configuration. Any manual overrides made directly on those projects will be replaced.
+</Warning>
+
+---
+
+## Deleting a template
+
+Click **Delete** on a template to remove it. Deleting a template does not delete the projects that were created from it — it only breaks the template link. Affected projects are automatically detached and keep their current configuration.
+
+---
+
+## Linked vs. detached projects
+
+A project created from a template stays **linked** to it by default. Linked projects can receive propagated updates from the template.
+
+A project can be **detached** from its template at any time from **Project → Settings → General → Detach from template**. After detaching:
+
+- The project keeps its current workflow, task types, and field collections.
+- It no longer appears in the list of linked projects for the template.
+- Future template changes do not affect it.
+
+Detaching is permanent and cannot be undone.
+
+---
+
+## Setup checklist
+
+Before creating a template, make sure these exist at the global level:
+
+- [ ] At least one workflow configured in **Admin → Workflows**
+- [ ] Task types configured in **Admin → Task Types** (if you want per-type field rules)
+- [ ] Field collections configured in **Admin → Custom Fields → Collections** (if you need custom fields)
+
+Once those are in place, creating the template itself takes under five minutes.

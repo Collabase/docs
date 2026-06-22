@@ -1,0 +1,169 @@
+---
+sidebarTitle: "Setting Up a Project"
+description: "A step-by-step guide to configuring a project from scratch — workflows, task types, field collections, and templates."
+---
+
+# Setting Up a Project
+
+A project in Collabase is made up of four building blocks that work together: **workflows**, **task types**, **field collections**, and optionally a **project template** that bundles all three into a reusable starting point. This guide walks you through setting up each piece and explains how they connect.
+
+## The building blocks
+
+<CardGroup cols={2}>
+  <Card title="Workflows" icon="arrow-right-arrow-left">
+    Define the statuses a task moves through (e.g. Open → In Review → Done) and the transition rules between them.
+  </Card>
+  <Card title="Task Types" icon="tag">
+    Categorize work by kind — Bug, Feature, Change Request, Incident. Each type controls which fields appear or are required.
+  </Card>
+  <Card title="Field Collections" icon="database">
+    Named groups of custom fields that can be attached to a project or bundled into a template. One collection can be reused across many projects.
+  </Card>
+  <Card title="Project Templates" icon="layout-template">
+    A saved configuration that bundles a workflow, task types, field collections, and enabled views. Apply a template when creating a project to skip manual setup.
+  </Card>
+</CardGroup>
+
+---
+
+## Step 1 — Configure a workflow
+
+A workflow defines the statuses that tasks in your project can have and how they move between them.
+
+<Steps>
+  <Step title="Open Workflow settings">
+    Navigate to **Admin → Workflows** (for a global workflow reused across projects) or **Project → Settings → Statuses** (for a project-specific workflow).
+  </Step>
+  <Step title="Add statuses">
+    Click **+ New Status** for each stage in your process. Give each status a name (e.g. "Open", "In Progress", "In Review", "Done"), a color, and a category.
+
+    | Category | Used for |
+    |---|---|
+    | **TODO** | Work not yet started. Appears in the backlog. |
+    | **IN_PROGRESS** | Work actively underway. Counted in sprint velocity. |
+    | **DONE** | Completed work. Excluded from SLA tracking. |
+  </Step>
+  <Step title="Set transition rules (optional)">
+    By default tasks can move to any status freely. To enforce a fixed path, open **Settings → Transitions** and define which statuses each status is allowed to move to. Any unlisted transition is blocked.
+  </Step>
+  <Step title="Reorder statuses">
+    Drag statuses into the order you want. The order here matches the left-to-right column order on the Kanban board.
+  </Step>
+</Steps>
+
+<Note>
+  Workflows created under **Admin → Workflows** are global and can be assigned to multiple project templates. A workflow created inside a specific project's settings only applies to that project.
+</Note>
+
+---
+
+## Step 2 — Create task types
+
+Task types let you distinguish between different kinds of work and control which fields appear for each.
+
+<Steps>
+  <Step title="Open Task Types">
+    Go to **Admin → Task Types** to create a type that is available in every project, or go to **Project → Settings → Task Types** to create one local to a specific project.
+  </Step>
+  <Step title="Add a new type">
+    Click **+ New Task Type**. Set a name (e.g. "Bug", "Feature", "Epic"), an icon, and a color.
+  </Step>
+  <Step title="Configure field rules">
+    For each type, add field rules to control how standard and custom fields behave:
+
+    | Rule | Effect |
+    |---|---|
+    | **Required** | The field must be filled before the task can be saved. |
+    | **Hidden** | The field is not shown in the task form for this type. |
+    | **Ordered** | Sets the display position of the field in the task detail view. |
+
+    Example: a "Bug" type might require "Steps to Reproduce" (a custom text field) and hide "Story Points".
+  </Step>
+  <Step title="Save">
+    Click **Save**. The type is immediately available when creating tasks at the configured level.
+  </Step>
+</Steps>
+
+### Inheritance
+
+Task types follow a three-level hierarchy. Each level can add types but cannot remove types defined at a higher level.
+
+| Level | Where to configure | Visible in |
+|---|---|---|
+| **Global** | Admin → Task Types | Every project in the instance |
+| **Space** | Space Settings → Task Types | Every project in that Space |
+| **Project** | Project → Settings → Task Types | That project only |
+
+---
+
+## Step 3 — Create a field collection
+
+A field collection is a named group of custom fields. Instead of assigning individual custom fields to each project, you group them once and attach the collection.
+
+<Steps>
+  <Step title="Open Custom Fields">
+    Go to **Admin → Custom Fields**, then open the **Collections** tab.
+  </Step>
+  <Step title="Create a collection">
+    Click **+ New Collection**. Give it a name that describes the use case (e.g. "IT Service Desk Fields", "Bug Report Fields").
+  </Step>
+  <Step title="Add fields to the collection">
+    Click **+ Add Field** within the collection. For each field, choose a type:
+
+    | Field type | Use when you need |
+    |---|---|
+    | **Text** | A short single-line value |
+    | **Textarea** | A longer multi-line value |
+    | **Select** | One option from a fixed list |
+    | **Multi-select** | Multiple options from a fixed list |
+    | **User / Multi-user** | A person or team member picker |
+    | **Date** | A date value |
+    | **Checkbox** | A true/false toggle |
+    | **Number** | A numeric value |
+    | **Rating** | A star or numeric rating |
+    | **Progress** | A percentage or progress bar value |
+    | **URL / Email / Phone** | Formatted contact or link fields |
+    | **Currency** | A monetary amount |
+    | **Location** | A geographic address |
+    | **Registry Object** | Links to a record in the Registry |
+    | **Relation / Object Relation** | Links to another task or object |
+  </Step>
+  <Step title="Assign the collection to a project">
+    Open **Project → Settings → Fields**, click **+ Attach Collection**, and select the collection. All fields in the collection immediately become available on tasks in that project.
+  </Step>
+</Steps>
+
+<Note>
+  A collection can be attached to multiple projects. Changes to the collection (adding or removing fields) automatically apply to all projects it is assigned to.
+</Note>
+
+---
+
+## Step 4 — Apply a project template (optional)
+
+If your admin has created project templates, you can skip steps 1–3 entirely by applying a template when you create the project.
+
+<Steps>
+  <Step title="Create a new project">
+    Inside a Space, click **+ New Project**.
+  </Step>
+  <Step title="Choose a template">
+    In the project creation dialog, select a template from the gallery. Each template shows the included workflow, task types, and field collections.
+  </Step>
+  <Step title="Confirm and create">
+    Click **Create Project**. The workflow, task types, and field collections from the template are applied automatically.
+  </Step>
+</Steps>
+
+### Linked vs. detached projects
+
+When a project is created from a template it stays **linked** to that template by default. This means:
+
+- If an admin updates the template (e.g. adds a new task type or changes a field collection), those changes can be propagated to all linked projects.
+- You can see the template link status in **Project → Settings → General**.
+
+If you need to customize the project independently, click **Detach from template** in General settings. After detaching, the project manages its own configuration and no longer receives template updates.
+
+<Warning>
+  Detaching from a template is permanent. The project keeps its current configuration but will no longer receive updates when the template changes.
+</Warning>
