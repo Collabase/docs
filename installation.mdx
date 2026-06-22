@@ -59,13 +59,18 @@ Then run the installer:
 bash install.sh
 ```
 
-The installer will ask you three questions:
+The installer will ask you four questions:
 
 | Question | What to enter |
 |---|---|
 | **Your URL** | The address where Collabase will be accessible, e.g. `https://collabase.yourcompany.com` |
 | **Admin email** | The email address for the initial admin account |
 | **Admin password** | Choose a secure password (at least 8 characters) |
+| **Database password** | Choose a secure password for the internal database (at least 8 characters). Store this in a safe place — you will need it if you ever restore from a backup or migrate your database. |
+
+<Note>
+  The database password is used internally by Collabase and is never entered in the app itself. It does not need to be memorable — a password manager entry works well.
+</Note>
 
 After you confirm, the installer downloads all required components and starts Collabase. **This typically takes 2–5 minutes** depending on your internet connection.
 

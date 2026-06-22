@@ -1,104 +1,102 @@
 ---
 sidebarTitle: "Updates"
-description: "How to update Collabase to a new version — download, extract, migrate, and restart."
+description: "How to update Collabase to a new version. The update script handles everything automatically."
 ---
 
-Collabase is distributed as versioned ZIP release packages. Updates are applied by replacing the current installation with the new package and running any database migrations that come with it.
+Collabase updates are applied with a single command. The update script creates a database backup, downloads the latest version, runs any required changes, and restarts everything.
 
 <Warning>
-  Never apply a Collabase update by pulling from git directly on a production server. Always use the official ZIP release packages. Never run `install.sh` on an existing installation — that script is for first-time installs only.
+  Do not run `install.sh` on an existing installation. Use `update.sh` for all updates. Running the installer again on a live system will overwrite your configuration.
 </Warning>
 
 ---
 
 ## Before you update
 
-Complete this checklist before starting any update:
-
-- [ ] Back up the database (see [Backup & Restore](/admin/backup))
-- [ ] Back up uploaded files if you use local file storage
-- [ ] Note the current version so you can reference it if a rollback is needed
-- [ ] Schedule the update during a low-traffic window — the application will be briefly unavailable
-- [ ] Notify users in advance if the downtime window is significant
+- [ ] Make sure you have at least 2 GB of free disk space for the download
+- [ ] Schedule the update during a low-traffic window — the application restarts and is briefly unavailable
+- [ ] Notify users in advance if the downtime matters for your team
+- [ ] Read the [release notes](/changelog/overview) for the new version — some releases include manual steps
 
 ---
 
-## Update steps
+## Running the update
+
+Connect to your server and run:
+
+```bash
+cd /path/to/your/deployment
+bash update.sh
+```
+
+The script will:
+
+1. Create a database backup in `deployment/backups/` before making any changes
+2. Download the latest version
+3. Restart all services with the new version
+4. Wait for the application to come back online and confirm it is healthy
+
+The whole process typically takes **2–5 minutes** depending on your server's internet connection.
+
+<Note>
+  The update script keeps the last 7 days of pre-update backups automatically. Older backup files are removed after a successful backup.
+</Note>
+
+---
+
+## After the update
+
+Open Collabase in a browser and confirm it loads correctly. Check the current version in **Admin → Settings → About**.
+
+---
+
+## If the update fails
+
+If the script exits with an error, the most likely cause is a database connectivity issue. Check the logs:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml logs collabase-app --tail 50
+```
+
+If the application fails to start after the update, the pre-update backup created in step 1 is still in `deployment/backups/`. See [Backup & Restore](/admin/backup) for restore instructions.
+
+---
+
+## Checking for database password issues
+
+If your installation was set up before version 0.9.1, the update script will stop and show an error if your database password is set to the default value. Follow the on-screen instructions to change it:
 
 <Steps>
-  <Step title="Back up your database">
-    Always create a fresh backup immediately before an update, even if you ran one recently:
-    ```bash
-    docker exec collabase-postgres pg_dump -U collabase collabase | \
-      gzip > "backup-pre-update-$(date +%Y%m%d-%H%M%S).sql.gz"
-    ```
-    Keep this file until you have confirmed the update completed successfully.
+  <Step title="Choose a new secure database password">
+    Pick a strong password and store it in a secure location (password manager recommended).
   </Step>
-  <Step title="Download the new release package">
-    Get the latest ZIP from the Collabase releases page. Save it to your server:
+  <Step title="Update the password in the database">
     ```bash
-    wget https://releases.collabase.io/collabase-v<version>.zip
+    docker exec -it collabase-postgres psql -U collabase -c "ALTER USER collabase PASSWORD 'your-new-password';"
     ```
-    Replace `<version>` with the version number you are installing.
+    Replace `your-new-password` with the password you chose.
   </Step>
-  <Step title="Extract the package">
-    Extract the ZIP alongside your current installation:
+  <Step title="Update the password in your configuration file">
+    Open `deployment/.env` in a text editor and change the `POSTGRES_PASSWORD` line to your new password.
+  </Step>
+  <Step title="Re-run the update">
     ```bash
-    unzip collabase-v<version>.zip -d collabase-new
+    bash update.sh
     ```
-  </Step>
-  <Step title="Stop the application">
-    ```bash
-    docker compose -f deployment/docker-compose.release.yml stop collabase-app
-    ```
-    The database container should remain running so migrations can connect to it.
-  </Step>
-  <Step title="Replace the application files">
-    Copy the new files over the existing installation. Preserve your `.env` file and any local configuration:
-    ```bash
-    rsync -av --exclude='.env' --exclude='deployment/backups/' \
-      collabase-new/ /opt/collabase/
-    ```
-    Adjust the paths to match your installation directory.
-  </Step>
-  <Step title="Run database migrations">
-    Apply any schema changes that come with the new version:
-    ```bash
-    npx prisma migrate deploy
-    ```
-    This is safe to run — it only applies migrations that have not been applied yet.
-  </Step>
-  <Step title="Start the application">
-    ```bash
-    docker compose -f deployment/docker-compose.release.yml up -d
-    ```
-  </Step>
-  <Step title="Verify the update">
-    Open Collabase in a browser and confirm that it loads correctly. Check the version number in **Admin → Settings → About** to confirm the new version is running.
   </Step>
 </Steps>
 
 ---
 
-## Checking the current version
+## Keeping your configuration current
 
-To see which version of Collabase is installed, go to **Admin → Settings → About**. The version number is shown at the top of the page.
-
----
-
-## If the migration fails
-
-If `npx prisma migrate deploy` fails:
-
-- Check whether the pgvector extension is installed in PostgreSQL (see [Troubleshooting — Migration failures](/admin/troubleshooting#migration-failures))
-- If the error references a specific migration file, apply it directly using the manual migration method described in the Troubleshooting page
-- Do not start the application until migrations have completed successfully — running a new application version against a partially-migrated database can cause data corruption
+New versions occasionally add required configuration options. The update script adds missing options automatically. After an update, review `deployment/.env` if you see any warnings about new configuration in the output.
 
 ---
 
 ## Rolling back an update
 
-If the new version has a critical problem, restore the database backup you created before the update and reinstall the previous version package.
+If the new version has a critical problem, restore the database backup created before the update and restart the previous version.
 
 <Steps>
   <Step title="Stop the application">
@@ -107,59 +105,27 @@ If the new version has a critical problem, restore the database backup you creat
     ```
   </Step>
   <Step title="Restore the pre-update database backup">
+    Find your backup file in `deployment/backups/` — it is named with the timestamp of when the update ran:
     ```bash
-    gunzip -c backup-pre-update-<timestamp>.sql.gz | \
+    gunzip -c deployment/backups/collabase-YYYYMMDD-HHMMSS.sql.gz | \
       docker exec -i collabase-postgres psql -U collabase collabase
     ```
   </Step>
-  <Step title="Reinstall the previous version">
-    Extract the previous version package and replace the application files, then start the application.
+  <Step title="Start the application">
+    ```bash
+    docker compose -f deployment/docker-compose.release.yml up -d
+    ```
   </Step>
 </Steps>
 
 <Note>
-  Rollback is straightforward because the database backup captures the exact state before migration. This is why taking a fresh backup immediately before every update is essential.
+  This rollback procedure restores your data to the state it was in immediately before the update. Any data entered after the update started will not be present after the rollback.
 </Note>
-
----
-
-## Automated update script
-
-If your installation uses the `update.sh` script provided in the deployment package, it automates steps 1–7 above:
-
-```bash
-bash deployment/update.sh
-```
-
-The script creates a database backup before making any changes, applies the update, runs migrations, and restarts services. It prints a confirmation when complete. This typically takes 2–5 minutes depending on your internet connection.
-
-<Note>
-  Even when using `update.sh`, verify the application is working correctly after the update completes.
-</Note>
-
----
-
-## Version history and changelog
-
-Collabase publishes release notes with each version at [collabase.io/changelog](https://collabase.io/changelog). Read the release notes before updating — they list new features, changed behavior, and any manual steps required for that specific release (beyond the standard migration command).
-
-Some releases include breaking changes that require additional steps — for example, changes to environment variable names, required new settings, or changes to the Docker Compose configuration. These are always called out explicitly in the release notes.
-
----
-
-## Keeping your environment variables current
-
-New Collabase versions occasionally introduce new required environment variables. After extracting the release package, compare the new `.env.example` file with your existing `.env` file and add any variables that are new. Missing required variables cause the application to fail at startup.
-
-```bash
-diff .env.example .env
-```
-
-Lines in `.env.example` but not in `.env` are candidates to add. Review each one and set the appropriate value for your environment before starting the application.
 
 ---
 
 ## Related pages
 
-- [Backup & Restore](/admin/backup) — create a backup before every update
-- [Troubleshooting](/admin/troubleshooting) — what to do if something fails after an update
+- [Backup & Restore](/admin/backup) — how backups work and how to restore them
+- [Hosting & Architecture](/admin/hosting) — overview of what runs on your server
+- [Troubleshooting](/admin/troubleshooting) — what to do if something fails

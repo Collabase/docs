@@ -15,6 +15,16 @@ All Collabase data — pages, tasks, users, settings, automations, test cases, a
 
 ---
 
+## Automatic pre-update backups
+
+Every time you run `bash update.sh`, Collabase automatically creates a database backup in `deployment/backups/` before applying the update. These backups are kept for 7 days and then removed automatically. They are intended as a safety net for rollbacks, not as your primary backup strategy.
+
+<Note>
+  Pre-update backups cover the database only. Uploaded files are not included. Set up your own regular backup schedule (see below) that covers both the database and file storage.
+</Note>
+
+---
+
 ## What to back up
 
 | Data | Where it lives | How to back up |

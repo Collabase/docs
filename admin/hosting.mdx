@@ -1,0 +1,135 @@
+---
+sidebarTitle: "Hosting & Architecture"
+description: "An overview of how Collabase runs on your server — what services are included, what they do, and what resources they use."
+---
+
+Collabase runs entirely on your server. No data leaves your infrastructure. This page explains what is running, how it is connected, and what you need to know to operate it reliably.
+
+---
+
+## Services overview
+
+Collabase starts several services when it launches. Each one has a specific role:
+
+| Service | Role |
+|---|---|
+| **Application** | The main Collabase web interface and all its features |
+| **Database** | Stores all your content — pages, tasks, users, settings, and everything else |
+| **Queue** | Handles background jobs: automation runs, AI indexing, notifications |
+| **Reverse proxy** | Handles HTTPS, routes traffic to the application, enforces security headers and rate limits |
+| **Document processor** | Converts uploaded files (PDFs, Word documents, etc.) and generates printable exports |
+| **Code runner** | Executes code blocks in automation workflows in an isolated sandbox |
+| **AI engine** | Powers the Brain feature — local AI search, chat, and document analysis |
+
+All services run as isolated processes with restricted permissions. None of them have access to your host system beyond what they need to function.
+
+<Note>
+  The AI engine is only started on servers with at least 4 GB of RAM. On smaller servers, all features except Brain work normally.
+</Note>
+
+---
+
+## Memory requirements
+
+| Configuration | Minimum RAM | Recommended RAM |
+|---|---|---|
+| Standard (without AI) | 2 GB | 3 GB |
+| With AI (Brain feature) | 4 GB | 6 GB |
+
+The installer detects your available RAM and automatically starts the right configuration. You do not need to select this manually.
+
+---
+
+## Disk usage
+
+| What | Typical size |
+|---|---|
+| Application and services | ~2 GB |
+| Database (grows with usage) | Starts at ~200 MB |
+| Uploaded files | Depends on your team |
+| Pre-update backups (7-day rolling) | ~50–200 MB depending on database size |
+
+Plan for at least **20 GB** of free disk space to start. Monitor disk usage as your team adds content and uploads files.
+
+---
+
+## Networking
+
+Collabase listens on two ports:
+
+| Port | Protocol | Purpose |
+|---|---|---|
+| `80` | HTTP | Redirects all traffic to HTTPS automatically |
+| `443` | HTTPS | All application traffic |
+
+No other ports are exposed to the network. All internal communication between services happens inside an isolated network on your server — nothing is accessible from outside.
+
+### HTTPS certificates
+
+If you enter a real domain name during installation (e.g. `https://collabase.yourcompany.com`), Collabase provisions a free TLS certificate automatically using Let's Encrypt. The certificate renews itself before it expires — no manual action required.
+
+If you use an IP address or `localhost`, a self-signed certificate is used instead. Browsers will show a security warning in this case.
+
+### Rate limiting
+
+Authentication endpoints are rate-limited to prevent brute-force login attempts. If a single IP address sends too many login requests in a short period, further requests from that address are temporarily blocked. This happens automatically — no configuration is required.
+
+---
+
+## Data persistence
+
+All data is stored in named volumes on your server. These volumes survive container restarts, updates, and even full reinstalls of the application files — as long as the volumes themselves are not deleted.
+
+| Data | Where it is stored |
+|---|---|
+| Database contents | Persistent volume on your host |
+| Uploaded files | Persistent volume on your host |
+| Document storage | Persistent volume on your host |
+| HTTPS certificate | Persistent volume on your host |
+
+<Warning>
+  Deleting Docker volumes removes all data permanently. Never run `docker volume rm` on your Collabase volumes unless you intend to wipe the installation completely.
+</Warning>
+
+---
+
+## Security model
+
+Collabase is designed for self-hosted, private deployment:
+
+- **All services run as non-root users.** If a service is compromised, the attacker cannot access the rest of the host system.
+- **No data leaves your server.** All AI processing happens locally. No content, metadata, or telemetry is sent externally.
+- **Authentication endpoints are rate-limited.** Brute-force attacks against login are blocked automatically.
+- **Security headers are set on all responses.** The reverse proxy adds headers that protect against common web attacks (clickjacking, MIME sniffing, etc.).
+- **The database is not accessible from the network.** It only accepts connections from other services on the same internal network.
+
+---
+
+## Updating Collabase
+
+Updates are applied with a single command that handles everything automatically. See [Updates](/admin/updates) for the full procedure.
+
+---
+
+## Monitoring your installation
+
+To check whether all services are running:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml ps
+```
+
+A healthy installation shows all services with a `healthy` or `running` status. If any service shows `restarting`, check its logs:
+
+```bash
+docker compose -f deployment/docker-compose.release.yml logs <service-name> --tail 50
+```
+
+---
+
+## Related pages
+
+- [Installation](/installation) — set up Collabase for the first time
+- [Updates](/admin/updates) — apply updates and roll back if needed
+- [Backup & Restore](/admin/backup) — protect your data
+- [Troubleshooting](/admin/troubleshooting) — diagnose common issues
