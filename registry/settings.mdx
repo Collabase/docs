@@ -20,12 +20,12 @@ Click **Save** after changing any detail field.
 
 ## Schema visibility
 
-Visibility controls who can see this schema and the objects inside it.
+Visibility controls who can see this schema and the objects inside it. Because Registry is an instance-level module — not tied to any Space — visibility is defined at the instance level.
 
 | Setting | Who has access |
 |---|---|
-| **Private** | Only you (the schema creator). Other users, including Space admins, cannot see it. |
-| **Public** | All authenticated users across the entire Collabase instance, regardless of which Space they belong to. |
+| **Private** | Only you (the schema creator). No other user can see or access this schema or its objects. |
+| **Public** | All authenticated users across the entire Collabase instance. |
 
 To change visibility, select the setting you want and click **Save**.
 
@@ -52,7 +52,9 @@ The new name appears in the Registry sidebar and throughout the UI immediately.
 
 The user who created a schema is its owner. Schema ownership determines the **Private** visibility behavior — a private schema is visible only to its owner. There is currently no way to transfer ownership of a schema to another user.
 
-Space admins can see and manage all schemas in a Space regardless of ownership.
+<Note>
+  Registry is not scoped to a Space. Space admins have no special access to Registry schemas — visibility is controlled exclusively by the **Private / Public** setting above.
+</Note>
 
 ## Deleting a schema
 

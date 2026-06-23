@@ -7,7 +7,11 @@ description: "The Registry is Collabase's built-in structured data store — def
 
 The Registry is Collabase's flexible internal data store. Use it to build a structured database for any kind of information your organization needs to track — customers, assets, vendors, servers, contracts, products, configurations — without needing a separate tool or writing any code.
 
-Think of it like a CRM or a custom database that lives inside Collabase and connects directly to your tasks, pages, and automation workflows.
+Think of it like a CRM or a custom database that lives inside Collabase.
+
+<Note>
+  Registry is an **instance-level** module. Schemas and the objects inside them are not tied to any specific Space — they are shared across the entire Collabase instance. You open Registry directly from the main navigation sidebar, not from within a Space. To connect registry objects to tasks or projects, configure a custom field of type **Registry Object** on the relevant project.
+</Note>
 
 ## What you can build
 
@@ -85,6 +89,11 @@ A relation is a directed link from one object to another. Relations are defined 
 | Customer database | Customer, Contact, Deal, Support ticket |
 | Product catalog | Product, Category, SKU, Supplier |
 
-## Integration with tasks
+## Connecting Registry to your work
 
-Registry objects can be linked to project tasks. When a custom field of type **Registry Object** is configured on a project, tasks in that project can reference a specific registry object. Linked tasks are visible from the object's detail view in the browser.
+Registry objects are instance-level data — they are not created inside a Space and are not automatically visible within projects. To connect them to your work, use custom fields:
+
+- **Link to tasks:** Add a custom field of type **Registry Object** to a project. Once configured, tasks in that project can reference a specific registry object from that field. All linked tasks are visible from the object's detail view in the object browser.
+- **Link to pages:** Add a **Registry Object** custom field to a page collection to reference objects from documentation.
+
+This separation is intentional — the same registry object (for example, a vendor or a server) can be referenced by tasks in many different projects without duplicating the data.
