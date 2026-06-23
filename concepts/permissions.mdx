@@ -1,152 +1,352 @@
 ---
 sidebarTitle: "Permissions"
-description: "How access control works in Collabase — three layers of permissions: instance roles, space roles, and resource-level permissions."
+description: "How access control works in Collabase — two independent permission worlds: global modules and space modules, each with their own roles and schemes."
 ---
 
-Collabase uses three layers of permissions. Understanding all three layers helps you give people exactly the access they need — no more, no less.
+Collabase uses two independent permission worlds. Understanding both helps you give teams exactly the access they need across global tools and individual spaces.
 
 ---
 
-## Layer 1: Instance roles
+## Two permission worlds
 
-Every user account has an instance-level role. This is the broadest layer — it applies across the entire Collabase platform.
+```
+┌────────────────────────────────────────────────────────┐
+│  GLOBAL MODULES — apply instance-wide                  │
+│  Registry · Automation · Intranet · Time Reports       │
+│  Access is granted to Groups by module, not per space  │
+├────────────────────────────────────────────────────────┤
+│  SPACE MODULES — governed by a Permission Scheme       │
+│  Projects · Docs · Test Management · Blog              │
+│  One Scheme covers all modules inside a space          │
+└────────────────────────────────────────────────────────┘
+```
+
+**System Admins** bypass both worlds — they have full access to everything, everywhere.
+
+---
+
+## Instance roles
+
+Every user account has an instance-level role. This is the broadest layer.
 
 | Role | What they can do |
 |---|---|
-| **Admin** | Full access to all admin settings, all spaces, all content, and all system configuration. Can manage users, groups, and identity providers. |
-| **User** | Standard access. Can work in any space they are invited to. Cannot access admin settings. |
-| **Viewer** | Read-only at the instance level. Can read content in spaces they are invited to, but cannot create or edit anything unless a space role grants more access. |
+| **Admin** | Full access to all admin settings, all spaces, all content, and all system configuration. |
+| **User** | Standard access — can work in spaces they are invited to; cannot access admin settings. |
 
-Instance roles are set by an admin under **Admin → Users**. A new user created manually receives the **User** role by default.
+Instance roles are set under **Admin → Users**.
 
 ---
 
-## Layer 2: Space roles
+## Global modules
 
-Within each space, members have a space-level role that controls what they can do inside that space. This role is assigned when a user or group is added to the space.
+Global modules are not tied to any space. Access is controlled per module by assigning groups a role in **Admin → Roles & App Access**.
+
+### Registry
+
+| Role | Access |
+|---|---|
+| **Admin** | Create and delete schemas, access all schemas, global import/export |
+| **User** | Access the Registry module — specific schema access is controlled per schema (see below) |
+
+Users without a Registry group assignment cannot see the Registry module at all.
+
+**Per-schema permissions** — each schema has its own access configuration:
 
 | Role | What they can do |
 |---|---|
-| **Owner** | Full control of the space — manage members, change settings, enable or disable modules, and delete the space |
-| **Member** | Create and edit all content within the space — pages, tasks, test cases, automations, registry objects |
-| **Viewer** | Read-only access within the space — cannot create or edit content |
+| **Admin** | Edit schema structure, manage all objects, import/export CSV, delete the schema |
+| **Editor** | Edit field definitions, create/edit/delete objects, import CSV |
+| **Contributor** | Create and read objects |
+| **Viewer** | Read objects only |
 
-### Permissions by space role
+Configure per-schema access from the schema's **Settings → Permissions** tab.
 
-| Action | Owner | Member | Viewer |
+### Intranet
+
+| Role | Access |
+|---|---|
+| **Admin** | Full access — configure widgets, categories, and settings; create and publish content |
+| *(all authenticated users)* | Can read Intranet content (news, events, quick links) without a group assignment |
+
+### Automation
+
+All authenticated users can build and manage their own automation rules. There are no group-based module roles for Automation — access to individual rules is controlled per rule:
+
+| Permission | Who it grants |
+|---|---|
+| **View** | See the rule and read its execution log |
+| **Run** | Trigger the rule manually |
+| **Edit** | Change triggers, conditions, and actions |
+| **Enable / Disable** | Pause or activate the rule |
+| **Delete** | Remove the rule permanently |
+
+The rule's creator always has all permissions. You can share specific permissions with individual users or groups in the rule's **Settings → Permissions** tab.
+
+**Run as** — each rule has a "Run as" setting:
+
+| Setting | Effect |
+|---|---|
+| **Triggering user** | Actions appear in the activity log attributed to the user who triggered the run. Recommended for compliance. |
+| **System bot** | Actions appear as an anonymous system user. Useful for background jobs where the triggering user should not be visible. |
+
+### Time Reports
+
+| Role | Access |
+|---|---|
+| **Admin** | View all time entries across all users and spaces, manage billing rates, lock periods, approve time |
+| **Manager** | View time entries from spaces where they are a member — entries outside their spaces are not visible |
+| *(users without a group assignment)* | Can log and view only their own time entries |
+
+---
+
+## Space roles
+
+Within each space, every member has one of four roles. The Space Admin role grants fixed space-management rights; the other three roles are configured through a Permission Scheme.
+
+| Role | Fixed capabilities |
+|---|---|
+| **Space Admin** | Manage space members, change space settings, assign a Permission Scheme, archive the space. Full access to all modules in the space. |
+| **Manager** | Configurable via scheme — typically: manage projects, start/complete sprints, approve content |
+| **Member** | Configurable via scheme — typically: create tasks, pages, test cases, log time |
+| **Viewer** | Configurable via scheme — typically: read-only access to content |
+
+Space roles are assigned in **Space Settings → Members**.
+
+---
+
+## Permission Schemes
+
+A Permission Scheme is a named, reusable template that defines exactly what Managers, Members, and Viewers can do in a space. One scheme can be assigned to many spaces at once — when you update a scheme, all assigned spaces are updated together.
+
+Collabase ships with four built-in schemes. These cannot be deleted but can be cloned and customized.
+
+### Open Scheme *(default)*
+
+A maximally open scheme — ideal for trusting teams where everyone should be able to contribute freely.
+
+| Capability | Manager | Member | Viewer |
 |---|---|---|---|
-| Read pages and tasks | Yes | Yes | Yes |
+| Create and edit tasks | Yes | Yes | No |
+| Edit any task (including others') | Yes | Yes | No |
+| Delete tasks | Yes | Yes | No |
+| Create and start sprints | Yes | Yes | No |
+| Configure boards | Yes | Yes | No |
 | Create and edit pages | Yes | Yes | No |
-| Create and manage tasks | Yes | Yes | No |
-| Create test cases and record results | Yes | Yes | No |
-| Build and run automations | Yes | Yes | No |
-| Manage space members | Yes | No | No |
-| Change space settings (name, visibility, modules) | Yes | No | No |
-| Delete the space | Yes | No | No |
+| Edit any page (including others') | Yes | Yes | No |
+| Archive pages | Yes | No | No |
+| Create and run test cases | Yes | Yes | Yes |
+| Create test runs | Yes | Yes | No |
+| Log time | Yes | Yes | Yes |
+| Upload attachments | Yes | Yes | Yes |
+| Write comments | Yes | Yes | Yes |
+
+### Default Software Scheme
+
+A balanced scheme for engineering and product teams — Members can create and edit their own work; Managers control structural operations like sprints and project settings.
+
+| Capability | Manager | Member | Viewer |
+|---|---|---|---|
+| Create and edit tasks | Yes | Yes | No |
+| Edit any task (including others') | Yes | No | No |
+| Delete tasks | Yes | No | No |
+| Create and start sprints | Yes | No | No |
+| Configure boards | Yes | No | No |
+| Create and edit pages | Yes | Yes | No |
+| Edit any page | Yes | No | No |
+| Create test cases | Yes | Yes | No |
+| Create test runs | Yes | No | No |
+| Execute tests (pass/fail) | Yes | Yes | No |
+| Log time | Yes | Yes | No |
+| Write comments | Yes | Yes | Yes |
+
+### Client / Read-only Scheme
+
+For external stakeholders — clients, auditors, or partners who need visibility without edit access.
+
+| Capability | Manager | Member | Viewer |
+|---|---|---|---|
+| Read tasks and pages | Yes | Yes | Yes |
+| Edit content | Yes | No | No |
+| Write comments | Yes | Yes | No |
+| View test results | Yes | Yes | No |
+| Log time | No | No | No |
+
+### Restricted / Confidential Scheme
+
+For sensitive spaces — HR, Finance, Legal. No public access; detailed audit log always active.
+
+| Capability | Manager | Member | Viewer |
+|---|---|---|---|
+| Access without explicit invitation | No | No | No |
+| Create tasks and pages | Yes | Yes | No |
+| Edit any content | Yes | No | No |
+| Export data | Yes | No | No |
+| View audit log | Yes | No | No |
+
+### Assigning a scheme to a space
+
+<Steps>
+  <Step title="Open Space Settings">
+    Navigate to your space and open **Settings → Permissions**.
+  </Step>
+  <Step title="Select a scheme">
+    Choose a scheme from the dropdown. A preview shows how many spaces are currently using this scheme.
+  </Step>
+  <Step title="Save">
+    The scheme takes effect immediately. All members of the space now operate under the new rules.
+  </Step>
+</Steps>
+
+### Managing schemes
+
+All schemes are managed under **Admin → Permission Schemes**. You can:
+
+- **Clone** any scheme to create an editable copy
+- **Edit** a cloned scheme's rules per role and module
+- **Preview** which spaces will be affected before saving changes
+
+<Note>
+  The four built-in system schemes cannot be edited directly. Clone them first, then customize the copy.
+</Note>
 
 ---
 
-## How the two layers work together
+## Full permission reference
 
-The two layers combine to determine what a user can actually do.
+### Projects — Tasks
 
-- A user with the **Admin** instance role has full access everywhere, regardless of their space role.
-- A user with the **Viewer** instance role who is added to a space as **Member** can create and edit content in that space — the space role grants additional capability within the space.
-- A user with the **User** instance role who is not a member of a space cannot see or access that space at all (unless the space is set to Internal or Public visibility).
+| Permission | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| View tasks | Yes | Yes | Yes | Yes |
+| Create tasks | Yes | Yes | Yes | No |
+| Edit any task | Yes | Yes | Yes | No |
+| Delete tasks | Yes | Yes | No | No |
+| Clone tasks | Yes | Yes | Yes | No |
+| Assign tasks | Yes | Yes | Yes | No |
+| Transition status | Yes | Yes | Yes | No |
+| Link tasks | Yes | Yes | Yes | No |
 
-When in doubt, assign users the **User** instance role and invite them to spaces with the appropriate space role. This gives you precise, per-space control.
+### Projects — Sprints
+
+| Permission | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| Create sprints | Yes | Yes | No | No |
+| Start a sprint | Yes | Yes | No | No |
+| Complete a sprint | Yes | Yes | No | No |
+| Edit sprint details | Yes | Yes | No | No |
+| Delete sprints | Yes | No | No | No |
+
+### Projects — Admin
+
+| Permission | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| Create projects | Yes | Yes | No | No |
+| Edit project settings | Yes | Yes | No | No |
+| Manage project members | Yes | Yes | No | No |
+| Archive a project | Yes | No | No | No |
+| Delete a project | Yes | No | No | No |
+
+### Comments & Attachments
+
+| Permission | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| Write comments | Yes | Yes | Yes | Yes |
+| Edit own comments | Yes | Yes | Yes | Yes |
+| Edit any comment | Yes | Yes | No | No |
+| Delete own comments | Yes | Yes | Yes | Yes |
+| Delete any comment | Yes | Yes | No | No |
+| Upload attachments | Yes | Yes | Yes | No |
+| Delete own attachments | Yes | Yes | Yes | No |
+| Delete any attachment | Yes | Yes | No | No |
+
+### Docs — Pages
+
+| Permission | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| Read pages | Yes | Yes | Yes | Yes |
+| Create pages | Yes | Yes | Yes | No |
+| Edit any page | Yes | Yes | Yes | No |
+| Delete pages | Yes | Yes | No | No |
+| Move pages | Yes | Yes | Yes | No |
+| Archive pages | Yes | Yes | No | No |
+| Manage page permissions | Yes | No | No | No |
+
+### Test Management
+
+| Permission | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| View test cases and results | Yes | Yes | Yes | Yes |
+| Create test cases | Yes | Yes | Yes | No |
+| Edit test cases | Yes | Yes | Yes | No |
+| Delete test cases | Yes | Yes | No | No |
+| Create test runs | Yes | Yes | No | No |
+| Execute tests (pass/fail) | Yes | Yes | Yes | No |
+
+### Time Tracking (in-space)
+
+| Permission | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| Log own time | Yes | Yes | Yes | No |
+| Log time for others | Yes | Yes | No | No |
+| Edit own time entries | Yes | Yes | Yes | No |
+| Edit any time entry | Yes | Yes | No | No |
+| Delete own time entries | Yes | Yes | Yes | No |
+| Delete any time entry | Yes | Yes | No | No |
+| View all time entries | Yes | Yes | No | No |
 
 ---
 
-## Layer 3: Resource-level permissions (pages)
+## Page-level permissions
 
-For pages in the Docs module, you can set explicit permissions per page — beyond what the space role grants.
+For pages in the Docs module, you can restrict or grant access beyond the space role — per individual page.
 
 | Permission | What it allows |
 |---|---|
 | **View** | The user or group can read the page |
 | **Edit** | The user or group can edit the page |
 
-Page permissions are set from the **Share** button on a page. You can grant or restrict access to specific users or groups.
-
-<Note>
-  Page permissions are not inherited from the parent page or from the space. Each page's permissions are managed independently. A user must be a space member (or have explicit page-level access) to see a page.
-</Note>
-
----
-
-## Project roles
-
-Within a project inside a space, members can also have a project-level role that controls their access to that specific project.
-
-| Role | What they can do |
-|---|---|
-| **Owner** | Full project access — manage project members and settings |
-| **Member** | Create and manage tasks within the project |
-| **Viewer** | Read-only access to project tasks |
+Set page permissions from the **Share** button on any page. Page permissions are independent — they are not inherited from the parent page or from the space role.
 
 ---
 
 ## Groups
 
-Groups let you assign permissions to entire teams at once, instead of adding each person individually to every space.
+Groups let you assign space roles and module access to entire teams at once.
 
 <Steps>
   <Step title="Create a group">
     Go to **Admin → Groups** and create a new group. Add the users who belong to it.
   </Step>
-  <Step title="Grant the group access to a space">
-    In the space settings, go to **Members**, add the group, and assign a space role. Every member of the group inherits that role.
+  <Step title="Grant space access">
+    In Space Settings → Members, add the group and assign a space role. Every member of the group inherits that role immediately.
   </Step>
-  <Step title="Manage access centrally">
-    When you add someone to the group, they automatically gain access to all spaces the group has. When you remove them, access is revoked everywhere at once.
+  <Step title="Grant module access">
+    In **Admin → Roles & App Access**, assign the group a role for Registry, Intranet, or Time Reports.
   </Step>
 </Steps>
 
-Groups are ideal for onboarding. Create one group per team, grant it access to the relevant spaces, and add new hires to the group.
+When you add or remove someone from a group, their access across all assigned spaces and modules updates immediately.
 
 ---
 
-## Common permission scenarios
+## Common scenarios
 
 | Scenario | Recommended setup |
 |---|---|
-| External contractor who needs read-only access to one space | Instance role: **User**, Space role: **Viewer** |
-| Developer who creates tasks and pages in their team's space | Instance role: **User**, Space role: **Member** |
-| Team lead who manages space membership | Instance role: **User**, Space role: **Owner** |
-| IT admin managing the whole platform | Instance role: **Admin** |
-| A page shared with a specific person who is not a space member | Add them as a space **Viewer**, then grant page-level **Edit** permission |
-
----
-
-## Public and Internal spaces
-
-Space visibility affects whether non-members can see a space at all:
-
-| Visibility | Effect on non-members |
-|---|---|
-| **Private** | Non-members cannot see the space exists. They need an explicit invitation. |
-| **Internal** | All logged-in users can read the space without being a member. To create or edit content, they still need to be added as a Member. |
-| **Public** | Anyone — including people without a Collabase account — can read the space. |
-
-Even in an Internal or Public space, write access always requires an explicit Member or Owner role assignment.
-
----
-
-## Permission inheritance rules
-
-Collabase does **not** automatically inherit permissions from parent to child in most cases:
-
-- A user with access to a space does **not** automatically get access to every page in it — page-level restrictions can block them from specific pages.
-- A project inside a space does **not** automatically give all space members the same project role — project roles are assigned separately.
-- A group given access to a space does **not** cascade to child groups — each group is managed individually.
-
-This explicit model gives administrators precise control but requires that permissions be set deliberately at each level.
+| External contractor — read-only to one space | Space role: **Viewer**, scheme: Default Software |
+| Developer creating tasks and pages | Space role: **Member**, scheme: Open or Default Software |
+| Team lead managing sprints and project settings | Space role: **Manager** |
+| Space administrator | Space role: **Space Admin** |
+| Global IT admin | Instance role: **Admin** |
+| Registry data steward | Registry group: **Editor** or **Admin** |
+| Time tracking approver | Time Reports group: **Manager** |
 
 ---
 
 ## Related pages
 
-- [Users & Groups](/admin/users-groups) — create users, manage groups, and set instance roles
-- [Space Settings](/concepts/space-settings) — add or remove space members and change space roles
+- [Users & Groups](/admin/users-groups) — create users, manage groups, set instance roles, configure module access
+- [Space Settings](/concepts/space-settings) — assign Permission Schemes, manage space members
 - [Spaces](/concepts/spaces) — visibility settings (Private, Internal, Public)
+- [Permission Schemes](/admin/permission-schemes) — create and manage custom schemes

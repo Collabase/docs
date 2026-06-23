@@ -19,6 +19,7 @@ Only test cases with a status of **READY** are included in test runs. Cases in D
 | **Type** | Yes | Whether this case is MANUAL or AUTOMATED. See type descriptions below. |
 | **Status** | — | DRAFT, READY, or DEPRECATED. Set automatically to DRAFT on creation. |
 | **Linked Page** | No | A link to one page in Collabase Docs — typically a requirement, specification, or design document that this test case verifies. |
+| **Linked Tasks** | No | One or more tasks in Collabase Projects that this test case covers. Use this to connect quality coverage to the work that implements the feature. |
 
 ## Priority levels
 
@@ -103,6 +104,30 @@ Steps are numbered and executed in order during a test run.
     Steps are saved automatically as you add them.
   </Step>
 </Steps>
+
+## Linking tasks to a test case
+
+Each test case can be linked to one or more tasks in Collabase Projects. This makes it easy to see which work items a test case covers — and from the task side, which test cases validate that work.
+
+<Steps>
+  <Step title="Open the test case detail view">
+    Click the case in the project list.
+  </Step>
+  <Step title="Click the Linked Tasks field">
+    In the case sidebar, click **Linked Tasks**. A search box opens.
+  </Step>
+  <Step title="Search for tasks">
+    Type part of the task title or task key (for example, PROJ-42). Results appear as you type. Tasks from any project in the same space are included.
+  </Step>
+  <Step title="Select a task">
+    Click the task in the results list. It is added to the case immediately. Repeat for each additional task.
+  </Step>
+  <Step title="Remove a link">
+    Click the × next to a linked task's name to remove it.
+  </Step>
+</Steps>
+
+Once tasks are linked, they appear in the **Test Management** panel in the task detail view. Any team member with access to the task can see which test cases cover it without leaving the task context.
 
 ## Linking to a requirement page
 

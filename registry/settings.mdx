@@ -18,20 +18,46 @@ Each Registry schema has its own settings panel where you can update its name, i
 
 Click **Save** after changing any detail field.
 
-## Schema visibility
+## Schema permissions
 
-Visibility controls who can see this schema and the objects inside it. Because Registry is an instance-level module — not tied to any Space — visibility is defined at the instance level.
+Access to a schema is controlled by role assignments — you decide who can see it and what they can do. This is separate from the space-level Permission Scheme; Registry is an instance-wide module.
 
-| Setting | Who has access |
+### Schema roles
+
+| Role | What they can do |
 |---|---|
-| **Private** | Only you (the schema creator). No other user can see or access this schema or its objects. |
-| **Public** | All authenticated users across the entire Collabase instance. |
+| **Admin** | Edit schema structure, manage all objects, import/export CSV, delete the schema |
+| **Editor** | Edit field definitions, create/edit/delete objects, import CSV |
+| **Contributor** | Create new objects and read all objects |
+| **Viewer** | Read objects only — no create or edit access |
 
-To change visibility, select the setting you want and click **Save**.
+Users with a **Registry Admin** module role (granted in **Admin → Roles & App Access**) can access all schemas regardless of per-schema assignments.
 
-<Note>
-  Visibility applies to the entire schema. There is no per-object-type or per-object visibility setting. If a schema is public, all its object types and all objects within them are visible to all users.
-</Note>
+### Managing schema permissions
+
+<Steps>
+  <Step title="Open the schema and go to Settings → Permissions">
+    The Permissions tab shows all current user and group assignments.
+  </Step>
+  <Step title="Add a user or group">
+    Click **Add Access**, search for the user or group, and select a role.
+  </Step>
+  <Step title="Save">
+    Access is granted immediately. Users see the schema in their Registry sidebar.
+  </Step>
+</Steps>
+
+To remove access, click the remove icon on the user's or group's row. They immediately lose access to the schema and all its objects.
+
+### Default role
+
+You can set a **Default role** for the schema. Any user with the **Registry User** module access who is not explicitly assigned a role receives this default role when they open the schema.
+
+| Default role | Effect |
+|---|---|
+| *(none — private)* | Only explicitly assigned users and groups can access the schema |
+| **Viewer** | All Registry Users can read objects — no editing |
+| **Contributor** | All Registry Users can create and read objects |
 
 ## Renaming a schema
 
@@ -50,10 +76,10 @@ The new name appears in the Registry sidebar and throughout the UI immediately.
 
 ## Schema ownership
 
-The user who created a schema is its owner. Schema ownership determines the **Private** visibility behavior — a private schema is visible only to its owner. There is currently no way to transfer ownership of a schema to another user.
+The user who created a schema is its owner. There is currently no way to transfer ownership of a schema to another user.
 
 <Note>
-  Registry is not scoped to a Space. Space admins have no special access to Registry schemas — visibility is controlled exclusively by the **Private / Public** setting above.
+  Registry is not scoped to a Space. Space admins have no special access to Registry schemas — access is controlled exclusively through the schema's **Settings → Permissions** tab and the module access role granted in **Admin → Roles & App Access**.
 </Note>
 
 ## Deleting a schema

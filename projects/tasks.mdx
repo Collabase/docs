@@ -92,6 +92,30 @@ Link tasks to show relationships between them. Four link types are available:
 
 To add a link, open a task → **Linked Tasks** section → click **+ Add Link**, choose the type, and search for the task to link.
 
+## Integration panels
+
+The task detail view includes integration panels that provide context from other parts of Collabase without leaving the task. Click the icons in the top bar of the task to open a panel on the right side.
+
+| Panel | When it appears | What it shows |
+|---|---|---|
+| **Time** | When time tracking is enabled for the space | Logged time entries for this task. Start a timer, log time manually, or review the time history. |
+| **GitHub** | When the GitHub integration is active | Branches and pull requests linked to this task. Create a branch or PR directly from the panel. |
+| **Tests** | When Test Management is enabled for the space | Test cases that cover this task, and the test milestone this task is associated with. |
+
+Click the active panel icon a second time to close the panel and return to the activity feed.
+
+### Test Management panel
+
+The Tests panel shows two things:
+
+1. **Linked test cases** — the test cases in your Test Management module that cover this task. These are set from the test case's edit form. Click the external link icon next to a case to open Test Management.
+
+2. **Test milestone** — the milestone this task is associated with. Use the dropdown to link the task to a milestone or switch it to a different one. Click × to remove the association.
+
+<Note>
+  Updating the milestone from the Tests panel requires the **Edit Task** permission. Viewing the panel requires the **View Test Results** permission.
+</Note>
+
 ## Keyboard shortcuts
 
 | Shortcut | Action |
@@ -124,4 +148,33 @@ Custom fields extend the standard field set with fields specific to your workflo
 
 Text, Textarea, Select, Multi-select, User, Multi-user, Date, Checkbox, Number, Rating, Progress, Location, Registry Object, Relation, Object Relation, Priority, URL, Email, Phone, Currency.
 
-Custom field values appear in the right sidebar of the task detail view. Admins configure which fields apply to which task types under **Admin → Custom Fields**.
+Custom field values appear in the right sidebar of the task detail view. Admins configure which fields apply to which task types under **Settings → Fields & Task Types**.
+
+---
+
+## Who can do what with tasks
+
+Task actions are controlled by the space's Permission Scheme. The table below shows the defaults — your space may use a custom scheme with different settings.
+
+| Action | Space Admin | Manager | Member | Viewer |
+|---|---|---|---|---|
+| View tasks | Yes | Yes | Yes | Yes |
+| Create tasks | Yes | Yes | Yes | No |
+| Edit any task | Yes | Yes | Yes | No |
+| Delete tasks | Yes | Yes | No | No |
+| Clone tasks | Yes | Yes | Yes | No |
+| Assign tasks | Yes | Yes | Yes | No |
+| Transition task status | Yes | Yes | Yes | No |
+| Link tasks | Yes | Yes | Yes | No |
+| Write comments | Yes | Yes | Yes | Yes |
+| Edit own comments | Yes | Yes | Yes | Yes |
+| Edit any comment | Yes | Yes | No | No |
+| Delete own comments | Yes | Yes | Yes | Yes |
+| Delete any comment | Yes | Yes | No | No |
+| Upload attachments | Yes | Yes | Yes | No |
+| Delete own attachments | Yes | Yes | Yes | No |
+| Delete any attachment | Yes | Yes | No | No |
+
+<Note>
+  If you see a "Forbidden" error when trying to perform an action, your space role does not include that permission under the current scheme. Contact your Space Admin to adjust your role or the scheme.
+</Note>

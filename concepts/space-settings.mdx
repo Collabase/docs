@@ -43,7 +43,7 @@ The **Members** tab lets you invite individual users or entire groups and assign
     Type a name or email address. Only users who already have a Collabase account appear in the results.
   </Step>
   <Step title="Assign a space role">
-    Choose **Owner**, **Member**, or **Viewer**. See [Permissions](/concepts/permissions) for a breakdown of what each role can do.
+    Choose **Space Admin**, **Manager**, **Member**, or **Viewer**. See [Permissions](/concepts/permissions) for a breakdown of what each role can do.
   </Step>
   <Step title="Click Add">
     The user immediately gains access to the space with the selected role.
@@ -70,6 +70,34 @@ Instead of inviting users one by one, you can grant access to an entire group. A
 
 - To change a member's role, use the role dropdown on their row and save.
 - To remove a member, click the remove button on their row. The user immediately loses access to the space and its content.
+
+---
+
+## Permissions
+
+The **Permissions** tab lets you assign a Permission Scheme to the space and configure per-member roles.
+
+### Permission Scheme
+
+A Permission Scheme defines what Managers, Members, and Viewers can do across all modules in this space. One scheme applies to the whole space.
+
+<Steps>
+  <Step title="Open Space Settings → Permissions">
+    The current scheme is shown at the top of the tab.
+  </Step>
+  <Step title="Select a scheme">
+    Choose from the available schemes in the dropdown. Collabase ships with four built-in schemes (Open, Default Software, Client / Read-only, Restricted / Confidential) plus any custom schemes created by your admin.
+  </Step>
+  <Step title="Save">
+    The new scheme takes effect immediately for all members of the space.
+  </Step>
+</Steps>
+
+<Note>
+  Only Space Admins and instance Admins can change the Permission Scheme for a space.
+</Note>
+
+Custom schemes are created and managed under **Admin → Permission Schemes**. See [Permissions](/concepts/permissions) for a full breakdown of what each scheme allows.
 
 ---
 
@@ -113,20 +141,6 @@ The **Notifications** tab controls space-level notification defaults. Individual
 
 The **Danger zone** tab contains irreversible actions.
 
----
-
-## Related pages
-
-- [Spaces](/concepts/spaces) — what spaces are and how to create them
-- [Permissions](/concepts/permissions) — space roles in detail
-- [Users & Groups](/admin/users-groups) — managing groups for bulk space access
-
----
-
-## Danger zone
-
-The **Danger zone** tab contains irreversible actions.
-
 ### Archive space
 
 Archiving makes the space read-only and hides it from the active space list. No content is deleted. Archived spaces can be restored from **Admin → Spaces**.
@@ -150,3 +164,11 @@ Before deleting, export or back up any content you want to keep. Once deleted, t
     The space and all its content is permanently removed.
   </Step>
 </Steps>
+
+---
+
+## Related pages
+
+- [Spaces](/concepts/spaces) — what spaces are and how to create them
+- [Permissions](/concepts/permissions) — space roles in detail
+- [Users & Groups](/admin/users-groups) — managing groups for bulk space access

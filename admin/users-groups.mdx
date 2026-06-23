@@ -9,16 +9,15 @@ All user and group management is under **Admin → Users** and **Admin → Group
 
 ## Instance roles
 
-Every user in Collabase has one of three instance-level roles. This role controls what the user can do across the entire platform.
+Every user in Collabase has one of two instance-level roles. This role controls what the user can do across the entire platform.
 
 | Role | What they can do |
 |---|---|
 | **Admin** | Full access to all admin settings, all spaces, all system configuration, and all content |
 | **User** | Standard access — can work in any space they are invited to; cannot access admin settings |
-| **Viewer** | Read-only access across all spaces they are invited to; cannot create or edit content |
 
 <Note>
-  Instance roles and space roles work together. A user with the instance role of Viewer can be given the space role of Member in a specific space, which allows them to create content there. See [Permissions](/concepts/permissions) for how the layers interact.
+  Instance roles and space roles work together. A User can be given the space role of Manager or Space Admin in a specific space, which grants them elevated rights inside that space. See [Permissions](/concepts/permissions) for how the layers interact.
 </Note>
 
 ---
@@ -36,7 +35,7 @@ Every user in Collabase has one of three instance-level roles. This role control
     Enter a temporary password. The user will be prompted to set their own password on first login.
   </Step>
   <Step title="Assign an instance role">
-    Choose **User**, **Viewer**, or **Admin**. Most new users should receive the **User** role.
+    Choose **User** or **Admin**. Most new users should receive the **User** role.
   </Step>
   <Step title="Click Create User">
     The account is created immediately. Share the Collabase URL and temporary credentials with the new user.
@@ -98,6 +97,79 @@ Open the group from **Admin → Groups**, go to the **Members** tab, and use the
 ### Using groups in space settings
 
 You can also manage group access from inside a space. Go to **Space Settings → Members → Add Group**, select the group, and assign a space role. See [Space Settings](/concepts/space-settings) for details.
+
+---
+
+## Global module access
+
+Some Collabase modules are instance-wide — not tied to any space. Access to these modules is controlled by assigning a group a role for the module.
+
+**Admin → Roles & App Access** is where you manage these assignments.
+
+| Module | Available roles | What each role can do |
+|---|---|---|
+| **Registry** | Admin, User | Admin: create/delete schemas, global operations. User: access the Registry, with individual schema permissions controlling what they see. |
+| **Intranet** | Admin | Admin: create and manage content, configure settings. All logged-in users can read Intranet content without a group assignment. |
+| **Time Reports** | Admin, Manager | Admin: view all time across all users. Manager: view time from spaces where they are a space member. Without a group assignment, users see only their own time. |
+
+Automation does not use group-based module roles — permissions are set per individual rule.
+
+### Assigning module access to a group
+
+<Steps>
+  <Step title="Open Admin → Roles & App Access">
+    The page lists all global modules and their current group assignments.
+  </Step>
+  <Step title="Click Add Access">
+    Select the module, select the group, and choose the role.
+  </Step>
+  <Step title="Save">
+    Members of the group can now access the module with the selected role immediately.
+  </Step>
+</Steps>
+
+To remove access, click the remove icon on the group's row for that module. Access is revoked immediately.
+
+---
+
+## Permission Schemes
+
+Permission Schemes define what Managers, Members, and Viewers can do inside a space. A scheme is assigned to one or more spaces and controls all space modules at once (Projects, Docs, Test Management, and more).
+
+Schemes are managed under **Admin → Permission Schemes**.
+
+### Built-in schemes
+
+Collabase ships with four system schemes that cannot be deleted:
+
+| Scheme | Best for |
+|---|---|
+| **Open Scheme** | Trusting teams — everyone can contribute freely. Assigned to new spaces by default. |
+| **Default Software Scheme** | Engineering and product teams — Members work freely, Managers control structure. |
+| **Client / Read-only Scheme** | External stakeholders — Managers can edit, others read only. |
+| **Restricted / Confidential** | Sensitive departments (HR, Finance, Legal) — explicit access only, audit always active. |
+
+### Creating a custom scheme
+
+<Steps>
+  <Step title="Open Admin → Permission Schemes">
+    Click **Clone** on any existing scheme to create an editable copy.
+  </Step>
+  <Step title="Rename the clone">
+    Give it a descriptive name so space admins can identify it when assigning it.
+  </Step>
+  <Step title="Edit the permissions matrix">
+    Toggle which actions each role (Manager, Member, Viewer) can perform per module area.
+  </Step>
+  <Step title="Preview affected spaces">
+    Before saving, the editor shows a list of all spaces currently using this scheme, so you can assess the impact of your changes.
+  </Step>
+  <Step title="Save">
+    The updated scheme takes effect immediately in all spaces using it.
+  </Step>
+</Steps>
+
+See [Permissions](/concepts/permissions) for the full permission matrix by role and module.
 
 ---
 

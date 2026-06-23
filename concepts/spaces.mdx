@@ -82,6 +82,23 @@ https://your-collabase-domain/{slug}/tasks/{task-key}
 
 ---
 
+## Space roles
+
+Every member of a space has one of four roles. What each role can do is defined by the space's Permission Scheme.
+
+| Role | Fixed access |
+|---|---|
+| **Space Admin** | Manage members, change settings, assign a Permission Scheme, archive the space. Full access to all modules. |
+| **Manager** | Defined by the scheme — typically: manage projects, start/complete sprints, approve content, full editorial access. |
+| **Member** | Defined by the scheme — typically: create tasks, pages, test cases, log time. |
+| **Viewer** | Defined by the scheme — typically: read-only access to content. |
+
+Space Admins always have full access to the space regardless of the scheme. The scheme only governs what Managers, Members, and Viewers can do.
+
+See [Permissions](/concepts/permissions) for the full breakdown of what each role can do by module and scheme.
+
+---
+
 ## Space home (cockpit)
 
 When you open a space, the first page you see is the **space cockpit** — a summary view that shows:

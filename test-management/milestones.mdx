@@ -86,6 +86,31 @@ Milestone metrics are computed from the results of all linked runs. They update 
   Metrics are computed on demand when you view the milestone. They are not stored separately. A milestone with no linked runs or no completed runs shows N/A for the pass rate.
 </Note>
 
+## Linking a task to a milestone
+
+You can associate a task in Collabase Projects with a test milestone directly from the task's detail view. This lets you see which milestone a piece of work is being tracked under — and gives QA teams traceability from work items to release quality gates.
+
+<Steps>
+  <Step title="Open the task">
+    Navigate to the task in a Collabase project.
+  </Step>
+  <Step title="Open the Test Management panel">
+    In the top bar of the task, click the **Tests** button (the test management icon). The Test Management panel opens on the right side.
+  </Step>
+  <Step title="Select a milestone">
+    In the **Test Milestone** section, click the milestone dropdown. Milestones from all test projects in the same space are shown, grouped by project. Select the milestone that covers this task.
+  </Step>
+  <Step title="Remove the link">
+    To remove the milestone association, click the × button next to the current milestone name.
+  </Step>
+</Steps>
+
+<Note>
+  The Tests button only appears when Test Management is enabled for the space. If you do not see it, ask your space administrator to enable the Test Management module.
+</Note>
+
+A task can be linked to one milestone at a time. To move a task from one milestone to another, select the new milestone — the old association is removed automatically.
+
 ## Using milestones as quality gates
 
 Before shipping a release, open the milestone and check:

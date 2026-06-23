@@ -118,3 +118,30 @@ Go to **Automation → Connections → + New Connection** to set one up. Each co
 | Max action nodes per automation | 50 |
 | Max execution duration | 5 minutes |
 | Approval node timeout | 72 hours |
+
+---
+
+## Rule permissions
+
+Every automation rule has its own access configuration. The rule creator always has full access. You can share specific permissions with other users or groups from the rule's **Settings → Permissions** tab.
+
+| Permission | What it allows |
+|---|---|
+| **View** | See the rule and read its full execution log |
+| **Run** | Trigger the rule manually from the Automation dashboard |
+| **Edit** | Change triggers, conditions, actions, and rule settings |
+| **Enable / Disable** | Activate or pause the rule without editing it |
+| **Delete** | Permanently remove the rule |
+
+Grant permissions to individual users or groups. A user who is not granted at least **View** cannot see the rule exists.
+
+## Run as
+
+Each rule has a **Run as** setting that controls how actions are attributed in the activity log:
+
+| Setting | Effect |
+|---|---|
+| **Triggering user** *(default)* | Actions created by the automation appear in activity logs attributed to the user whose action triggered the run. Recommended for compliance and auditability. |
+| **System bot** | Actions appear attributed to an anonymous system account. Useful for background jobs where the triggering user identity should not be visible. |
+
+Set the **Run as** option in the rule's **Settings** tab.
