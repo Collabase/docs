@@ -1,7 +1,7 @@
 # Contributing to the Collabase documentation
 
-Thanks for improving the docs. Documentation PRs are explicitly welcome — this folder lives in the
-main [Collabase repo](https://github.com/Collabase/collabase) so the community can fix and extend it.
+This folder lives in the main [Collabase repo](https://github.com/Collabase/collabase) so that a
+change to a feature and the change to its documentation travel in the same pull request.
 
 Docs changes follow the same rules as code changes, with one addition: the writing standard.
 

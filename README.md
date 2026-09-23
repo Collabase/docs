@@ -4,8 +4,8 @@ The user documentation for [Collabase](https://github.com/Collabase/collabase) â
 public docs site. Built with [Mintlify](https://mintlify.com): every page is an MDX file with YAML
 frontmatter, and `docs.json` defines the navigation.
 
-**Contributions are welcome.** Docs live in the main Collabase repo precisely so the community can
-fix and improve them.
+Docs live in the main Collabase repo, next to the code they describe, so a feature and its
+documentation change in the same pull request.
 
 ---
 
@@ -36,7 +36,7 @@ The docs exist in two repos, byte-for-byte identical:
 
 | Repo | Path | Role |
 |---|---|---|
-| `Collabase/collabase` (fair-code, public) | `docs/docs/` | **Where you edit.** PRs land here. |
+| `Collabase/collabase` (private) | `docs/docs/` | **Where you edit.** PRs land here. |
 | Publish repo (private) | repo root | **Where it deploys from.** Mintlify builds its default branch. |
 
 Edit in the Collabase repo. A maintainer copies merged changes into the publish repo and deploys.

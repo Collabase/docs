@@ -22,7 +22,12 @@ description: "Work items can be moved to another project or Space, and Collabase
   * **Spending limits for AI:** Three new ceilings on **Admin → Settings → AI settings → Usage** cap tokens per person per day, tokens per month across the instance, and tokens per answer. `0` keeps a limit off, which is the shipped default. See [AI Model & Cost Planning](/admin/ai-costs).
   * **Rebuild the search index on demand:** A **Rebuild** button on the RAG settings page queues everything the semantic index is missing, instead of waiting for the nightly pass. Use it after changing the embedding model.
 
+  * **Phone numbers ask for a country code:** The phone field on your profile, and the one administrators use in user management, now expects an international number such as `+41 44 123 45 67`. Spaces and dashes are fine and are tidied up on save. A number without a country code is refused, and the field says so instead of saving something that cannot be dialled. The field stays optional. See [Your Profile](/concepts/profile).
+
   ### 🎨 Layout & UX
+  * **New icons across the modules:** Projects, Docs, Tests, Times, Registry, Automation and the Intranet have new tiles in the sidebar, and CollabaseAI has a new mark in the chat and on its button.
+  * **A calmer CollabaseAI input box:** The chat input now sits on a filled panel instead of a bordered card, and the note about verifying answers moved above the field where it is read before typing rather than after.
+  * **Personal settings no longer close on a stray click:** Clicking next to the personal settings window used to close it and discard anything you had typed but not saved. It now stays open. Close it with the **✕** or the Escape key as before.
   * **AI settings split into four pages:** The single AI settings page is now an **AI settings** group in the admin sidebar, with separate pages for the language model, the RAG model and pipeline, the re-ranking model, and usage. The old address redirects, so existing bookmarks keep working. See [AI Configuration](/admin/ai-configuration).
   * **Writing assistance pauses during shared editing:** On a page with a live editing session, the `/ai` command and the inline suggestions are switched off. The assistant writes into the document as it generates, which in a shared session means everyone watches half-finished sentences and undo stops behaving. The CollabaseAI panel still works on those pages. See [AI Features](/concepts/ai).
 

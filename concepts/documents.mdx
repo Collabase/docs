@@ -1,0 +1,186 @@
+---
+title: "Documents and attachments"
+description: "Find every file attached to pages and work items in one place, organize it into shared folders, and keep each file's permissions tied to where it was uploaded"
+---
+
+# Documents and attachments
+
+Files are attached where the work happens: a contract on a page, a screenshot on a work item, a
+spreadsheet in a project's documentation. Over time these files spread across dozens of pages and
+work items, and finding one means remembering where it was uploaded. The **Documents** app brings
+every attachment you can open into one place and lets your team organize them into shared folders,
+without moving a single file away from the page or work item it belongs to.
+
+There are two parts to it:
+
+- The **Attachments** macro shows and collects the files of a page directly in its content.
+- The **Documents** app lists the attachments of all your spaces and lets you organize them.
+
+## The Attachments macro
+
+The macro places a live list of the page's attachments anywhere in the page content. Readers see the
+files where they are relevant instead of looking for them in a side panel.
+
+### Add the macro to a page
+
+<Steps>
+  <Step title="Open the page in edit mode">
+    Open the page and start editing.
+  </Step>
+  <Step title="Insert the macro">
+    Type `/attachments` and select **Attachments**, or open the insert menu in the toolbar and choose
+    **Attachments** under **Macros**.
+  </Step>
+  <Step title="Save the page">
+    The list fills as soon as the page is saved. A page that has never been saved shows a hint
+    instead of a list.
+  </Step>
+</Steps>
+
+### Work with the macro
+
+| Action | How |
+|---|---|
+| **Upload** | Click **+** in the macro, or drag files from your computer onto it. This also works while you read the page, without switching to edit mode. |
+| **Preview** | Click a file. PDFs, images, videos, audio and Office documents open in a preview without downloading. |
+| **Download** | Click **Download** in the preview. Files that cannot be previewed offer the download directly. |
+
+Each file can be up to 25 MB, in any format. Files uploaded through the macro are ordinary page
+attachments: they also appear under `...` → **Attachments** and in the Documents app.
+
+<Note>
+  Uploading requires the **Upload attachments** permission in the space. Readers without it see the
+  list but not the upload controls. See [Permissions](/concepts/permissions).
+</Note>
+
+## The Documents app
+
+The Documents app lists every attachment from Collabase Docs pages and from work items that you are
+allowed to open, across all your spaces. Teams use it to find a file without knowing where it was
+uploaded, and to build a shared folder structure for the documents a space works with every day.
+
+### Add Documents to the sidebar
+
+Documents lives in the app drawer at the bottom of the sidebar. Pin it to keep it one click away.
+
+<Steps>
+  <Step title="Open the app drawer">
+    Click **More** at the bottom of the left sidebar.
+  </Step>
+  <Step title="Open Documents">
+    Click **Documents** to open the app.
+  </Step>
+  <Step title="Pin it to the sidebar">
+    Right-click **Documents** in the drawer. It moves to a permanent slot in the sidebar. Right-click
+    the pinned entry and choose **Unpin** to return it to the drawer.
+  </Step>
+</Steps>
+
+### Two views of the same files
+
+Switch between the views with the **View** toggle at the top of the app. Both views show the same
+files. They differ only in how the files are arranged.
+
+| View | Structure | What it is for |
+|---|---|---|
+| **By location** | Space → Docs or Projects → page, or project → work item → files | Browse files by where they were uploaded. The structure follows your spaces and cannot be changed. |
+| **Folders** | Space → folder → sub-folder → files | Organize files the way your team works, for example "Contracts" or "Onboarding". |
+
+In both views every file shows its name, type and size. Click a file to preview it. Right-click it
+for more actions:
+
+| Action | What it does |
+|---|---|
+| **Preview** | Opens the file in the preview. |
+| **Download** | Downloads the file. |
+| **Open page** / **Open work item** | Jumps to the page or work item the file is attached to. |
+| **Move to** | Folders view only. Files the file into a folder of the same space. |
+
+Files uploaded directly to a space, without a page or work item, appear under **Not linked**.
+
+## Organize documents in folders
+
+Folders give a space one shared structure for its documents. Everyone who can see a file sees it in
+the same folder.
+
+### Create folders
+
+<Steps>
+  <Step title="Open the Folders view">
+    In the Documents app, switch **View** to **Folders**.
+  </Step>
+  <Step title="Open the space">
+    Click the space the folder belongs to. Folders always belong to one space.
+  </Step>
+  <Step title="Create the folder">
+    Click **New Folder**, enter a name and click **Create**.
+  </Step>
+  <Step title="Create sub-folders">
+    Open a folder and click **New Folder** again. Folders can be nested as deep as you need.
+  </Step>
+</Steps>
+
+Right-click a folder to **Open**, **Rename** or **Delete folder** it.
+
+### Move files into folders
+
+- **Drag and drop:** drag a file onto a folder.
+- **Right-click:** right-click a file, choose **Move to** and pick the folder, or **Top level** to take
+  it out of all folders.
+
+Files that are in no folder yet are listed below the folders, under **Unorganized attachments**. A
+file can only be moved into folders of its own space.
+
+### Delete a folder
+
+Deleting a folder never deletes files. Everything inside the folder, files and sub-folders, moves one
+level up. Collabase asks for confirmation before it deletes the folder.
+
+<Note>
+  A file always stays attached to its page or work item. Moving it into a folder only changes where it
+  appears in the Folders view. It remains on the page or work item, keeps its permissions, and
+  **Open page** or **Open work item** still takes you there.
+</Note>
+
+## Permissions
+
+The Documents app adds no new permissions. It reuses the ones you already manage for pages, projects
+and spaces.
+
+### Who sees a file
+
+A file is visible only to members who can open the page or work item it is attached to. Filing it
+into a folder does not change that.
+
+| File attached to | Visible when you can |
+|---|---|
+| **A page** | View pages in the space, and the page is not restricted to people you are not part of |
+| **A work item** | View work items in the space and reach the project. Private projects require project membership. |
+| **The space only** (Not linked) | View pages in the space |
+
+### Who sees a folder
+
+Folders belong to a space, so only members of that space can see them. Within the space, a folder is
+shown only when it, or one of its sub-folders, contains at least one file you are allowed to see. A
+folder therefore never reveals the name or existence of a file you cannot open. The member who created
+a folder also sees it while it is still empty.
+
+### Who can organize
+
+Members with the **Upload attachments** permission in a space can create, rename and delete folders
+and move files in that space. Members without it can browse the folders and open files, but not change
+the structure. See [Permissions](/concepts/permissions) for which roles have this permission.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Pages" icon="file-lines" href="/docs/pages">
+    Create pages and attach files to them.
+  </Card>
+  <Card title="Tasks" icon="list-check" href="/projects/tasks">
+    Work items and their attachments.
+  </Card>
+  <Card title="Permissions" icon="lock" href="/concepts/permissions">
+    Roles and what each one may do in a space.
+  </Card>
+</CardGroup>

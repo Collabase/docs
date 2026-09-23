@@ -149,11 +149,21 @@ Indexing needs an **embedding model**, which is a different kind of model from t
 | **OpenAI** | Yes, with a model such as `text-embedding-3-small` |
 | **Google Gemini** | Yes, with `text-embedding-004` |
 | **Azure AI Foundry** | Yes, through the embedding deployment on your resource |
-| **Infomaniak** | Yes, through the same base URL |
+| **Infomaniak** | Yes, with `Qwen/Qwen3-Embedding-8B`, which is asked for 768 dimensions |
 | **Groq** | No. Groq has no embeddings endpoint at all |
 | **Anthropic** | No. Anthropic has no embeddings endpoint at all |
 
 Groq and Anthropic are not offered as an embedding source. If one of them is your chat provider, choose **Separate provider** and point the embedding slot at something else — a local Ollama is the usual answer, and it keeps your page content on your own server even when the answers come from a hosted model.
+
+Infomaniak offers three embedding models, and only one of them fits:
+
+| Infomaniak model | Dimensions | Usable |
+|---|---|---|
+| `Qwen/Qwen3-Embedding-8B` | configurable up to 4096 | **Yes** — Collabase asks for 768 |
+| `bge_multilingual_gemma2` | 3584, fixed | No |
+| `mini_lm_l12_v2` | 384, fixed | No |
+
+The two fixed-width models report a dimension mismatch on the status panel instead of indexing anything.
 
 ### Embedding source
 

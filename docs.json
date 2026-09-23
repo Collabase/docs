@@ -3,17 +3,14 @@
   "theme": "almond",
   "name": "Collabase",
   "colors": {
-    "primary": "#b79b65",
-    "light": "#b79b65",
-    "dark": "#7a663e"
+    "primary": "#2d97fb",
+    "light": "#2d97fb",
+    "dark": "#ffffff"
   },
-  "favicon": {
-    "light": "/images/favicon_new.png",
-    "dark": "/images/favicon_darkmode.png"
-  },
+  "favicon": "/images/collabase-icon-v2_blue.png",
   "logo": {
-    "light": "/images/logo_blackblack(1).png",
-    "dark": "/images/logo_blackwhite.png"
+    "light": "/images/collabase-logo-v2.png",
+    "dark": "/images/collabase-logo-v2-weiss.png"
   },
   "navbar": {
     "primary": {
@@ -45,6 +42,7 @@
               "concepts/space-settings",
               "concepts/permissions",
               "concepts/search",
+              "concepts/documents",
               "concepts/ai",
               "concepts/collabase-ai",
               "concepts/collabase-ai-skills",
@@ -348,64 +346,15 @@
     ]
   },
   "fonts": {
+    "family": "Geist",
+    "weight": 500,
     "heading": {
-      "family": "Outfit",
-      "weight": 600
+      "family": "Geist",
+      "weight": 900
     },
     "body": {
       "family": "Geist",
       "weight": 500
-    }
-  },
-  "icons": {
-    "library": "lucide"
-  },
-  "background": {
-    "decoration": "grid",
-    "color": {
-      "light": "#f7f7f7"
-    }
-  },
-  "interaction": {
-    "drilldown": true
-  },
-  "markdown": {
-    "schema": true
-  },
-  "metadata": {
-    "timestamp": true
-  },
-  "styling": {
-    "codeblocks": "dark"
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "download-pdf",
-      "download-spec",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "grok",
-      "aistudio",
-      "mcp",
-      "add-mcp",
-      "vscode",
-      "cursor"
-    ],
-    "display": "header"
-  },
-  "api": {
-    "examples": {
-      "prefill": true,
-      "autogenerate": true
-    },
-    "url": "full"
-  },
-  "integrations": {
-    "ga4": {
-      "measurementId": "G-9YS9SX848Y"
     }
   }
 }
