@@ -1,0 +1,67 @@
+---
+title: "Create and edit tasks"
+sidebarTitle: "Tasks"
+description: "How to create a task in Collabase Projects, fill in status, assignee, priority and due date, add subtasks and comments, and link related tasks."
+---
+
+A task is one unit of work: a feature, a bug, a support request, a review item. Every task lives in a project and gets a permanent key such as `PROJ-42`.
+
+## Create a task
+
+<Steps>
+  <Step title="Open the project">
+    Open any view of the project, for example Board, Backlog or Sprint.
+  </Step>
+  <Step title="Start a new task">
+    Click **+ New Task** in the top bar, or press **N** anywhere in the project.
+  </Step>
+  <Step title="Enter a title">
+    The title is the only required field. The type defaults to the project's default task type. You can fill in everything else later.
+  </Step>
+  <Step title="Save">
+    Press **Enter** or click **Create**. The task appears in the first status column on the board.
+  </Step>
+</Steps>
+
+## Fields you use most
+
+| Field | What it is for |
+|---|---|
+| **Status** | Where the task stands in the project's workflow |
+| **Assignee** | Who is responsible for the task |
+| **Priority** | `CRITICAL`, `HIGH`, `MEDIUM`, `LOW` or `NONE` |
+| **Start date** and **Due date** | When work begins and when it is due. Overdue tasks are flagged in all views. |
+| **Labels** | Free tags for filtering and grouping |
+| **Description** | The full text of the task, with headings, tables, images and mentions |
+
+## Work on a task
+
+Click a task to open its detail view. There you can:
+
+- Write the description. Changes save when you click away.
+- Add comments and mention colleagues with **@**. A comment is **Internal** by default, visible to your team only.
+- Attach files by dragging them onto the task.
+- Add subtasks with **+ Add Subtask**.
+- Follow every change in the activity log.
+
+## Link related tasks
+
+Open a task, go to **Linked Tasks** and click **+ Add Link**. Choose the link type and search for the other task.
+
+| Link type | Meaning |
+|---|---|
+| **Depends on** | This task cannot continue until the other one is done. |
+| **Blocks** | This task holds up the other one. |
+| **Relates to** | Related, without a dependency. |
+| **Duplicates** | This task is a duplicate of the other one. |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Board and backlog" icon="columns-3" href="/getting-started/boards">
+    Move tasks forward and plan them.
+  </Card>
+  <Card title="Tasks reference" icon="circle-check" href="/projects/tasks">
+    All task fields, panels and shortcuts.
+  </Card>
+</CardGroup>

@@ -1,0 +1,50 @@
+---
+title: "HERMES Ergebnisse und Dokumentvorlagen"
+sidebarTitle: "Ergebnisse"
+description: "HERMES-Ergebnisse: Dokumente und Zustände, minimal geforderte Dokumente wie Studie, Projektmanagementplan und Durchführungsauftrag, und HERMES-Vorlagen in Collabase Docs."
+---
+
+Die Ergebnisse stehen im Zentrum von HERMES. Ein Ergebnis ist entweder ein **Dokument**, zum Beispiel die Studie, oder ein **Zustand**, zum Beispiel System aktiviert. Zu jedem Ergebnis gibt es eine Beschreibung, Aufgaben, die es erzeugen, und Rollen, die dafür verantwortlich sind. HERMES Online stellt für jedes Standarddokument eine Dokumentvorlage bereit.
+
+## Minimal geforderte Dokumente
+
+HERMES definiert minimal geforderte Dokumente. Sie sind die Leitplanken der Projekt-Governance und müssen erarbeitet werden. Ist ein Modul für das Projekt nicht relevant, entfallen auch seine minimal geforderten Dokumente. Die Stammorganisation kann die Liste an ihre eigenen Governance-Vorgaben anpassen.
+
+Beispiele für minimal geforderte Dokumente:
+
+| Phase | Dokumente |
+|---|---|
+| **Initialisierung** | Projektinitialisierungsauftrag, Studie, Rechtsgrundlagenanalyse, Schutzbedarfsanalyse, Projektmanagementplan, Durchführungsauftrag |
+| **Konzept** | Lösungsanforderungen, Organisationskonzept, Lösungsarchitektur, Testkonzept, Einführungskonzept |
+| **Realisierung und Einführung** | Betriebshandbuch, Testprotokoll, Abnahmeprotokoll |
+| **Durchgehend** | Projektstatusbericht, Phasenbericht, Änderungsantrag, Listen der Projektentscheide Steuerung und Führung, Checklisten |
+| **Abschluss** | Projektschlussbeurteilung |
+
+Die vollständige Liste mit den Vorlagen steht im Referenzhandbuch und auf [HERMES Online](https://www.hermes.admin.ch/de/projektmanagement/ergebnisse.html).
+
+## In Collabase
+
+Führe jedes Ergebnisdokument als Seite in [Collabase Docs](/docs/pages), erstellt aus einer Vorlage.
+
+<Steps>
+  <Step title="Pro Dokumenttyp eine Seite bauen">
+    Lege eine Seite mit der Kapitelstruktur der HERMES-Dokumentvorlage an, die du verwendest, zum Beispiel den Projektmanagementplan. Ergänze Platzhalter wie `{{project_name}}` und `{{project_manager}}`.
+  </Step>
+  <Step title="Als Vorlage speichern">
+    Öffne das Menü `...` der Seite und klicke auf **Save as Template**. Siehe [Templates](/docs/templates).
+  </Step>
+  <Step title="Dokument im Projekt erstellen">
+    Klicke in der Ansicht **Docs** des Projekts oder im Space auf **+ New Page** und dann auf **From template**.
+  </Step>
+  <Step title="Seite mit dem Ergebnis-Task verknüpfen">
+    Füge den Link zur Seite in den passenden **Outcome**-Task ein, damit die Roadmap das Dokument in seiner Phase zeigt.
+  </Step>
+</Steps>
+
+<Tip>
+  Mit der Versionsgeschichte einer Seite zeigst du, auf welchem Stand eines Dokuments eine Phasenfreigabe beruht. Siehe [Pages](/docs/pages).
+</Tip>
+
+<Note>
+  Die HERMES-Dokumentvorlagen gibt die Schweizerische Eidgenossenschaft heraus, die auch die Urheberrechte hält. Lade sie von HERMES Online herunter und prüfe die Nutzungsbedingungen, bevor du ihren Inhalt in eigene Vorlagen übernimmst.
+</Note>

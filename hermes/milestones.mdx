@@ -1,0 +1,61 @@
+---
+title: "HERMES milestones and decisions"
+sidebarTitle: "Milestones and decisions"
+description: "HERMES milestones as quality gates: project initiation release, execution release, phase release, release, acceptance and project closure, and how to approve them in Collabase."
+---
+
+In HERMES, milestones mark the decision points of a project. Each milestone is an outcome of a decision task, and each works as a quality gate: before it is reached, the responsible role decides on the outcomes and on how to proceed, and checks the project against the strategic goals of the core organization.
+
+## Milestones that structure the phases
+
+| Milestone | Where it stands |
+|---|---|
+| **Project initiation release** | Start of Initiation |
+| **Execution release** | End of Initiation, start of the development of the solution |
+| **Phase release** | End of Concept and end of Implementation (traditional) |
+| **Release** (optional) | Before each further release in Execution (agile) |
+| **Closure phase release** | End of Deployment or Execution, start of Closure |
+| **Project closure** | End of Closure |
+
+## Further milestones
+
+Depending on the modules in the project, further decisions and milestones apply, for example:
+
+| Milestone | Decision about |
+|---|---|
+| **Next steps** | The chosen solution variant and approach, traditional or agile |
+| **Tender** / **Contract award** | Procurement |
+| **Solution architecture** | The architecture of the system |
+| **Product concept** | The concept of the product |
+| **ISDP concept** | Information security and data protection |
+| **Preliminary acceptance** | Readiness for deployment |
+| **Migration acceptance** | The completed migration |
+| **Launch of operation** | The start of operation |
+| **Acceptance** | The accepted solution |
+
+## Steering and management decisions
+
+HERMES separates decisions by hierarchy level. The **steering** level, led by the project sponsor, takes the project initiation release, execution release, phase release, closure phase release and release decisions, as well as tender, contract award, launch of operation, project closure and project discontinuation. The **management** level, led by the project manager, takes decisions such as next steps, solution architecture, product concept, ISDP concept, preliminary acceptance, acceptance and migration acceptance. Each level keeps its own list of project decisions.
+
+## In Collabase
+
+Model each milestone as a task of a **Milestone** task type with a governed workflow, and let an automation request the decision.
+
+<Steps>
+  <Step title="Create a milestone workflow">
+    In **Admin → Workflows**, create statuses such as `Open`, `Submitted for decision`, `Released` and `Rejected`. Under **Settings → Transitions**, allow only the paths you want, so a milestone cannot jump to `Released`. See [Workflows](/projects/workflows).
+  </Step>
+  <Step title="Create the Milestone task type">
+    In **Admin → Task Types**, create **Milestone** and make the fields for the decision required, for example the decision rationale.
+  </Step>
+  <Step title="Build the approval automation">
+    Create an automation with the Collabase event `task.status_changed` as trigger, a condition on the new status `Submitted for decision`, and an [Approval](/automation/nodes) node with the project sponsor as approver. Connect the approved and rejected outputs to actions that move the task on. See [Triggers](/automation/triggers).
+  </Step>
+  <Step title="Record the decision">
+    Add every decision to the **Decision** object type in [Registry](/registry/overview), with context, rationale, decided by and date. This is your list of project decisions.
+  </Step>
+</Steps>
+
+<Note>
+  The Approval node asks one user. If a committee decides, name the person who records the committee's decision as approver, and store the minutes with the decision.
+</Note>

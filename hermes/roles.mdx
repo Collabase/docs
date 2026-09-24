@@ -1,0 +1,56 @@
+---
+title: "HERMES roles and project organization"
+sidebarTitle: "Roles"
+description: "HERMES roles: project sponsor, project manager, user representative, partner groups user, developer and operator, hierarchy levels, and how to map roles in Collabase."
+---
+
+HERMES distinguishes the roles of the **core organization**, the organization of the project sponsor in which the project sits, from the roles of the **project organization**, a temporary organization that exists for the duration of the project. HERMES describes only the roles of the project organization.
+
+## Three roles every project needs
+
+| Role | Responsibility |
+|---|---|
+| **Project sponsor** | Steers the project and holds overall responsibility for the project and for reaching its goals |
+| **Project manager** | Manages and coordinates the project and determines its course |
+| **User representative** | Is responsible for the solution from a business point of view, traditional and agile |
+
+These three roles must be filled from the user partner group. HERMES separates management competence from subject-matter competence: the project manager needs management skills, not domain knowledge, and can be recruited externally. The user representative holds the product responsibility.
+
+## Partner groups
+
+Every role belongs to one or more partner groups:
+
+| Partner group | Role in the project |
+|---|---|
+| **User** | Owns the project, defines the requirements, tests and accepts the solution |
+| **Developer** | Develops or supplies and integrates the solution according to the specifications |
+| **Operator** | Integrates the solution into operation, sets up the operating organization and operates the system |
+
+## Hierarchy levels and standard roles
+
+| Level | Standard roles |
+|---|---|
+| **Steering** | Project sponsor, project committee, quality and risk manager |
+| **Management** | Technical committee, project manager, project support, sub-project manager |
+| **Execution** | User representative, operations manager, business analyst, developer, execution organization, ISDP manager, IT architect, tester, test manager |
+
+In the agile approach, the project manager leads the project but does not interfere with the self-organization of the execution organization. The user representative steers the development through the solution requirements and is the contact for the project manager.
+
+## In Collabase
+
+Map HERMES roles to groups and Space roles, so access follows the role and not the person.
+
+<Steps>
+  <Step title="Create one group per role">
+    In **Admin → Groups**, create groups such as `HERMES Project sponsor`, `HERMES Project management` and `HERMES User representatives`, and add the role holders. See [Groups](/concepts/permissions#groups).
+  </Step>
+  <Step title="Assign Space roles to the groups">
+    In **Space Settings → Members**, add each group with a Space role. For example: project management as **Manager**, the execution organization as **Member**, the project committee as **Viewer**. See [Space roles](/concepts/permissions#space-roles).
+  </Step>
+  <Step title="Set project roles">
+    In **Project → Settings → Members**, make the project manager **Owner** of the project. See [Projects](/projects/overview).
+  </Step>
+  <Step title="Name the approvers">
+    Use the project sponsor as approver in the milestone automations. See [Milestones and decisions](/hermes/milestones).
+  </Step>
+</Steps>

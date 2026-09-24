@@ -1,0 +1,56 @@
+---
+title: "HERMES Rollen und Projektorganisation"
+sidebarTitle: "Rollen"
+description: "HERMES-Rollen: Auftraggeber, Projektleiter, Anwendervertreter, Partnergruppen Anwender, Ersteller und Betreiber, Hierarchieebenen und wie du die Rollen in Collabase abbildest."
+---
+
+HERMES unterscheidet die Rollen der **Stammorganisation**, also der Organisation des Auftraggebers, in der das Projekt angesiedelt ist, von den Rollen der **Projektorganisation**, einer temporären Organisation für die Dauer des Projekts. HERMES beschreibt nur die Rollen der Projektorganisation.
+
+## Drei Rollen, die jedes Projekt braucht
+
+| Rolle | Verantwortung |
+|---|---|
+| **Auftraggeber** | Steuert das Projekt und trägt die Gesamtverantwortung für das Vorhaben und die Zielerreichung |
+| **Projektleiter** | Führt und koordiniert das Projekt und bestimmt dessen Ablauf |
+| **Anwendervertreter** | Verantwortet die Lösungsentstehung fachlich, klassisch wie agil |
+
+Diese drei Rollen sind durch die Partnergruppe Anwender zu besetzen. HERMES trennt Führungs- und Fachkompetenz: Der Projektleiter braucht Managementfähigkeiten, kein Fachwissen, und kann extern rekrutiert werden. Der Anwendervertreter trägt die fachliche Produktverantwortung.
+
+## Partnergruppen
+
+Jede Rolle gehört zu einer oder mehreren Partnergruppen:
+
+| Partnergruppe | Aufgabe im Projekt |
+|---|---|
+| **Anwender** | Ist Eigentümer des Projekts, definiert die Anforderungen, testet und nimmt die Lösung ab |
+| **Ersteller** | Entwickelt die Lösung oder liefert und integriert sie gemäss den Vorgaben |
+| **Betreiber** | Integriert die Lösung in den Betrieb, stellt die Betriebsorganisation sicher und betreibt das System |
+
+## Hierarchieebenen und Standardrollen
+
+| Ebene | Standardrollen |
+|---|---|
+| **Steuerung** | Auftraggeber, Projektausschuss, Qualitäts- und Risikomanager |
+| **Führung** | Fachausschuss, Projektleiter, Projektunterstützung, Teilprojektleiter |
+| **Ausführung** | Anwendervertreter, Betriebsverantwortlicher, Business Analyst, Entwickler, Umsetzungsorganisation, ISDS-Verantwortlicher, IT-Architekt, Tester, Testverantwortlicher |
+
+Im agilen Vorgehen führt der Projektleiter das Projekt, greift aber nicht in die Selbstorganisation der Umsetzungsorganisation ein. Der Anwendervertreter steuert die Entwicklung über die Lösungsanforderungen und ist Ansprechpartner des Projektleiters.
+
+## In Collabase
+
+Bilde die HERMES-Rollen auf Groups und Space-Rollen ab, damit der Zugriff der Rolle folgt und nicht der Person.
+
+<Steps>
+  <Step title="Pro Rolle eine Group anlegen">
+    Lege unter **Admin → Groups** Groups wie `HERMES Auftraggeber`, `HERMES Projektleitung` und `HERMES Anwendervertreter` an und füge die Rolleninhaber hinzu. Siehe [Groups](/concepts/permissions#groups).
+  </Step>
+  <Step title="Space-Rollen zuweisen">
+    Füge unter **Space Settings → Members** jede Group mit einer Space-Rolle hinzu. Zum Beispiel: Projektleitung als **Manager**, Umsetzungsorganisation als **Member**, Projektausschuss als **Viewer**. Siehe [Space-Rollen](/concepts/permissions#space-roles).
+  </Step>
+  <Step title="Projektrollen setzen">
+    Mach unter **Project → Settings → Members** den Projektleiter zum **Owner** des Projekts. Siehe [Projects](/projects/overview).
+  </Step>
+  <Step title="Approver festlegen">
+    Setze den Auftraggeber als Approver in den Meilenstein-Automationen ein. Siehe [Meilensteine und Entscheide](/de/hermes/milestones).
+  </Step>
+</Steps>

@@ -1,0 +1,67 @@
+---
+title: "Tasks anlegen und bearbeiten"
+sidebarTitle: "Tasks"
+description: "So legst du in Collabase Projects einen Task an, setzt Status, Zuständigkeit, Priorität und Fälligkeit, ergänzt Subtasks und Kommentare, verknüpfst Tasks."
+---
+
+Ein Task ist eine Arbeitseinheit: ein Feature, ein Fehler, eine Supportanfrage, ein Review. Jeder Task gehört zu einem Projekt und erhält einen festen Schlüssel wie `PROJ-42`.
+
+## Einen Task anlegen
+
+<Steps>
+  <Step title="Projekt öffnen">
+    Öffne eine beliebige Ansicht des Projekts, zum Beispiel Board, Backlog oder Sprint.
+  </Step>
+  <Step title="Neuen Task beginnen">
+    Klicke oben auf **+ New Task** oder drücke irgendwo im Projekt **N**.
+  </Step>
+  <Step title="Titel eingeben">
+    Der Titel ist das einzige Pflichtfeld. Als Typ gilt der Standard-Task-Typ des Projekts. Alles andere kannst du später ergänzen.
+  </Step>
+  <Step title="Speichern">
+    Drücke **Enter** oder klicke auf **Create**. Der Task erscheint in der ersten Statusspalte des Boards.
+  </Step>
+</Steps>
+
+## Die wichtigsten Felder
+
+| Feld | Wofür es dient |
+|---|---|
+| **Status** | Wo der Task im Workflow des Projekts steht |
+| **Assignee** | Wer für den Task zuständig ist |
+| **Priority** | `CRITICAL`, `HIGH`, `MEDIUM`, `LOW` oder `NONE` |
+| **Start Date** und **Due Date** | Wann die Arbeit beginnt und wann sie fällig ist. Überfällige Tasks sind in allen Ansichten markiert. |
+| **Labels** | Freie Schlagwörter zum Filtern und Gruppieren |
+| **Description** | Der ganze Text des Tasks, mit Überschriften, Tabellen, Bildern und Erwähnungen |
+
+## Mit einem Task arbeiten
+
+Klicke auf einen Task, um die Detailansicht zu öffnen. Dort kannst du:
+
+- die Beschreibung schreiben. Sie wird gespeichert, sobald du wegklickst.
+- Kommentare schreiben und Kolleginnen und Kollegen mit **@** erwähnen. Ein Kommentar ist standardmässig **Internal**, also nur für dein Team sichtbar.
+- Dateien anhängen, indem du sie auf den Task ziehst.
+- Subtasks mit **+ Add Subtask** anlegen.
+- jede Änderung im Aktivitätsprotokoll nachverfolgen.
+
+## Tasks verknüpfen
+
+Öffne einen Task, gehe zu **Linked Tasks** und klicke auf **+ Add Link**. Wähle die Art der Verknüpfung und suche den anderen Task.
+
+| Verknüpfung | Bedeutung |
+|---|---|
+| **Depends on** | Dieser Task kann erst weitergehen, wenn der andere erledigt ist. |
+| **Blocks** | Dieser Task hält den anderen auf. |
+| **Relates to** | Verwandt, ohne Abhängigkeit. |
+| **Duplicates** | Dieser Task ist ein Duplikat des anderen. |
+
+## Nächste Schritte
+
+<CardGroup cols={2}>
+  <Card title="Board und Backlog" icon="columns-3" href="/de/getting-started/boards">
+    Tasks voranbringen und planen.
+  </Card>
+  <Card title="Tasks (Referenz, englisch)" icon="circle-check" href="/projects/tasks">
+    Alle Felder, Panels und Tastenkürzel.
+  </Card>
+</CardGroup>

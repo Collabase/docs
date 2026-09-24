@@ -1,0 +1,46 @@
+---
+title: "Sign in to Collabase"
+sidebarTitle: "Sign in"
+description: "How to sign in to Collabase for the first time, set your own password, and sign in with Google, Microsoft Entra ID, SAML single sign-on or LDAP."
+---
+
+Your administrator gives you the address of your Collabase instance and tells you how to sign in: with an email address and password, or with your company account.
+
+## Sign in with email and password
+
+<Steps>
+  <Step title="Open your Collabase URL">
+    Open the address your administrator sent you in a browser.
+  </Step>
+  <Step title="Enter your email and temporary password">
+    Use the email address and the temporary password your administrator created for you.
+  </Step>
+  <Step title="Choose your own password">
+    On your first login, Collabase asks you to set a new password. Enter it, confirm it, and sign in again with the new password.
+  </Step>
+</Steps>
+
+## Sign in with your company account
+
+If your administrator has connected an identity provider, the login page shows an extra button:
+
+| Button or field | What happens |
+|---|---|
+| **Sign in with Google**, **GitHub**, **Microsoft Entra ID**, **Okta** or **Keycloak** | You sign in with your existing account at that service. |
+| **Sign in with SSO** | You are sent to your company's SAML identity provider and back. |
+| Company username and password | With LDAP or Active Directory, you sign in with your usual company credentials. |
+
+<Note>
+  If you sign in only through an external provider, you cannot change your password in Collabase. Change it at your identity provider or ask your IT administrator.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Spaces" icon="folder" href="/getting-started/spaces">
+    Open your first Space.
+  </Card>
+  <Card title="Identity providers" icon="key" href="/admin/identity-providers">
+    For administrators: how single sign-on is set up.
+  </Card>
+</CardGroup>

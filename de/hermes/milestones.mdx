@@ -1,0 +1,61 @@
+---
+title: "HERMES Meilensteine und Entscheide"
+sidebarTitle: "Meilensteine und Entscheide"
+description: "HERMES-Meilensteine als Quality Gates: Projektinitialisierungsfreigabe, Durchführungsfreigabe, Phasenfreigabe, Releasefreigabe, Abnahme, Projektabschluss und Freigaben in Collabase."
+---
+
+In HERMES markieren Meilensteine die Entscheidungspunkte eines Projekts. Jeder Meilenstein ist das Ergebnis einer Entscheidungsaufgabe und wirkt als Quality Gate: Bevor er erreicht ist, entscheidet die zuständige Rolle über die Ergebnisse und das weitere Vorgehen und prüft das Projekt gegen die strategischen Ziele der Stammorganisation.
+
+## Meilensteine, die die Phasen strukturieren
+
+| Meilenstein | Wo er steht |
+|---|---|
+| **Projektinitialisierungsfreigabe** | Beginn der Initialisierung |
+| **Durchführungsfreigabe** | Ende der Initialisierung, Beginn der Lösungsentstehung |
+| **Phasenfreigabe** | Ende von Konzept und Ende von Realisierung (klassisch) |
+| **Releasefreigabe** (optional) | Vor jedem weiteren Release in der Umsetzung (agil) |
+| **Phasenfreigabe Abschluss** | Ende von Einführung oder Umsetzung, Beginn des Abschlusses |
+| **Projektabschluss** | Ende des Abschlusses |
+
+## Weitere Meilensteine
+
+Je nach Modulen im Projekt kommen weitere Entscheide und Meilensteine dazu, zum Beispiel:
+
+| Meilenstein | Entscheid über |
+|---|---|
+| **Weiteres Vorgehen** | Die gewählte Lösungsvariante und die Vorgehensweise, klassisch oder agil |
+| **Ausschreibung** / **Zuschlag** | Die Beschaffung |
+| **Lösungsarchitektur** | Die Architektur des Systems |
+| **Produktkonzept** | Das Konzept des Produkts |
+| **ISDS-Konzept** | Informationssicherheit und Datenschutz |
+| **Vorabnahme** | Die Bereitschaft für die Einführung |
+| **Abnahme Migration** | Die abgeschlossene Migration |
+| **Betriebsaufnahme** | Den Start des Betriebs |
+| **Abnahme** | Die abgenommene Lösung |
+
+## Entscheide der Steuerung und der Führung
+
+HERMES trennt die Entscheide nach Hierarchieebene. Die **Steuerung** unter dem Auftraggeber trifft die Entscheide Projektinitialisierungsfreigabe, Durchführungsfreigabe, Phasenfreigabe, Phasenfreigabe Abschluss und Releasefreigabe sowie Ausschreibung, Zuschlag, Betriebsaufnahme, Projektabschluss und Projektabbruch. Die **Führung** unter dem Projektleiter trifft Entscheide wie Weiteres Vorgehen, Lösungsarchitektur, Produktkonzept, ISDS-Konzept, Vorabnahme, Abnahme und Abnahme Migration. Jede Ebene führt ihre eigene Liste der Projektentscheide.
+
+## In Collabase
+
+Bilde jeden Meilenstein als Task eines Task Types **Milestone** mit geführtem Workflow ab, und lass eine Automation den Entscheid einholen.
+
+<Steps>
+  <Step title="Workflow für Meilensteine anlegen">
+    Lege unter **Admin → Workflows** Status wie `Offen`, `Zum Entscheid eingereicht`, `Freigegeben` und `Abgelehnt` an. Erlaube unter **Settings → Transitions** nur die gewünschten Wege, damit ein Meilenstein nicht direkt auf `Freigegeben` springt. Siehe [Workflows](/projects/workflows).
+  </Step>
+  <Step title="Task Type Milestone anlegen">
+    Lege unter **Admin → Task Types** den Typ **Milestone** an und mach die Felder für den Entscheid zu Pflichtfeldern, zum Beispiel die Begründung.
+  </Step>
+  <Step title="Freigabe-Automation bauen">
+    Lege eine Automation mit dem Collabase-Ereignis `task.status_changed` als Trigger an, eine Bedingung auf den neuen Status `Zum Entscheid eingereicht` und einen [Approval](/automation/nodes)-Knoten mit dem Auftraggeber als Approver. Verbinde die Ausgänge für Freigabe und Ablehnung mit Aktionen, die den Task weiterschieben. Siehe [Triggers](/automation/triggers).
+  </Step>
+  <Step title="Entscheid festhalten">
+    Erfasse jeden Entscheid im Object Type **Decision** in [Registry](/registry/overview), mit Kontext, Begründung, Entscheidungsträger und Datum. Das ist deine Liste der Projektentscheide.
+  </Step>
+</Steps>
+
+<Note>
+  Der Approval-Knoten fragt genau eine Person an. Entscheidet ein Gremium, setzt du als Approver die Person ein, die den Entscheid des Gremiums festhält, und legst das Protokoll zum Entscheid.
+</Note>

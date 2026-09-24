@@ -1,0 +1,75 @@
+---
+title: "Processing of personal data"
+sidebarTitle: "Personal data"
+description: "Which personal data Collabase stores as an application, who is the controller, where the data lives, what leaves your server and how to deactivate or delete accounts."
+---
+
+This page describes the personal data Collabase processes as an application. For the collabase.ch website, see the [privacy policy](https://collabase.ch/en/rechtliches-und-datenschutz/datenschutz). It helps you document Collabase in your own records of processing activities under the GDPR and the Swiss DPA. It is not legal advice.
+
+---
+
+## Who is responsible
+
+| Operating model | Controller | Role of Infometis AG |
+|---|---|---|
+| **Self-hosted** | Your organization | No access to your environment |
+| **Collabase Cloud** | Your organization | Processor, under the data processing agreement that is part of the contract |
+
+---
+
+## What Collabase stores about people
+
+| Category | Data | Source |
+|---|---|---|
+| **Account** | Name, email address, instance role, job title, department, sign-in method | Admin, self-registration or your identity provider (LDAP, SCIM, SAML, OAuth) |
+| **Profile (optional)** | Phone number, date of birth, avatar, bio | The person themselves |
+| **Preferences** | Language, timezone, notification settings | The person themselves |
+| **Sessions** | Active devices with browser, operating system and last use | Collected at sign-in |
+| **Work content** | Authorship of pages, work items and comments, assignments, time entries | Created during daily work |
+| **API tokens** | Personal tokens for integrations | Created by the person |
+| **AI chats** | Conversations with CollabaseAI | Only when AI is enabled |
+
+**Visibility.** Other members see the display name, avatar, bio, job title and department. Email address, timezone and language are private to the account. A phone number is visible only to the person and administrators. A date of birth appears in the Intranet birthday list if your company uses the Intranet.
+
+---
+
+## Where the data lives
+
+All structured data is stored in the Collabase database, and uploaded files in local file storage or in an S3-compatible bucket you provide. In a self-hosted installation, both are on your infrastructure. In Collabase Cloud, content, metadata and backups stay in Switzerland.
+
+---
+
+## What leaves your server
+
+| Data flow | When | How to control it |
+|---|---|---|
+| **Usage statistics** | On after installation. Sends which features are opened, application errors and, for every AI request, the model, duration, token count and the text sent to and received from the AI. Documents, files, tasks and user records are never uploaded. | Switch it off under **Administration → Feedback & Privacy**. See [Usage statistics](/admin/hosting#usage-statistics). |
+| **AI requests** | Only when CollabaseAI is enabled with a hosted provider | Choose a self-hosted provider or Infomaniak. See [AI Configuration](/admin/ai-configuration#privacy-and-data-handling). |
+| **Hosted re-ranking** | Only when a hosted re-ranking service is selected | Use **Own server** or leave re-ranking off |
+| **Automation connectors** | Only for automations you build with external services | Each connector sends the data you map into it |
+
+<Warning>
+  If a data processing agreement does not permit content to be shared with a third party, switch usage statistics off before your members start using the AI assistant.
+</Warning>
+
+---
+
+## Retention and deletion
+
+| What | Behaviour |
+|---|---|
+| **Disable an account** | The person can no longer sign in. Account and content remain. |
+| **Delete an account** | The account is removed permanently. Pages, work items and other content the person created are kept. See [Users & Groups](/admin/users-groups). |
+| **Deactivation from the directory** | LDAP and SCIM deactivate accounts that were removed in your directory. They do not delete them. |
+| **AI chats** | Private to the person who wrote them. No administrator view. Deleted 30 days after the last message. |
+| **Pre-update backups** | Kept for 7 days in a self-hosted installation |
+| **Collabase Cloud on exit** | You receive a full database dump, the upload volume and access to the repository of your backups. Production data and backups are then deleted within the contractually agreed period, confirmed in writing on request. |
+
+---
+
+## Related pages
+
+- [Security statement](/security/statement)
+- [Identity Providers](/admin/identity-providers)
+- [Backup & Restore](/admin/backup)
+- [Profile](/concepts/profile)

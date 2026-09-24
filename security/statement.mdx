@@ -1,0 +1,103 @@
+---
+title: "Security statement"
+description: "How Collabase is secured: Swiss hosting or self-hosted operation, SSO and access control, encryption, backups, release cadence, security patches and AI data flow."
+---
+
+This page describes how Collabase is secured, in the product and in operation. Where a statement applies to only one operating model, the page says so.
+
+---
+
+## Operating models
+
+| | Collabase Cloud | Self-hosted |
+|---|---|---|
+| **Location** | Infomaniak data centers in Geneva and Winterthur, certified to ISO 27001, 9001, 14001 and 50001 | Your own infrastructure |
+| **Isolation** | Own application VM, own PostgreSQL instance on a separate VM, own private subnet and own backup space per organization | As separated as your own architecture provides |
+| **Operation** | Provisioning, monitoring, updates and backups are run by us | Run by your team, or by a partner |
+| **Who has access** | Named operations staff under a non-disclosure agreement. The database is reachable only from the internal network. | Only your own staff. We have no access to your environment. |
+| **Data residency** | Content, metadata and backups stay in Switzerland, including on failover | Wherever you run Collabase |
+
+The legal entity behind Collabase is Infometis AG, Zürich, a Swiss company without a parent company outside Switzerland. All customer contracts are governed by Swiss law.
+
+<Note>
+  **Processing outside Switzerland in Collabase Cloud.** A web application firewall from Cloudflare checks every incoming request. In doing so, it processes connection data such as IP addresses outside Switzerland. Cloudflare does not store or analyze your content there.
+</Note>
+
+---
+
+## Sign-in and access control
+
+- **Single sign-on** over OAuth 2.0 (Google, GitHub, Microsoft Entra ID, Okta, Keycloak), SAML 2.0 and LDAP / Active Directory. See [Identity Providers](/admin/identity-providers).
+- **SCIM 2.0** creates, updates and deactivates accounts and group memberships from your identity provider. Deactivating an account there ends access to Collabase.
+- **Allowed email domains** restrict each sign-in provider to your organization. A Microsoft provider cannot be saved without a tenant ID.
+- **Session lifetime, device list and brute-force protection** are set under [Security Policies](/admin/security-policies). By default, a session ends after 8 hours of inactivity or 30 days at the latest, and an account locks for 15 minutes after 5 failed attempts.
+- **Roles and permissions** are assigned per Space through permission schemes, down to single pages. See [Permissions](/concepts/permissions).
+- **Audit log.** Sign-ins, permission changes and administrative actions are logged.
+
+---
+
+## Encryption
+
+| What | How |
+|---|---|
+| **In transit** | Every connection runs over HTTPS. With a real domain name, the certificate is issued by Let's Encrypt and renews automatically. |
+| **Stored credentials** | Sign-in provider credentials and AI provider API keys are stored encrypted and are never written to logs. |
+| **Backups in Collabase Cloud** | Encrypted on the client side before they leave the server, and stored in a Swiss backup space that is independent of the production infrastructure. |
+
+---
+
+## Application hardening
+
+In a self-hosted installation, the same measures apply as in Collabase Cloud. See [Hosting & Architecture](/admin/hosting).
+
+- All services run as non-root users.
+- Only ports `80` (redirects to HTTPS) and `443` are exposed. The database is not reachable from the network.
+- Sign-in endpoints are rate-limited.
+- Security headers against clickjacking and MIME sniffing are set on every response.
+- Uploaded files are always served through the application, which checks permissions. An S3 bucket for Collabase must stay private. See [File storage](/admin/file-storage).
+
+---
+
+## Backups
+
+**Collabase Cloud:** a daily logical database backup, encrypted on the client side. We keep 30 daily, 12 weekly and 6 monthly generations, plus a manual backup before every update.
+
+**Self-hosted:** `update.sh` creates a database backup before every update and keeps it for 7 days. Your regular backups of database and file storage are your responsibility. See [Backup & Restore](/admin/backup).
+
+---
+
+## Releases and security patches
+
+| | |
+|---|---|
+| **Release cadence** | A release every two weeks, at least one per month |
+| **Critical findings in Collabase** | A security patch within 48 hours. In Collabase Cloud we install it; in a self-hosted installation it is available to install within the same window. |
+| **Critical gaps in the infrastructure (Collabase Cloud)** | Closed within 24 hours, all others in the monthly patch window. Maintenance is announced at least 48 hours in advance. |
+| **Maintenance of superseded versions** | Bug and security fixes for 6 months after a feature version is superseded |
+| **Security testing** | Runs alongside development as a fixed part of the development cycle |
+
+Self-hosted installations are updated with a single command. See [Updates](/admin/updates).
+
+---
+
+## AI data flow
+
+CollabaseAI is **off** until an administrator enables it. You then choose the provider and connect it with your own key.
+
+| Provider | Where content is processed |
+|---|---|
+| **Self-hosted** (Ollama or an OpenAI-compatible endpoint you run) | On your own server. Nothing is sent externally. |
+| **Infomaniak** | On Swiss infrastructure |
+| **OpenAI, Google Gemini, Azure AI Foundry, Groq, Anthropic** | On the provider's infrastructure, under the provider's terms |
+
+- The assistant works with the permissions of the person asking. Content that person cannot open is neither in the answer nor in the request to the model.
+- Every change the assistant proposes needs explicit approval. This cannot be switched off.
+- We do not run a model between you and the provider and do not train models on your content.
+
+See [AI Configuration](/admin/ai-configuration) for the full settings.
+
+---
+
+## Report a vulnerability
+
+Send findings to [support@collabase.ch](mailto:support@collabase.ch), also listed in [security.txt](https://collabase.ch/.well-known/security.txt).

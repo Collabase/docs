@@ -1,0 +1,122 @@
+---
+title: "HERMES in Collabase einrichten"
+sidebarTitle: "In Collabase einrichten"
+description: "HERMES-Projektmanagement in Collabase Schritt für Schritt einrichten: Workflows, Task Types, HERMES-Felder, Projektvorlagen pro Szenario, Risiko- und Entscheidlisten, Freigaben."
+---
+
+Diese Seite führt dich durch eine HERMES-Einrichtung, die deine ganze Organisation wiederverwenden kann. Du richtest sie einmal als Administrator ein. Projektleiter erstellen danach jedes neue HERMES-Projekt aus einer Vorlage.
+
+| HERMES-Element | Baustein in Collabase |
+|---|---|
+| **Projekt** | Ein Projekt im Space der Stammorganisation |
+| **Szenario** | Eine [Projektvorlage](/projects/templates) |
+| **Phase** | Ein Task vom Typ **Phase** mit Datum auf der [Roadmap](/projects/roadmap) |
+| **Ergebnis** | Ein Task vom Typ **Outcome** als Subtask seiner Phase, dazu eine Seite in [Collabase Docs](/docs/pages) |
+| **Meilenstein** | Ein Task vom Typ **Milestone** in einem geführten Workflow, freigegeben über [Automation](/automation/nodes) |
+| **Rollen** | [Groups und Space-Rollen](/concepts/permissions) |
+| **Risikoliste und Entscheidlisten** | Object Types in einem [Registry](/registry/overview)-Schema |
+| **Tests** | [Test Management](/test-management/overview) mit Meilensteinen |
+
+## Bevor du beginnst
+
+Du brauchst die Instanzrolle **Admin**. Lade die Szenarien und Dokumentvorlagen, die du verwendest, von [HERMES Online](https://www.hermes.admin.ch/de/downloads.html) herunter.
+
+## Schritt 1: Workflows anlegen
+
+<Steps>
+  <Step title="Admin → Workflows öffnen">
+    Globale Workflows lassen sich Projektvorlagen zuweisen. Siehe [Workflows](/projects/workflows).
+  </Step>
+  <Step title="Workflow für Ergebnisse anlegen">
+    Lege Status wie `Offen` (TODO), `In Arbeit` (IN_PROGRESS), `In Prüfung` (IN_PROGRESS) und `Genehmigt` (DONE) an.
+  </Step>
+  <Step title="Workflow für Meilensteine anlegen">
+    Lege `Offen` (TODO), `Zum Entscheid eingereicht` (IN_PROGRESS), `Freigegeben` (DONE) und `Abgelehnt` (DONE) an. Erlaube unter **Settings → Transitions** `Freigegeben` und `Abgelehnt` nur aus `Zum Entscheid eingereicht`.
+  </Step>
+</Steps>
+
+## Schritt 2: Task Types anlegen
+
+Lege unter **Admin → Task Types** diese Typen an. Task Types müssen global bestehen, bevor du sie einer Vorlage hinzufügen kannst.
+
+| Task Type | Verwendung |
+|---|---|
+| **Phase** | Einer pro HERMES-Phase, mit Start- und Enddatum |
+| **Outcome** | Einer pro Dokument oder Zustand, den das Projekt liefern muss |
+| **Milestone** | Einer pro Entscheidungspunkt |
+| **Requirement** | Lösungsanforderungen, bei agilen Projekten im Backlog |
+
+## Schritt 3: Field Collection HERMES anlegen
+
+<Steps>
+  <Step title="Admin → Custom Fields → Collections öffnen">
+    Klicke auf **+ New Collection** und nenne sie `HERMES`. Siehe [Setting up a project](/projects/project-setup).
+  </Step>
+  <Step title="Felder hinzufügen">
+    | Feld | Typ | Werte |
+    |---|---|---|
+    | **HERMES-Phase** | Select | Initialisierung, Konzept, Realisierung, Einführung, Umsetzung, Abschluss |
+    | **Modul** | Select | Die Module deiner Szenarien |
+    | **Verantwortliche Rolle** | Select | Die HERMES-Rollen, die du einsetzt |
+    | **Minimal gefordert** | Checkbox | Markiert minimal geforderte Dokumente |
+    | **Entscheid** | Registry Object | Verknüpft einen Meilenstein mit seinem Decision-Objekt |
+  </Step>
+</Steps>
+
+## Schritt 4: Register in Registry anlegen
+
+<Steps>
+  <Step title="Schema anlegen">
+    Öffne **Registry** in der Hauptnavigation und klicke auf **+ New Schema**, zum Beispiel `Projekt-Governance`. Siehe [Schema Designer](/registry/schema-designer).
+  </Step>
+  <Step title="Object Type Risk anlegen">
+    Attribute wie Titel, Beschreibung, Wahrscheinlichkeit (Select), Auswirkung (Select), Status, Verantwortlich (User), Überprüfungsdatum und Massnahme.
+  </Step>
+  <Step title="Object Type Decision anlegen">
+    Attribute wie Titel, Kontext, Entscheid, Begründung, Entschieden von (User) und Entschieden am (Date). Das ist deine Liste der Projektentscheide.
+  </Step>
+  <Step title="Berechtigungen setzen">
+    Gib unter **Settings → Permissions** des Schemas der Group Projektleitung die Rolle **Editor** und dem Projektausschuss **Viewer**.
+  </Step>
+</Steps>
+
+## Schritt 5: Pro Szenario eine Projektvorlage anlegen
+
+<Steps>
+  <Step title="Admin → Project Templates öffnen">
+    Klicke auf **+ New Template** und benenne die Vorlage nach dem Szenario, zum Beispiel `HERMES IT-Entwicklung`.
+  </Step>
+  <Step title="Workflows, Task Types und Felder zuweisen">
+    Füge beide Workflows, die vier Task Types und die Field Collection `HERMES` hinzu.
+  </Step>
+  <Step title="Views wählen">
+    Für klassische Projekte: **Timeline**, **Board**, **Work Items**, **Docs**, **Reports**. Für agile Projekte zusätzlich **Backlog** und **Sprints**.
+  </Step>
+  <Step title="Veröffentlichen">
+    Aktiviere **Published** und klicke auf **Save**.
+  </Step>
+</Steps>
+
+Projekte aus der Vorlage bleiben mit ihr verknüpft. Spätere Änderungen an der Vorlage kannst du so an sie weitergeben.
+
+## Schritt 6: Freigaben der Meilensteine automatisieren
+
+Lege eine Automation mit dem Trigger `task.status_changed`, einer Bedingung auf den Status `Zum Entscheid eingereicht` und einem **Approval**-Knoten an. Verbinde **On approve** und **On reject** mit den Aktionen, die den Task weiterschieben. Details unter [Meilensteine und Entscheide](/de/hermes/milestones).
+
+## Schritt 7: Dokumentvorlagen anlegen
+
+Baue pro HERMES-Dokument, das du verwendest, eine [Vorlage in Collabase Docs](/docs/templates), beginnend mit den minimal geforderten Dokumenten. Siehe [Ergebnisse](/de/hermes/outcomes).
+
+## Ein HERMES-Projekt starten
+
+<Steps>
+  <Step title="Projekt anlegen">
+    Klicke im Space auf **+ New Project** und wähle die Vorlage deines Szenarios.
+  </Step>
+  <Step title="Phasen planen">
+    Lege die **Phase**-Tasks mit Datum an und die **Outcome**- und **Milestone**-Tasks als Subtasks.
+  </Step>
+  <Step title="Rollen besetzen">
+    Füge die Rollen-Groups dem Space hinzu und mach den Projektleiter zum Project **Owner**. Siehe [Rollen](/de/hermes/roles).
+  </Step>
+</Steps>

@@ -1,0 +1,103 @@
+---
+title: "Sicherheitsstatement"
+description: "Wie Collabase abgesichert ist: Betrieb in der Schweiz oder Self-Hosted, SSO und Zugriffskontrolle, Verschlüsselung, Backups, Releasetakt, Sicherheits-Patches und KI."
+---
+
+Diese Seite beschreibt, wie Collabase im Produkt und im Betrieb abgesichert ist. Gilt eine Aussage nur für eines der beiden Betriebsmodelle, steht das dabei.
+
+---
+
+## Betriebsmodelle
+
+| | Collabase Cloud | Self-Hosted |
+|---|---|---|
+| **Standort** | Rechenzentren von Infomaniak in Genf und Winterthur, zertifiziert nach ISO 27001, 9001, 14001 und 50001 | Deine eigene Infrastruktur |
+| **Isolation** | Eigene App-VM, eigene PostgreSQL-Instanz auf separater VM, eigenes privates Subnetz und eigener Backup-Space je Organisation | So weit getrennt, wie deine eigene Architektur es vorsieht |
+| **Betrieb** | Provisionierung, Monitoring, Updates und Backups liegen bei uns | Bei deinem Team oder bei einem Partner |
+| **Wer Zugriff hat** | Benannte Betriebspersonen unter Geheimhaltungsvereinbarung. Die Datenbank ist nur aus dem internen Netz erreichbar. | Ausschliesslich dein eigenes Personal. Wir haben keinen Zugriff auf deine Umgebung. |
+| **Datenhaltung** | Inhalte, Metadaten und Backups bleiben in der Schweiz, auch bei einem Failover | Dort, wo du Collabase betreibst |
+
+Hinter Collabase steht die Infometis AG in Zürich, eine Schweizer Aktiengesellschaft ohne Muttergesellschaft ausserhalb der Schweiz. Alle Kundenverträge unterliegen Schweizer Recht.
+
+<Note>
+  **Verarbeitung ausserhalb der Schweiz in der Collabase Cloud.** Eine Web Application Firewall von Cloudflare prüft jeden eingehenden Request. Dabei verarbeitet sie Verbindungsdaten wie IP-Adressen ausserhalb der Schweiz. Deine Inhalte speichert und wertet Cloudflare dort nicht aus.
+</Note>
+
+---
+
+## Anmeldung und Zugriffskontrolle
+
+- **Single Sign-on** über OAuth 2.0 (Google, GitHub, Microsoft Entra ID, Okta, Keycloak), SAML 2.0 und LDAP / Active Directory. Siehe [Identity Providers](/admin/identity-providers).
+- **SCIM 2.0** legt Konten und Gruppenmitgliedschaften aus deinem Identity Provider an, aktualisiert und deaktiviert sie. Wer dort deaktiviert wird, verliert den Zugang zu Collabase.
+- **Allowed email domains** beschränken jeden Anmeldeanbieter auf deine Organisation. Ein Microsoft-Anbieter lässt sich ohne Tenant ID nicht speichern.
+- **Session-Dauer, Geräteliste und Brute-Force-Schutz** stellst du unter [Security Policies](/admin/security-policies) ein. Standardmässig endet eine Sitzung nach 8 Stunden Inaktivität oder spätestens nach 30 Tagen, und nach 5 Fehlversuchen ist ein Konto für 15 Minuten gesperrt.
+- **Rollen und Rechte** vergibst du je Space über Permission Schemes, bis auf einzelne Seiten. Siehe [Permissions](/concepts/permissions).
+- **Audit-Log.** Anmeldungen, Rechteänderungen und administrative Handlungen werden protokolliert.
+
+---
+
+## Verschlüsselung
+
+| Was | Wie |
+|---|---|
+| **Im Transit** | Jede Verbindung läuft über HTTPS. Mit einem echten Domainnamen stellt Let's Encrypt das Zertifikat aus, es erneuert sich automatisch. |
+| **Gespeicherte Zugangsdaten** | Zugangsdaten der Anmeldeanbieter und API-Schlüssel der KI-Anbieter werden verschlüsselt gespeichert und nie in Logs geschrieben. |
+| **Backups in der Collabase Cloud** | Clientseitig verschlüsselt, bevor sie den Server verlassen, und abgelegt in einem Swiss-Backup-Space, der von der Produktionsinfrastruktur unabhängig ist. |
+
+---
+
+## Härtung der Anwendung
+
+Im Self-Hosted-Betrieb gelten dieselben Massnahmen wie in der Collabase Cloud. Siehe [Hosting & Architecture](/admin/hosting).
+
+- Alle Dienste laufen ohne Root-Rechte.
+- Offen sind nur die Ports `80` (leitet auf HTTPS um) und `443`. Die Datenbank ist aus dem Netz nicht erreichbar.
+- Die Anmelde-Endpunkte sind rate-limitiert.
+- Jede Antwort trägt Security-Header gegen Clickjacking und MIME-Sniffing.
+- Hochgeladene Dateien liefert immer die Anwendung aus und prüft dabei die Rechte. Ein S3-Bucket für Collabase muss privat bleiben. Siehe [File storage](/admin/file-storage).
+
+---
+
+## Backups
+
+**Collabase Cloud:** ein tägliches logisches Datenbank-Backup, clientseitig verschlüsselt. Wir bewahren 30 tägliche, 12 wöchentliche und 6 monatliche Generationen auf, dazu ein manuelles Backup vor jedem Update.
+
+**Self-Hosted:** `update.sh` legt vor jedem Update ein Datenbank-Backup an und behält es 7 Tage. Für die regelmässigen Backups von Datenbank und Dateiablage bist du selbst verantwortlich. Siehe [Backup & Restore](/admin/backup).
+
+---
+
+## Releases und Sicherheits-Patches
+
+| | |
+|---|---|
+| **Releasetakt** | Alle zwei Wochen ein Release, mindestens eines pro Monat |
+| **Kritische Befunde in Collabase** | Ein Sicherheits-Patch innerhalb von 48 Stunden. In der Collabase Cloud spielen wir ihn ein, im Self-Hosted-Betrieb steht er im selben Zeitraum zum Einspielen bereit. |
+| **Kritische Lücken in der Infrastruktur (Collabase Cloud)** | Innerhalb von 24 Stunden geschlossen, alle übrigen im monatlichen Patch-Fenster. Wartungsarbeiten kündigen wir mindestens 48 Stunden vorher an. |
+| **Pflege abgelöster Versionen** | Fehler- und Sicherheitskorrekturen während 6 Monaten, nachdem eine Funktionsversion abgelöst wurde |
+| **Sicherheitsprüfung** | Läuft parallel zur Entwicklung, als fester Teil des Entwicklungszyklus |
+
+Eine Self-Hosted-Installation aktualisierst du mit einem einzigen Befehl. Siehe [Updates](/admin/updates).
+
+---
+
+## Datenfluss der KI
+
+CollabaseAI ist **ausgeschaltet**, bis eine Administratorin oder ein Administrator sie freigibt. Danach wählst du den Anbieter und verbindest ihn mit deinem eigenen Schlüssel.
+
+| Anbieter | Wo Inhalte verarbeitet werden |
+|---|---|
+| **Self-Hosted** (Ollama oder ein eigener OpenAI-kompatibler Endpunkt) | Auf deinem eigenen Server. Nichts geht nach aussen. |
+| **Infomaniak** | Auf Schweizer Infrastruktur |
+| **OpenAI, Google Gemini, Azure AI Foundry, Groq, Anthropic** | Auf der Infrastruktur des Anbieters, zu dessen Bedingungen |
+
+- Der Assistent arbeitet mit den Rechten der fragenden Person. Was diese Person nicht öffnen darf, steht weder in der Antwort noch in der Anfrage an das Modell.
+- Jede Änderung, die der Assistent vorschlägt, braucht eine ausdrückliche Freigabe. Das lässt sich nicht abschalten.
+- Wir betreiben kein Modell zwischen dir und dem Anbieter und trainieren keine Modelle mit deinen Inhalten.
+
+Alle Einstellungen findest du unter [AI Configuration](/admin/ai-configuration).
+
+---
+
+## Sicherheitslücke melden
+
+Schick Befunde an [support@collabase.ch](mailto:support@collabase.ch). Die Adresse steht auch in der [security.txt](https://collabase.ch/.well-known/security.txt).

@@ -1,91 +1,146 @@
 ---
-title: "Welcome to Collabase"
-description: "The Swiss-made, self-hosted collaboration platform — wiki, tasks, test management, automation, and local AI in one place."
+title: "Collabase documentation"
+sidebarTitle: "Home"
+description: "Guides and reference for Collabase, the collaboration platform from Switzerland: getting started, HERMES project management, administration, security and the API."
+mode: "custom"
 ---
 
-Collabase is a **self-hosted collaboration platform** that keeps all your data on your own servers. It brings together a knowledge base, task management, test management, automation, local AI, and an internal communication hub — in a single product, accessible from one login.
+export const SearchBox = ({ label, hint }) => (
+  <button
+    type="button"
+    onClick={() => {
+      const entry = document.getElementById("search-bar-entry") || document.getElementById("search-bar-entry-mobile");
+      if (entry) {
+        entry.click();
+        return;
+      }
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true, ctrlKey: true, bubbles: true }));
+    }}
+    className="group mt-10 mx-auto flex w-full max-w-2xl items-center gap-3 rounded-2xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition-colors hover:border-[#b79b65] dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-[#b79b65]"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0 text-zinc-400">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+    <span className="flex-1 text-base text-zinc-500 dark:text-zinc-400">{label}</span>
+    <kbd className="hidden rounded-md border border-zinc-200 px-2 py-0.5 text-xs text-zinc-500 sm:inline dark:border-zinc-700 dark:text-zinc-400">{hint}</kbd>
+  </button>
+);
 
-<CardGroup cols={2}>
-  <Card title="Installation" icon="server" href="/installation">
-    Set up Collabase on your server in minutes. You need Docker — the installer handles everything else.
+export const SectionTitle = ({ children }) => (
+  <h2 className="mb-4 mt-16 text-xl font-semibold text-zinc-900 dark:text-zinc-50">{children}</h2>
+);
+
+export const QuickLink = ({ href, children }) => (
+  <a href={href} className="underline decoration-zinc-300 underline-offset-4 hover:text-[#b79b65] dark:decoration-zinc-600">{children}</a>
+);
+
+<div className="px-4 pb-4 pt-16 lg:pt-24 max-w-3xl mx-auto text-center">
+  <p className="text-sm font-semibold uppercase tracking-wider text-[#b79b65]">Documentation</p>
+  <h1 className="mt-3 text-4xl lg:text-5xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+    Collabase documentation
+  </h1>
+  <p className="mt-5 text-lg text-zinc-600 dark:text-zinc-400">
+    Guides and reference for Collabase, the collaboration platform from Switzerland. Learn how to set up Spaces, run projects with HERMES, administer your instance and connect Collabase to the tools you already use.
+  </p>
+  <SearchBox label="Search the documentation" hint="⌘ K" />
+  <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+    Popular: <QuickLink href="https://collabase.ch/docs/installation">Installation</QuickLink> · <QuickLink href="https://collabase.ch/docs/getting-started/overview">Getting started</QuickLink> · <QuickLink href="https://collabase.ch/docs/hermes/overview">HERMES</QuickLink> · <QuickLink href="https://collabase.ch/docs/admin/identity-providers">Single sign-on</QuickLink> · <QuickLink href="https://collabase.ch/docs/api/introduction">API</QuickLink>
+  </p>
+</div>
+
+<div className="max-w-5xl mx-auto px-6 pb-24">
+
+<SectionTitle>Guides</SectionTitle>
+
+<Columns cols={2}>
+  <Card title="Getting started guide" icon="rocket" href="/getting-started/overview">
+    Your first steps in Collabase: sign in, join a Space, invite members and create your first project and page.
   </Card>
-  <Card title="Introduction" icon="book-open" href="/introduction">
-    Learn what Collabase is, who it is for, and how it is licensed.
+  <Card title="HERMES project management guide" icon="milestone" href="/hermes/overview">
+    The Swiss project management method HERMES, phase by phase, and how you run it in Collabase.
+  </Card>
+  <Card title="Security and privacy" icon="shield-check" href="/security/overview">
+    How Collabase protects your data, where it is stored and how personal data is processed.
+  </Card>
+  <Card title="Glossary" icon="book-a" href="/glossary">
+    Every Collabase term from Space to Object Type, explained in a few sentences.
+  </Card>
+</Columns>
+
+<SectionTitle>Apps</SectionTitle>
+
+<Columns cols={4}>
+  <Card title="Collabase Docs" icon="/images/apps/docs.png" href="/docs/overview">
+    Knowledge base with pages, templates and version history.
+  </Card>
+  <Card title="Projects" icon="/images/apps/projects.png" href="/projects/overview">
+    Boards, backlogs, sprints, queues and workflows.
+  </Card>
+  <Card title="Test Management" icon="/images/apps/test-management.png" href="/test-management/overview">
+    Test cases, test runs and quality over time.
+  </Card>
+  <Card title="Automation" icon="/images/apps/automation.png" href="/automation/overview">
+    Visual workflows with built-in connectors.
+  </Card>
+  <Card title="Time Tracking" icon="/images/apps/time-tracking.png" href="/time-tracking/overview">
+    Log hours, timesheets, reports and billing rules.
+  </Card>
+  <Card title="Intranet" icon="/images/apps/intranet.png" href="/intranet/overview">
+    Announcements, events and quick links.
+  </Card>
+  <Card title="Registry" icon="/images/apps/registry.png" href="/registry/overview">
+    Your own Object Types, linked to work and pages.
+  </Card>
+  <Card title="CollabaseAI" icon="/images/apps/collabase-ai.png" href="/concepts/collabase-ai">
+    The assistant that finds, reads and changes your work.
+  </Card>
+</Columns>
+
+<SectionTitle>Run and extend Collabase</SectionTitle>
+
+<Columns cols={3}>
+  <Card title="Installation" icon="server" href="/installation">
+    Install Collabase with Docker, Kubernetes or Docker Swarm.
+  </Card>
+  <Card title="Administration" icon="settings" href="/admin/users-groups">
+    Members, groups, SSO, security policies, backups and updates.
   </Card>
   <Card title="Core concepts" icon="lightbulb" href="/concepts/spaces">
-    Understand Spaces, permissions, and how Collabase is structured before you dive in.
+    Spaces, permissions and search, the structure behind every app.
   </Card>
-  <Card title="Admin guide" icon="shield" href="/admin/users-groups">
-    Manage users, configure SSO, set up backups, and keep your instance running.
+  <Card title="API reference" icon="code" href="/api/introduction">
+    Endpoints for pages, work items, test management, automation and SCIM.
   </Card>
-</CardGroup>
+  <Card title="Developer" icon="puzzle" href="/developer/wasm">
+    Build extensions for Collabase with WebAssembly plugins.
+  </Card>
+  <Card title="Release notes" icon="list" href="/changelog/overview">
+    Release notes are published here from Collabase 1.0 onwards.
+  </Card>
+</Columns>
 
----
+<SectionTitle>On collabase.ch</SectionTitle>
 
-## Getting started
+<Columns cols={3}>
+  <Card title="Collabase website" icon="globe" href="https://collabase.ch/en">
+    Apps, operating models and everything about the product.
+  </Card>
+  <Card title="Request a proof of concept" icon="flask-conical" href="https://collabase.ch/en/anfrage">
+    Try Collabase with your own content before you decide.
+  </Card>
+  <Card title="Download" icon="download" href="https://collabase.ch/en/download">
+    The deployment package and the desktop app.
+  </Card>
+  <Card title="Collabase Cloud" icon="cloud" href="https://collabase.ch/en/cloud">
+    Collabase operated for you, hosted in Switzerland.
+  </Card>
+  <Card title="Trust center" icon="lock" href="https://collabase.ch/vertrauen">
+    Operations, data protection and AI at a glance (in German).
+  </Card>
+  <Card title="Customer support" icon="life-buoy" href="https://infometis.atlassian.net/servicedesk/customer/portal/1/group/81">
+    Open a support request with the Collabase team.
+  </Card>
+</Columns>
 
-<Steps>
-  <Step title="Install Collabase">
-    Unzip the deployment package you received from Collabase and run the installer:
-    ```bash
-    bash install.sh
-    ```
-    It will ask for your URL, admin email, and password — then do the rest automatically.
-  </Step>
-  <Step title="Log in and set your password">
-    Open your Collabase URL in a browser and log in with the credentials you set during installation. You will be asked to choose a new password on your first login.
-  </Step>
-  <Step title="Create your first Space">
-    A Space is the container for your team's work — wiki, tasks, test cases, and automations all live inside a Space. Create one for your first project or department.
-  </Step>
-  <Step title="Invite your team">
-    Go to **Admin → Users** and add your colleagues. Assign them to Spaces with the role that matches what they need to do.
-  </Step>
-</Steps>
-
----
-
-## What's inside Collabase
-
-<CardGroup cols={2}>
-  <Card title="Wiki & Docs" icon="file-lines" href="/docs/overview">
-    Collaborative knowledge base with rich-text pages, templates, version history, and full-text search.
-  </Card>
-  <Card title="Task Management" icon="check-square" href="/tasks/overview">
-    Kanban, list, calendar, Gantt, sprints, custom fields, and time tracking — all in one place.
-  </Card>
-  <Card title="Test Management" icon="flask" href="/test-management/overview">
-    Define test cases, run them in organized sessions, and track quality results over time.
-  </Card>
-  <Card title="Automation" icon="bolt" href="/automation/overview">
-    Visual workflow builder with 40+ connectors — no coding required.
-  </Card>
-  <Card title="CollabaseAI" icon="brain" href="/concepts/collabase-ai">
-    An assistant that finds, reads and changes your work — and runs entirely on your own server if you want it to.
-  </Card>
-  <Card title="Intranet" icon="bullhorn" href="/intranet/overview">
-    Company announcements and team news, separate from day-to-day chat.
-  </Card>
-  <Card title="Registry" icon="database" href="/registry/overview">
-    Custom data objects — define your own schemas and link them to tasks and pages.
-  </Card>
-  <Card title="Automation Connectors" icon="plug" href="/automation/connectors">
-    Slack, Jira, GitHub, HubSpot, and 40+ built-in integrations.
-  </Card>
-</CardGroup>
-
----
-
-## Feedback, roadmap & changelog
-
-<CardGroup cols={3}>
-  <Card title="Submit feedback" icon="message-circle" href="https://collabase.featurebase.app/en">
-    Report a bug or request a feature. The Collabase team reviews every submission.
-  </Card>
-  <Card title="Public roadmap" icon="map" href="https://collabase.featurebase.app/en/roadmap">
-    See what is planned, in progress, and recently shipped.
-  </Card>
-  <Card title="Changelog" icon="list" href="https://collabase.featurebase.app/en/changelog">
-    Every release, every improvement, all in one place.
-  </Card>
-</CardGroup>
+</div>

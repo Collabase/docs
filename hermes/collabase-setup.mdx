@@ -1,0 +1,122 @@
+---
+title: "Set up HERMES in Collabase"
+sidebarTitle: "Set up in Collabase"
+description: "Step-by-step setup of HERMES project management in Collabase: workflows, task types, HERMES fields, project templates per scenario, risk and decision registers, approvals."
+---
+
+This page walks you through a HERMES setup that your whole organization can reuse. You configure it once as an administrator. Project managers then create each new HERMES project from a template.
+
+| HERMES element | Collabase building block |
+|---|---|
+| **Project** | A project in the Space of the core organization |
+| **Scenario** | A [project template](/projects/templates) |
+| **Phase** | A task of the type **Phase**, with dates, on the [Roadmap](/projects/roadmap) |
+| **Outcome** | A task of the type **Outcome** as subtask of its phase, plus a page in [Collabase Docs](/docs/pages) |
+| **Milestone** | A task of the type **Milestone** in a governed workflow, approved through [Automation](/automation/nodes) |
+| **Roles** | [Groups and Space roles](/concepts/permissions) |
+| **Risk list and decision lists** | Object types in a [Registry](/registry/overview) schema |
+| **Tests** | [Test Management](/test-management/overview) with milestones |
+
+## Before you start
+
+You need the **Admin** instance role. Download the scenarios and document templates you use from [HERMES online](https://www.hermes.admin.ch/en/downloads.html).
+
+## Step 1: Create the workflows
+
+<Steps>
+  <Step title="Open Admin → Workflows">
+    Global workflows can be assigned to project templates. See [Workflows](/projects/workflows).
+  </Step>
+  <Step title="Create an outcome workflow">
+    Add statuses such as `Open` (TODO), `In progress` (IN_PROGRESS), `In review` (IN_PROGRESS) and `Approved` (DONE).
+  </Step>
+  <Step title="Create a milestone workflow">
+    Add `Open` (TODO), `Submitted for decision` (IN_PROGRESS), `Released` (DONE) and `Rejected` (DONE). Under **Settings → Transitions**, allow `Released` and `Rejected` only from `Submitted for decision`.
+  </Step>
+</Steps>
+
+## Step 2: Create the task types
+
+In **Admin → Task Types**, create these types. Task types must exist at the global level before you can add them to a template.
+
+| Task type | Use |
+|---|---|
+| **Phase** | One per HERMES phase, with start and due date |
+| **Outcome** | One per document or state the project must deliver |
+| **Milestone** | One per decision point |
+| **Requirement** | Solution requirements, for agile projects in the backlog |
+
+## Step 3: Create the HERMES field collection
+
+<Steps>
+  <Step title="Open Admin → Custom Fields → Collections">
+    Click **+ New Collection** and name it `HERMES`. See [Setting up a project](/projects/project-setup).
+  </Step>
+  <Step title="Add the fields">
+    | Field | Type | Values |
+    |---|---|---|
+    | **HERMES phase** | Select | Initiation, Concept, Implementation, Deployment, Execution, Closure |
+    | **Module** | Select | The modules of your scenarios |
+    | **Responsible role** | Select | The HERMES roles you use |
+    | **Minimum required** | Checkbox | Marks minimum required documents |
+    | **Decision** | Registry Object | Links a milestone to its Decision object |
+  </Step>
+</Steps>
+
+## Step 4: Create the registers in Registry
+
+<Steps>
+  <Step title="Create a schema">
+    Open **Registry** in the main navigation and click **+ New Schema**, for example `Project governance`. See [Schema Designer](/registry/schema-designer).
+  </Step>
+  <Step title="Add a Risk object type">
+    Attributes such as title, description, probability (Select), impact (Select), status, owner (User), review date and mitigation.
+  </Step>
+  <Step title="Add a Decision object type">
+    Attributes such as title, context, decision, rationale, decided by (User) and decided on (Date). This is your list of project decisions.
+  </Step>
+  <Step title="Set the permissions">
+    Under **Settings → Permissions** of the schema, give the project management group **Editor** and the project committee **Viewer**.
+  </Step>
+</Steps>
+
+## Step 5: Create one project template per scenario
+
+<Steps>
+  <Step title="Open Admin → Project Templates">
+    Click **+ New Template** and name it after the scenario, for example `HERMES IT development`.
+  </Step>
+  <Step title="Assign workflows, task types and fields">
+    Add both workflows, the four task types and the `HERMES` field collection.
+  </Step>
+  <Step title="Choose the views">
+    For traditional projects: **Timeline**, **Board**, **Work Items**, **Docs**, **Reports**. For agile projects add **Backlog** and **Sprints**.
+  </Step>
+  <Step title="Publish">
+    Enable **Published** and click **Save**.
+  </Step>
+</Steps>
+
+Projects created from the template stay linked to it, so later changes to the template can be passed on to them.
+
+## Step 6: Automate the milestone approvals
+
+Create an automation with the trigger `task.status_changed`, a condition on the status `Submitted for decision`, and an **Approval** node. Connect **On approve** and **On reject** to the actions that move the task on. See [Milestones and decisions](/hermes/milestones) for the details.
+
+## Step 7: Create the document templates
+
+Build one [Collabase Docs template](/docs/templates) per HERMES document you use, starting with the minimum required documents. See [Outcomes](/hermes/outcomes).
+
+## Start a HERMES project
+
+<Steps>
+  <Step title="Create the project">
+    In the Space, click **+ New Project** and choose the template of your scenario.
+  </Step>
+  <Step title="Plan the phases">
+    Create the **Phase** tasks with dates and the **Outcome** and **Milestone** tasks as subtasks.
+  </Step>
+  <Step title="Fill the roles">
+    Add the role groups to the Space and make the project manager project **Owner**. See [Roles](/hermes/roles).
+  </Step>
+</Steps>

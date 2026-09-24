@@ -1,0 +1,68 @@
+---
+title: "HERMES phases"
+sidebarTitle: "Phases"
+description: "The HERMES 2022 phase model: Initiation, Concept, Implementation, Deployment, Execution and Closure, and how to plan HERMES phases in Collabase."
+---
+
+The phase model is the backbone of every HERMES project. It gives the core organization the same project structure every time, no matter whether the solution is developed traditionally or agile.
+
+## The phase model
+
+Every project starts with **Initiation** and ends with **Closure**. Between them lies the development of the solution:
+
+| Approach | Phases | Number of phases |
+|---|---|---|
+| **Traditional** | Initiation → Concept → Implementation → Deployment → Closure | Five |
+| **Agile** | Initiation → Execution → Closure | Three |
+
+Initiation and Closure are always run in the traditional way from a project management point of view, even when the team uses agile tools in them.
+
+## Milestones frame each phase
+
+A milestone stands at the start and at the end of each phase. Milestones are quality gates: before a milestone is reached, the responsible role decides on the outcomes and on how to proceed. At every phase release, the project sponsor releases the resources for the next phase. In the agile approach, the project can also require a release milestone for each release.
+
+See [Milestones and decisions](/hermes/milestones) for the full list.
+
+## The phases
+
+<CardGroup cols={2}>
+  <Card title="Initiation" icon="flag" href="/hermes/initiation">
+    Study, solution variants, procurement analysis and the execution release.
+  </Card>
+  <Card title="Concept" icon="pen-ruler" href="/hermes/concept">
+    Traditional: requirements, concepts, architecture and procurement.
+  </Card>
+  <Card title="Implementation" icon="hammer" href="/hermes/implementation">
+    Traditional: build or configure, integrate, preliminary acceptance.
+  </Card>
+  <Card title="Deployment" icon="rocket" href="/hermes/deployment">
+    Traditional: activate the solution and start operation.
+  </Card>
+  <Card title="Execution" icon="arrows-rotate" href="/hermes/execution">
+    Agile: iterations, increments and optional release milestones.
+  </Card>
+  <Card title="Closure" icon="box-archive" href="/hermes/closure">
+    Hand-over, archiving and the final project evaluation.
+  </Card>
+</CardGroup>
+
+## In Collabase
+
+Plan each HERMES phase as a parent task of a dedicated task type, for example **Phase**, with a start date and a due date. The outcomes of the phase become its subtasks. The [Roadmap](/projects/roadmap) then shows the phases as bars on a timeline, with the outcomes indented below them, and highlights any subtask that falls outside its phase.
+
+<Steps>
+  <Step title="Create a Phase task type">
+    Go to **Admin → Task Types** and create a type named **Phase**. See [Workflows](/projects/workflows) for field rules.
+  </Step>
+  <Step title="Create one task per phase">
+    In the project, create a **Phase** task for each phase of your approach, with its planned start date and due date.
+  </Step>
+  <Step title="Add the outcomes as subtasks">
+    Open each phase and click **+ Add Subtask** for every outcome the phase must produce.
+  </Step>
+  <Step title="Check the plan on the Roadmap">
+    Open the **Roadmap** view and switch to **Quarter** to see the whole project.
+  </Step>
+</Steps>
+
+To reuse this setup for every HERMES project, bundle it in a project template. See [Set up HERMES in Collabase](/hermes/collabase-setup).

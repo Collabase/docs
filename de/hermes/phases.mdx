@@ -1,0 +1,68 @@
+---
+title: "HERMES Phasen"
+sidebarTitle: "Phasen"
+description: "Das HERMES-Phasenmodell 2022: Initialisierung, Konzept, Realisierung, Einführung, Umsetzung und Abschluss, und wie du HERMES-Phasen in Collabase planst."
+---
+
+Das Phasenmodell ist das Rückgrat jedes HERMES-Projekts. Es zeigt der Stammorganisation immer dieselbe Projektstruktur, unabhängig davon, ob die Lösung klassisch oder agil entsteht.
+
+## Das Phasenmodell
+
+Jedes Projekt beginnt mit der **Initialisierung** und endet mit dem **Abschluss**. Dazwischen liegt die Lösungsentstehung:
+
+| Vorgehensweise | Phasen | Anzahl Phasen |
+|---|---|---|
+| **Klassisch** | Initialisierung → Konzept → Realisierung → Einführung → Abschluss | Fünf |
+| **Agil** | Initialisierung → Umsetzung → Abschluss | Drei |
+
+Initialisierung und Abschluss laufen aus Sicht des Projektmanagements immer klassisch ab, auch wenn das Team darin agile Werkzeuge nutzt.
+
+## Meilensteine rahmen jede Phase
+
+Am Beginn und am Ende jeder Phase steht ein Meilenstein. Meilensteine sind Quality Gates: Bevor ein Meilenstein erreicht ist, entscheidet die zuständige Rolle über die Ergebnisse und das weitere Vorgehen. Bei jeder Phasenfreigabe gibt der Auftraggeber die Ressourcen für die nächste Phase frei. Im agilen Vorgehen kann das Projekt zusätzlich pro Release eine Releasefreigabe verlangen.
+
+Die vollständige Liste steht unter [Meilensteine und Entscheide](/de/hermes/milestones).
+
+## Die Phasen
+
+<CardGroup cols={2}>
+  <Card title="Initialisierung" icon="flag" href="/de/hermes/initiation">
+    Studie, Lösungsvarianten, Beschaffungsanalyse und Durchführungsfreigabe.
+  </Card>
+  <Card title="Konzept" icon="pen-ruler" href="/de/hermes/concept">
+    Klassisch: Anforderungen, Konzepte, Lösungsarchitektur und Beschaffung.
+  </Card>
+  <Card title="Realisierung" icon="hammer" href="/de/hermes/implementation">
+    Klassisch: entwickeln oder parametrisieren, integrieren, Vorabnahme.
+  </Card>
+  <Card title="Einführung" icon="rocket" href="/de/hermes/deployment">
+    Klassisch: Lösung aktivieren und Betrieb aufnehmen.
+  </Card>
+  <Card title="Umsetzung" icon="arrows-rotate" href="/de/hermes/execution">
+    Agil: Iterationen, Inkremente und optionale Releasefreigaben.
+  </Card>
+  <Card title="Abschluss" icon="box-archive" href="/de/hermes/closure">
+    Übergabe, Archivierung und Projektschlussbeurteilung.
+  </Card>
+</CardGroup>
+
+## In Collabase
+
+Plane jede HERMES-Phase als übergeordneten Task eines eigenen Task Types, zum Beispiel **Phase**, mit Start- und Enddatum. Die Ergebnisse der Phase werden seine Subtasks. Die [Roadmap](/projects/roadmap) zeigt die Phasen dann als Balken auf der Zeitachse, die Ergebnisse eingerückt darunter, und markiert jeden Subtask, der ausserhalb seiner Phase liegt.
+
+<Steps>
+  <Step title="Task Type Phase anlegen">
+    Öffne **Admin → Task Types** und lege einen Typ **Phase** an. Feldregeln findest du unter [Workflows](/projects/workflows).
+  </Step>
+  <Step title="Pro Phase einen Task anlegen">
+    Lege im Projekt für jede Phase deiner Vorgehensweise einen **Phase**-Task mit geplantem Start- und Enddatum an.
+  </Step>
+  <Step title="Ergebnisse als Subtasks ergänzen">
+    Öffne jede Phase und klicke für jedes Ergebnis der Phase auf **+ Add Subtask**.
+  </Step>
+  <Step title="Plan auf der Roadmap prüfen">
+    Öffne die Ansicht **Roadmap** und wechsle auf **Quarter**, um das ganze Projekt zu sehen.
+  </Step>
+</Steps>
+
+Damit du diese Einrichtung für jedes HERMES-Projekt wiederverwenden kannst, bündelst du sie in einer Projektvorlage. Siehe [HERMES in Collabase einrichten](/de/hermes/collabase-setup).

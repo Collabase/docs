@@ -7,10 +7,6 @@ Collabase supports several sign-in methods. You can mix and match — for exampl
 
 Configure identity providers under **Admin → Identity Providers**.
 
-<Warning>
-  The Identity Providers admin panel requires an enterprise license — including the OAuth section. Without a license, only email and password sign-in is available.
-</Warning>
-
 <CardGroup cols={3}>
   <Card title="Email & Password" icon="lock">
     Always available. Users sign in with an email address and password set by an admin or chosen during registration.
@@ -19,7 +15,7 @@ Configure identity providers under **Admin → Identity Providers**.
     Sign in with Google, GitHub, Microsoft Entra ID, Okta, or Keycloak using an existing account. Users click a button on the login page.
   </Card>
   <Card title="SAML 2.0" icon="shield">
-    Enterprise SSO with Okta, Microsoft Entra, or any SAML 2.0-compatible identity provider.
+    Single sign-on with Okta, Microsoft Entra, or any SAML 2.0-compatible identity provider.
   </Card>
   <Card title="LDAP / Active Directory" icon="server">
     Authenticate against your on-premises directory. Users sign in with their company credentials.

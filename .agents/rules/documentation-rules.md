@@ -98,15 +98,24 @@ Every `.mdx` file opens with YAML frontmatter. Use only the fields that apply.
 ```yaml
 ---
 title: "Triggers"
-sidebarTitle: "Overview"     # Only when the nav label should differ from the h1
+sidebarTitle: "Overview"     # Only when the nav label should differ from the title
 description: "One sentence describing what this page covers and why it matters."
 ---
 ```
 
-- **`title`** — browser tab and search results. Sentence case, unless the heading is a proper noun.
+- **`title`** — required on every page. Mintlify renders it as the page's H1 and uses it in the
+  browser tab and in search results (`<title> - Collabase`). Sentence case, unless it is a proper
+  noun. **Unique across the whole site**: a page without `title` falls back to its `sidebarTitle`,
+  and seven app overviews once shipped as «Overview - Collabase».
 - **`sidebarTitle`** — use `"Overview"` on overview pages to keep the nav short. Omit elsewhere.
 - **`description`** — shown in search results and under the sidebar title. One sentence, present
-  tense, no trailing period needed. It must communicate value, not just label the page.
+  tense, at most 160 characters. It must communicate value, not just label the page.
+  **Unique across the site and across collabase.ch.** The connector pages once carried the same
+  sentence as the matching `/integrations/*` page of the website, which a crawler reports as 76
+  duplicate descriptions. A docs description says how to set something up; the website says what it
+  is for.
+- **Connector pages** use `title: "<Name> connector"`, `sidebarTitle: "<Name>"` and a description
+  built from the page itself: auth type, number of triggers and actions, one example of each.
 
 ---
 
@@ -115,9 +124,7 @@ description: "One sentence describing what this page covers and why it matters."
 ```
 [frontmatter]
 
-<img src="/images/<app>.png" alt="<App name>" width="60" />   ← overview pages only
-
-# Page Title
+<img src="/images/apps/<app>.png" alt="<App name> app icon" width="60" />   ← overview pages only
 
 One short paragraph, no heading above it. What this is and why it matters.
 
@@ -132,7 +139,8 @@ Content.
 
 ### Headings
 
-- One `# H1` per page, matching `title` in the frontmatter.
+- **No `# H1` in the body.** Mintlify renders `title` as the H1. A `# Heading` below the frontmatter
+  is a second H1 on the page; a crawler once reported 94 pages with two.
 - `##` for major sections, `###` for subsections. Never skip a level.
 - Sentence case throughout: **"How it works"**, not **"How It Works"**.
 
@@ -311,8 +319,14 @@ description: "..."
 ## 10. Images
 
 - Screenshots go in `images/`.
-- Filename is the lowercase app or feature name: `automation.png`, `registry.png`.
-- Reference as `<img src="/images/filename.png" alt="Description" width="60" />`, overview pages only.
+- **App icons** live in `images/apps/<app>.png` (256 px, derived from
+  `images/01_Collabase Logo/Collabase App Logos/collabase_appicon_*.png`). Every app overview page
+  shows its icon at `width="60"` above the first paragraph; the home page uses the same files as
+  `Card` icons. Never use the old full-size icons in `images/` root.
+- **Logos and favicon** in `docs.json` are `images/logo-goldblack.png` (light),
+  `images/logo-goldwhite.png` (dark) and `images/favicon-gold.png`, scaled copies from the brand
+  folder. Never reference `images/01_Collabase Logo/` directly: the folder is 174 MB, contains an
+  archive of retired logos and is excluded in `.mintignore` and `.gitignore`.
 - Do not embed screenshots in subpages unless a UI state cannot be explained without one.
 
 ---
@@ -336,13 +350,24 @@ Add a new page's slug to the correct `group` → `pages` array:
 - Slug is the path from the docs root, without `.mdx`.
 - Order follows the user's journey — most important first.
 - Never add a page to `docs.json` without the `.mdx` file, or the reverse.
+- **Two languages.** `navigation.languages` holds `en` (default, full docs) and `de`. German pages
+  live under `de/` with the same file name as the English page. A path appears in exactly one
+  language. German currently covers the home page, the guides (getting started, HERMES, glossary,
+  «Warum es Collabase gibt») and security and privacy; the app reference is English only.
+- **Tabs (en):** Guides · User guide · Administration · Security and privacy · API Reference ·
+  Developer · Release Notes. Guides start with the group «Welcome» (`index`, `introduction`,
+  `about/story`, `glossary`); `index` stays in the navigation so it appears in the sitemap.
+- **Removing a page** always adds an entry under `redirects` to its successor. Indexed URLs must
+  not end in a 404.
 - Do not touch theme, colors, logos, or navigation groups in a content PR.
 
 ---
 
 ## 12. Release notes
 
-Every user-facing change gets an entry under `changelog/`. Release notes are customer-facing — hold
+**Paused until Collabase 1.0.** The pre-1.0 release notes were removed; `changelog/overview` says
+that release notes start with 1.0 and the old version URLs redirect to it. Do not add entries before
+1.0. From 1.0 on: every user-facing change gets an entry under `changelog/`. Release notes are customer-facing — hold
 them to a higher bar than a page.
 
 **Never auto-generate release notes or changelogs.** Skills, commands, and agents must not write,
@@ -399,7 +424,8 @@ mint broken-links  # every internal href must resolve
 
 Checklist:
 
-- [ ] Frontmatter present, `description` says something useful
+- [ ] Frontmatter present with `title` and `description`, both unique, description ≤ 160 characters
+- [ ] No `# H1` in the body
 - [ ] Written for the right audience (§2) — no developer jargon outside `developer/` and `api/`
 - [ ] Terminology matches §7
 - [ ] Procedures use `<Steps>`
@@ -617,3 +643,59 @@ Vor Einreichung jedes Geschäftstextes prüfen:
 - [ ] Klingt der Text nach einem erfahrenen Berater auf Augenhöhe?
 - [ ] Gibt es eine Stelle, wo Freude oder Teamgeist authentisch passen würde? Falls ja: einmal
   eingebaut, nicht öfter.
+
+---
+
+## 15. Publishing, SEO and positioning
+
+These rules come from the move of the docs to `collabase.ch/docs` (September 2026).
+
+### Where the docs are served
+
+- The public address is **`https://collabase.ch/docs`**. The website (Next.js on Vercel) proxies
+  `/docs`, `/_mintlify` and `/mintlify-assets` to the Mintlify deployment
+  `collabase-5ba5d338.mintlify.site`; the base path `/docs` is set in the Mintlify dashboard.
+- **No DNS change for this.** Never add the CNAME `@ → cname.mintlify.builders` that the dashboard
+  offers: it would send the whole website to Mintlify.
+- Internal links in MDX and in `<Card href>` are written without `/docs` (`/installation`).
+  Mintlify adds the base path. In raw HTML inside a `mode: "custom"` page, write absolute URLs
+  (`https://collabase.ch/docs/installation`); a relative `/docs/...` there collides with the
+  `docs/` folder of the Collabase Docs app.
+
+### Home page
+
+- `index.mdx` and `de/index.mdx` use `mode: "custom"`: introduction, a large search button that
+  opens the built-in search (`#search-bar-entry`), then guides, apps, run-and-extend and links to
+  collabase.ch. Style with Tailwind and include `dark:` variants.
+
+### Analytics and consent
+
+- Google Analytics runs only after consent. `integrations.cookies` in `docs.json` waits for the
+  local storage key `collabase-doku-messung` with value `erlaubt`. The website's consent banner
+  writes that key (`src/lib/einwilligung.ts`, `DOKU_SCHLUESSEL`). Change both sides together or not
+  at all; without the key, the docs do not measure.
+
+### Facts and sources
+
+- Every statement about Collabase comes from an existing page in this repo or from the website.
+  Never invent UI paths, buttons, templates, certifications or deadlines. If a fact is missing,
+  leave it out and ask.
+- **HERMES** pages summarise the official reference manual in your own words and name it as the
+  source. No verbatim text, no figures and no wording that suggests endorsement by the Swiss
+  Federal Chancellery. The «In Collabase» sections describe documented features only.
+
+### Positioning
+
+- No prices, no «from X CHF», no free tier, no community edition, no licence bundle promise
+  («everything in one licence»). Collabase is proprietary software of Infometis AG; the entry point
+  is a proof of concept (`https://collabase.ch/anfrage`).
+- No comparisons with other vendors. Third-party product names only as facts about connectors or
+  imports.
+- No ® after Collabase: the trademark is filed, not registered.
+
+### German pages
+
+- Swiss spelling (ss, never ß), Du-Form, no dashes as a stylistic device.
+- UI and product terms stay English as in the product (Space, Member, Collabase Docs, Object
+  Type). Links go to the German page if it exists, otherwise to the English reference.
+

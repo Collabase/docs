@@ -1,9 +1,8 @@
 ---
+title: "Actions"
 sidebarTitle: "Actions"
 description: "Action nodes perform operations when an automation runs — from native Collabase operations to external service integrations via connectors."
 ---
-
-# Actions
 
 An action node is where the automation does something. Actions run after your trigger fires and any conditions pass. Each action node calls a connector to perform a specific operation — sending a message, creating a task, posting to an external service, or anything else the connector supports.
 
@@ -17,7 +16,7 @@ Actions run in the order defined by the graph. Each action receives data from up
   <Card title="Collabase built-in" icon="house" href="/automation/connectors/collabase">
     Native Collabase operations — create and update tasks, pages, and registry objects; send in-app notifications; trigger test runs. No connection setup required.
   </Card>
-  <Card title="Connector actions" icon="plug" href="/automation/integrations">
+  <Card title="Connector actions" icon="plug" href="/automation/connectors/overview">
     Actions from 40+ external connectors — Slack, GitHub, Jira, Stripe, Datadog, and more. Require a saved Connection with credentials.
   </Card>
 </CardGroup>
@@ -144,9 +143,9 @@ Retries are counted in the execution log. If all retries fail, the node is marke
 Each connector's available actions are documented on its individual page.
 
 <CardGroup cols={3}>
-  <Card title="Communication" icon="message" href="/automation/integrations">Slack, Teams, Discord, Email, Telegram…</Card>
-  <Card title="Developer Tools" icon="code" href="/automation/integrations">GitHub, GitLab, Jira, Sentry…</Card>
-  <Card title="AI & Utilities" icon="wand-magic-sparkles" href="/automation/integrations">OpenAI, HTTP, Transform, Code…</Card>
+  <Card title="Communication" icon="message" href="/automation/connectors/overview">Slack, Teams, Discord, Email, Telegram…</Card>
+  <Card title="Developer Tools" icon="code" href="/automation/connectors/overview">GitHub, GitLab, Jira, Sentry…</Card>
+  <Card title="AI & Utilities" icon="wand-magic-sparkles" href="/automation/connectors/overview">OpenAI, HTTP, Transform, Code…</Card>
 </CardGroup>
 
-→ [View all 40+ connectors](/automation/integrations)
+→ [View all 40+ connectors](/automation/connectors/overview)

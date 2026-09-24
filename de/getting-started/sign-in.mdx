@@ -1,0 +1,46 @@
+---
+title: "Bei Collabase anmelden"
+sidebarTitle: "Anmelden"
+description: "So meldest du dich zum ersten Mal bei Collabase an, setzt dein eigenes Passwort und nutzt Google, Microsoft Entra ID, SAML-Single-Sign-on oder LDAP."
+---
+
+Deine Administratorin oder dein Administrator gibt dir die Adresse eurer Collabase-Instanz und sagt dir, wie du dich anmeldest: mit E-Mail-Adresse und Passwort oder mit deinem Firmenkonto.
+
+## Mit E-Mail und Passwort anmelden
+
+<Steps>
+  <Step title="Collabase-Adresse öffnen">
+    Öffne die Adresse, die du erhalten hast, im Browser.
+  </Step>
+  <Step title="E-Mail und temporäres Passwort eingeben">
+    Verwende die E-Mail-Adresse und das temporäre Passwort, das für dich angelegt wurde.
+  </Step>
+  <Step title="Eigenes Passwort wählen">
+    Bei der ersten Anmeldung fragt Collabase nach einem neuen Passwort. Gib es ein, bestätige es und melde dich mit dem neuen Passwort erneut an.
+  </Step>
+</Steps>
+
+## Mit dem Firmenkonto anmelden
+
+Ist ein Identity Provider angebunden, zeigt die Anmeldeseite einen zusätzlichen Button:
+
+| Button oder Feld | Was passiert |
+|---|---|
+| **Sign in with Google**, **GitHub**, **Microsoft Entra ID**, **Okta** oder **Keycloak** | Du meldest dich mit deinem bestehenden Konto bei diesem Dienst an. |
+| **Sign in with SSO** | Du wirst zum SAML-Identity-Provider deiner Firma weitergeleitet und wieder zurück. |
+| Firmen-Benutzername und Passwort | Mit LDAP oder Active Directory meldest du dich mit deinen gewohnten Firmenzugangsdaten an. |
+
+<Note>
+  Meldest du dich nur über einen externen Anbieter an, kannst du dein Passwort in Collabase nicht ändern. Ändere es beim Identity Provider oder wende dich an deine IT.
+</Note>
+
+## Nächste Schritte
+
+<CardGroup cols={2}>
+  <Card title="Spaces" icon="folder" href="/de/getting-started/spaces">
+    Öffne deinen ersten Space.
+  </Card>
+  <Card title="Identity Providers (Referenz, englisch)" icon="key" href="/admin/identity-providers">
+    Für Administratoren: So wird Single Sign-on eingerichtet.
+  </Card>
+</CardGroup>

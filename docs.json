@@ -7,341 +7,483 @@
     "light": "#b79b65",
     "dark": "#7a663e"
   },
-  "favicon": {
-    "light": "/images/favicon_new.png",
-    "dark": "/images/favicon_darkmode.png"
-  },
+  "favicon": "/images/favicon-gold.png",
   "logo": {
-    "light": "/images/logo_blackblack(1).png",
-    "dark": "/images/logo_blackwhite.png"
+    "light": "/images/logo-goldblack.png",
+    "dark": "/images/logo-goldwhite.png"
   },
   "navbar": {
     "primary": {
       "type": "button",
-      "label": "Website",
+      "label": "Back to website",
       "href": "https://collabase.ch"
     }
   },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Documentation",
-        "groups": [
+        "language": "en",
+        "tabs": [
           {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "installation",
-              "installation-kubernetes",
-              "installation-swarm",
-              "first-run",
-              "desktop-app"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "concepts/spaces",
-              "concepts/space-settings",
-              "concepts/permissions",
-              "concepts/search",
-              "concepts/documents",
-              "concepts/ai",
-              "concepts/collabase-ai",
-              "concepts/collabase-ai-skills",
-              "concepts/profile"
-            ]
-          },
-          {
-            "group": "Collabase Apps",
-            "pages": [
+            "tab": "Guides",
+            "groups": [
               {
-                "group": "Docs",
+                "group": "Welcome",
                 "pages": [
-                  "docs/overview",
-                  "docs/pages",
-                  "docs/templates",
-                  "docs/suggestions",
-                  "docs/collaboration"
+                  "index",
+                  "introduction",
+                  "about/story",
+                  "glossary"
                 ]
               },
               {
-                "group": "Projects",
+                "group": "Getting started guide",
                 "pages": [
-                  "projects/overview",
-                  "projects/project-setup",
-                  "projects/templates",
-                  "projects/tasks",
-                  "projects/sprints",
-                  "projects/queues",
-                  "projects/sla",
-                  "projects/workflows",
-                  "projects/board",
-                  "projects/backlog",
-                  "projects/roadmap",
-                  "projects/portal"
+                  "getting-started/overview",
+                  "getting-started/introduction",
+                  "getting-started/sign-in",
+                  "getting-started/spaces",
+                  "getting-started/invite-members",
+                  "getting-started/projects",
+                  "getting-started/tasks",
+                  "getting-started/boards",
+                  "getting-started/docs-pages",
+                  "getting-started/search",
+                  "getting-started/profile"
+                ]
+              },
+              {
+                "group": "HERMES project management",
+                "pages": [
+                  "hermes/overview",
+                  "hermes/introduction",
+                  "hermes/phases",
+                  "hermes/initiation",
+                  "hermes/concept",
+                  "hermes/implementation",
+                  "hermes/deployment",
+                  "hermes/execution",
+                  "hermes/closure",
+                  "hermes/milestones",
+                  "hermes/roles",
+                  "hermes/scenarios-and-modules",
+                  "hermes/outcomes",
+                  "hermes/collabase-setup"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "User guide",
+            "groups": [
+              {
+                "group": "Core concepts",
+                "pages": [
+                  "concepts/spaces",
+                  "concepts/space-settings",
+                  "concepts/permissions",
+                  "concepts/search",
+                  "concepts/documents",
+                  "concepts/ai",
+                  "concepts/collabase-ai",
+                  "concepts/collabase-ai-skills",
+                  "concepts/profile"
+                ]
+              },
+              {
+                "group": "Apps",
+                "pages": [
+                  {
+                    "group": "Docs",
+                    "pages": [
+                      "docs/overview",
+                      "docs/pages",
+                      "docs/templates",
+                      "docs/suggestions",
+                      "docs/collaboration"
+                    ]
+                  },
+                  {
+                    "group": "Projects",
+                    "pages": [
+                      "projects/overview",
+                      "projects/project-setup",
+                      "projects/templates",
+                      "projects/tasks",
+                      "projects/sprints",
+                      "projects/queues",
+                      "projects/sla",
+                      "projects/workflows",
+                      "projects/board",
+                      "projects/backlog",
+                      "projects/roadmap",
+                      "projects/portal"
+                    ]
+                  },
+                  {
+                    "group": "Test Management",
+                    "pages": [
+                      "test-management/overview",
+                      "test-management/test-cases",
+                      "test-management/test-runs",
+                      "test-management/milestones",
+                      "test-management/suites"
+                    ]
+                  },
+                  {
+                    "group": "Automation",
+                    "pages": [
+                      "automation/overview",
+                      "automation/triggers",
+                      "automation/conditions",
+                      "automation/actions",
+                      "automation/nodes",
+                      {
+                        "group": "Connectors",
+                        "pages": [
+                          "automation/connectors/overview",
+                          {
+                            "group": "Communication",
+                            "pages": [
+                              "automation/connectors/slack",
+                              "automation/connectors/teams",
+                              "automation/connectors/discord",
+                              "automation/connectors/whatsapp",
+                              "automation/connectors/telegram",
+                              "automation/connectors/sendgrid",
+                              "automation/connectors/twilio",
+                              "automation/connectors/email"
+                            ]
+                          },
+                          {
+                            "group": "Calendar",
+                            "pages": [
+                              "automation/connectors/google-calendar",
+                              "automation/connectors/outlook-calendar",
+                              "automation/connectors/calendly"
+                            ]
+                          },
+                          {
+                            "group": "Storage & Data",
+                            "pages": [
+                              "automation/connectors/google-drive",
+                              "automation/connectors/google-sheets",
+                              "automation/connectors/dropbox",
+                              "automation/connectors/airtable",
+                              "automation/connectors/notion"
+                            ]
+                          },
+                          {
+                            "group": "CRM & Finance",
+                            "pages": [
+                              "automation/connectors/hubspot",
+                              "automation/connectors/pipedrive",
+                              "automation/connectors/stripe"
+                            ]
+                          },
+                          {
+                            "group": "Developer Tools",
+                            "pages": [
+                              "automation/connectors/github",
+                              "automation/connectors/gitlab",
+                              "automation/connectors/jira",
+                              "automation/connectors/linear",
+                              "automation/connectors/sentry",
+                              "automation/connectors/datadog",
+                              "automation/connectors/pagerduty"
+                            ]
+                          },
+                          {
+                            "group": "Project Management",
+                            "pages": [
+                              "automation/connectors/asana",
+                              "automation/connectors/trello",
+                              "automation/connectors/monday"
+                            ]
+                          },
+                          {
+                            "group": "Swiss ERP & HR",
+                            "pages": [
+                              "automation/connectors/bexio",
+                              "automation/connectors/abacus",
+                              "automation/connectors/personio"
+                            ]
+                          },
+                          {
+                            "group": "AI & Utilities",
+                            "pages": [
+                              "automation/connectors/collabase",
+                              "automation/connectors/openai",
+                              "automation/connectors/ai",
+                              "automation/connectors/http",
+                              "automation/connectors/transform",
+                              "automation/connectors/code"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Time Tracking",
+                    "pages": [
+                      "time-tracking/overview",
+                      "time-tracking/logging-time",
+                      "time-tracking/timesheets",
+                      "time-tracking/reports",
+                      "time-tracking/teams",
+                      "time-tracking/billing-rules",
+                      "time-tracking/accounts",
+                      "time-tracking/holiday-workload-schemes",
+                      "time-tracking/worklog-attributes"
+                    ]
+                  },
+                  {
+                    "group": "Intranet",
+                    "pages": [
+                      "intranet/overview",
+                      "intranet/blog-posts",
+                      "intranet/events",
+                      "intranet/quick-links",
+                      "intranet/birthdays"
+                    ]
+                  },
+                  {
+                    "group": "Registry",
+                    "pages": [
+                      "registry/overview",
+                      "registry/schema-designer",
+                      "registry/object-browser",
+                      "registry/settings",
+                      "registry/csv-import"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Administration",
+            "groups": [
+              {
+                "group": "Install and run",
+                "pages": [
+                  "installation",
+                  "installation-kubernetes",
+                  "installation-swarm",
+                  "first-run",
+                  "desktop-app"
+                ]
+              },
+              {
+                "group": "Members and access",
+                "pages": [
+                  "admin/users-groups",
+                  "admin/identity-providers",
+                  "admin/security-policies"
+                ]
+              },
+              {
+                "group": "AI",
+                "pages": [
+                  "admin/ai-configuration",
+                  "admin/ai-costs"
+                ]
+              },
+              {
+                "group": "Time tracking",
+                "pages": [
+                  "admin/time-tracking"
+                ]
+              },
+              {
+                "group": "Operations",
+                "pages": [
+                  "admin/hosting",
+                  "admin/scaling",
+                  "admin/file-storage",
+                  "admin/backup",
+                  "admin/updates",
+                  "admin/troubleshooting"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Security and privacy",
+            "groups": [
+              {
+                "group": "Security and privacy",
+                "pages": [
+                  "security/overview",
+                  "security/statement",
+                  "security/data-protection"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "api/introduction"
+                ]
+              },
+              {
+                "group": "Pages",
+                "pages": [
+                  "api/pages/create-page"
+                ]
+              },
+              {
+                "group": "Work Items",
+                "pages": [
+                  "api/tasks/move-work-item"
                 ]
               },
               {
                 "group": "Test Management",
                 "pages": [
-                  "test-management/overview",
-                  "test-management/test-cases",
-                  "test-management/test-runs",
-                  "test-management/milestones",
-                  "test-management/suites"
+                  "api/test-management/list-projects",
+                  "api/test-management/create-project",
+                  "api/test-management/create-test-case",
+                  "api/test-management/create-test-run"
                 ]
               },
               {
                 "group": "Automation",
                 "pages": [
-                  "automation/overview",
-                  "automation/triggers",
-                  "automation/conditions",
-                  "automation/actions",
-                  "automation/nodes",
+                  "api/automation/list-automations",
+                  "api/automation/create-automation",
+                  "api/automation/get-automation",
+                  "api/automation/update-automation",
+                  "api/automation/delete-automation",
+                  "api/automation/toggle-automation",
+                  "api/automation/trigger-automation",
+                  "api/automation/webhook-trigger",
+                  "api/automation/list-connectors",
+                  "api/automation/list-templates",
+                  "api/automation/approval",
                   {
-                    "group": "Connectors",
+                    "group": "Executions",
                     "pages": [
-                      "automation/connectors/overview",
-                      {
-                        "group": "Communication",
-                        "pages": [
-                          "automation/connectors/slack",
-                          "automation/connectors/teams",
-                          "automation/connectors/discord",
-                          "automation/connectors/whatsapp",
-                          "automation/connectors/telegram",
-                          "automation/connectors/sendgrid",
-                          "automation/connectors/twilio",
-                          "automation/connectors/email"
-                        ]
-                      },
-                      {
-                        "group": "Calendar",
-                        "pages": [
-                          "automation/connectors/google-calendar",
-                          "automation/connectors/outlook-calendar",
-                          "automation/connectors/calendly"
-                        ]
-                      },
-                      {
-                        "group": "Storage & Data",
-                        "pages": [
-                          "automation/connectors/google-drive",
-                          "automation/connectors/google-sheets",
-                          "automation/connectors/dropbox",
-                          "automation/connectors/airtable",
-                          "automation/connectors/notion"
-                        ]
-                      },
-                      {
-                        "group": "CRM & Finance",
-                        "pages": [
-                          "automation/connectors/hubspot",
-                          "automation/connectors/pipedrive",
-                          "automation/connectors/stripe"
-                        ]
-                      },
-                      {
-                        "group": "Developer Tools",
-                        "pages": [
-                          "automation/connectors/github",
-                          "automation/connectors/gitlab",
-                          "automation/connectors/jira",
-                          "automation/connectors/linear",
-                          "automation/connectors/sentry",
-                          "automation/connectors/datadog",
-                          "automation/connectors/pagerduty"
-                        ]
-                      },
-                      {
-                        "group": "Project Management",
-                        "pages": [
-                          "automation/connectors/asana",
-                          "automation/connectors/trello",
-                          "automation/connectors/monday"
-                        ]
-                      },
-                      {
-                        "group": "Swiss ERP & HR",
-                        "pages": [
-                          "automation/connectors/bexio",
-                          "automation/connectors/abacus",
-                          "automation/connectors/personio"
-                        ]
-                      },
-                      {
-                        "group": "AI & Utilities",
-                        "pages": [
-                          "automation/connectors/openai",
-                          "automation/connectors/ai",
-                          "automation/connectors/http",
-                          "automation/connectors/transform",
-                          "automation/connectors/code"
-                        ]
-                      }
+                      "api/automation/executions/list-executions"
+                    ]
+                  },
+                  {
+                    "group": "Connections",
+                    "pages": [
+                      "api/automation/connections/list-connections",
+                      "api/automation/connections/create-connection",
+                      "api/automation/connections/test-connection"
                     ]
                   }
                 ]
               },
               {
-                "group": "Time Tracking",
+                "group": "SCIM 2.0",
                 "pages": [
-                  "time-tracking/overview",
-                  "time-tracking/logging-time",
-                  "time-tracking/timesheets",
-                  "time-tracking/reports",
-                  "time-tracking/teams",
-                  "time-tracking/billing-rules",
-                  "time-tracking/accounts",
-                  "time-tracking/holiday-workload-schemes",
-                  "time-tracking/worklog-attributes"
+                  "api/scim/overview",
+                  "api/scim/users",
+                  "api/scim/groups"
                 ]
               },
               {
-                "group": "Intranet",
+                "group": "Health",
                 "pages": [
-                  "intranet/overview",
-                  "intranet/blog-posts",
-                  "intranet/events",
-                  "intranet/quick-links",
-                  "intranet/birthdays"
-                ]
-              },
-              {
-                "group": "Registry",
-                "pages": [
-                  "registry/overview",
-                  "registry/schema-designer",
-                  "registry/object-browser",
-                  "registry/settings",
-                  "registry/csv-import"
+                  "api/health"
                 ]
               }
             ]
           },
           {
-            "group": "Administration",
-            "pages": [
-              "admin/users-groups",
-              "admin/time-tracking",
-              "admin/identity-providers",
-              "admin/security-policies",
-              "admin/ai-configuration",
-              "admin/ai-costs",
-              "admin/hosting",
-              "admin/scaling",
-              "admin/file-storage",
-              "admin/backup",
-              "admin/updates",
-              "admin/troubleshooting"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Release Notes",
-        "groups": [
-          {
-            "group": "Releases",
-            "pages": [
-              "changelog/overview",
-              "changelog/v0.13.0-rc",
-              "changelog/v0.12.2-rc",
-              "changelog/v0.12.0-rc",
-              "changelog/v0.11.0-rc",
-              "changelog/v0.10.0-rc",
-              "changelog/v0.9.7-rc",
-              "changelog/v0.9.0-rc",
-              "changelog/v0.8.3"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Developer",
-        "groups": [
-          {
-            "group": "Building Extensions",
-            "pages": [
-              "developer/wasm"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "api/introduction"
-            ]
-          },
-          {
-            "group": "Pages",
-            "pages": [
-              "api/pages/create-page"
-            ]
-          },
-          {
-            "group": "Work Items",
-            "pages": [
-              "api/tasks/move-work-item"
-            ]
-          },
-          {
-            "group": "Test Management",
-            "pages": [
-              "api/test-management/list-projects",
-              "api/test-management/create-project",
-              "api/test-management/create-test-case",
-              "api/test-management/create-test-run"
-            ]
-          },
-          {
-            "group": "Automation",
-            "pages": [
-              "api/automation/list-automations",
-              "api/automation/create-automation",
-              "api/automation/get-automation",
-              "api/automation/update-automation",
-              "api/automation/delete-automation",
-              "api/automation/toggle-automation",
-              "api/automation/trigger-automation",
-              "api/automation/webhook-trigger",
-              "api/automation/list-connectors",
-              "api/automation/list-templates",
-              "api/automation/approval",
+            "tab": "Developer",
+            "groups": [
               {
-                "group": "Executions",
+                "group": "Building Extensions",
                 "pages": [
-                  "api/automation/executions/list-executions"
-                ]
-              },
-              {
-                "group": "Connections",
-                "pages": [
-                  "api/automation/connections/list-connections",
-                  "api/automation/connections/create-connection",
-                  "api/automation/connections/test-connection"
+                  "developer/wasm"
                 ]
               }
             ]
           },
           {
-            "group": "SCIM 2.0",
-            "pages": [
-              "api/scim/overview",
-              "api/scim/users",
-              "api/scim/groups"
+            "tab": "Release Notes",
+            "groups": [
+              {
+                "group": "Releases",
+                "pages": [
+                  "changelog/overview"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "language": "de",
+        "tabs": [
+          {
+            "tab": "Leitfäden",
+            "groups": [
+              {
+                "group": "Willkommen",
+                "pages": [
+                  "de/index",
+                  "de/about/story",
+                  "de/glossary"
+                ]
+              },
+              {
+                "group": "Erste Schritte",
+                "pages": [
+                  "de/getting-started/overview",
+                  "de/getting-started/introduction",
+                  "de/getting-started/sign-in",
+                  "de/getting-started/spaces",
+                  "de/getting-started/invite-members",
+                  "de/getting-started/projects",
+                  "de/getting-started/tasks",
+                  "de/getting-started/boards",
+                  "de/getting-started/docs-pages",
+                  "de/getting-started/search",
+                  "de/getting-started/profile"
+                ]
+              },
+              {
+                "group": "HERMES Projektmanagement",
+                "pages": [
+                  "de/hermes/overview",
+                  "de/hermes/introduction",
+                  "de/hermes/phases",
+                  "de/hermes/initiation",
+                  "de/hermes/concept",
+                  "de/hermes/implementation",
+                  "de/hermes/deployment",
+                  "de/hermes/execution",
+                  "de/hermes/closure",
+                  "de/hermes/milestones",
+                  "de/hermes/roles",
+                  "de/hermes/scenarios-and-modules",
+                  "de/hermes/outcomes",
+                  "de/hermes/collabase-setup"
+                ]
+              }
             ]
           },
           {
-            "group": "Health",
-            "pages": [
-              "api/health"
+            "tab": "Sicherheit und Datenschutz",
+            "groups": [
+              {
+                "group": "Sicherheit und Datenschutz",
+                "pages": [
+                  "de/security/overview",
+                  "de/security/statement",
+                  "de/security/data-protection"
+                ]
+              }
             ]
           }
         ]
@@ -405,8 +547,50 @@
     "url": "full"
   },
   "integrations": {
+    "cookies": {
+      "key": "collabase-doku-messung",
+      "value": "erlaubt"
+    },
     "ga4": {
       "measurementId": "G-9YS9SX848Y"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/changelog/v0.13.0-rc",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/changelog/v0.12.2-rc",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/changelog/v0.12.0-rc",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/changelog/v0.11.0-rc",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/changelog/v0.10.0-rc",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/changelog/v0.9.7-rc",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/changelog/v0.9.0-rc",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/changelog/v0.8.3",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/automation/integrations",
+      "destination": "/automation/connectors/overview"
+    }
+  ]
 }

@@ -1,0 +1,75 @@
+---
+title: "Bearbeitung von Personendaten"
+sidebarTitle: "Personendaten"
+description: "Welche Personendaten Collabase als Anwendung speichert, wer verantwortlich ist, wo die Daten liegen, was den Server verlässt und wie du Konten sperrst oder löschst."
+---
+
+Diese Seite beschreibt die Personendaten, die Collabase als Anwendung bearbeitet. Für die Website collabase.ch gilt die [Datenschutzerklärung](https://collabase.ch/rechtliches-und-datenschutz/datenschutz). Die Angaben helfen dir, Collabase in deinem eigenen Verzeichnis der Bearbeitungstätigkeiten nach nDSG und DSGVO zu dokumentieren. Sie sind keine Rechtsberatung.
+
+---
+
+## Wer verantwortlich ist
+
+| Betriebsmodell | Verantwortlicher | Rolle der Infometis AG |
+|---|---|---|
+| **Self-Hosted** | Deine Organisation | Kein Zugriff auf deine Umgebung |
+| **Collabase Cloud** | Deine Organisation | Auftragsbearbeiterin, gestützt auf den Auftragsbearbeitungsvertrag im Vertrag |
+
+---
+
+## Was Collabase über Personen speichert
+
+| Kategorie | Daten | Herkunft |
+|---|---|---|
+| **Konto** | Name, E-Mail-Adresse, Instanzrolle, Funktion, Abteilung, Anmeldeweg | Administration, Registrierung oder dein Identity Provider (LDAP, SCIM, SAML, OAuth) |
+| **Profil (freiwillig)** | Telefonnummer, Geburtsdatum, Avatar, Kurzbeschreibung | Die Person selbst |
+| **Einstellungen** | Sprache, Zeitzone, Benachrichtigungen | Die Person selbst |
+| **Sitzungen** | Aktive Geräte mit Browser, Betriebssystem und letzter Nutzung | Bei der Anmeldung erfasst |
+| **Arbeitsinhalte** | Urheberschaft von Seiten, Work Items und Kommentaren, Zuweisungen, Zeiteinträge | Aus der täglichen Arbeit |
+| **API-Tokens** | Persönliche Tokens für Integrationen | Von der Person erstellt |
+| **KI-Chats** | Unterhaltungen mit CollabaseAI | Nur bei eingeschalteter KI |
+
+**Sichtbarkeit.** Andere Members sehen Anzeigename, Avatar, Kurzbeschreibung, Funktion und Abteilung. E-Mail-Adresse, Zeitzone und Sprache sind privat. Eine Telefonnummer sehen nur die Person selbst und die Administration. Ein Geburtsdatum erscheint in der Geburtstagsliste im Intranet, wenn deine Organisation das Intranet nutzt.
+
+---
+
+## Wo die Daten liegen
+
+Alle strukturierten Daten liegen in der Datenbank von Collabase, hochgeladene Dateien in der lokalen Dateiablage oder in einem S3-kompatiblen Bucket, den du bereitstellst. Im Self-Hosted-Betrieb liegt beides auf deiner Infrastruktur. In der Collabase Cloud bleiben Inhalte, Metadaten und Backups in der Schweiz.
+
+---
+
+## Was deinen Server verlässt
+
+| Datenfluss | Wann | Wie du ihn steuerst |
+|---|---|---|
+| **Nutzungsstatistik** | Nach der Installation eingeschaltet. Übermittelt, welche Funktionen geöffnet werden, Fehler der Anwendung und zu jeder KI-Anfrage Modell, Dauer, Token-Zahl sowie den Text, der an die KI geht und von ihr zurückkommt. Dokumente, Dateien, Aufgaben und Benutzerdaten werden nie hochgeladen. | Unter **Administration → Feedback & Privacy** ausschalten. Siehe [Usage statistics](/admin/hosting#usage-statistics). |
+| **KI-Anfragen** | Nur wenn CollabaseAI mit einem gehosteten Anbieter eingeschaltet ist | Einen Self-Hosted-Anbieter oder Infomaniak wählen. Siehe [AI Configuration](/admin/ai-configuration#privacy-and-data-handling). |
+| **Gehostetes Re-Ranking** | Nur wenn ein gehosteter Re-Ranking-Dienst gewählt ist | **Own server** wählen oder Re-Ranking auslassen |
+| **Automation-Connectors** | Nur für Automationen, die du mit externen Diensten baust | Jeder Connector übermittelt die Daten, die du ihm zuordnest |
+
+<Warning>
+  Erlaubt ein Auftragsbearbeitungsvertrag keine Weitergabe von Inhalten an Dritte, schalte die Nutzungsstatistik aus, bevor deine Members den KI-Assistenten nutzen.
+</Warning>
+
+---
+
+## Aufbewahrung und Löschung
+
+| Was | Verhalten |
+|---|---|
+| **Konto sperren (Disable)** | Die Person kann sich nicht mehr anmelden. Konto und Inhalte bleiben bestehen. |
+| **Konto löschen (Delete)** | Das Konto wird endgültig entfernt. Seiten, Work Items und andere Inhalte der Person bleiben erhalten. Siehe [Users & Groups](/admin/users-groups). |
+| **Deaktivierung aus dem Verzeichnis** | LDAP und SCIM deaktivieren Konten, die in deinem Verzeichnis entfernt wurden. Sie löschen sie nicht. |
+| **KI-Chats** | Privat für die Person, die sie geschrieben hat. Keine Ansicht für die Administration. Gelöscht 30 Tage nach der letzten Nachricht. |
+| **Backups vor Updates** | Im Self-Hosted-Betrieb 7 Tage aufbewahrt |
+| **Collabase Cloud beim Austritt** | Du bekommst einen vollständigen Datenbank-Dump, das Upload-Volume und den Zugriff auf das Repository deiner Backups. Danach löschen wir Produktionsdaten und Backups innerhalb der vertraglich vereinbarten Frist und bestätigen die Löschung auf Wunsch schriftlich. |
+
+---
+
+## Verwandte Seiten
+
+- [Sicherheitsstatement](/de/security/statement)
+- [Identity Providers](/admin/identity-providers)
+- [Backup & Restore](/admin/backup)
+- [Profile](/concepts/profile)

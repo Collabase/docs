@@ -5,3 +5,6 @@
 # Draft content
 drafts/
 *.draft.mdx
+
+# Brand source folder: 174 MB incl. an archive of retired logos. Only the scaled copies in images/ are published.
+images/01_Collabase Logo/

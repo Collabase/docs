@@ -22,7 +22,12 @@ If anything here or in any other file contradicts it, `documentation-rules.md` w
 ## Hard constraints
 
 - **Never move, rename, or restructure folders.** The two repos are kept identical by a manual copy.
-- **Never change `docs.json`** beyond adding or reordering pages. Theme, colors, and logos are off-limits.
+- **Never change `docs.json`** beyond adding or reordering pages unless the user asks for it. Theme,
+  colors, logos, languages and redirects change only on an explicit request (see §11 and §15 of the
+  rules).
+- **No `# H1` in the body.** Mintlify renders `title` as the H1. Every page has a unique `title` and a
+  unique `description` of at most 160 characters.
+- **Removing a page adds a redirect** in `docs.json`.
 - **Never register a page in `docs.json` without creating the `.mdx` file**, or the reverse.
 - **Never leave placeholder text.** A section ships complete or not at all.
 - **Never document running from source.** Give the commands for the ZIP deployment customers receive;

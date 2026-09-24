@@ -1,0 +1,403 @@
+---
+title: "Collabase glossary"
+sidebarTitle: "Glossary"
+description: "Every Collabase term in one place, from Space and Permission Scheme to Object Type and SCIM, with a short definition and a link to the full guide."
+---
+
+This glossary explains the terms you meet when you run and use Collabase. Each entry gives a short definition and links to the page that covers the topic in full. Terms are listed as they appear in the Collabase interface.
+
+[A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [K](#k) · [L](#l) · [M](#m) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w)
+
+## A
+
+### Action
+
+An action is the node in an automation that does something: it creates a task, updates a page, sends a Slack message or calls an external service. Native actions work on Collabase content without any setup. Actions from external connectors need a saved [Connection](#connection). Each action receives data from the nodes before it and passes its own output on. [Read more about actions](/automation/actions).
+
+### Active Directory
+
+Active Directory is Microsoft's on-premises user directory. Collabase connects to it, and to other LDAP directories such as OpenLDAP and FreeIPA, so your team signs in with their existing company username and password. The LDAP settings include a preset for Active Directory that fills in the common attribute mappings. [Read more about LDAP and Active Directory](/admin/identity-providers).
+
+### Announcement
+
+An announcement is a blog post pinned to the top of the Intranet feed, above the chronological list of regular posts. Use it for time-sensitive messages that everyone should see. [Read more about announcements](/intranet/blog-posts).
+
+### API
+
+The Collabase REST API lets you integrate Collabase with other tools and automate work programmatically. Requests authenticate with an API key sent as a bearer token. The API is currently in closed beta and available to selected customers. [Read more about the API](/api/introduction).
+
+### Approval node
+
+The Approval node pauses an automation until a designated person approves or rejects it. When the node runs, the approver receives a notification with an approve and a reject link. [Read more about flow control nodes](/automation/nodes).
+
+### Attachments macro
+
+The Attachments macro places a live list of a page's attached files anywhere in the page content. Readers can upload, preview and download files directly from the list, without switching to edit mode. [Read more about the Attachments macro](/concepts/documents).
+
+### Attribute
+
+An attribute is a field on an Object Type in the Registry, for example text, number, date, select, user or relation. One attribute of each Object Type is the label, the display name shown for its Objects throughout the interface. [Read more about attributes](/registry/overview).
+
+### Automation
+
+Automation is the workflow app built into Collabase. You connect a trigger, conditions and actions in a visual drag-and-drop builder, without writing code. Every run is logged with the input, output and status of each node. [Read more about Automation](/automation/overview).
+
+## B
+
+### Backlog
+
+The Backlog holds every task in a project that is not assigned to a sprint. It is the starting point for sprint planning: you order the tasks by priority and drag the next ones into an upcoming sprint. [Read more about the Backlog](/projects/backlog).
+
+### Backup
+
+A complete Collabase backup covers two places: the database and the file storage. There is no backup screen in Collabase; you create backups with commands on your server or through a scheduled job. Store them off the server so that a hardware failure does not take the backups with it. [Read more about backups](/admin/backup).
+
+### Billing rule
+
+A billing rule tells Time Tracking how to price time entries. You define rates, multipliers, flat fees or non-billable overrides per Space, team, member or activity type, each with its own date range. [Read more about billing rules](/time-tracking/billing-rules).
+
+### Blog post
+
+A blog post is a page of type Blog in Collabase Docs. It uses the full page editor, and once its status is set to Published it appears in the Intranet feed for everyone with access to its Space. [Read more about blog posts](/intranet/blog-posts).
+
+### Board
+
+The Board is the default view of a project. It shows tasks as cards in columns, one column per workflow status, and you change a task's status by dragging its card. [Read more about the Board](/projects/board).
+
+### Burndown chart
+
+A burndown chart shows how much of a sprint's committed work is still open, day by day. Collabase snapshots the committed story points when a sprint starts, so scope changes during the sprint stay visible. [Read more about sprints](/projects/sprints).
+
+## C
+
+### Canvas page
+
+A Canvas page is an infinite freeform drawing surface in Collabase Docs. Use it for diagrams, wireframes and visual planning. [Read more about page types](/docs/pages).
+
+### Collabase Docs
+
+Collabase Docs is the knowledge base in every Space. Every document is a page; pages live in a nested tree, support rich text, keep a full version history and can be restricted to specific members or groups. [Read more about Collabase Docs](/docs/overview).
+
+### Collabase Query Language (CQL)
+
+CQL is the filter syntax Collabase uses for advanced search and for queues, for example `assignee = me` or `dueDate < today and status != "Done"`. You can write expressions directly or let the filter builder generate them. [Read more about CQL in queues](/projects/queues).
+
+### CollabaseAI
+
+CollabaseAI is the assistant built into Collabase. It answers questions about your work items, pages, Registry Objects and test runs, and it can create and change content for you. It only sees what you can see, and every change waits for your approval. [Read more about CollabaseAI](/concepts/collabase-ai).
+
+### Condition
+
+A condition is a node in an automation that checks a value against a rule. A **Filter** node stops the branch when the rule is not met; an **IfElse** node continues on a true or a false path. [Read more about conditions](/automation/conditions).
+
+### Connection
+
+A connection is a named, encrypted set of credentials for an external connector. You create it once in the Automation app and reuse it in every automation. Credentials never appear in execution logs. [Read more about connections](/automation/actions).
+
+### Connector
+
+A connector is a pre-built integration between Automation and an external service, such as Slack, Microsoft Teams, GitHub or bexio. Each connector brings its own triggers and actions. [Read more about connectors](/automation/connectors/overview).
+
+### Customer Portal
+
+The Customer Portal lets external people submit tickets to a project and follow their status without a Collabase account. They see only their own tickets and the comments your team marks as External. [Read more about the Customer Portal](/projects/portal).
+
+## D
+
+### Desktop app
+
+The Collabase desktop app runs on macOS, Windows and Linux. It opens your own Collabase server in its own window, shows unread notifications in the menu bar or system tray, and stores nothing on the device. [Read more about the desktop app](/desktop-app).
+
+### Docker Swarm
+
+Docker Swarm is one of the ways to run Collabase on a cluster. Collabase runs as a Swarm stack with managed secrets and rolling updates. On a single Linux server, the standard installation is the recommended path. [Read more about Docker Swarm](/installation-swarm).
+
+### Documents app
+
+The Documents app lists every attachment from pages and work items you are allowed to open, across all your Spaces. Teams use it to find a file without knowing where it was uploaded and to organize files into shared folders. [Read more about the Documents app](/concepts/documents).
+
+## E
+
+### Event
+
+An event in the Intranet is a company-wide date, such as a team meeting, an all-hands or a workshop. Upcoming events for the next 30 days appear on the Intranet home. Admins and members with the Event Manager role create them. [Read more about events](/intranet/events).
+
+## F
+
+### Field collection
+
+A field collection is a named group of custom fields. You attach it to a project or bundle it into a project template, and one collection can be reused across many projects. [Read more about project setup](/projects/project-setup).
+
+### File storage
+
+File storage is where Collabase keeps uploaded files such as attachments, images and banners. The default is the server's local disk; S3-compatible object storage is the alternative and is required for more than one application instance. [Read more about file storage](/admin/file-storage).
+
+## G
+
+### Global module
+
+A global module is an app that is not tied to a Space: Registry, Automation, Intranet and Time Reports. Access to a global module is granted to groups per module under **Admin → Roles & App Access**. [Read more about permissions](/concepts/permissions).
+
+### Governed workflow
+
+A governed workflow allows only the status transitions you have configured explicitly. Any other move is blocked. Use it for regulated or audit-sensitive processes. [Read more about workflows](/projects/workflows).
+
+### Group
+
+A group is a set of members managed under **Admin → Groups**. Add a group to a Space, and all its current and future members inherit the Space role you assign. [Read more about users and groups](/admin/users-groups).
+
+## H
+
+### Holiday scheme
+
+A holiday scheme is a named list of non-working days for a country, region and calendar year. Workload plans use it so that holidays show no daily hour target in the time calendar. [Read more about holiday schemes](/time-tracking/holiday-workload-schemes).
+
+## I
+
+### Identity provider
+
+An identity provider is the system your team already uses to sign in, such as Microsoft Entra ID, Okta, Keycloak or Google. Collabase connects to identity providers through OAuth, SAML, LDAP and SCIM, under **Admin → Identity Providers**. Email and password sign-in stays available as a fallback. [Read more about identity providers](/admin/identity-providers).
+
+### Instance role
+
+Every account has an instance role: **Admin** has full access to all settings and all Spaces, **User** works in the Spaces they are invited to. Instance roles are set under **Admin → Users**. [Read more about instance roles](/concepts/permissions).
+
+### Intranet
+
+The Intranet is the internal communication hub of Collabase. It brings announcements, blog posts, events, quick links and birthdays together in one feed for everyone in the organization. [Read more about the Intranet](/intranet/overview).
+
+## K
+
+### Kubernetes
+
+Collabase runs in an existing Kubernetes cluster with the official Helm chart. If you have a single Linux server, you do not need Kubernetes; the standard installation is simpler and fully supported. [Read more about Kubernetes](/installation-kubernetes).
+
+## L
+
+### Live collaboration
+
+Live collaboration lets several people edit the same page at once. Everyone sees the others' changes as they type, along with their cursors and presence avatars. It is on by default and an administrator can turn it off. [Read more about live collaboration](/docs/collaboration).
+
+## M
+
+### MCP
+
+MCP (Model Context Protocol) is an open standard for connecting AI applications to external systems. In Automation, the MCP node calls a tool registered on an external MCP server. [Read more about AI nodes](/automation/nodes).
+
+### Member
+
+A member is a person with a Collabase account. Inside a Space, each member has a Space role that decides what they can do there. [Read more about Space members](/concepts/space-settings).
+
+### Milestone
+
+A milestone in Test Management is a named marker, such as a release or a quality gate, that you link test runs to. Collabase aggregates the results of all linked runs, so you can see at a glance whether a release is ready. [Read more about milestones](/test-management/milestones).
+
+## O
+
+### Object
+
+An Object is a single record in the Registry, for example one server, one vendor or one contract. Its fields are the attributes of its Object Type, and it can be linked to other Objects and to tasks. [Read more about the Object Browser](/registry/object-browser).
+
+### Object Type
+
+An Object Type defines a category of record in a Registry schema, such as Customer, Server or Contract. It has a name, an icon, a color and a set of attributes. [Read more about Object Types](/registry/overview).
+
+## P
+
+### Page
+
+A page is the core unit of Collabase Docs. There are three page types: Standard, Blog and Canvas. Pages are nested to any depth, keep their version history and have their own permissions. [Read more about pages](/docs/pages).
+
+### Permission Scheme
+
+A Permission Scheme is a reusable template that defines what Managers, Members and Viewers can do in a Space. One scheme can be assigned to many Spaces, and a change to it updates all of them at once. Collabase ships with four built-in schemes that you can clone and adapt. [Read more about Permission Schemes](/concepts/permissions).
+
+### Profile
+
+Your profile holds your name, job title, language, notification settings, password and API tokens. All profile settings affect only your own account. [Read more about your profile](/concepts/profile).
+
+### Project
+
+A project in Collabase is where a team tracks its work: tasks, boards, sprints, queues, SLA policies and its own workflow, inside a Space. [Read more about Projects](/projects/overview).
+
+### Project template
+
+A project template bundles a workflow, task types, field collections and the enabled views into one reusable configuration. A template can be global, available in every Space, or limited to one Space. [Read more about project templates](/projects/templates).
+
+## Q
+
+### Queue
+
+A queue is a named, filtered view inside a project, such as "Unassigned" or "Critical open". Queues are defined with CQL filters, and a task can appear in several queues at once. [Read more about queues](/projects/queues).
+
+### Quick links
+
+Quick links are pinned shortcuts on the Intranet home. Organization links are set by admins and visible to everyone; personal links are visible only to the member who added them. [Read more about quick links](/intranet/quick-links).
+
+## R
+
+### Registry
+
+The Registry is the structured data store of Collabase. You define your own Object Types, create Objects and link them with typed relations, for customers, assets, vendors, contracts or anything else you track. It is an instance-wide module, not tied to a Space. [Read more about the Registry](/registry/overview).
+
+### Relation
+
+A relation is a directed, typed link between two Objects in the Registry, for example "Server runs Application". You draw relations between Object Types in the Schema Designer and view connected Objects as a graph or a list. [Read more about the Schema Designer](/registry/schema-designer).
+
+### Roadmap
+
+The Roadmap is a Gantt-style timeline in a project. Tasks with start and due dates appear as bars, and sprint periods appear as colored bands in the background. [Read more about the Roadmap](/projects/roadmap).
+
+## S
+
+### SAML
+
+SAML 2.0 is a standard for single sign-on. Collabase works with Okta, Microsoft Entra ID and any other SAML 2.0-compatible identity provider. [Read more about SAML SSO](/admin/identity-providers).
+
+### Schema
+
+A schema is the top-level container of a data model in the Registry. It groups Object Types, their attributes and the relations between them, for example one schema for IT assets and another for vendor management. [Read more about schemas](/registry/overview).
+
+### Schema Designer
+
+The Schema Designer is the visual canvas for building a Registry data model. Object Types appear as nodes and relations as arrows, and you edit the model by clicking on the canvas. [Read more about the Schema Designer](/registry/schema-designer).
+
+### SCIM
+
+SCIM 2.0 is a standard for automated user provisioning. Connected to your identity provider, it creates, updates and deactivates Collabase accounts and group memberships automatically. [Read more about SCIM](/admin/identity-providers).
+
+### Search
+
+Collabase has one search across all content you have access to: tasks, pages, Registry Objects, test cases, test runs and automations. Open it with `Cmd + K` on Mac or `Ctrl + K` on Windows and Linux. [Read more about search](/concepts/search).
+
+### Security policies
+
+Security policies control how long a sign-in stays valid, lock out repeated failed logins and let named people sign in with a password when SSO is enforced. You find them under **Settings → Security → Policies**. [Read more about security policies](/admin/security-policies).
+
+### Semantic search
+
+Semantic search lets you ask a question in plain language and get an answer based on your own pages, work items and comments, with links to the sources. It needs an embedding model, configured by an administrator. [Read more about AI in Collabase](/concepts/ai).
+
+### SLA policy
+
+An SLA policy sets first-response and resolution targets per priority for the tasks in a project. The clock pauses in hold statuses, and breached tasks are flagged on the board and in queues. [Read more about SLA policies](/projects/sla).
+
+### Space
+
+A Space is the top-level container in Collabase, with its own members, apps and content. Think of it as a department, a product area or a team. Spaces are isolated from each other, which makes them a reliable boundary for access control. [Read more about Spaces](/concepts/spaces).
+
+### Space role
+
+Inside a Space, every member has one of four roles: Space Admin, Manager, Member or Viewer. The Space Admin role has fixed rights; the other three are defined by the Space's Permission Scheme. [Read more about Space roles](/concepts/permissions).
+
+### Space settings
+
+Space settings are where a Space Admin renames the Space, manages its members, turns apps on and off, sets the visibility and archives or deletes the Space. [Read more about Space settings](/concepts/space-settings).
+
+### Sprint
+
+A sprint is a time-boxed iteration, typically one to two weeks, with a start date, an end date and an optional goal. Only one sprint is active at a time; when it closes, open tasks move to the backlog or the next sprint. [Read more about sprints](/projects/sprints).
+
+### Status category
+
+Every workflow status belongs to one of three categories: TODO, IN_PROGRESS or DONE. The category decides how the status counts in the backlog, in velocity and burndown, and in SLA tracking. [Read more about statuses](/projects/workflows).
+
+### Story points
+
+Story points are a relative effort estimate on a task. Collabase uses them for sprint velocity and burndown charts. Projects can also estimate in T-shirt sizes or hours. [Read more about task fields](/projects/tasks).
+
+### Suggestion
+
+A suggestion is a proposed change to a page's text, made by a reader without editing the page. The author or an editor reviews it and accepts or rejects it. [Read more about suggestions](/docs/suggestions).
+
+### Swimlane
+
+A swimlane divides the columns of a board into horizontal rows, one row per value of a chosen field such as assignee or priority. [Read more about swimlanes](/projects/board).
+
+## T
+
+### Task
+
+A task is a single unit of work in a project, such as a feature request, a bug or a support ticket. It has a permanent key like `PROJ-42`, a status, a type, a priority and an assignee. CollabaseAI calls tasks **work items**. [Read more about tasks](/projects/tasks).
+
+### Task type
+
+A task type categorizes work, for example Task, Bug, Story, Epic or a custom type. Each type decides which custom fields are required, optional or hidden. [Read more about task types](/projects/workflows).
+
+### Template
+
+A template in Collabase Docs is a reusable page structure. It can contain placeholder variables in `{{variable}}` format that are prompted when someone creates a page from it. [Read more about templates](/docs/templates).
+
+### Test case
+
+A test case describes one thing to verify, with ordered steps and the expected result for each. Only test cases with the status READY are included in test runs. [Read more about test cases](/test-management/test-cases).
+
+### Test Management
+
+Test Management is the quality app in every Space. You organize test cases in suites, execute manual test runs, record results and track quality across releases with milestones. [Read more about Test Management](/test-management/overview).
+
+### Test run
+
+A test run is an execution session. Testers work through the selected cases and record a result for each: Passed, Failed, Blocked or Skipped. A completed run is a fixed quality snapshot for that point in time. [Read more about test runs](/test-management/test-runs).
+
+### Test suite
+
+A test suite is a folder for test cases inside a test project. Suites nest to any depth and have no effect on execution; they keep a large set of cases navigable. [Read more about test suites](/test-management/suites).
+
+### Time account
+
+A time account is a named billing container that groups time entries by client, retainer or cost center, so reports show what was logged against each. [Read more about time accounts](/time-tracking/accounts).
+
+### Time Tracking
+
+Time Tracking lets your team log hours against tasks and projects, submit monthly timesheets for approval and produce billable reports. [Read more about Time Tracking](/time-tracking/overview).
+
+### Timesheet
+
+A timesheet is a monthly period of time entries. It moves from DRAFT to SUBMITTED to APPROVED; once approved, its entries are permanently locked. [Read more about timesheets](/time-tracking/timesheets).
+
+### Trigger
+
+A trigger starts an automation. It can be a Collabase event, a schedule, a webhook, a manual run or an event from a connected service. Every automation has exactly one trigger. [Read more about triggers](/automation/triggers).
+
+## U
+
+### Update
+
+An update brings your installation to a new Collabase version with one command, `bash update.sh`. The script backs up the database first, downloads the new version and restarts the services. [Read more about updates](/admin/updates).
+
+## V
+
+### Version history
+
+Every save of a page creates a snapshot in its version history. You can restore any earlier version; the restore creates a new version instead of overwriting the current one. [Read more about pages](/docs/pages).
+
+### Visibility
+
+A Space's visibility decides who can find and read it: **Private** for invited members only, **Internal** for everyone signed in, **Public** for anyone, including people without an account. [Read more about Space visibility](/concepts/spaces).
+
+## W
+
+### WASM plugin
+
+A WASM plugin extends the Collabase backend with logic compiled to WebAssembly. It runs headless on your server inside a sandbox with limits for memory and execution time. [Read more about WASM plugins](/developer/wasm).
+
+### Work item
+
+Work item is the name CollabaseAI uses on screen for a task. Both terms mean the same thing. [Read more about tasks](/projects/tasks).
+
+### Workflow
+
+A workflow is the set of statuses a task moves through in a project, together with the rules for moving between them. You can allow free movement or restrict it with a governed workflow. [Read more about workflows](/projects/workflows).
+
+### Workload plan
+
+A workload plan sets the daily hour target for a member or team. It uses a holiday scheme, and the target appears as a progress bar in the time calendar. [Read more about workload plans](/time-tracking/holiday-workload-schemes).
+
+### Worklog attribute
+
+A worklog attribute is a custom field on every time entry, for example activity type, service category or a travel flag. [Read more about worklog attributes](/time-tracking/worklog-attributes).
+
+### Writing assistant
+
+The writing assistant generates, summarizes, translates and improves text in any editor in Collabase. Type `/ai` on any line to open it. [Read more about the writing assistant](/concepts/ai).
