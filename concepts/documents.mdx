@@ -93,6 +93,7 @@ for more actions:
 | **Download** | Downloads the file. |
 | **Open page** / **Open work item** | Jumps to the page or work item the file is attached to. |
 | **Move to** | Folders view only. Files the file into a folder of the same space. |
+| **Delete** | Deletes the file for everyone, also from its page or work item. Shown only when you are allowed to delete it there. Collabase asks for confirmation first. |
 
 Files uploaded directly to a space, without a page or work item, appear under **Not linked**.
 
@@ -162,6 +163,17 @@ Folders belong to a space, so only members of that space can see them. Within th
 shown only when it, or one of its sub-folders, contains at least one file you are allowed to see. A
 folder therefore never reveals the name or existence of a file you cannot open. The member who created
 a folder also sees it while it is still empty.
+
+### Who can delete a file
+
+Deleting a file in Documents is the same as deleting it on its page or work item, so it needs the same
+rights. **Delete** appears only on files where you have both:
+
+| File attached to | You need |
+|---|---|
+| **A page** | **Delete own attachments** (your upload) or **Delete any attachment** (someone else's), and edit rights on the page, including its restrictions |
+| **A work item** | **Delete own attachments** or **Delete any attachment**, and edit rights on the work item. Private projects require project membership. |
+| **The space only** (Not linked) | **Delete own attachments** or **Delete any attachment** |
 
 ### Who can organize
 

@@ -55,7 +55,7 @@ From **Admin → Users**, you can take the following actions on any account:
 | **Re-enable** | Restores access for a previously disabled account |
 | **Edit profile** | Update name, email, job title, and department |
 | **Unlock** | Removes a lockout caused by repeated failed login attempts |
-| **Delete** | Permanently removes the account; their content (pages, tasks, etc.) is kept |
+| **Delete** | Anonymizes the member for good. Pages, work items, comments, attachments and booked time stay, and the author shows as the name followed by `(deleted)`. The email address, password, two-factor setup, sessions, API tokens, and group and space memberships are removed. If the member owns automations, connections or registry schemas, you choose a new owner first; those move to that person and keep working unchanged. The email address can be used again right away. A deleted member cannot be re-enabled. A SCIM token the member created keeps working, so your identity provider stays connected; replace it under **SCIM** if you want it tied to someone else. |
 
 <Warning>
   You cannot disable or delete your own account. Ask another admin to do this if needed.

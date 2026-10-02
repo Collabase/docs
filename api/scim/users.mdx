@@ -72,5 +72,5 @@ If you completely remove a user from your directory, your provider might call th
 **Endpoint:** `DELETE /api/scim/v2/Users/{id}`
 
 <Note>
-  Despite the HTTP method, this does **not** permanently delete the user or their content. It has the same effect as a `PATCH` setting `active` to `false` — the account is deactivated and can be re-activated later by re-provisioning it. To permanently delete a user and their data, do it manually from **Admin → Users** in Collabase.
+  Despite the HTTP method, this does **not** permanently delete the user or their content. It has the same effect as a `PATCH` setting `active` to `false` — the account is deactivated and can be re-activated later by re-provisioning it. To remove the account for good, delete it from **Admin → Users** in Collabase. That anonymizes the account and keeps everything the person created.
 </Note>
