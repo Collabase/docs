@@ -1,0 +1,62 @@
+---
+title: "Invite participant"
+description: "Invite a member or an external guest to a meeting; in a planned meeting the invitation goes out shortly after."
+api: "POST /api/v1/meetings/{meetingId}/participants"
+---
+
+Send either `userId` for a member or `email` for an external guest, never both. An address that
+belongs to an active account is invited as that member, so one person is never listed twice. Guests
+cannot sign in and never co-organize.
+
+In a planned meeting the new participant receives the invitation shortly after. A meeting holds up
+to 500 participants.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers. The meeting must not be closed or cancelled.
+  Recorded in the audit log.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Request body
+
+<ParamField body="userId" type="string">A member's id. Use instead of `email`.</ParamField>
+<ParamField body="email" type="string">An external guest's address, up to 320 characters. Use instead of `userId`.</ParamField>
+<ParamField body="role" type="string" default="PARTICIPANT">`CO_ORGANIZER` (members only), `PARTICIPANT` or `OPTIONAL`.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new participant.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/participants" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "email": "guest@partner.ch", "role": "OPTIONAL" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm3part0002" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "This user cannot be invited" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Already invited" } }
+```
+
+</ResponseExample>

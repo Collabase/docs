@@ -1,0 +1,139 @@
+---
+title: "List polls"
+description: "Read a meeting's polls with turnout, the token owner's own vote and, once closed, the result."
+api: "GET /api/v1/meetings/{meetingId}/polls"
+---
+
+A poll starts as a `DRAFT` that only the meeting's organizers see. Opened, it is `OPEN` and takes
+votes; closed, it is `CLOSED` for good and shows its result. Results are never visible while voting
+runs, not even to the organizers. Votes themselves are cast in Collabase, not through the API.
+
+Reading the polls closes any poll whose deadline has passed, so a result is never stale.
+
+## Poll types and answers
+
+| `type` | Answers | Body fields |
+|---|---|---|
+| **`YES_NO_ABSTAIN`** | Fixed answers `yes`, `no`, `abstain` | none |
+| **`SINGLE_CHOICE`** | Exactly one of the `choices` | `choices` |
+| **`MULTIPLE_CHOICE`** | One or more of the `choices` | `choices` |
+| **`SCALE`** | One whole number from `scale.min` to `scale.max` | `scale` |
+
+Choices get the ids `c1`, `c2`, … in the order you send them. Tallies in the result use these ids,
+the fixed answers, or the scale value as `key`.
+
+## Anonymity
+
+While an anonymous poll is open, a vote is stored under a key derived from the voter and a secret
+of that poll, so the voter can change it. Closing deletes the secret. From then on no vote can be
+traced to a person, not by the organizers or administrators. A database backup taken while the poll
+was open still contains the secret, so treat backups as you treat the live data. Votes carry no
+timestamps. With fewer than three votes, people in the room may still guess who voted
+what; `isFewVotes` flags that case.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="polls" type="object[]" required>
+      Polls in the order they were created. Drafts appear only if the token owner may manage polls.
+
+      <Expandable title="poll">
+        <ResponseField name="id" type="string" required />
+        <ResponseField name="meetingId" type="string" required />
+        <ResponseField name="agendaItemId" type="string | null" required />
+        <ResponseField name="question" type="string" required />
+        <ResponseField name="type" type="string" required>See the table above.</ResponseField>
+        <ResponseField name="options" type="object" required>`{ kind: "fixed" }`, `{ kind: "choices", choices: [{ id, label }] }` or `{ kind: "scale", min, max, minLabel, maxLabel }`, each with `version`.</ResponseField>
+        <ResponseField name="status" type="string" required>`DRAFT`, `OPEN` or `CLOSED`.</ResponseField>
+        <ResponseField name="isAnonymous" type="boolean" required />
+        <ResponseField name="audience" type="string" required>`INVITED` (everyone invited) or `PRESENT` (only people marked present or partly present).</ResponseField>
+        <ResponseField name="closesAt" type="string | null" required>Deadline, ISO 8601 in UTC.</ResponseField>
+        <ResponseField name="closedAt" type="string | null" required>When voting ended; the deadline itself if the poll ran out.</ResponseField>
+        <ResponseField name="updatedAt" type="string" required>Send it as `baseUpdatedAt` when you change a draft.</ResponseField>
+        <ResponseField name="voteCount" type="number" required>Votes cast so far.</ResponseField>
+        <ResponseField name="eligibleCount" type="number" required>People the audience counts.</ResponseField>
+        <ResponseField name="myVote" type="object | null" required>The token owner's own vote while the poll is open: `{ choiceIds }` or `{ value }`.</ResponseField>
+        <ResponseField name="canVote" type="boolean" required>Whether the token owner may vote in Collabase right now.</ResponseField>
+        <ResponseField name="result" type="object | null" required>Only once closed: `total`, `tallies` (`key`, `count`, `voters`) and `average` for a scale. `voters` is always empty for an anonymous poll.</ResponseField>
+        <ResponseField name="isFewVotes" type="boolean" required>An anonymous result with one or two votes, where people may guess who voted what.</ResponseField>
+        <ResponseField name="decisionId" type="string | null" required>The decision recorded from this result.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="canManage" type="boolean" required>Whether the token owner may prepare, open and close polls in this meeting.</ResponseField>
+    <ResponseField name="canRecordDecision" type="boolean" required>Whether a closed result can be recorded as a decision now; only while the meeting runs.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/polls" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "polls": [
+      {
+        "id": "cm8poll0001",
+        "meetingId": "cm2meet0001abcd",
+        "agendaItemId": null,
+        "question": "Where do we hold the offsite?",
+        "type": "SINGLE_CHOICE",
+        "options": {
+          "version": 1,
+          "kind": "choices",
+          "choices": [
+            { "id": "c1", "label": "Bern" },
+            { "id": "c2", "label": "Basel" },
+            { "id": "c3", "label": "Chur" }
+          ]
+        },
+        "status": "CLOSED",
+        "isAnonymous": true,
+        "audience": "INVITED",
+        "closesAt": null,
+        "closedAt": "2026-10-15T08:40:00.000Z",
+        "updatedAt": "2026-10-15T08:40:00.000Z",
+        "voteCount": 6,
+        "eligibleCount": 7,
+        "myVote": null,
+        "canVote": false,
+        "result": {
+          "total": 6,
+          "tallies": [
+            { "key": "c1", "count": 3, "voters": [] },
+            { "key": "c2", "count": 2, "voters": [] },
+            { "key": "c3", "count": 1, "voters": [] }
+          ],
+          "average": null
+        },
+        "isFewVotes": false,
+        "decisionId": null
+      }
+    ],
+    "canManage": true,
+    "canRecordDecision": true
+  }
+}
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Meeting not found" } }
+```
+
+</ResponseExample>

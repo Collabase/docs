@@ -361,12 +361,83 @@
                 "group": "Meetings",
                 "pages": [
                   "api/meetings/overview",
-                  "api/meetings/meetings",
-                  "api/meetings/participants",
-                  "api/meetings/agenda",
-                  "api/meetings/decisions",
-                  "api/meetings/polls",
-                  "api/meetings/series"
+                  "api/meetings/list-meetings",
+                  "api/meetings/create-meeting",
+                  "api/meetings/get-meeting",
+                  "api/meetings/update-meeting",
+                  "api/meetings/delete-meeting",
+                  {
+                    "group": "Lifecycle",
+                    "pages": [
+                      "api/meetings/lifecycle/plan-meeting",
+                      "api/meetings/lifecycle/start-meeting",
+                      "api/meetings/lifecycle/close-meeting",
+                      "api/meetings/lifecycle/reopen-meeting",
+                      "api/meetings/lifecycle/cancel-meeting"
+                    ]
+                  },
+                  {
+                    "group": "Participants",
+                    "pages": [
+                      "api/meetings/participants/list-participants",
+                      "api/meetings/participants/invite-participant",
+                      "api/meetings/participants/update-participant",
+                      "api/meetings/participants/remove-participant",
+                      "api/meetings/participants/respond-to-invitation"
+                    ]
+                  },
+                  {
+                    "group": "Agenda",
+                    "pages": [
+                      "api/meetings/agenda/get-agenda",
+                      "api/meetings/agenda/create-section",
+                      "api/meetings/agenda/update-section",
+                      "api/meetings/agenda/delete-section",
+                      "api/meetings/agenda/move-section",
+                      "api/meetings/agenda/create-item",
+                      "api/meetings/agenda/update-item",
+                      "api/meetings/agenda/delete-item",
+                      "api/meetings/agenda/move-item"
+                    ]
+                  },
+                  {
+                    "group": "Outcomes",
+                    "pages": [
+                      "api/meetings/outcomes/list-outcomes",
+                      "api/meetings/outcomes/create-outcome",
+                      "api/meetings/outcomes/update-outcome",
+                      "api/meetings/outcomes/delete-outcome"
+                    ]
+                  },
+                  {
+                    "group": "Decisions",
+                    "pages": [
+                      "api/meetings/decisions/list-decisions",
+                      "api/meetings/decisions/record-decision",
+                      "api/meetings/decisions/update-decision",
+                      "api/meetings/decisions/supersede-decision",
+                      "api/meetings/decisions/revoke-decision",
+                      "api/meetings/decisions/decision-register"
+                    ]
+                  },
+                  {
+                    "group": "Polls",
+                    "pages": [
+                      "api/meetings/polls/list-polls",
+                      "api/meetings/polls/create-poll",
+                      "api/meetings/polls/update-poll",
+                      "api/meetings/polls/open-poll",
+                      "api/meetings/polls/close-poll"
+                    ]
+                  },
+                  {
+                    "group": "Series",
+                    "pages": [
+                      "api/meetings/series/create-series",
+                      "api/meetings/series/change-series-rule",
+                      "api/meetings/series/get-series"
+                    ]
+                  }
                 ]
               },
               {
@@ -570,7 +641,12 @@
       "prefill": true,
       "autogenerate": true
     },
-    "url": "full"
+    "url": "full",
+    "mdx": {
+      "auth": {
+        "method": "bearer"
+      }
+    }
   },
   "integrations": {
     "cookies": {
@@ -582,6 +658,30 @@
     }
   },
   "redirects": [
+    {
+      "source": "/api/meetings/meetings",
+      "destination": "/api/meetings/list-meetings"
+    },
+    {
+      "source": "/api/meetings/participants",
+      "destination": "/api/meetings/participants/list-participants"
+    },
+    {
+      "source": "/api/meetings/agenda",
+      "destination": "/api/meetings/agenda/get-agenda"
+    },
+    {
+      "source": "/api/meetings/decisions",
+      "destination": "/api/meetings/decisions/list-decisions"
+    },
+    {
+      "source": "/api/meetings/polls",
+      "destination": "/api/meetings/polls/list-polls"
+    },
+    {
+      "source": "/api/meetings/series",
+      "destination": "/api/meetings/series/get-series"
+    },
     {
       "source": "/changelog/v0.13.0-rc",
       "destination": "/changelog/overview"

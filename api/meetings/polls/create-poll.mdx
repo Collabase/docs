@@ -1,0 +1,64 @@
+---
+title: "Create poll"
+description: "Prepare a poll for a meeting as a draft: yes/no/abstain, single or multiple choice, or a scale."
+api: "POST /api/v1/meetings/{meetingId}/polls"
+---
+
+Creates a draft. It takes votes once it is [opened](/api/meetings/polls/open-poll). See
+[List polls](/api/meetings/polls/list-polls) for the poll types and how anonymity works. A meeting
+holds up to 50 polls.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers, and participants too when the meeting lets them
+  record outcomes. The meeting must not be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Request body
+
+<ParamField body="question" type="string" required>Up to 300 characters.</ParamField>
+<ParamField body="type" type="string" required>`YES_NO_ABSTAIN`, `SINGLE_CHOICE`, `MULTIPLE_CHOICE` or `SCALE`.</ParamField>
+<ParamField body="choices" type="string[] | null" default="null">For the two choice types: 2 to 12 distinct labels, each up to 200 characters.</ParamField>
+<ParamField body="scale" type="object | null" default="null">For `SCALE`: `min` and `max` between 0 and 10 with `min` below `max`, plus optional `minLabel` and `maxLabel` of up to 60 characters.</ParamField>
+<ParamField body="agendaItemId" type="string | null" default="null">The agenda item the poll belongs to. Must belong to this meeting.</ParamField>
+<ParamField body="isAnonymous" type="boolean" default="false">Anonymous votes cannot be traced to a person once the poll is closed. Fixed when the poll opens.</ParamField>
+<ParamField body="audience" type="string" default="INVITED">`INVITED` or `PRESENT`.</ParamField>
+<ParamField body="closesAt" type="string | null" default="null">Deadline, ISO 8601 in UTC such as `2026-10-15T09:00:00Z`. Must lie in the future. Voting ends at this moment without anyone closing the poll.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new poll.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/polls" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "question": "Where do we hold the offsite?", "type": "SINGLE_CHOICE", "choices": ["Bern", "Basel", "Chur"], "isAnonymous": true }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm8poll0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The poll needs two to twelve distinct choices or a valid scale" } }
+```
+
+```json 409
+{ "error": { "code": "MEETING_NOT_WRITABLE", "message": "Meeting is closed or cancelled and cannot be changed" } }
+```
+
+</ResponseExample>

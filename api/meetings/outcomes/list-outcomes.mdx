@@ -1,0 +1,67 @@
+---
+title: "List outcomes"
+description: "Read every outcome of a meeting with its type, text, responsible person, due date and linked work item."
+api: "GET /api/v1/meetings/{meetingId}/outcomes"
+---
+
+Returns every outcome of the meeting, grouped by agenda item and in their order within each item.
+Outcomes belong to an agenda item and are recorded while the meeting runs.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object[]" required>
+  <Expandable title="outcome">
+    <ResponseField name="id" type="string" required />
+    <ResponseField name="agendaItemId" type="string" required>The agenda item it was recorded under.</ResponseField>
+    <ResponseField name="type" type="string" required>`INFORMATION` or `TASK`.</ResponseField>
+    <ResponseField name="text" type="string" required />
+    <ResponseField name="responsibleId" type="string | null" required />
+    <ResponseField name="responsibleName" type="string | null" required />
+    <ResponseField name="dueDate" type="string | null" required>`YYYY-MM-DD`.</ResponseField>
+    <ResponseField name="task" type="object | null" required>The work item made from it: `{ "visible": true, "key", "title", "href" }`, or `{ "visible": false }` when the token owner has no access to its project.</ResponseField>
+    <ResponseField name="updatedAt" type="string" required>Send it as `baseUpdatedAt` when you change the outcome.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/outcomes" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": [
+    {
+      "id": "cm6outc0001",
+      "agendaItemId": "cm5item0001",
+      "type": "TASK",
+      "text": "Update the release checklist",
+      "responsibleId": "cm0user0002",
+      "responsibleName": "Marco Rossi",
+      "dueDate": "2026-10-20",
+      "task": null,
+      "updatedAt": "2026-10-15T08:21:44.000Z"
+    }
+  ]
+}
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Meeting not found" } }
+```
+
+</ResponseExample>

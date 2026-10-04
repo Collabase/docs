@@ -1,0 +1,45 @@
+---
+title: "Start meeting"
+description: "Move a planned meeting to running, so outcomes, decisions and poll results can be recorded."
+api: "POST /api/v1/meetings/{meetingId}/start"
+---
+
+Moves a planned meeting to `RUNNING`. From now on outcomes and decisions can be recorded.
+
+<Info>
+  Scope `meetings:write`. Needs moderator rights: organizers, co-organizers or the meeting's moderator.
+  No request body.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The planned meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The running meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/start" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a planned meeting can be started" } }
+```
+
+</ResponseExample>

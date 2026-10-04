@@ -1,0 +1,61 @@
+---
+title: "Create series"
+description: "Turn a draft or planned one-off meeting into the first occurrence of a recurring series with an iCalendar rule."
+api: "POST /api/v1/meetings/{meetingId}/series"
+---
+
+A series is created from a meeting, which becomes its first occurrence. Later occurrences are created
+as they come up and copy the series' participants and agenda template. The rule is an iCalendar
+`RRULE` and keeps its wall-clock time in the time zone the series was planned in.
+
+The meeting must be a draft or planned one-off meeting, and the rule must include the meeting's own
+date, so the series never starts on a day the meeting is not on.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting that becomes the first occurrence.</ParamField>
+
+## Request body
+
+<ParamField body="rrule" type="string" required>
+  For example `FREQ=WEEKLY;BYDAY=TH` or `FREQ=MONTHLY;BYDAY=1MO;COUNT=10`. Up to 200 characters.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new series. Read it with [Get series](/api/meetings/series/get-series).</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/series" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "rrule": "FREQ=WEEKLY;BYDAY=TH" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm9seri0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The rule does not include the meeting's date" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "This meeting already belongs to a series" } }
+```
+
+</ResponseExample>

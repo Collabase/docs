@@ -1,0 +1,81 @@
+---
+title: "Change series rule"
+description: "Change or end a series' recurrence rule from a start date on, with a dry run that reports which occurrences it cancels."
+api: "PATCH /api/v1/meetings/{meetingId}/series"
+---
+
+Changes the rule of the series the meeting belongs to, from `startDate` on. Send it through any
+occurrence of the series. To end the series, send the current rule with `UNTIL`.
+
+Occurrences already held never change. Planned occurrences the new rule no longer has are cancelled,
+and their open topics move to the series backlog. Send the change with `dryRun: true` first, show the
+result, then send it again with `dryRun: false`.
+
+<Info>
+  Scope `meetings:write`. Organizers, co-organizers and Space admins (for meetings that are not
+  private). Recorded in the audit log.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>Any occurrence of the series.</ParamField>
+
+## Request body
+
+<ParamField body="rrule" type="string" required>The new rule, up to 200 characters.</ParamField>
+<ParamField body="startDate" type="string" required>`YYYY-MM-DD` from which the new rule applies. Must lie in the future and after the last meeting held, and the rule must include this date.</ParamField>
+<ParamField body="dryRun" type="boolean" required>`true` only reports the effect without changing anything.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The series.</ResponseField>
+    <ResponseField name="dropped" type="object[]" required>
+      Planned occurrences the new rule no longer has, with `id`, `startsAt` and `topicCount` (open
+      agenda items that move to the series backlog).
+    </ResponseField>
+    <ResponseField name="next" type="string[]" required>The next five dates under the new rule, ISO 8601 in UTC.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/series" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "rrule": "FREQ=WEEKLY;BYDAY=TU", "startDate": "2026-11-03", "dryRun": true }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "id": "cm9seri0001",
+    "dropped": [
+      { "id": "cm2meet0009wxyz", "startsAt": "2026-11-05T09:00:00.000Z", "topicCount": 2 }
+    ],
+    "next": [
+      "2026-11-03T09:00:00.000Z",
+      "2026-11-10T09:00:00.000Z",
+      "2026-11-17T09:00:00.000Z",
+      "2026-11-24T09:00:00.000Z",
+      "2026-12-01T09:00:00.000Z"
+    ]
+  }
+}
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The new rule must start after the last meeting held" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "This meeting is not part of a series" } }
+```
+
+</ResponseExample>

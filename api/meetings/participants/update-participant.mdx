@@ -1,0 +1,63 @@
+---
+title: "Update participant"
+description: "Change a participant's role, or record the answer an external guest gave by mail or phone."
+api: "PATCH /api/v1/meetings/{meetingId}/participants/{participantId}"
+---
+
+Changes a participant's role, or records an external guest's answer on their behalf. Send at least
+one of the two fields. Members answer for themselves through
+[Respond to invitation](/api/meetings/participants/respond-to-invitation); setting `rsvp` for a member
+returns `403 FORBIDDEN`. The organizer's role cannot be changed (`409 CONFLICT`).
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers. The meeting must not be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="participantId" type="string" required>The participant, as `id` from [List participants](/api/meetings/participants/list-participants).</ParamField>
+
+## Request body
+
+<ParamField body="role" type="string">`CO_ORGANIZER` (members only), `PARTICIPANT` or `OPTIONAL`.</ParamField>
+<ParamField body="rsvp" type="string">`NEEDS_ACTION`, `ACCEPTED`, `TENTATIVE` or `DECLINED`. External guests only.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The changed participant.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/participants/cm3part0002" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "rsvp": "ACCEPTED" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm3part0002" } }
+```
+
+```json 403
+{ "error": { "code": "FORBIDDEN", "message": "Users answer for themselves" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Transfer the organizer role instead" } }
+```
+
+```json 422
+{ "error": { "code": "VALIDATION_ERROR", "message": "Nothing to change" } }
+```
+
+</ResponseExample>

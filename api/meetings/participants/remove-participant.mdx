@@ -1,0 +1,51 @@
+---
+title: "Remove participant"
+description: "Remove someone from a meeting; in a planned meeting they receive a cancellation shortly after."
+api: "DELETE /api/v1/meetings/{meetingId}/participants/{participantId}"
+---
+
+Removes the participant. In a planned meeting they receive a cancellation shortly after; nobody else
+is mailed. The organizer cannot be removed.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers. The meeting must not be closed or cancelled.
+  Recorded in the audit log.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="participantId" type="string" required>The participant.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The removed participant.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/participants/cm3part0002" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm3part0002" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Participant not found" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "The organizer cannot be removed" } }
+```
+
+</ResponseExample>

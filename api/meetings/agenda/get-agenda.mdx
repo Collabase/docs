@@ -1,0 +1,104 @@
+---
+title: "Get agenda"
+description: "Read a meeting's agenda sections and items in order, with their outcomes, links and the token owner's rights."
+api: "GET /api/v1/meetings/{meetingId}/agenda"
+---
+
+An agenda holds items, optionally grouped into sections. Organizers edit it, and so do participants
+when the meeting allows it. Each section and item carries its `updatedAt`, which a later change sends
+back as `baseUpdatedAt`.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="sections" type="object[]" required>Sections in order, with `id`, `title`, `order` and `updatedAt`.</ResponseField>
+    <ResponseField name="items" type="object[]" required>
+      Items of every section and those without one, each group in order. Each item has `id`,
+      `sectionId`, `title`, `description`, `ownerId`, `ownerName`, `estimateMinutes`, `notes`,
+      `state` (`ACCEPTED`, `OPEN` or `DONE`), `order`, `updatedAt`, `decisionCount` and `carryCount`
+      (how often the topic was handed on from one meeting to the next).
+    </ResponseField>
+    <ResponseField name="canEdit" type="boolean" required>The token owner may change the agenda now.</ResponseField>
+    <ResponseField name="participantsMayEdit" type="boolean" required>Participants edit the agenda too, not only organizers.</ResponseField>
+    <ResponseField name="outcomes" type="object[]" required>The outcomes of every item, as in [List outcomes](/api/meetings/outcomes/list-outcomes).</ResponseField>
+    <ResponseField name="canRecordOutcomes" type="boolean" required>The token owner may record outcomes now; only while the meeting runs.</ResponseField>
+    <ResponseField name="links" type="object[]" required>Work items and pages linked to the items.</ResponseField>
+    <ResponseField name="proposals" type="object[]" required>Submitted topics waiting for review: all of them for organizers, the token owner's own for everyone else.</ResponseField>
+    <ResponseField name="topics" type="object" required>Topic submission settings: `submissionsToAgenda`, `submissionLeadHours`, `submissionDeadline`, `submissionTarget`, `canSubmit`, `hasBacklog`.</ResponseField>
+    <ResponseField name="canChangeSetting" type="boolean" required>The token owner may switch `participantsMayEdit`.</ResponseField>
+    <ResponseField name="canReview" type="boolean" required>The token owner may accept, park or reject proposals.</ResponseField>
+    <ResponseField name="linkSpaceId" type="string | null" required>The meeting's Space.</ResponseField>
+    <ResponseField name="canCreatePage" type="boolean" required>The token owner may create pages from items in the meeting's Space.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "sections": [
+      { "id": "cm4sect0001", "title": "Status", "order": 1000, "updatedAt": "2026-10-14T09:12:00.000Z" }
+    ],
+    "items": [
+      {
+        "id": "cm5item0001",
+        "sectionId": "cm4sect0001",
+        "title": "Release 2.4 readiness",
+        "description": null,
+        "ownerId": "cm0user0001",
+        "ownerName": "Anna Keller",
+        "estimateMinutes": 15,
+        "notes": null,
+        "state": "ACCEPTED",
+        "order": 1000,
+        "updatedAt": "2026-10-14T09:15:30.000Z",
+        "decisionCount": 0,
+        "carryCount": 0
+      }
+    ],
+    "canEdit": true,
+    "participantsMayEdit": false,
+    "outcomes": [],
+    "canRecordOutcomes": false,
+    "links": [],
+    "proposals": [],
+    "topics": {
+      "submissionsToAgenda": false,
+      "submissionLeadHours": null,
+      "submissionDeadline": null,
+      "submissionTarget": "meeting",
+      "canSubmit": true,
+      "hasBacklog": true
+    },
+    "canChangeSetting": true,
+    "canReview": true,
+    "linkSpaceId": "cm1space001",
+    "canCreatePage": true
+  }
+}
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Meeting not found" } }
+```
+
+</ResponseExample>

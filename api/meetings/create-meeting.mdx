@@ -1,0 +1,75 @@
+---
+title: "Create meeting"
+description: "Create a draft meeting with the token owner as organizer; plan it afterwards to send the invitations."
+api: "POST /api/v1/meetings"
+---
+
+Creates a draft with the token owner as organizer. A draft appears only in its organizers'
+calendar view and sends nothing. [Plan the meeting](/api/meetings/lifecycle/plan-meeting) to send
+the invitations.
+
+<Info>
+  Scope `meetings:write`. To create a meeting in a Space, the token owner needs to see that Space; in a
+  project, they also need access to the project.
+</Info>
+
+## Request body
+
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+<ParamField body="date" type="string" required>`YYYY-MM-DD` in the token owner's time zone.</ParamField>
+<ParamField body="time" type="string" required>`HH:mm` in the token owner's time zone.</ParamField>
+<ParamField body="durationMinutes" type="number" required>Whole minutes, 1 to 720.</ParamField>
+<ParamField body="spaceId" type="string | null">Space the meeting belongs to.</ParamField>
+<ParamField body="projectId" type="string | null">Project within that Space. Requires `spaceId`.</ParamField>
+<ParamField body="location" type="string | null">Up to 500 characters.</ParamField>
+<ParamField body="videoUrl" type="string | null">An `http` or `https` link, up to 2,000 characters.</ParamField>
+<ParamField body="visibility" type="string" default="STANDARD">`STANDARD` or `PRIVATE`. A private meeting is visible to its participants only.</ParamField>
+<ParamField body="participantsMayEdit" type="boolean" default="false">Participants may edit the agenda and record outcomes, not only organizers.</ParamField>
+<ParamField body="bufferPercent" type="number" default="0">Share of the duration kept free when planning the agenda, 0 to 50.</ParamField>
+<ParamField body="submissionsToAgenda" type="boolean" default="false">Submitted topics go straight onto the agenda instead of waiting for review.</ParamField>
+<ParamField body="submissionLeadHours" type="number | null" default="null">Topics are taken until this many hours before the start (1 to 336); `null` means until it starts.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Release planning",
+    "date": "2026-10-15",
+    "time": "10:00",
+    "durationMinutes": 45,
+    "spaceId": "cm1space001"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The project does not belong to this space" } }
+```
+
+```json 403
+{ "error": { "code": "FORBIDDEN", "message": "Not allowed to create meetings in this space" } }
+```
+
+```json 422
+{ "error": { "code": "VALIDATION_ERROR", "message": "Video link must be an http(s) URL" } }
+```
+
+</ResponseExample>

@@ -1,0 +1,59 @@
+---
+title: "Update decision"
+description: "Reword a valid decision or change its decision makers, saved against the version you read."
+api: "PATCH /api/v1/meetings/{meetingId}/decisions/{decisionId}"
+---
+
+Rewords a `VALID` decision. Send `baseUpdatedAt` and at least one other field. If someone changed the
+decision since you read it, the request returns `409 CONFLICT` with the decision as it is now in
+`current`; a decision that is no longer valid returns `409 CONFLICT` without it. Only while the
+meeting runs (`409 MEETING_NOT_RUNNING`).
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. Recorded in the
+  audit log.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The running meeting.</ParamField>
+<ParamField path="decisionId" type="string" required>The decision.</ParamField>
+
+## Request body
+
+<ParamField body="baseUpdatedAt" type="string" required>The decision's `updatedAt` as you read it, ISO 8601 in UTC.</ParamField>
+<ParamField body="title" type="string">Up to 200 characters.</ParamField>
+<ParamField body="description" type="string | null">Up to 5,000 characters.</ParamField>
+<ParamField body="rationale" type="string | null">Up to 5,000 characters.</ParamField>
+<ParamField body="personIds" type="string[]">Replaces the decision makers, up to 50. Each must be invited to the meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The decision.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/decisions/cm7deci0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Release every two weeks on Tuesday", "baseUpdatedAt": "2026-10-15T08:30:12.000Z" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm7deci0001" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a valid decision can be changed" } }
+```
+
+</ResponseExample>

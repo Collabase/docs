@@ -1,0 +1,57 @@
+---
+title: "Close meeting"
+description: "End a running meeting: it becomes read-only, open polls close and the meeting note is queued."
+api: "POST /api/v1/meetings/{meetingId}/close"
+---
+
+Moves a running meeting to `CLOSED`. A running timer stops, polls still open close, linked work items
+and pages are recorded as they stand, and the meeting note is queued. From here the meeting is
+read-only until it is [reopened](/api/meetings/lifecycle/reopen-meeting).
+
+In a series, `carryItemIds` names the open agenda items handed on to the next occurrence. An empty
+list hands on nothing. Without it, the next occurrence is prepared with every item left open.
+
+<Info>
+  Scope `meetings:write`. Needs moderator rights: organizers, co-organizers or the meeting's moderator.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The running meeting.</ParamField>
+
+## Request body
+
+The body is optional.
+
+<ParamField body="carryItemIds" type="string[]">Open agenda items to hand on to the next occurrence of the series, up to 200. Ignored outside a series.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The closed meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/close" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "carryItemIds": ["cm5item0002"] }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a running meeting can be ended" } }
+```
+
+</ResponseExample>

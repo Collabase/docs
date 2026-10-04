@@ -1,0 +1,54 @@
+---
+title: "Create agenda item"
+description: "Add an item at the end of an agenda section, or of the agenda items without a section."
+api: "POST /api/v1/meetings/{meetingId}/agenda/items"
+---
+
+Adds an item at the end of its section, or of the items without a section. Set its description,
+owner, estimate and notes afterwards with [Update agenda item](/api/meetings/agenda/update-item). An
+agenda holds up to 200 items.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. The meeting must not
+  be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Request body
+
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+<ParamField body="sectionId" type="string | null" default="null">Section to add it to; `null` for the agenda without section. Must belong to this meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new item.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/items" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Release 2.4 readiness", "sectionId": "cm4sect0001" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm5item0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The section does not belong to this meeting" } }
+```
+
+</ResponseExample>

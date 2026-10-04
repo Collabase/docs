@@ -1,0 +1,104 @@
+---
+title: "Get meeting"
+description: "Read one meeting with its organizer, series, settings and the actions the token owner may take on it."
+api: "GET /api/v1/meetings/{meetingId}"
+---
+
+Returns the meeting with its organizer, the series it belongs to, the time zone it was planned in
+and what the token owner may do with it. A meeting the token owner may not see answers
+`404 NOT_FOUND`, exactly like one that does not exist.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required />
+    <ResponseField name="title" type="string" required />
+    <ResponseField name="startsAt" type="string" required>ISO 8601 in UTC.</ResponseField>
+    <ResponseField name="durationMinutes" type="number" required />
+    <ResponseField name="status" type="string" required>`DRAFT`, `PLANNED`, `RUNNING`, `CLOSED` or `CANCELLED`.</ResponseField>
+    <ResponseField name="visibility" type="string" required>`STANDARD` or `PRIVATE`.</ResponseField>
+    <ResponseField name="location" type="string | null" required />
+    <ResponseField name="videoUrl" type="string | null" required />
+    <ResponseField name="space" type="object | null" required>`id`, `name`, `icon`, `slug`.</ResponseField>
+    <ResponseField name="project" type="object | null" required>`id`, `name`, `icon`.</ResponseField>
+    <ResponseField name="role" type="string | null" required>The token owner's role; `null` when they read the meeting through the Space.</ResponseField>
+    <ResponseField name="organizer" type="object" required>`id`, `name`, `image`.</ResponseField>
+    <ResponseField name="meetingTimezone" type="string" required>The time zone the organizer planned in.</ResponseField>
+    <ResponseField name="timezone" type="string" required>The token owner's time zone.</ResponseField>
+    <ResponseField name="canEdit" type="boolean" required>May change the meeting and its participants.</ResponseField>
+    <ResponseField name="canPlan" type="boolean" required>A draft the token owner may plan.</ResponseField>
+    <ResponseField name="canCancel" type="boolean" required>A draft or planned meeting the token owner may cancel.</ResponseField>
+    <ResponseField name="canStart" type="boolean" required>A planned meeting the token owner may start as moderator.</ResponseField>
+    <ResponseField name="canReopen" type="boolean" required>A closed meeting the token owner may reopen.</ResponseField>
+    <ResponseField name="canMakeSeries" type="boolean" required>A draft or planned one-off meeting the token owner may turn into a series.</ResponseField>
+    <ResponseField name="series" type="object | null" required>`id`, `rrule`, `previousId`, `nextId`, `previousNotClosed` and, while this occurrence is planned, `lastInstance` with the open items and outcomes of the previous one.</ResponseField>
+    <ResponseField name="cancellationReason" type="string | null" required />
+    <ResponseField name="bufferPercent" type="number" required />
+    <ResponseField name="participantsMayEdit" type="boolean" required />
+    <ResponseField name="submissionsToAgenda" type="boolean" required />
+    <ResponseField name="submissionLeadHours" type="number | null" required />
+    <ResponseField name="deletion" type="object | null" required>`null` without the right to delete; otherwise `{ "status": "allowed" }` or `{ "status": "blocked", "reason": "planned" | "held" | "series" }`.</ResponseField>
+    <ResponseField name="deliveryFailures" type="object[]" required>Recipients whose latest calendar mail was refused, with `recipient`, `method` and `failedAt`. Filled only for people who may edit.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "id": "cm2meet0001abcd",
+    "title": "Release planning",
+    "startsAt": "2026-10-15T08:00:00.000Z",
+    "durationMinutes": 45,
+    "status": "DRAFT",
+    "visibility": "STANDARD",
+    "location": "Room Aare",
+    "videoUrl": null,
+    "space": { "id": "cm1space001", "name": "Product", "icon": "📦", "slug": "product" },
+    "project": null,
+    "role": "ORGANIZER",
+    "organizer": { "id": "cm0user0001", "name": "Anna Keller", "image": null },
+    "meetingTimezone": "Europe/Zurich",
+    "timezone": "Europe/Zurich",
+    "canEdit": true,
+    "canPlan": true,
+    "canCancel": true,
+    "canStart": false,
+    "canReopen": false,
+    "canMakeSeries": true,
+    "series": null,
+    "cancellationReason": null,
+    "bufferPercent": 10,
+    "participantsMayEdit": false,
+    "submissionsToAgenda": false,
+    "submissionLeadHours": null,
+    "deletion": { "status": "allowed" },
+    "deliveryFailures": []
+  }
+}
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Meeting not found" } }
+```
+
+</ResponseExample>

@@ -1,0 +1,55 @@
+---
+title: "Cancel meeting"
+description: "Call off a draft or planned meeting; everyone who holds it in a calendar receives a cancellation."
+api: "POST /api/v1/meetings/{meetingId}/cancel"
+---
+
+Moves a draft or planned meeting to `CANCELLED`. Everyone who already holds it in a calendar receives
+a cancellation; a draft was never announced, so cancelling it sends nothing. Polls still open close
+with it.
+
+<Info>
+  Scope `meetings:write`. Organizers, co-organizers and Space admins (for meetings that are not
+  private). Recorded in the audit log.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Request body
+
+The body is optional.
+
+<ParamField body="reason" type="string | null">Up to 500 characters. Appears in the cancellation mail.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The cancelled meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/cancel" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "reason": "Moved to the quarterly review" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 409
+{ "error": { "code": "MEETING_NOT_WRITABLE", "message": "Meeting is closed or cancelled and cannot be changed" } }
+```
+
+</ResponseExample>

@@ -1,0 +1,46 @@
+---
+title: "Delete agenda item"
+description: "Remove an item from a meeting's agenda; decisions taken on it stay, without the item."
+api: "DELETE /api/v1/meetings/{meetingId}/agenda/items/{itemId}"
+---
+
+Removes the item from the agenda. Decisions taken on it stay in the register, without the item.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. The meeting must not
+  be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="itemId" type="string" required>The agenda item.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The deleted item.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/items/cm5item0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm5item0001" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Agenda item not found" } }
+```
+
+</ResponseExample>

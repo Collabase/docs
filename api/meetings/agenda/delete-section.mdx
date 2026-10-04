@@ -1,0 +1,46 @@
+---
+title: "Delete agenda section"
+description: "Remove an agenda section; its items stay on the agenda without a section."
+api: "DELETE /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}"
+---
+
+Removes the section. Its items stay on the agenda without a section.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. The meeting must not
+  be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="sectionId" type="string" required>The section.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The deleted section.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/sections/cm4sect0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm4sect0001" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Agenda section not found" } }
+```
+
+</ResponseExample>

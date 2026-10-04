@@ -9,6 +9,24 @@ meetings, invite people, keep the agenda, run and close a meeting, and read or r
 decisions and polls. Every call runs as the person who issued the token, with exactly the rights that
 person has in Collabase.
 
+## Meeting lifecycle
+
+A meeting starts as a **draft** that only its organizers see in their calendar view.
+[Planning](/api/meetings/lifecycle/plan-meeting) it sends the invitations. A planned meeting is
+[started](/api/meetings/lifecycle/start-meeting) by a moderator, then
+[closed](/api/meetings/lifecycle/close-meeting), which freezes it and queues the meeting note. A closed
+meeting can be [reopened](/api/meetings/lifecycle/reopen-meeting) for a correction. Drafts and planned
+meetings can be [cancelled](/api/meetings/lifecycle/cancel-meeting). A call in the wrong state, for
+example starting a draft, returns `409 CONFLICT`.
+
+| Status | Meaning |
+|---|---|
+| **`DRAFT`** | Created, not announced, no invitations sent |
+| **`PLANNED`** | Announced; participants hold it in their calendar |
+| **`RUNNING`** | In progress; outcomes and decisions can be recorded |
+| **`CLOSED`** | Ended; read-only until reopened |
+| **`CANCELLED`** | Called off; everyone who held it received a cancellation |
+
 ## Scopes
 
 | Scope | Allows |
@@ -25,12 +43,19 @@ more than its owner: a person who may not edit a meeting gets `403 FORBIDDEN` th
   does not exist. Private meetings are visible only to their participants.
 - **Times.** Instants in responses are ISO 8601 in UTC. When you create or move a meeting, `date`
   (`YYYY-MM-DD`) and `time` (`HH:mm`) are wall-clock values in the time zone of the token owner's
-  profile, the same way the app reads them.
+  profile, the same way the app reads them. Instants you send, such as `baseUpdatedAt` and a poll's
+  `closesAt`, must be UTC with a `Z` (`2026-10-15T08:05:12.000Z`); an offset such as `+02:00` is
+  rejected with `422`.
 - **Concurrent edits.** Changes to agenda sections, agenda items, outcomes and decisions carry
   `baseUpdatedAt`, the `updatedAt` you read. If someone changed the object since, the request
   returns `409 CONFLICT` with the object as it is now in `current`, next to `error`. Re-read, merge
-  and send again.
+  and send again. Draft polls carry `baseUpdatedAt` as well; their conflict returns `409 CONFLICT`
+  without `current`.
 - **Strict bodies.** Unknown fields are rejected with `422 VALIDATION_ERROR`, not silently dropped.
+  A missing or malformed JSON body answers `422` too, except on the endpoints whose body is optional
+  ([Cancel meeting](/api/meetings/lifecycle/cancel-meeting), [Close meeting](/api/meetings/lifecycle/close-meeting)).
+- **Limits.** A meeting holds up to 500 participants, 50 agenda sections, 200 agenda items, 500
+  outcomes, 300 decisions and 50 polls. Going beyond answers `400 VALIDATION_ERROR`.
 - **App switched off.** If the Meetings app is not enabled on the instance, every endpoint answers
   `404 NOT_FOUND`.
 
@@ -44,12 +69,11 @@ On top of the [general errors](/api/introduction#response-format):
 | `409` | `CONFLICT` | Someone changed the object since you read it, or the meeting is in the wrong state for this action |
 | `409` | `MEETING_NOT_WRITABLE` | The meeting is closed or cancelled; reopen it first |
 | `409` | `MEETING_NOT_RUNNING` | Outcomes and decisions are recorded only while the meeting runs |
-| `409` | `POLL_CLOSED` | The poll no longer takes votes |
 
 ```json 409
 {
   "error": { "code": "CONFLICT", "message": "Changed by someone else since it was loaded" },
-  "current": { "id": "cm2…", "title": "Budget 2027", "updatedAt": "2026-10-15T08:05:12.000Z" }
+  "current": { "id": "cm4sect0001", "title": "Budget 2027", "order": 1000, "updatedAt": "2026-10-15T08:05:12.000Z" }
 }
 ```
 
@@ -57,23 +81,48 @@ On top of the [general errors](/api/introduction#response-format):
 
 | Method | Path | Scope |
 |---|---|---|
-| `GET` | [`/api/v1/meetings`](/api/meetings/meetings#list-your-meetings) | `meetings:read` |
-| `POST` | [`/api/v1/meetings`](/api/meetings/meetings#create-a-meeting) | `meetings:write` |
-| `GET`, `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}`](/api/meetings/meetings#read-change-or-delete-a-meeting) | read / write |
-| `POST` | [`/api/v1/meetings/{meetingId}/plan`, `/cancel`, `/start`, `/close`, `/reopen`](/api/meetings/meetings#lifecycle) | `meetings:write` |
-| `GET`, `POST` | [`/api/v1/meetings/{meetingId}/participants`](/api/meetings/participants) | read / write |
-| `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}/participants/{participantId}`](/api/meetings/participants#change-or-remove-a-participant) | `meetings:write` |
-| `POST` | [`/api/v1/meetings/{meetingId}/rsvp`](/api/meetings/participants#answer-an-invitation) | `meetings:write` |
-| `GET` | [`/api/v1/meetings/{meetingId}/agenda`](/api/meetings/agenda#read-the-agenda) | `meetings:read` |
-| `POST`, `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}/agenda/sections/…`, `/agenda/items/…`](/api/meetings/agenda) | `meetings:write` |
-| `GET`, `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}/outcomes/…`](/api/meetings/agenda#outcomes) | read / write |
-| `GET`, `POST`, `PATCH` | [`/api/v1/meetings/{meetingId}/decisions/…`](/api/meetings/decisions) | read / write |
-| `GET` | [`/api/v1/meetings/decisions`](/api/meetings/decisions#decision-register) | `meetings:read` |
-| `GET`, `POST` | [`/api/v1/meetings/{meetingId}/polls`](/api/meetings/polls) | read / write |
-| `PATCH` | [`/api/v1/meetings/{meetingId}/polls/{pollId}`](/api/meetings/polls#change-a-draft) | `meetings:write` |
-| `POST` | [`/api/v1/meetings/{meetingId}/polls/{pollId}/open`, `/close`](/api/meetings/polls#open-and-close) | `meetings:write` |
-| `POST`, `PATCH` | [`/api/v1/meetings/{meetingId}/series`](/api/meetings/series) | `meetings:write` |
-| `GET` | [`/api/v1/meetings/series/{seriesId}`](/api/meetings/series#read-a-series) | `meetings:read` |
+| `GET` | [`/api/v1/meetings`](/api/meetings/list-meetings) | `meetings:read` |
+| `POST` | [`/api/v1/meetings`](/api/meetings/create-meeting) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/{meetingId}`](/api/meetings/get-meeting) | `meetings:read` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}`](/api/meetings/update-meeting) | `meetings:write` |
+| `DELETE` | [`/api/v1/meetings/{meetingId}`](/api/meetings/delete-meeting) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/plan`](/api/meetings/lifecycle/plan-meeting) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/cancel`](/api/meetings/lifecycle/cancel-meeting) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/start`](/api/meetings/lifecycle/start-meeting) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/close`](/api/meetings/lifecycle/close-meeting) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/reopen`](/api/meetings/lifecycle/reopen-meeting) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/{meetingId}/participants`](/api/meetings/participants/list-participants) | `meetings:read` |
+| `POST` | [`/api/v1/meetings/{meetingId}/participants`](/api/meetings/participants/invite-participant) | `meetings:write` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/participants/{participantId}`](/api/meetings/participants/update-participant) | `meetings:write` |
+| `DELETE` | [`/api/v1/meetings/{meetingId}/participants/{participantId}`](/api/meetings/participants/remove-participant) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/rsvp`](/api/meetings/participants/respond-to-invitation) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/{meetingId}/agenda`](/api/meetings/agenda/get-agenda) | `meetings:read` |
+| `POST` | [`/api/v1/meetings/{meetingId}/agenda/sections`](/api/meetings/agenda/create-section) | `meetings:write` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/agenda/sections/{sectionId}`](/api/meetings/agenda/update-section) | `meetings:write` |
+| `DELETE` | [`/api/v1/meetings/{meetingId}/agenda/sections/{sectionId}`](/api/meetings/agenda/delete-section) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/agenda/sections/{sectionId}/move`](/api/meetings/agenda/move-section) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/agenda/items`](/api/meetings/agenda/create-item) | `meetings:write` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/agenda/items/{itemId}`](/api/meetings/agenda/update-item) | `meetings:write` |
+| `DELETE` | [`/api/v1/meetings/{meetingId}/agenda/items/{itemId}`](/api/meetings/agenda/delete-item) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/agenda/items/{itemId}/move`](/api/meetings/agenda/move-item) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/{meetingId}/outcomes`](/api/meetings/outcomes/list-outcomes) | `meetings:read` |
+| `POST` | [`/api/v1/meetings/{meetingId}/agenda/items/{itemId}/outcomes`](/api/meetings/outcomes/create-outcome) | `meetings:write` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/outcomes/{outcomeId}`](/api/meetings/outcomes/update-outcome) | `meetings:write` |
+| `DELETE` | [`/api/v1/meetings/{meetingId}/outcomes/{outcomeId}`](/api/meetings/outcomes/delete-outcome) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/{meetingId}/decisions`](/api/meetings/decisions/list-decisions) | `meetings:read` |
+| `POST` | [`/api/v1/meetings/{meetingId}/decisions`](/api/meetings/decisions/record-decision) | `meetings:write` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/decisions/{decisionId}`](/api/meetings/decisions/update-decision) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/decisions/{decisionId}/supersede`](/api/meetings/decisions/supersede-decision) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/decisions/{decisionId}/revoke`](/api/meetings/decisions/revoke-decision) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/decisions`](/api/meetings/decisions/decision-register) | `meetings:read` |
+| `GET` | [`/api/v1/meetings/{meetingId}/polls`](/api/meetings/polls/list-polls) | `meetings:read` |
+| `POST` | [`/api/v1/meetings/{meetingId}/polls`](/api/meetings/polls/create-poll) | `meetings:write` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/polls/{pollId}`](/api/meetings/polls/update-poll) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/polls/{pollId}/open`](/api/meetings/polls/open-poll) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/polls/{pollId}/close`](/api/meetings/polls/close-poll) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/series`](/api/meetings/series/create-series) | `meetings:write` |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/series`](/api/meetings/series/change-series-rule) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/series/{seriesId}`](/api/meetings/series/get-series) | `meetings:read` |
 
 ## Reacting to changes
 
@@ -90,19 +139,28 @@ which act with the automation owner's rights. See the
 [Collabase connector](/automation/connectors/collabase).
 
 <CardGroup cols={2}>
-  <Card title="Meetings and lifecycle" icon="calendar" href="/api/meetings/meetings">
-    List, create, plan, run, close and cancel meetings.
+  <Card title="Meetings" icon="calendar" href="/api/meetings/list-meetings">
+    List, create, read, change and delete meetings.
   </Card>
-  <Card title="Participants" icon="users" href="/api/meetings/participants">
+  <Card title="Lifecycle" icon="play" href="/api/meetings/lifecycle/plan-meeting">
+    Plan, start, close, reopen and cancel a meeting.
+  </Card>
+  <Card title="Participants" icon="users" href="/api/meetings/participants/list-participants">
     Invite members and guests, change roles, answer invitations.
   </Card>
-  <Card title="Agenda and outcomes" icon="list-check" href="/api/meetings/agenda">
-    Sections, items, their order, and what came out of each item.
+  <Card title="Agenda" icon="list-ordered" href="/api/meetings/agenda/get-agenda">
+    Sections, items and their order.
   </Card>
-  <Card title="Decisions" icon="gavel" href="/api/meetings/decisions">
+  <Card title="Outcomes" icon="list-check" href="/api/meetings/outcomes/list-outcomes">
+    What came out of each agenda item while the meeting ran.
+  </Card>
+  <Card title="Decisions" icon="gavel" href="/api/meetings/decisions/list-decisions">
     Record, reword, replace and revoke decisions; search the register.
   </Card>
-  <Card title="Polls" icon="square-check" href="/api/meetings/polls">
+  <Card title="Polls" icon="square-check" href="/api/meetings/polls/list-polls">
     Prepare, open and close polls; read turnout and results.
+  </Card>
+  <Card title="Series" icon="repeat" href="/api/meetings/series/get-series">
+    Turn a meeting into a series, change its rule, page through occurrences.
   </Card>
 </CardGroup>

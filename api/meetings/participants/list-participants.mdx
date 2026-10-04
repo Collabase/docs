@@ -1,0 +1,76 @@
+---
+title: "List participants"
+description: "Read who is invited to a meeting, with role and invitation answer, plus answer counts and the token owner's rights."
+api: "GET /api/v1/meetings/{meetingId}/participants"
+---
+
+A meeting has exactly one organizer. Co-organizers have the same rights except transferring the
+organizer role. Participants and optional participants receive the invitation; what they may edit
+depends on the meeting's `participantsMayEdit` setting.
+
+| Role | Assignable through the API |
+|---|---|
+| **`ORGANIZER`** | No; moves only by transfer in the app |
+| **`CO_ORGANIZER`** | Members only |
+| **`PARTICIPANT`** | Members and guests |
+| **`OPTIONAL`** | Members and guests |
+
+Members are listed by name; only external guests show their `email`.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="participants" type="object[]" required>
+      Every participant with `id`, `userId` (`null` for a guest), `name`, `image`, `email` (guests
+      only), `role`, `rsvp` and `isSelf`. `rsvp` is `NEEDS_ACTION`, `ACCEPTED`, `TENTATIVE` or
+      `DECLINED`.
+    </ResponseField>
+    <ResponseField name="counts" type="object" required>Number of participants per `rsvp` value.</ResponseField>
+    <ResponseField name="canManage" type="boolean" required>The token owner may invite, remove and change participants.</ResponseField>
+    <ResponseField name="canTransferOrganizer" type="boolean" required>The token owner may hand the organizer role on, in the app.</ResponseField>
+    <ResponseField name="ownRsvp" type="string | null" required>The token owner's own answer; `null` when they are not invited.</ResponseField>
+    <ResponseField name="canRespond" type="boolean" required>The token owner is invited and the meeting is still open.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/participants" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "participants": [
+      { "id": "cm3part0001", "userId": "cm0user0001", "name": "Anna Keller", "image": null, "email": null, "role": "ORGANIZER", "rsvp": "ACCEPTED", "isSelf": true },
+      { "id": "cm3part0002", "userId": null, "name": null, "image": null, "email": "guest@partner.ch", "role": "PARTICIPANT", "rsvp": "NEEDS_ACTION", "isSelf": false }
+    ],
+    "counts": { "NEEDS_ACTION": 1, "ACCEPTED": 1, "TENTATIVE": 0, "DECLINED": 0 },
+    "canManage": true,
+    "canTransferOrganizer": true,
+    "ownRsvp": "ACCEPTED",
+    "canRespond": true
+  }
+}
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Meeting not found" } }
+```
+
+</ResponseExample>

@@ -1,0 +1,84 @@
+---
+title: "Update agenda item"
+description: "Change an agenda item's title, description, owner, estimate or notes, saved against the version you read."
+api: "PATCH /api/v1/meetings/{meetingId}/agenda/items/{itemId}"
+---
+
+Send `baseUpdatedAt` and at least one other field. Fields you leave out keep their value. If someone
+changed the item since you read it, the request returns `409 CONFLICT` with the item as it is now in
+`current`.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. The meeting must not
+  be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="itemId" type="string" required>The agenda item.</ParamField>
+
+## Request body
+
+<ParamField body="baseUpdatedAt" type="string" required>The item's `updatedAt` as you read it, ISO 8601 in UTC.</ParamField>
+<ParamField body="title" type="string">Up to 200 characters.</ParamField>
+<ParamField body="description" type="string | null">Up to 5,000 characters.</ParamField>
+<ParamField body="ownerId" type="string | null">The member who presents the item. Must be invited to the meeting.</ParamField>
+<ParamField body="estimateMinutes" type="number | null">Planned time, 1 to 720 minutes.</ParamField>
+<ParamField body="notes" type="object | null">Rich-text notes as `{ "version": 1, "content": [ … ] }` in the editor's document format, up to 200 KB.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The item.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/items/cm5item0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "estimateMinutes": 20, "ownerId": "cm0user0002", "baseUpdatedAt": "2026-10-14T09:15:30.000Z" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm5item0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The owner must be invited to the meeting" } }
+```
+
+```json 409
+{
+  "error": { "code": "CONFLICT", "message": "Changed by someone else since it was loaded" },
+  "current": {
+    "id": "cm5item0001",
+    "sectionId": "cm4sect0001",
+    "title": "Release 2.4 readiness",
+    "description": null,
+    "ownerId": "cm0user0001",
+    "ownerName": "Anna Keller",
+    "estimateMinutes": 30,
+    "notes": null,
+    "state": "ACCEPTED",
+    "order": 1000,
+    "updatedAt": "2026-10-14T09:18:02.000Z",
+    "decisionCount": 0,
+    "carryCount": 0
+  }
+}
+```
+
+```json 422
+{ "error": { "code": "VALIDATION_ERROR", "message": "Nothing to change" } }
+```
+
+</ResponseExample>

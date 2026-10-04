@@ -1,0 +1,84 @@
+---
+title: "List meetings"
+description: "Page through the meetings your token owner is invited to: today, upcoming, past or series occurrences."
+api: "GET /api/v1/meetings"
+---
+
+Returns the meetings the token owner is invited to, not the ones they could merely read through a
+Space. Each call returns one page of up to 50 meetings.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="view" type="string" default="upcoming">
+  `today` (the current calendar day in the token owner's time zone), `upcoming`, `past` (newest
+  first) or `series` (every occurrence of a series, past and future, in calendar order).
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page. Leave it out for the first page.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="object[]" required>
+      Meetings with `id`, `title`, `startsAt`, `durationMinutes`, `status`, `visibility`,
+      `location`, `videoUrl`, `space` (`id`, `name`, `icon`, `slug`), `project` (`id`, `name`,
+      `icon`) and the token owner's `role`.
+    </ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>
+      Pass it as `cursor` for the next page; `null` on the last page.
+    </ResponseField>
+    <ResponseField name="timezone" type="string" required>
+      The token owner's time zone.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings?view=upcoming" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "items": [
+      {
+        "id": "cm2meet0001abcd",
+        "title": "Release planning",
+        "startsAt": "2026-10-15T08:00:00.000Z",
+        "durationMinutes": 45,
+        "status": "PLANNED",
+        "visibility": "STANDARD",
+        "location": "Room Aare",
+        "videoUrl": null,
+        "space": { "id": "cm1space001", "name": "Product", "icon": "📦", "slug": "product" },
+        "project": null,
+        "role": "ORGANIZER"
+      }
+    ],
+    "nextCursor": null,
+    "timezone": "Europe/Zurich"
+  }
+}
+```
+
+```json 422
+{
+  "error": { "code": "VALIDATION_ERROR", "message": "Invalid option: expected one of \"today\"|\"upcoming\"|\"past\"|\"series\"" }
+}
+```
+
+</ResponseExample>

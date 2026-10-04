@@ -1,0 +1,69 @@
+---
+title: "Update outcome"
+description: "Change an outcome's text, responsible person or due date while the meeting runs, saved against the version you read."
+api: "PATCH /api/v1/meetings/{meetingId}/outcomes/{outcomeId}"
+---
+
+Send `baseUpdatedAt` and at least one other field. If someone changed the outcome since you read it,
+the request returns `409 CONFLICT` with the outcome as it is now in `current`. Outcomes change only
+while the meeting runs (`409 MEETING_NOT_RUNNING`).
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The running meeting.</ParamField>
+<ParamField path="outcomeId" type="string" required>The outcome.</ParamField>
+
+## Request body
+
+<ParamField body="baseUpdatedAt" type="string" required>The outcome's `updatedAt` as you read it, ISO 8601 in UTC.</ParamField>
+<ParamField body="text" type="string">Up to 2,000 characters.</ParamField>
+<ParamField body="responsibleId" type="string | null">The member responsible. Must be invited to the meeting.</ParamField>
+<ParamField body="dueDate" type="string | null">`YYYY-MM-DD`.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The outcome.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/outcomes/cm6outc0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "dueDate": "2026-10-22", "baseUpdatedAt": "2026-10-15T08:21:44.000Z" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm6outc0001" } }
+```
+
+```json 409
+{
+  "error": { "code": "CONFLICT", "message": "Changed by someone else since it was loaded" },
+  "current": {
+    "id": "cm6outc0001",
+    "agendaItemId": "cm5item0001",
+    "type": "TASK",
+    "text": "Update and publish the release checklist",
+    "responsibleId": "cm0user0002",
+    "responsibleName": "Marco Rossi",
+    "dueDate": "2026-10-20",
+    "task": null,
+    "updatedAt": "2026-10-15T08:24:10.000Z"
+  }
+}
+```
+
+</ResponseExample>

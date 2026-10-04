@@ -1,0 +1,85 @@
+---
+title: "List meeting decisions"
+description: "Read the decisions taken in one meeting, oldest first, and whether the token owner may record more right now."
+api: "GET /api/v1/meetings/{meetingId}/decisions"
+---
+
+A decision is recorded in a running meeting and stays `VALID` until it is replaced (`SUPERSEDED`) or
+revoked (`REVOKED`). A replaced decision points at its successor, so the register shows the whole
+chain. This endpoint returns the decisions of one meeting in the order they were taken; to search
+across meetings, use the [decision register](/api/meetings/decisions/decision-register).
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="decisions" type="object[]" required>
+      <Expandable title="decision">
+    <ResponseField name="id" type="string" required />
+    <ResponseField name="meetingId" type="string" required />
+    <ResponseField name="title" type="string" required />
+    <ResponseField name="description" type="string | null" required />
+    <ResponseField name="rationale" type="string | null" required />
+    <ResponseField name="status" type="string" required>`VALID`, `SUPERSEDED` or `REVOKED`.</ResponseField>
+    <ResponseField name="agendaItemId" type="string | null" required />
+    <ResponseField name="persons" type="object[]" required>Decision makers with `userId` and `name`.</ResponseField>
+    <ResponseField name="decidedAt" type="string" required>ISO 8601 in UTC.</ResponseField>
+    <ResponseField name="supersededById" type="string | null" required>The newer decision that replaced this one.</ResponseField>
+    <ResponseField name="supersedesId" type="string | null" required>The older decision this one replaced.</ResponseField>
+    <ResponseField name="pollId" type="string | null" required>The poll whose result it records.</ResponseField>
+    <ResponseField name="updatedAt" type="string" required>Send it as `baseUpdatedAt` when you reword the decision.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="canRecord" type="boolean" required>The token owner may record, reword, replace and revoke decisions in this meeting right now; only while it runs.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/decisions" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "decisions": [
+      {
+        "id": "cm7deci0001",
+        "meetingId": "cm2meet0001abcd",
+        "title": "Release every two weeks",
+        "description": null,
+        "rationale": "Smaller changes, faster feedback",
+        "status": "VALID",
+        "agendaItemId": "cm5item0001",
+        "persons": [{ "userId": "cm0user0001", "name": "Anna Keller" }],
+        "decidedAt": "2026-10-15T08:30:12.000Z",
+        "supersededById": null,
+        "supersedesId": null,
+        "pollId": null,
+        "updatedAt": "2026-10-15T08:30:12.000Z"
+      }
+    ],
+    "canRecord": true
+  }
+}
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Meeting not found" } }
+```
+
+</ResponseExample>

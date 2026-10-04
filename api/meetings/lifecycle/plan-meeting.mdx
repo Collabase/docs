@@ -1,0 +1,46 @@
+---
+title: "Plan meeting"
+description: "Announce a draft meeting: it becomes planned and every participant receives the calendar invitation."
+api: "POST /api/v1/meetings/{meetingId}/plan"
+---
+
+Moves a draft to `PLANNED`. The invitations go out shortly after. In a series, planning one
+occurrence also plans the later drafts of that series, so calendars never show dates that Collabase
+still calls drafts.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers. No request body.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The draft meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The planned meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/plan" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a draft can be planned" } }
+```
+
+</ResponseExample>

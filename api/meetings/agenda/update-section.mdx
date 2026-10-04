@@ -1,0 +1,57 @@
+---
+title: "Update agenda section"
+description: "Rename an agenda section, saved against the version you read so a concurrent rename is never lost."
+api: "PATCH /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}"
+---
+
+Renames the section unless someone changed it since you read it. Then the request returns
+`409 CONFLICT` with the section as it is now in `current`.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. The meeting must not
+  be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="sectionId" type="string" required>The section.</ParamField>
+
+## Request body
+
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+<ParamField body="baseUpdatedAt" type="string" required>The section's `updatedAt` as you read it, ISO 8601 in UTC.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The section.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/sections/cm4sect0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Status and risks", "baseUpdatedAt": "2026-10-14T09:12:00.000Z" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm4sect0001" } }
+```
+
+```json 409
+{
+  "error": { "code": "CONFLICT", "message": "Changed by someone else since it was loaded" },
+  "current": { "id": "cm4sect0001", "title": "Status update", "order": 1000, "updatedAt": "2026-10-14T09:20:41.000Z" }
+}
+```
+
+</ResponseExample>

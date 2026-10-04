@@ -1,0 +1,63 @@
+---
+title: "Update poll"
+description: "Change a draft poll's question, answers, audience or deadline, saved against the version you read."
+api: "PATCH /api/v1/meetings/{meetingId}/polls/{pollId}"
+---
+
+Send `baseUpdatedAt` plus any of the fields of [Create poll](/api/meetings/polls/create-poll). Fields
+you leave out keep their value; type, choices and scale are checked again together. Only a `DRAFT`
+can be changed. If the poll was changed or opened since you read it, the request returns
+`409 CONFLICT`; read it again.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers, and participants too when the meeting lets them
+  record outcomes. The meeting must not be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="pollId" type="string" required>The draft poll.</ParamField>
+
+## Request body
+
+<ParamField body="baseUpdatedAt" type="string" required>The poll's `updatedAt` as you read it, ISO 8601 in UTC.</ParamField>
+<ParamField body="question" type="string">Up to 300 characters.</ParamField>
+<ParamField body="type" type="string">`YES_NO_ABSTAIN`, `SINGLE_CHOICE`, `MULTIPLE_CHOICE` or `SCALE`.</ParamField>
+<ParamField body="choices" type="string[] | null">2 to 12 distinct labels, each up to 200 characters.</ParamField>
+<ParamField body="scale" type="object | null">`min`, `max` (0 to 10, `min` below `max`), `minLabel`, `maxLabel`.</ParamField>
+<ParamField body="agendaItemId" type="string | null">Must belong to this meeting.</ParamField>
+<ParamField body="isAnonymous" type="boolean" />
+<ParamField body="audience" type="string">`INVITED` or `PRESENT`.</ParamField>
+<ParamField body="closesAt" type="string | null">ISO 8601 in UTC. Must lie in the future.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The poll.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/polls/cm8poll0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "choices": ["Bern", "Basel", "Chur", "Lugano"], "baseUpdatedAt": "2026-10-14T16:02:11.000Z" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm8poll0001" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a draft poll can be changed" } }
+```
+
+</ResponseExample>

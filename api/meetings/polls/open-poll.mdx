@@ -1,0 +1,51 @@
+---
+title: "Open poll"
+description: "Open a draft poll for voting in a planned or running meeting; its question and answers are fixed from then on."
+api: "POST /api/v1/meetings/{meetingId}/polls/{pollId}/open"
+---
+
+Opens a draft for voting. The meeting must be planned or running, and if the poll has a deadline, it
+must still lie ahead. From now on its question, answers and anonymity are fixed.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers, and participants too when the meeting lets them
+  record outcomes. No request body.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="pollId" type="string" required>The draft poll.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The opened poll.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/polls/cm8poll0001/open" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm8poll0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The deadline must lie in the future" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a draft poll can be opened" } }
+```
+
+</ResponseExample>

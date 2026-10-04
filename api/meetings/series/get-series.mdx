@@ -1,0 +1,76 @@
+---
+title: "Get series"
+description: "Read a meeting series with its rule and one page of its occurrences, oldest first."
+api: "GET /api/v1/meetings/series/{seriesId}"
+---
+
+Returns the series and one page of 50 occurrences, oldest first. Without `page`, you get the page
+holding the next occurrence. Whoever may see the series' latest occurrence sees the list of dates
+and states; each occurrence still checks its own access when you open it, so in a private series a
+participant who joined later can open occurrences from their first one on.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="seriesId" type="string" required>The series, as `series.id` from [Get meeting](/api/meetings/get-meeting).</ParamField>
+
+## Query parameters
+
+<ParamField query="page" type="number">Page of occurrences, from 1. A page beyond the last returns the last page. Other query parameters are rejected with `422`.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required />
+    <ResponseField name="title" type="string" required />
+    <ResponseField name="rrule" type="string" required>The current rule.</ResponseField>
+    <ResponseField name="seriesTimezone" type="string" required>The time zone the series keeps its wall-clock time in.</ResponseField>
+    <ResponseField name="timezone" type="string" required>The token owner's time zone.</ResponseField>
+    <ResponseField name="instances" type="object[]" required>Occurrences with `id`, `startsAt`, `status` and `isMoved` (held at another time than the rule says).</ResponseField>
+    <ResponseField name="page" type="number" required />
+    <ResponseField name="pageCount" type="number" required />
+    <ResponseField name="manageMeetingId" type="string | null" required>The occurrence to send a [rule change](/api/meetings/series/change-series-rule) through, when the token owner may change the rule.</ResponseField>
+    <ResponseField name="nextStart" type="object | null" required>`date` and `time` of the next occurrence not held yet, in the series' time zone.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/series/cm9seri0001?page=1" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "id": "cm9seri0001",
+    "title": "Weekly sync",
+    "rrule": "FREQ=WEEKLY;BYDAY=TH",
+    "seriesTimezone": "Europe/Zurich",
+    "timezone": "Europe/Zurich",
+    "instances": [
+      { "id": "cm2meet0001abcd", "startsAt": "2026-10-15T08:00:00.000Z", "status": "CLOSED", "isMoved": false },
+      { "id": "cm2meet0002efgh", "startsAt": "2026-10-22T08:00:00.000Z", "status": "PLANNED", "isMoved": false }
+    ],
+    "page": 1,
+    "pageCount": 1,
+    "manageMeetingId": "cm2meet0002efgh",
+    "nextStart": { "date": "2026-10-22", "time": "10:00" }
+  }
+}
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Meeting not found" } }
+```
+
+</ResponseExample>

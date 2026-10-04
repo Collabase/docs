@@ -1,0 +1,71 @@
+---
+title: "Update meeting"
+description: "Change a meeting's title, time, place or settings; a planned meeting sends updated invitations afterwards."
+api: "PATCH /api/v1/meetings/{meetingId}"
+---
+
+Takes the same fields as [creating a meeting](/api/meetings/create-meeting), all optional. Fields you
+leave out keep their value. A planned meeting sends updated invitations after the change.
+
+`date` and `time` always travel together and are read in the token owner's time zone. Moving a
+meeting to another Space drops its project unless you send a `projectId` in the new Space.
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers only. Closed and cancelled meetings cannot be
+  changed (`409 MEETING_NOT_WRITABLE`).
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Request body
+
+<ParamField body="title" type="string">Up to 200 characters.</ParamField>
+<ParamField body="date" type="string">`YYYY-MM-DD`. Send together with `time`.</ParamField>
+<ParamField body="time" type="string">`HH:mm`. Send together with `date`.</ParamField>
+<ParamField body="durationMinutes" type="number">1 to 720.</ParamField>
+<ParamField body="spaceId" type="string | null">Space the meeting belongs to.</ParamField>
+<ParamField body="projectId" type="string | null">Project within that Space.</ParamField>
+<ParamField body="location" type="string | null">Up to 500 characters.</ParamField>
+<ParamField body="videoUrl" type="string | null">An `http` or `https` link, up to 2,000 characters.</ParamField>
+<ParamField body="visibility" type="string">`STANDARD` or `PRIVATE`.</ParamField>
+<ParamField body="participantsMayEdit" type="boolean">Participants may edit the agenda and record outcomes.</ParamField>
+<ParamField body="bufferPercent" type="number">0 to 50.</ParamField>
+<ParamField body="submissionsToAgenda" type="boolean">Submitted topics go straight onto the agenda.</ParamField>
+<ParamField body="submissionLeadHours" type="number | null">1 to 336, or `null` for until the start.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The changed meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "date": "2026-10-16", "time": "14:00", "durationMinutes": 60 }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 409
+{ "error": { "code": "MEETING_NOT_WRITABLE", "message": "Meeting is closed or cancelled and cannot be changed" } }
+```
+
+```json 422
+{ "error": { "code": "VALIDATION_ERROR", "message": "date and time must be changed together" } }
+```
+
+</ResponseExample>

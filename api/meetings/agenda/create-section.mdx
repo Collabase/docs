@@ -1,0 +1,51 @@
+---
+title: "Create agenda section"
+description: "Add a section at the end of a meeting's agenda to group related agenda items."
+api: "POST /api/v1/meetings/{meetingId}/agenda/sections"
+---
+
+Adds a section at the end of the agenda. An agenda holds up to 50 sections.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. The meeting must not
+  be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Request body
+
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new section.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/sections" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Status" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm4sect0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "Too many sections" } }
+```
+
+</ResponseExample>

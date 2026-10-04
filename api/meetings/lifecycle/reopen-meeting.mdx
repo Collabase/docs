@@ -1,0 +1,46 @@
+---
+title: "Reopen meeting"
+description: "Move a closed meeting back to running for a correction; the reopening is recorded in the audit log."
+api: "POST /api/v1/meetings/{meetingId}/reopen"
+---
+
+Moves a closed meeting back to `RUNNING`, for a correction after the fact. Its meeting note goes out
+of date until the next close updates it.
+
+<Info>
+  Scope `meetings:write`. Organizers, co-organizers and Space admins (for meetings that are not
+  private). Recorded in the audit log. No request body.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The closed meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The reopened meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/reopen" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a closed meeting can be reopened" } }
+```
+
+</ResponseExample>

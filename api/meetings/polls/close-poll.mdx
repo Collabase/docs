@@ -1,0 +1,51 @@
+---
+title: "Close poll"
+description: "End voting in an open poll now; the result becomes visible and the poll never reopens."
+api: "POST /api/v1/meetings/{meetingId}/polls/{pollId}/close"
+---
+
+Ends voting now and makes the result visible. An anonymous poll loses its secret, so its votes can no
+longer be traced to anyone. A closed poll never reopens. A poll also closes on its deadline, and every
+open poll closes when the meeting ends or is cancelled.
+
+To record the result as a decision, pass the poll's `id` as `pollId` when you
+[record a decision](/api/meetings/decisions/record-decision).
+
+<Info>
+  Scope `meetings:write`. Organizers and co-organizers, and participants too when the meeting lets them
+  record outcomes. The meeting must not be closed or cancelled. No request body.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="pollId" type="string" required>The open poll.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The closed poll.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/polls/cm8poll0001/close" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm8poll0001" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only an open poll can be closed" } }
+```
+
+</ResponseExample>

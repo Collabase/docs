@@ -1,0 +1,46 @@
+---
+title: "Delete outcome"
+description: "Remove an outcome while the meeting runs; a work item already made from it stays where it is."
+api: "DELETE /api/v1/meetings/{meetingId}/outcomes/{outcomeId}"
+---
+
+Removes the outcome. A work item already made from it stays where it is. Outcomes change only while
+the meeting runs (`409 MEETING_NOT_RUNNING`).
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The running meeting.</ParamField>
+<ParamField path="outcomeId" type="string" required>The outcome.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The deleted outcome.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/outcomes/cm6outc0001" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm6outc0001" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Outcome not found" } }
+```
+
+</ResponseExample>

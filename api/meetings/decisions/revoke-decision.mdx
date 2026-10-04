@@ -1,0 +1,47 @@
+---
+title: "Revoke decision"
+description: "Mark a valid decision as revoked; it stays in the register with its new status."
+api: "POST /api/v1/meetings/{meetingId}/decisions/{decisionId}/revoke"
+---
+
+Marks the decision `REVOKED`. It stays in the register with its new status. Only a `VALID` decision
+can be revoked (`409 CONFLICT`), and only while the meeting runs (`409 MEETING_NOT_RUNNING`).
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. Recorded in the
+  audit log. No request body.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The running meeting.</ParamField>
+<ParamField path="decisionId" type="string" required>The decision.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The revoked decision.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/decisions/cm7deci0001/revoke" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm7deci0001" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "Only a valid decision can be revoked" } }
+```
+
+</ResponseExample>

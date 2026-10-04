@@ -1,0 +1,53 @@
+---
+title: "Move agenda section"
+description: "Reorder a meeting's agenda by placing a section after another one, or first."
+api: "POST /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}/move"
+---
+
+Places the section after `afterSectionId`, or first when it is `null`. A move is a command: the
+position is computed from the neighbours as they are at that moment, and the last move wins.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it. The meeting must not
+  be closed or cancelled.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+<ParamField path="sectionId" type="string" required>The section to move.</ParamField>
+
+## Request body
+
+<ParamField body="afterSectionId" type="string | null" required>The section it follows, or `null` to place it first.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The moved section.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/sections/cm4sect0002/move" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "afterSectionId": null }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm4sect0002" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Agenda section not found" } }
+```
+
+</ResponseExample>

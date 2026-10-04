@@ -1,0 +1,48 @@
+---
+title: "Delete meeting"
+description: "Delete a draft or cancelled one-off meeting with everything in it; meetings that reached a calendar stay."
+api: "DELETE /api/v1/meetings/{meetingId}"
+---
+
+Deletes a draft or a cancelled one-off meeting with its agenda, outcomes and polls. A planned meeting
+sits in the participants' calendars and a held one carries decisions, so both stay:
+[cancel](/api/meetings/lifecycle/cancel-meeting) a planned meeting instead. An occurrence of a series
+cannot be deleted either; it would come back with the series.
+
+<Info>
+  Scope `meetings:write`. Organizers, co-organizers, Space admins (for meetings that are not private)
+  and system administrators. Recorded in the audit log.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The meeting.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The deleted meeting.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm2meet0001abcd" } }
+```
+
+```json 409
+{ "error": { "code": "CONFLICT", "message": "This meeting cannot be deleted" } }
+```
+
+</ResponseExample>

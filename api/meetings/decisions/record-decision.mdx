@@ -1,0 +1,63 @@
+---
+title: "Record decision"
+description: "Record a decision in a running meeting, optionally with decision makers, the agenda item and a closed poll."
+api: "POST /api/v1/meetings/{meetingId}/decisions"
+---
+
+Records a new `VALID` decision. Decisions are recorded only while the meeting runs; otherwise the
+call returns `409 MEETING_NOT_RUNNING`. A meeting holds up to 300 decisions.
+
+To record a poll's result, pass the poll's `id` as `pollId`. The poll must be closed and belong to
+the same meeting; each result can be recorded once, and a second attempt returns `409 CONFLICT`.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The running meeting.</ParamField>
+
+## Request body
+
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+<ParamField body="description" type="string | null" default="null">Up to 5,000 characters.</ParamField>
+<ParamField body="rationale" type="string | null" default="null">Why it was decided, up to 5,000 characters.</ParamField>
+<ParamField body="agendaItemId" type="string | null" default="null">The agenda item it was taken under. Must belong to this meeting.</ParamField>
+<ParamField body="personIds" type="string[]" default="[]">Decision makers, up to 50. Each must be invited to the meeting.</ParamField>
+<ParamField body="pollId" type="string | null" default="null">A closed [poll](/api/meetings/polls/list-polls) of this meeting whose result the decision records. Each poll's result can be recorded once.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new decision.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/decisions" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Release every two weeks", "rationale": "Smaller changes, faster feedback", "personIds": ["cm0user0001"] }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm7deci0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "Decision makers must be invited to the meeting" } }
+```
+
+```json 409
+{ "error": { "code": "MEETING_NOT_RUNNING", "message": "Outcomes and decisions are recorded while the meeting runs" } }
+```
+
+</ResponseExample>

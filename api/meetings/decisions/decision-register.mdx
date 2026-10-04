@@ -1,0 +1,85 @@
+---
+title: "Search decision register"
+description: "Search decisions across every meeting the token owner may read, newest first, filtered and paginated."
+api: "GET /api/v1/meetings/decisions"
+---
+
+Returns decisions across every meeting the token owner may read, newest first. Decisions of private
+meetings appear only for their participants.
+
+<Info>
+  Scope `meetings:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="q" type="string">Case-insensitive search in titles, up to 200 characters.</ParamField>
+<ParamField query="spaceId" type="string">Only decisions of meetings in this Space.</ParamField>
+<ParamField query="projectId" type="string">Only decisions of meetings in this project.</ParamField>
+<ParamField query="seriesId" type="string">Only decisions of this series.</ParamField>
+<ParamField query="personId" type="string">Only decisions this member took part in.</ParamField>
+<ParamField query="status" type="string">`VALID`, `SUPERSEDED` or `REVOKED`.</ParamField>
+<ParamField query="from" type="string">`YYYY-MM-DD`, inclusive, in the token owner's time zone.</ParamField>
+<ParamField query="to" type="string">`YYYY-MM-DD`, inclusive, in the token owner's time zone.</ParamField>
+<ParamField query="page" type="number" default="1">Page number.</ParamField>
+<ParamField query="pageSize" type="number" default="25">Entries per page. Values above 100 are treated as 100.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="entries" type="object[]" required>
+      Decisions with the fields of [List meeting decisions](/api/meetings/decisions/list-decisions),
+      plus `meetingTitle`, `meetingStartsAt` and `space` (`id`, `name`) of the meeting they were
+      taken in.
+    </ResponseField>
+    <ResponseField name="pagination" type="object" required>`page`, `pageSize`, `total` and `totalPages`.</ResponseField>
+    <ResponseField name="series" type="object[]" required>Series you can filter by: those with at least one decision the token owner may read, with `id` and `title`.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/meetings/decisions?status=VALID&q=release&pageSize=50" \
+  -H "Authorization: Bearer clb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "entries": [
+      {
+        "id": "cm7deci0001",
+        "meetingId": "cm2meet0001abcd",
+        "title": "Release every two weeks",
+        "description": null,
+        "rationale": "Smaller changes, faster feedback",
+        "status": "VALID",
+        "agendaItemId": "cm5item0001",
+        "persons": [{ "userId": "cm0user0001", "name": "Anna Keller" }],
+        "decidedAt": "2026-10-15T08:30:12.000Z",
+        "supersededById": null,
+        "supersedesId": null,
+        "pollId": null,
+        "updatedAt": "2026-10-15T08:30:12.000Z",
+        "meetingTitle": "Release planning",
+        "meetingStartsAt": "2026-10-15T08:00:00.000Z",
+        "space": { "id": "cm1space001", "name": "Product" }
+      }
+    ],
+    "pagination": { "page": 1, "pageSize": 50, "total": 1, "totalPages": 1 },
+    "series": [{ "id": "cm9seri0001", "title": "Weekly sync" }]
+  }
+}
+```
+
+```json 422
+{ "error": { "code": "VALIDATION_ERROR", "message": "Invalid option: expected one of \"VALID\"|\"SUPERSEDED\"|\"REVOKED\"" } }
+```
+
+</ResponseExample>

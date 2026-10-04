@@ -1,0 +1,63 @@
+---
+title: "Record outcome"
+description: "Record an information or task outcome on an agenda item while the meeting runs."
+api: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/outcomes"
+---
+
+Adds the outcome at the end of the item's outcomes. Outcomes are recorded only while the meeting
+runs; otherwise the call returns `409 MEETING_NOT_RUNNING`. A meeting holds up to 500 outcomes.
+
+<Info>
+  Scope `meetings:write`. Organizers, and participants when the meeting allows it.
+</Info>
+
+## Path parameters
+
+<ParamField path="meetingId" type="string" required>The running meeting.</ParamField>
+<ParamField path="itemId" type="string" required>The agenda item the outcome belongs to.</ParamField>
+
+## Request body
+
+<ParamField body="type" type="string" required>`INFORMATION` or `TASK`.</ParamField>
+<ParamField body="text" type="string" required>Up to 2,000 characters.</ParamField>
+<ParamField body="responsibleId" type="string | null" default="null">The member responsible. Must be invited to the meeting.</ParamField>
+<ParamField body="dueDate" type="string | null" default="null">`YYYY-MM-DD`.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The new outcome.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/items/cm5item0001/outcomes" \
+  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "type": "TASK", "text": "Update the release checklist", "responsibleId": "cm0user0002", "dueDate": "2026-10-20" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm6outc0001" } }
+```
+
+```json 400
+{ "error": { "code": "VALIDATION_ERROR", "message": "The responsible person must be invited to the meeting" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Agenda item not found" } }
+```
+
+```json 409
+{ "error": { "code": "MEETING_NOT_RUNNING", "message": "Outcomes and decisions are recorded while the meeting runs" } }
+```
+
+</ResponseExample>
