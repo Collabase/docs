@@ -1,0 +1,137 @@
+---
+title: "Meetings"
+sidebarTitle: "Overview"
+description: "Plan meetings and series, run them with a shared agenda and timer, record decisions, and get the minutes as a Collabase page."
+---
+
+Meetings covers a meeting from the first agenda item to the minutes. You plan the agenda and the time in Collabase, send the calendar invitation from there, run the meeting with a timer per topic, and record outcomes and decisions while you talk. When the meeting ends, Collabase writes the minutes as a page in the space, built from what was recorded.
+
+<Note>
+  Meetings is in early access and is switched off on customer installations. See [How to access Meetings](#how-to-access-meetings) for how an administrator switches it on.
+</Note>
+
+## Why use Meetings
+
+<AccordionGroup>
+  <Accordion title="Decisions you can find again">
+    Every decision is recorded with its rationale and the people who made it, and lands in a decision register you can filter by space, series, person and status. A decision that is replaced or revoked stays visible with its new status.
+  </Accordion>
+  <Accordion title="Meetings that end on time">
+    The agenda shows planned against available minutes before the meeting starts. During the meeting a timer runs per topic and projects when the meeting will end.
+  </Accordion>
+  <Accordion title="Minutes nobody has to type up">
+    The meeting note is written from the agenda, notes, decisions and tasks when the meeting closes, and stored as a normal page with versions, search and permissions.
+  </Accordion>
+  <Accordion title="Work items straight from the discussion">
+    An outcome of type task becomes a work item in a project with one click, linked back to the meeting.
+  </Accordion>
+</AccordionGroup>
+
+## Key concepts
+
+```
+Series (optional, repeats by a rule)
+└── Meeting (one date)
+    ├── Participants (organizer, co-organizers, participants, optional, external)
+    ├── Agenda
+    │   ├── Sections
+    │   └── Items (notes, outcomes, links to work items and pages)
+    ├── Decisions
+    └── Meeting note (a page in the space)
+```
+
+<AccordionGroup>
+  <Accordion title="Meeting">
+    One date with a title, time, duration and place. A meeting can belong to a space and optionally to a project of that space, or to no space at all. It moves through the statuses **Draft**, **Planned**, **Running** and **Closed**, or ends as **Cancelled**.
+  </Accordion>
+  <Accordion title="Series">
+    A meeting that repeats daily, weekly or monthly. Each date of the series is a meeting of its own with its own agenda, so a series never fills up with empty meetings in advance: the next date always exists, later ones appear when someone adds something to them.
+  </Accordion>
+  <Accordion title="Agenda item">
+    A topic on the agenda. It has an optional owner, an estimate in minutes, notes, outcomes and links to work items or pages. Items that are not finished can be parked in the backlog or handed on to another meeting.
+  </Accordion>
+  <Accordion title="Outcome and decision">
+    An outcome records what was settled at an item: an **Information** or a **Task** with a responsible person and due date. A decision is recorded separately, with rationale and the people who decided, and appears in the decision register.
+  </Accordion>
+  <Accordion title="Meeting note">
+    The minutes of a closed meeting, written as a page in the space's **Meetings** folder. It starts as a draft only the organizers can read, and becomes visible to everyone else when an organizer publishes it.
+  </Accordion>
+</AccordionGroup>
+
+## How to access Meetings
+
+Meetings is behind a feature switch called `MEETINGS`. On customer installations the switch is off until an administrator turns it on.
+
+<Steps>
+  <Step title="Turn the app on (administrator)">
+    On a self-hosted installation, add `MEETINGS=true` to the `FEATURE_FLAG_OVERRIDES` line in `deployment/.env`, for example `FEATURE_FLAG_OVERRIDES=MEETINGS=true`, then restart:
+    ```bash
+    bash deployment/docker/install.sh restart
+    ```
+    If the line already lists other switches, separate them with a comma. On a hosted instance, ask Collabase support to switch Meetings on for you.
+  </Step>
+  <Step title="Open the app drawer">
+    Click **More** at the bottom of the left sidebar.
+  </Step>
+  <Step title="Open Meetings">
+    Click **Meetings**. The app opens on **Upcoming**. The sidebar also has **Today**, **Past**, **Series** and the **Decision register**.
+  </Step>
+</Steps>
+
+<Warning>
+  Switching Meetings off again hides the app and stops all mails, but invitations already sent stay in your participants' calendars. Collabase cannot take them back, so cancel future meetings before you switch the app off for good.
+</Warning>
+
+## Who can do what
+
+Access comes from two places: your role in the meeting, and your access to the meeting's space. In one sentence: you see a meeting if you are invited, or if you can read its space and the meeting is not private.
+
+| Action | Organizer, co-organizer | Participant | Space reader | Space admin |
+|---|---|---|---|---|
+| **See the meeting** | Yes | Yes | Standard meetings only | Standard meetings only |
+| **Change time, place and participants, send invitations** | Yes | No | No | No |
+| **Cancel, reopen, change the series rule** | Yes | No | No | Standard meetings only |
+| **Edit the agenda, record outcomes and decisions** | Yes | When the meeting allows it | No | No |
+| **Suggest a topic** | Yes | Yes | No | No |
+| **Start, run and end the meeting** | Yes | No | No | No |
+| **Publish the meeting note** | Yes | No | No | No |
+| **Hand the meeting to a new organizer** | Organizer only | No | No | Yes |
+
+A **Private** meeting is visible only to the people invited to it. Access to the space does not reach it, and that includes space and instance administrators.
+
+## Connected apps
+
+<CardGroup cols={3}>
+  <Card title="Projects" icon="square-check" href="/projects/tasks">
+    Create work items from outcomes and link existing ones to agenda items. A work item shows the meetings it was discussed in.
+  </Card>
+  <Card title="Collabase Docs" icon="file-text" href="/docs/pages">
+    The meeting note is a page. Pages linked to an agenda item show where they were discussed.
+  </Card>
+  <Card title="CollabaseAI" icon="sparkles" href="/concepts/collabase-ai">
+    An optional summary at the top of the meeting note, off until an administrator switches it on.
+  </Card>
+</CardGroup>
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Planning meetings" icon="calendar-plus" href="/meetings/planning">
+    Create a meeting or series, build the agenda, collect topics.
+  </Card>
+  <Card title="Invitations" icon="mail" href="/meetings/invitations">
+    Calendar invitations, responses, and the calendar subscription.
+  </Card>
+  <Card title="Running a meeting" icon="timer" href="/meetings/moderation">
+    The live view, the timer per topic, attendance, and ending.
+  </Card>
+  <Card title="Outcomes and decisions" icon="gavel" href="/meetings/decisions">
+    Tasks, work items, decisions and the decision register.
+  </Card>
+  <Card title="Meeting note" icon="notebook-pen" href="/meetings/meeting-note">
+    Where the minutes are stored, and who can read them.
+  </Card>
+  <Card title="AI and privacy" icon="shield" href="/meetings/ai-and-privacy">
+    What the AI summary sends, and how long data is kept.
+  </Card>
+</CardGroup>

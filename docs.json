@@ -121,6 +121,20 @@
                     ]
                   },
                   {
+                    "group": "Meetings",
+                    "pages": [
+                      "meetings/overview",
+                      "meetings/planning",
+                      "meetings/invitations",
+                      "meetings/moderation",
+                      "meetings/decisions",
+                      "meetings/polls",
+                      "meetings/time-booking",
+                      "meetings/meeting-note",
+                      "meetings/ai-and-privacy"
+                    ]
+                  },
+                  {
                     "group": "Test Management",
                     "pages": [
                       "test-management/overview",
@@ -341,6 +355,18 @@
                 "group": "Work Items",
                 "pages": [
                   "api/tasks/move-work-item"
+                ]
+              },
+              {
+                "group": "Meetings",
+                "pages": [
+                  "api/meetings/overview",
+                  "api/meetings/meetings",
+                  "api/meetings/participants",
+                  "api/meetings/agenda",
+                  "api/meetings/decisions",
+                  "api/meetings/polls",
+                  "api/meetings/series"
                 ]
               },
               {

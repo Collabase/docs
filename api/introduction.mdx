@@ -17,13 +17,46 @@ https://your-collabase-domain/api
 
 ## Authentication
 
-All API requests require an API key passed as a Bearer token in the `Authorization` header:
+Requests to `/api/v1` carry a personal API token in the `Authorization` header:
 
 ```bash
-Authorization: Bearer cba_live_xYz123ABCD...
+Authorization: Bearer clb_xYz123ABCD...
 ```
 
-API key management is part of the beta program. Contact Collabase to get your key.
+### Creating a token
+
+Open your profile, go to **Security** and choose **Create token**. Give it a name, pick what it may do, and how long it stays valid (30 to 365 days; every token expires). The token is shown once: copy it into your integration right away. If you lose it, revoke it and create a new one.
+
+A token acts as you. It can never do more than you can do in Collabase yourself; the scopes only narrow which parts of the API it reaches.
+
+For each area you choose a level: **Read**, **Read and write**, or **Administer** where the area has one. A higher level includes the lower ones. The areas follow the permission scheme of your spaces and the global modules:
+
+| Area | Scopes |
+|---|---|
+| Spaces | `spaces:read`, `spaces:admin` |
+| Projects | `projects:read`, `projects:write`, `projects:admin` |
+| Work items | `tasks:read`, `tasks:write` |
+| Comments | `comments:read`, `comments:write` |
+| Attachments | `attachments:read`, `attachments:write` |
+| Time tracking | `time:read`, `time:write` |
+| Costs and budgets | `finance:read`, `finance:write` |
+| Sprints | `sprints:read`, `sprints:write` |
+| Boards | `boards:read`, `boards:write` |
+| Pages | `docs:read`, `docs:write`, `docs:admin` |
+| Test management | `tests:read`, `tests:write` |
+| Blog | `blog:read`, `blog:write` |
+| Audit log | `audit:read` |
+| Registry | `registry:read`, `registry:write`, `registry:admin` |
+| Intranet | `intranet:read`, `intranet:write`, `intranet:admin` |
+| Automation | `automation:read`, `automation:write`, `automation:admin` |
+| Time reports | `reports:read` |
+| Meetings | `meetings:read`, `meetings:write` |
+
+Each endpoint states the scope it needs. Automation connections hold stored credentials, so reading or changing them needs `automation:admin`.
+
+Tokens created before scopes existed keep working for reading time entries and moving work items.
+
+You can revoke a token at any time in the same place. Systems using it lose access with their next request.
 
 ## Response format
 
@@ -36,12 +69,20 @@ All responses return JSON.
 
 **Error:**
 ```json
-{ "error": "Unauthorized" }
+{ "error": { "code": "INSUFFICIENT_SCOPE", "message": "This token lacks the scope \"time:read\"." } }
 ```
+
+| Status | Code | Meaning |
+|---|---|---|
+| `401` | `UNAUTHENTICATED` | No token, or the token is unknown, expired or revoked |
+| `403` | `INSUFFICIENT_SCOPE` | The token is valid but lacks the scope this endpoint needs |
+| `403` | `FORBIDDEN` | You yourself may not do this |
+| `404` | `NOT_FOUND` | The object does not exist or you may not see it |
+| `422` | `VALIDATION_ERROR` | The request body or query is invalid |
 
 ## Rate limiting
 
-Requests are limited to 300 per minute per API key. If you exceed this, the API returns `429 Too Many Requests`.
+Requests are limited per client address. If you exceed the limit, the API returns `429 Too Many Requests`; wait a few seconds and retry.
 
 ---
 
@@ -50,6 +91,9 @@ Requests are limited to 300 per minute per API key. If you exceed this, the API 
 <CardGroup cols={2}>
   <Card title="Automation API" icon="wand-magic-sparkles" href="/api/automation/list-automations">
     Manage automations, connections, executions, templates, and webhooks.
+  </Card>
+  <Card title="Meetings API" icon="calendar" href="/api/meetings/overview">
+    Meetings, participants, agendas, outcomes, decisions, and series.
   </Card>
   <Card title="Test Management API" icon="flask" href="/api/test-management/list-projects">
     Projects, test cases, test runs, results, and milestones.

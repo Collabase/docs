@@ -1,0 +1,86 @@
+---
+title: "Running a meeting"
+description: "Start a meeting, steer it with a timer per topic, record attendance, and close it so the outcomes become the meeting note."
+---
+
+The live view is the screen you run the meeting from. It shows the current topic with its clock, the agenda with the time each topic took, the decisions so far, and who is present. Everyone who can see the meeting can follow along in it; the organizer and co-organizers steer it.
+
+## Start the meeting
+
+<Steps>
+  <Step title="Open the meeting">
+    The meeting must be **Planned**, so the invitations have to be sent first.
+  </Step>
+  <Step title="Start it">
+    Click **Start meeting**. The status changes to **Running** and the live view opens.
+  </Step>
+</Steps>
+
+While the meeting runs, its page shows **This meeting is running now**, with **Join** when the meeting has a video link, and **Open live view** for everyone who can see the meeting.
+
+Starting, steering and ending a meeting is up to the organizer and co-organizers. To let someone else run it, make them co-organizer in the participant menu.
+
+## Steer the topics
+
+The **Now** block shows the topic that is running and how long it has been running. When a topic takes longer than its estimate, the block says how far over it is, for example **3:20 over**.
+
+| Action | How |
+|---|---|
+| **Start the first topic** | Click **Start first open topic**. |
+| **Move to the next topic** | Click **Next topic**. The current topic is marked done and the next open one in agenda order starts. |
+| **Pause** | Click **Pause**. The topic stays open; when you start it again, its time adds up. |
+| **Jump to a topic** | In the agenda list, use the start button next to the topic. A topic can be taken up several times; its times add up. |
+
+Above the topic, **Expected end** projects when the meeting will finish: the remaining time of the running topic plus the estimates of the open ones. If that lies after the planned end, it shows by how many minutes, and how many open items have no estimate.
+
+The timer runs on the server, not in your browser. If the person running the meeting closes the tab, the clock keeps going, and it stops at the latest when the meeting ends.
+
+### Record while you talk
+
+Below the current topic you record its outcomes and links to work items and pages. Decisions are recorded in the **Decisions of this meeting** panel, which preselects the current topic. See [Outcomes and decisions](/meetings/decisions).
+
+### Presentation mode
+
+Click **Presentation** to show only the current topic and its clock in large type, for a shared screen or a projector. Click it again to return to the full view.
+
+## Attendance
+
+The **Attendance** list holds every participant. Set each person to **Present**, **Partly** or **Absent**; **Not recorded** is the starting value. Attendance appears in the meeting note.
+
+Next to each member, a marker shows **Has the meeting open** when their browser showed the meeting within the last 20 seconds, otherwise **Not in the tool**. This is a hint, not attendance: someone in the room may not have Collabase open.
+
+## Working together live
+
+Everyone looking at the meeting sees changes from others within a few seconds, without reloading. While the meeting runs, the page checks for changes every three seconds; while it is being planned, every fifteen seconds. A page in a hidden browser tab pauses and catches up when you return to it.
+
+If the connection drops, the page shows **Offline, as of** with the time of the last update, and catches up once you are back online. A change that cannot be saved is undone on your screen, and you can try again.
+
+## End the meeting
+
+<Steps>
+  <Step title="Click End meeting">
+    In the live view, click **End meeting**.
+  </Step>
+  <Step title="Confirm the decisions">
+    The dialog lists every decision recorded in this meeting, so the group can check them one last time.
+  </Step>
+  <Step title="Choose what moves on (series only)">
+    In a series, **Take into the next occurrence** lists the open items. Ticked items go onto the next date's agenda; unticked items stay open in this meeting.
+  </Step>
+  <Step title="End">
+    Click **End meeting**. **Keep running** returns to the meeting.
+  </Step>
+</Steps>
+
+When the meeting ends:
+
+- A running timer stops.
+- Every linked work item and page is recorded as it stands at this moment. Later, the meeting shows **Changed since the meeting** next to a link whose target has changed.
+- The meeting note is written. See [Meeting note](/meetings/meeting-note).
+- The meeting becomes read-only.
+
+## Reopen a closed meeting
+
+To correct a closed meeting, open the status menu and choose **Running**. Organizers and co-organizers can reopen a meeting, and so can space admins for meetings that are not private. Reopening is recorded in the audit log.
+
+While a meeting is reopened, its meeting note is out of date. Ending the meeting again updates the note and leaves any edits made on the page untouched.

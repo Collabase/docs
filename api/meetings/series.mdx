@@ -1,0 +1,62 @@
+---
+title: "Meeting series API"
+sidebarTitle: "Series"
+description: "Turn a meeting into a recurring series through the API, change or end its rule, and read its occurrences page by page."
+---
+
+A series is created from a meeting, which becomes its first occurrence. Later occurrences are created
+as they come up and copy the series' participants and agenda template. The rule is an iCalendar
+`RRULE` and keeps its wall-clock time in the time zone the series was planned in.
+
+## Create a series
+
+`POST /api/v1/meetings/{meetingId}/series` · scope `meetings:write` · `201`
+
+<ParamField body="rrule" type="string" required>
+  For example `FREQ=WEEKLY;BYDAY=TH` or `FREQ=MONTHLY;BYDAY=1MO;COUNT=10`. Up to 200 characters.
+</ParamField>
+
+The meeting must be a draft or planned one-off meeting. Returns the id of the new series.
+
+## Change or end the rule
+
+`PATCH /api/v1/meetings/{meetingId}/series` · scope `meetings:write`
+
+Send it for any occurrence of the series.
+
+<ParamField body="rrule" type="string" required>The new rule. To end the series, send the current rule with `UNTIL`.</ParamField>
+<ParamField body="startDate" type="string" required>`YYYY-MM-DD` from which the new rule applies. Must be after the last meeting held.</ParamField>
+<ParamField body="dryRun" type="boolean" required>`true` only reports the effect without changing anything.</ParamField>
+
+<ResponseField name="dropped" type="object[]" required>
+  Planned occurrences the new rule no longer has, with `id`, `startsAt` and the number of open topics.
+  They are cancelled and their open topics move to the series backlog.
+</ResponseField>
+
+<ResponseField name="next" type="string[]" required>
+  The next dates under the new rule.
+</ResponseField>
+
+Send the change with `dryRun: true` first, show the result, then send it again with `dryRun: false`.
+Occurrences already held never change.
+
+## Read a series
+
+`GET /api/v1/meetings/series/{seriesId}` · scope `meetings:read`
+
+<ParamField query="page" type="number">
+  Page of occurrences, 50 per page, oldest first. Without it, the page holding the next occurrence.
+</ParamField>
+
+<ResponseField name="instances" type="object[]" required>
+  Occurrences with `id`, `startsAt`, `status` and `isMoved` (held at another time than the rule says).
+</ResponseField>
+
+<ResponseField name="rrule" type="string" required>The current rule.</ResponseField>
+
+<ResponseField name="manageMeetingId" type="string | null" required>
+  The occurrence to send a rule change through, when the token owner may change the rule.
+</ResponseField>
+
+Each occurrence checks its own access when you open it: in a private series, a participant who joined
+later sees occurrences from their first one on.

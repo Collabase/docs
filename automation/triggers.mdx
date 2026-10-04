@@ -36,9 +36,19 @@ These triggers fire on activity inside Collabase. Select one from the **Collabas
 | `registry.object.created` | A new object is created in a registry | `objectId`, `registryId`, `registryName`, `spaceId`, `createdBy` |
 | `registry.object.updated` | An existing registry object is edited | `objectId`, `registryId`, `changedField`, `oldValue`, `newValue` |
 | `comment.created` | A comment is posted anywhere in Collabase | `commentId`, `commentBody`, `entityType`, `entityId`, `authorId` |
+| `meeting.created` | A meeting is created, including each new occurrence of a series | `meetingId`, `seriesId`, `spaceId`, `startsAt`, `occurrenceStart` |
+| `meeting.updated` | The time, place or settings of a meeting change | the fields above, plus `changedFields` |
+| `meeting.cancelled` | A meeting or one occurrence of a series is cancelled | `meetingId`, `seriesId`, `spaceId`, `startsAt`, `occurrenceStart` |
+| `meeting.closed` | A running meeting is ended | the fields above, plus `decisionCount` and `taskCount` |
+| `meeting.decision_recorded` | A decision is recorded, also when it replaces an earlier one | the fields above, plus `decisionId`, `title`, `supersedesId` |
+| `meeting.note_published` | The note of a closed meeting is published | the fields above, plus `pageId` |
 
 <Note>
   All payload fields are available in downstream nodes using `{payload.fieldName}` — for example, `{payload.taskTitle}` or `{payload.oldStatus}`.
+</Note>
+
+<Note>
+  Meeting events reach only automations whose owner may see the meeting; a private meeting reaches only automations owned by its participants. The events carry identifiers, dates and a decision's title, never agenda text or notes. To act on the content, read it through the [Meetings API](/api/meetings/overview) with a token of the person who owns the automation.
 </Note>
 
 ---

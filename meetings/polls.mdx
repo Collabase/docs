@@ -1,0 +1,89 @@
+---
+title: "Polls"
+description: "Prepare a poll before the meeting, open it when the topic comes up, and record the result as a decision."
+---
+
+A poll asks the meeting one question. You prepare it ahead, open it when the topic comes up, and
+close it when everyone has voted. The result appears only once the poll is closed, so nobody votes
+along with an early majority.
+
+Organizers and co-organizers can prepare, open and close polls. Invited participants can too when
+**Participants may edit the agenda** is turned on for the meeting. Everyone invited can vote.
+
+## Kinds of polls
+
+| Answers | Use for |
+|---|---|
+| **Yes / no / abstain** | A motion the meeting accepts or rejects. |
+| **Single choice** | Picking one of 2 to 12 written options, for example a venue. |
+| **Multiple choice** | Picking any number of the options, for example the topics for the next meeting. |
+| **Scale** | A rating on a scale you set, from 0 to 10 at most, with optional words for both ends. |
+
+## Prepare a poll
+
+<Steps>
+  <Step title="Start a poll">
+    On the meeting page or in the live view, click **Prepare poll** in the **Polls** block.
+  </Step>
+  <Step title="Ask the question">
+    Enter the **Question** and choose the kind of **Answers**. For a choice poll, write the options;
+    for a scale, set the lowest and highest value.
+  </Step>
+  <Step title="Decide who votes">
+    Under **Who may vote**, choose **Everyone invited** or **Only those present**. Only those present
+    means people marked present or partly present in the live view.
+  </Step>
+  <Step title="Choose anonymous or named">
+    Turn on **Anonymous** if nobody should see who voted what. You cannot change this once voting has
+    started.
+  </Step>
+  <Step title="Set a deadline (optional)">
+    With a deadline, voting ends by itself at that time. Without one, it runs until someone closes
+    it or the meeting ends.
+  </Step>
+  <Step title="Save">
+    Click **Prepare poll**. The poll is a **Draft**: only the people who manage polls see it, and you
+    can still edit or delete it.
+  </Step>
+</Steps>
+
+## Run the vote
+
+1. Click **Open voting** on the draft. The meeting must be planned or running.
+2. Participants pick their answer and click **Vote**. They can change it with **Change vote** until
+   the poll closes. The poll shows how many of the eligible people have voted.
+3. Click **Close voting**. The result appears for everyone with a bar per answer. A named poll also
+   lists who chose what.
+
+Every open poll closes when the meeting ends or is cancelled. A closed poll cannot be opened again;
+prepare a new one if the question needs a second round.
+
+## Record the result as a decision
+
+While the meeting runs, a closed poll shows **Record as decision**. It opens the decision form
+with the question as title and the result as description. Adjust the wording, add who decided, and
+click **Record decision**. The decision appears in the meeting's decisions and in the
+[decision register](/meetings/decisions), and the poll shows **Recorded as a decision**. Each
+result can be recorded once.
+
+## Anonymous polls
+
+In an anonymous poll, nobody can see who voted what: not the organizers, not administrators. While
+voting runs, Collabase only knows enough to let each person change their own vote. Closing the poll
+removes that link for good.
+
+<Warning>
+  With fewer than three votes, people in the room may still work out who voted what. The result
+  then shows a hint. For a sensitive question, make sure enough people take part.
+</Warning>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Outcomes and decisions" icon="gavel" href="/meetings/decisions">
+    Record what the meeting settled and find decisions in the register.
+  </Card>
+  <Card title="Polls API" icon="code" href="/api/meetings/polls">
+    Prepare, open and close polls from another system.
+  </Card>
+</CardGroup>

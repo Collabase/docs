@@ -1,0 +1,108 @@
+---
+title: "Meetings API"
+sidebarTitle: "Overview"
+description: "Plan meetings, keep agendas and record decisions from another system through /api/v1/meetings, with the same rights as in Collabase."
+---
+
+The Meetings API gives integrations the same operations the Meetings app offers: create and plan
+meetings, invite people, keep the agenda, run and close a meeting, and read or record its outcomes,
+decisions and polls. Every call runs as the person who issued the token, with exactly the rights that
+person has in Collabase.
+
+## Scopes
+
+| Scope | Allows |
+|---|---|
+| `meetings:read` | Every `GET` endpoint below |
+| `meetings:write` | Every other endpoint; includes `meetings:read` |
+
+A token without the scope receives `403 INSUFFICIENT_SCOPE`. A token with the scope still cannot do
+more than its owner: a person who may not edit a meeting gets `403 FORBIDDEN` through the API too.
+
+## Conventions
+
+- **Visibility.** A meeting the caller may not see answers `404 NOT_FOUND`, exactly like one that
+  does not exist. Private meetings are visible only to their participants.
+- **Times.** Instants in responses are ISO 8601 in UTC. When you create or move a meeting, `date`
+  (`YYYY-MM-DD`) and `time` (`HH:mm`) are wall-clock values in the time zone of the token owner's
+  profile, the same way the app reads them.
+- **Concurrent edits.** Changes to agenda sections, agenda items, outcomes and decisions carry
+  `baseUpdatedAt`, the `updatedAt` you read. If someone changed the object since, the request
+  returns `409 CONFLICT` with the object as it is now in `current`, next to `error`. Re-read, merge
+  and send again.
+- **Strict bodies.** Unknown fields are rejected with `422 VALIDATION_ERROR`, not silently dropped.
+- **App switched off.** If the Meetings app is not enabled on the instance, every endpoint answers
+  `404 NOT_FOUND`.
+
+## Errors
+
+On top of the [general errors](/api/introduction#response-format):
+
+| Status | Code | Meaning |
+|---|---|---|
+| `400` | `VALIDATION_ERROR` | The request is well formed but does not fit the meeting, for example a decision maker who is not invited |
+| `409` | `CONFLICT` | Someone changed the object since you read it, or the meeting is in the wrong state for this action |
+| `409` | `MEETING_NOT_WRITABLE` | The meeting is closed or cancelled; reopen it first |
+| `409` | `MEETING_NOT_RUNNING` | Outcomes and decisions are recorded only while the meeting runs |
+| `409` | `POLL_CLOSED` | The poll no longer takes votes |
+
+```json 409
+{
+  "error": { "code": "CONFLICT", "message": "Changed by someone else since it was loaded" },
+  "current": { "id": "cm2…", "title": "Budget 2027", "updatedAt": "2026-10-15T08:05:12.000Z" }
+}
+```
+
+## Endpoints
+
+| Method | Path | Scope |
+|---|---|---|
+| `GET` | [`/api/v1/meetings`](/api/meetings/meetings#list-your-meetings) | `meetings:read` |
+| `POST` | [`/api/v1/meetings`](/api/meetings/meetings#create-a-meeting) | `meetings:write` |
+| `GET`, `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}`](/api/meetings/meetings#read-change-or-delete-a-meeting) | read / write |
+| `POST` | [`/api/v1/meetings/{meetingId}/plan`, `/cancel`, `/start`, `/close`, `/reopen`](/api/meetings/meetings#lifecycle) | `meetings:write` |
+| `GET`, `POST` | [`/api/v1/meetings/{meetingId}/participants`](/api/meetings/participants) | read / write |
+| `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}/participants/{participantId}`](/api/meetings/participants#change-or-remove-a-participant) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/rsvp`](/api/meetings/participants#answer-an-invitation) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/{meetingId}/agenda`](/api/meetings/agenda#read-the-agenda) | `meetings:read` |
+| `POST`, `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}/agenda/sections/…`, `/agenda/items/…`](/api/meetings/agenda) | `meetings:write` |
+| `GET`, `PATCH`, `DELETE` | [`/api/v1/meetings/{meetingId}/outcomes/…`](/api/meetings/agenda#outcomes) | read / write |
+| `GET`, `POST`, `PATCH` | [`/api/v1/meetings/{meetingId}/decisions/…`](/api/meetings/decisions) | read / write |
+| `GET` | [`/api/v1/meetings/decisions`](/api/meetings/decisions#decision-register) | `meetings:read` |
+| `GET`, `POST` | [`/api/v1/meetings/{meetingId}/polls`](/api/meetings/polls) | read / write |
+| `PATCH` | [`/api/v1/meetings/{meetingId}/polls/{pollId}`](/api/meetings/polls#change-a-draft) | `meetings:write` |
+| `POST` | [`/api/v1/meetings/{meetingId}/polls/{pollId}/open`, `/close`](/api/meetings/polls#open-and-close) | `meetings:write` |
+| `POST`, `PATCH` | [`/api/v1/meetings/{meetingId}/series`](/api/meetings/series) | `meetings:write` |
+| `GET` | [`/api/v1/meetings/series/{seriesId}`](/api/meetings/series#read-a-series) | `meetings:read` |
+
+## Reacting to changes
+
+There is no separate webhook subscription for meetings. Build an
+[automation](/automation/triggers#collabase-events) on one of the meeting events (created, updated,
+cancelled, closed, decision recorded, note published) and add an **HTTP** action that calls your
+system. An event reaches only automations whose owner may see the meeting. It carries identifiers,
+dates and a decision's title, never agenda text or notes; read the details through this API with a
+token of your own.
+
+The other direction works too: the Collabase connector has the automation actions **Create
+Meeting**, **Add Agenda Item** (also to the next occurrence of a series) and **Invite to Meeting**,
+which act with the automation owner's rights. See the
+[Collabase connector](/automation/connectors/collabase).
+
+<CardGroup cols={2}>
+  <Card title="Meetings and lifecycle" icon="calendar" href="/api/meetings/meetings">
+    List, create, plan, run, close and cancel meetings.
+  </Card>
+  <Card title="Participants" icon="users" href="/api/meetings/participants">
+    Invite members and guests, change roles, answer invitations.
+  </Card>
+  <Card title="Agenda and outcomes" icon="list-check" href="/api/meetings/agenda">
+    Sections, items, their order, and what came out of each item.
+  </Card>
+  <Card title="Decisions" icon="gavel" href="/api/meetings/decisions">
+    Record, reword, replace and revoke decisions; search the register.
+  </Card>
+  <Card title="Polls" icon="square-check" href="/api/meetings/polls">
+    Prepare, open and close polls; read turnout and results.
+  </Card>
+</CardGroup>

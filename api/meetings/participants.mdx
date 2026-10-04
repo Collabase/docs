@@ -1,0 +1,58 @@
+---
+title: "Meeting participants API"
+sidebarTitle: "Participants"
+description: "Invite members and external guests to a meeting through the API, change their roles and record answers to invitations."
+---
+
+A meeting has exactly one organizer. Co-organizers have the same rights except transferring the
+organizer role. Participants and optional participants receive the invitation; what they may edit
+depends on the meeting's `participantsMayEdit` setting.
+
+| Role | Assignable through the API |
+|---|---|
+| `ORGANIZER` | No; moves only by transfer in the app |
+| `CO_ORGANIZER` | Members only |
+| `PARTICIPANT` | Members and guests |
+| `OPTIONAL` | Members and guests |
+
+## List participants
+
+`GET /api/v1/meetings/{meetingId}/participants` · scope `meetings:read`
+
+Returns every participant with `role` and answer (`rsvp`: `NEEDS_ACTION`, `ACCEPTED`, `TENTATIVE`,
+`DECLINED`). Members are listed by name; only external guests show their `email`.
+
+## Invite someone
+
+`POST /api/v1/meetings/{meetingId}/participants` · scope `meetings:write` · `201`
+
+Send either a member or an external guest:
+
+<ParamField body="userId" type="string">A member's id. Use instead of `email`.</ParamField>
+<ParamField body="email" type="string">An external guest's address. Guests cannot sign in and never co-organize.</ParamField>
+<ParamField body="role" type="string" default="PARTICIPANT">`CO_ORGANIZER` (members only), `PARTICIPANT` or `OPTIONAL`.</ParamField>
+
+In a planned meeting the new participant receives the invitation shortly after. A meeting holds up
+to 500 participants.
+
+## Change or remove a participant
+
+`PATCH /api/v1/meetings/{meetingId}/participants/{participantId}` · scope `meetings:write`
+
+<ParamField body="role" type="string">`CO_ORGANIZER`, `PARTICIPANT` or `OPTIONAL`.</ParamField>
+<ParamField body="rsvp" type="string">`NEEDS_ACTION`, `ACCEPTED`, `TENTATIVE` or `DECLINED`, recorded on the participant's behalf.</ParamField>
+
+Send at least one of the two.
+
+`DELETE /api/v1/meetings/{meetingId}/participants/{participantId}` · scope `meetings:write`
+
+Removes the participant; in a planned meeting they receive a cancellation shortly after. The
+organizer cannot be removed (`409 CONFLICT`); the organizer role cannot be changed either.
+
+## Answer an invitation
+
+`POST /api/v1/meetings/{meetingId}/rsvp` · scope `meetings:write`
+
+Records the token owner's own answer.
+
+<ParamField body="rsvp" type="string" required>`ACCEPTED`, `TENTATIVE` or `DECLINED`.</ParamField>

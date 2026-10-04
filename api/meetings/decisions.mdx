@@ -1,0 +1,83 @@
+---
+title: "Meeting decisions API"
+sidebarTitle: "Decisions"
+description: "Record decisions in a running meeting through the API, reword, replace or revoke them, and search the decision register."
+---
+
+A decision is recorded in a running meeting and stays `VALID` until it is replaced (`SUPERSEDED`) or
+revoked (`REVOKED`). A replaced decision points at its successor, so the register shows the whole
+chain.
+
+## List a meeting's decisions
+
+`GET /api/v1/meetings/{meetingId}/decisions` · scope `meetings:read`
+
+Returns `decisions` in the order they were taken and `canRecord`, which says whether the token owner
+may record decisions in this meeting right now.
+
+## Record a decision
+
+`POST /api/v1/meetings/{meetingId}/decisions` · scope `meetings:write` · `201`
+
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+<ParamField body="description" type="string | null">Up to 5,000 characters.</ParamField>
+<ParamField body="rationale" type="string | null">Why it was decided, up to 5,000 characters.</ParamField>
+<ParamField body="agendaItemId" type="string | null">The agenda item it was taken under. Must belong to this meeting.</ParamField>
+<ParamField body="personIds" type="string[]" default="[]">Decision makers, up to 50. Each must be invited to the meeting.</ParamField>
+<ParamField body="pollId" type="string | null">A closed [poll](/api/meetings/polls) of this meeting whose result the decision records. Each poll's result can be recorded once.</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://collabase.example.com/api/v1/meetings/cm2…/decisions \
+  -H "Authorization: Bearer $COLLABASE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Release every two weeks", "rationale": "Smaller changes, faster feedback" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cd7…" } }
+```
+
+</ResponseExample>
+
+## Reword, replace or revoke
+
+| Method and path | Body | Effect |
+|---|---|---|
+| `PATCH /api/v1/meetings/{meetingId}/decisions/{decisionId}` | `baseUpdatedAt` plus any of `title`, `description`, `rationale`, `personIds` | Rewords a valid decision |
+| `POST /api/v1/meetings/{meetingId}/decisions/{decisionId}/supersede` → `201` | Same body as recording | Records a new decision and marks the old one `SUPERSEDED` |
+| `POST /api/v1/meetings/{meetingId}/decisions/{decisionId}/revoke` | none | Marks the decision `REVOKED` |
+
+All three need scope `meetings:write` and are recorded in the audit log. Only a `VALID` decision can
+be changed; anything else returns `409 CONFLICT`.
+
+## Decision register
+
+`GET /api/v1/meetings/decisions` · scope `meetings:read`
+
+Decisions across every meeting the token owner may read, newest first. Decisions of private meetings
+appear only for their participants.
+
+<ParamField query="q" type="string">Search in titles.</ParamField>
+<ParamField query="spaceId" type="string">Only decisions of meetings in this Space.</ParamField>
+<ParamField query="projectId" type="string">Only decisions of meetings in this project.</ParamField>
+<ParamField query="seriesId" type="string">Only decisions of this series.</ParamField>
+<ParamField query="personId" type="string">Only decisions this member took part in.</ParamField>
+<ParamField query="status" type="string">`VALID`, `SUPERSEDED` or `REVOKED`.</ParamField>
+<ParamField query="from" type="string">`YYYY-MM-DD`, inclusive.</ParamField>
+<ParamField query="to" type="string">`YYYY-MM-DD`, inclusive.</ParamField>
+<ParamField query="page" type="number" default="1">Page number.</ParamField>
+<ParamField query="pageSize" type="number" default="25">Entries per page, at most 100.</ParamField>
+
+<ResponseField name="entries" type="object[]" required>
+  Decisions with `meetingTitle`, `meetingStartsAt` and `space` of the meeting they were taken in.
+</ResponseField>
+
+<ResponseField name="pagination" type="object" required>
+  Page, page size and totals.
+</ResponseField>

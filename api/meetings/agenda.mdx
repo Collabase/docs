@@ -1,0 +1,73 @@
+---
+title: "Meeting agenda API"
+sidebarTitle: "Agenda and outcomes"
+description: "Build a meeting agenda through the API with sections and items, reorder it, and record the outcomes of each item."
+---
+
+An agenda holds items, optionally grouped into sections. Organizers edit it, and so do participants
+when the meeting allows it. Outcomes belong to an agenda item and are recorded while the meeting runs.
+
+## Read the agenda
+
+`GET /api/v1/meetings/{meetingId}/agenda` · scope `meetings:read`
+
+Returns `sections` and `items` in order. Each item carries its `updatedAt`, which a later change sends
+back as `baseUpdatedAt`. `canEdit` says whether the token owner may change the agenda.
+
+## Sections
+
+| Method and path | Body |
+|---|---|
+| `POST /api/v1/meetings/{meetingId}/agenda/sections` → `201` | `{ "title": "…" }` |
+| `PATCH /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}` | `{ "title": "…", "baseUpdatedAt": "…" }` |
+| `DELETE /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}` | none |
+| `POST /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}/move` | `{ "afterSectionId": "…" }`, or `null` to place it first |
+
+## Items
+
+`POST /api/v1/meetings/{meetingId}/agenda/items` · `201`
+
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+<ParamField body="sectionId" type="string | null" default="null">Section to add it to; `null` for the agenda without section.</ParamField>
+
+`PATCH /api/v1/meetings/{meetingId}/agenda/items/{itemId}`
+
+<ParamField body="baseUpdatedAt" type="string" required>The item's `updatedAt` as you read it.</ParamField>
+<ParamField body="title" type="string">Up to 200 characters.</ParamField>
+<ParamField body="description" type="string | null">Up to 5,000 characters.</ParamField>
+<ParamField body="ownerId" type="string | null">The member who presents the item.</ParamField>
+<ParamField body="estimateMinutes" type="number | null">Planned time, 1 to 720 minutes.</ParamField>
+<ParamField body="notes" type="object | null">Rich-text notes as `{ "version": 1, "content": [ … ] }` in the editor's document format, up to 200 KB.</ParamField>
+
+Send `baseUpdatedAt` and at least one other field.
+
+`DELETE /api/v1/meetings/{meetingId}/agenda/items/{itemId}`
+
+`POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/move`
+
+<ParamField body="sectionId" type="string | null" required>Target section, or `null` for the agenda without section.</ParamField>
+<ParamField body="afterItemId" type="string | null" required>The item it follows, or `null` to place it first.</ParamField>
+
+All item and section changes need scope `meetings:write`.
+
+## Outcomes
+
+`GET /api/v1/meetings/{meetingId}/outcomes` · scope `meetings:read`
+
+Every outcome of the meeting with its type, text, responsible person, due date and linked work item.
+
+`POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/outcomes` · scope `meetings:write` · `201`
+
+<ParamField body="type" type="string" required>`INFORMATION` or `TASK`.</ParamField>
+<ParamField body="text" type="string" required>Up to 2,000 characters.</ParamField>
+<ParamField body="responsibleId" type="string | null" default="null">The member responsible.</ParamField>
+<ParamField body="dueDate" type="string | null" default="null">`YYYY-MM-DD`.</ParamField>
+
+`PATCH /api/v1/meetings/{meetingId}/outcomes/{outcomeId}` · scope `meetings:write`
+
+Takes `text`, `responsibleId` and `dueDate`, plus the required `baseUpdatedAt`.
+
+`DELETE /api/v1/meetings/{meetingId}/outcomes/{outcomeId}` · scope `meetings:write`
+
+Outcomes are recorded only while the meeting runs; otherwise the call returns
+`409 MEETING_NOT_RUNNING`.

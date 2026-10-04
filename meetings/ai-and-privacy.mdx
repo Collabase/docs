@@ -1,0 +1,143 @@
+---
+title: "AI and privacy in Meetings"
+description: "What the optional AI summary sends to your AI provider, how names are masked, who sees private meetings, and how long meeting data is kept."
+---
+
+Meetings works without AI. Each AI function has its own switch under **Admin → Settings → AI settings → Meetings** and stays off until an instance administrator switches it on. This page explains what each switch sends where, and how Meetings handles personal data in general.
+
+| Switch | What it does | Runs for |
+|---|---|---|
+| **AI summary in the meeting note** | A short summary at the top of the meeting note. | The organizer, when the meeting ends. |
+| **AI order for open topics** | Orders the list under **Find open topics** and gives a reason for each topic. | The person who looks for open topics. |
+| **AI briefing before a meeting** | Adds a written summary to **Your briefing**. | The person who prepares their briefing. |
+| **AI finds tasks and decisions in the notes** | Suggests what the notes say but nobody recorded, after the meeting. | The organizer, when the meeting ends. |
+
+## The AI summary
+
+When the summary is on, Collabase asks the AI model for a short summary each time a meeting ends, and puts it at the top of the meeting note under **Summary**, marked **Created by Collabase AI**. Everything else in the note is written from the recorded data, not by the AI, so the AI cannot add or drop a decision.
+
+### Switch it on
+
+<Steps>
+  <Step title="Set up a language model">
+    The summary uses the instance's language model. If none is configured, set one up first under **Admin → Settings → AI settings → Language model**. See [AI configuration](/admin/ai-configuration).
+  </Step>
+  <Step title="Open the Meetings settings">
+    Go to **Admin → Settings → AI settings → Meetings**. Only instance administrators can open it.
+  </Step>
+  <Step title="Check where the data goes">
+    The page shows the **Provider**, the **Model** and **Data goes to**, for example your own server, Infomaniak in Switzerland, or a provider that usually processes data in the USA.
+  </Step>
+  <Step title="Switch it on">
+    Turn on **AI summary in the meeting note**. Switching it on or off is recorded in the audit log.
+  </Step>
+</Steps>
+
+Switching the summary on is the decision to send meeting content to that provider. Whether the provider may use the data for training is set by your contract with the provider, not by Collabase. With a self-hosted model, the data stays on your own infrastructure.
+
+### What is sent and what is not
+
+| Data | Sent to the AI provider |
+|---|---|
+| **Meeting title, date and time, agenda items, notes** | Yes |
+| **Decisions with details and rationale, tasks with due dates, information outcomes** | Yes |
+| **Role and attendance of each participant** | Yes, under the code that replaces the name |
+| **Names of participants and responsible people** | No. Each name is replaced by a code such as `P1`, `P2` before sending, and put back in the summary afterwards. |
+| **Content of linked work items and pages** | No, not even their titles. |
+| **Email addresses, external participants** | No. |
+
+Name masking covers the people who belong to the meeting: participants, the organizer and people responsible for tasks. It replaces full names, first names and last names of three letters or more. **Names of other people that appear in notes, such as a customer contact, are not recognised and are sent as written.** Keep that in mind when you write notes in a meeting with AI summaries switched on.
+
+The model gets no tools and no access to Collabase. It receives the text, returns a summary of at most 1,200 characters, and that text is inserted as plain text. Instructions hidden in an agenda item cannot make it do anything else. The request is not stored; Collabase keeps only the number of tokens used.
+
+### Who pays for it
+
+The summary is written on behalf of the organizer. It counts against the organizer's AI limits and requires that the organizer may use CollabaseAI. See [Setting a ceiling](/admin/ai-costs#setting-a-ceiling).
+
+### When there is no summary
+
+If the summary is switched on but cannot be written, the note is written anyway, and the **Summary** section says why:
+
+| Reason in the note | Meaning |
+|---|---|
+| **no AI provider is configured on this instance** | Set up a language model. |
+| **the organizer has no access to Collabase AI** | The organizer is not in a group with access to CollabaseAI. |
+| **the AI budget is used up** | The organizer or the instance reached its token limit. |
+| **the AI provider did not answer in time** | The provider did not respond in two attempts of up to 45 seconds each. |
+
+When the switch is off, the note has no **Summary** section at all.
+
+After a reopened meeting is closed again, an addendum gets no new summary. A note that nobody edited is written again as a whole, with a new summary.
+
+## AI order for open topics
+
+**Find open topics** works without AI. With **AI order for open topics** switched on, Collabase asks the model to order the list and to give each topic a short reason, in the language of the person asking.
+
+| Data | Sent to the AI provider |
+|---|---|
+| **Meeting title and date** | Yes |
+| **Titles of the items already on the agenda** | Yes |
+| **Titles of the open topics, with what Collabase knows about them** (handed on how often, parked since when, due when) | Yes |
+| **Names of people** | No. An overdue work item is described by its due date only. |
+| **Descriptions, notes, content of work items and pages** | No. |
+
+The list contains only topics the person asking may see, so the model sees nothing more. The answer is checked: the model can reorder the list, but it cannot add or remove topics. It runs on the asking person's AI budget and requires that they may use Collabase AI.
+
+If the order cannot be made, the list comes unordered with the reason: no AI provider, no access to Collabase AI, budget used up, or the provider did not answer in time.
+
+## AI briefing before a meeting
+
+**Your briefing** on a meeting that is still ahead works without AI: it lists the agenda with the expected start of each item, marks your own items, links the work items and pages attached to them, and lists your open tasks from earlier meetings of the series. With **AI briefing before a meeting** switched on, Collabase AI adds an overview and a short summary of what you should know per item.
+
+The briefing is written from what **you** may see and only for you. Two people asking for the same meeting can get different briefings, because one may open a page that the other may not.
+
+| Data | Sent to the AI provider |
+|---|---|
+| **Agenda: titles, descriptions, notes, expected start, who is responsible** | Yes, people as codes |
+| **Text of linked work items and pages you may open** | Yes, the first 3,000 characters of each, shortened further for long agendas |
+| **Your open tasks from earlier meetings of the series** | Yes |
+| **Names of the meeting's people** | No, replaced by codes and put back afterwards |
+| **Other names written in linked pages** | Sent as written; Collabase does not recognise them |
+| **Work items and pages you may not open** | No |
+
+The briefing is not saved. Leaving the page forgets it, and **Prepare again** writes a new one. It runs on your AI budget and requires that you may use Collabase AI. If it cannot be written, the list stays and says why there is no summary.
+
+## Tasks and decisions found in the notes
+
+With **AI finds tasks and decisions in the notes** switched on, Collabase AI reads the notes of every meeting that ends with notes. Shortly after, the organizer and co-organizers see **Found in the notes** on the meeting page: tasks, decisions and information that the notes mention but nobody recorded.
+
+| Data | Sent to the AI provider |
+|---|---|
+| **Meeting title and date, agenda items and their notes** | Yes |
+| **Outcomes and decisions already recorded** | Yes, so they are not suggested again |
+| **Names of participants** | No, replaced by codes and put back afterwards |
+| **Content of linked work items and pages** | No |
+
+Nothing is added on its own. **Add** turns a suggestion into a task or information on its agenda item, or into a decision. It completes the closed meeting without reopening it; this is recorded in the audit log, and the meeting note is updated, rewritten if nobody edited it, otherwise with an addendum. **Dismiss** removes a suggestion for good. A responsible person is only filled in when the notes name one of the participants. An added task becomes a task on the meeting; to turn it into a work item, reopen the meeting.
+
+The detection runs on the organizer's AI budget. If it cannot run, the meeting simply shows no suggestions.
+
+## Private meetings
+
+A meeting with visibility **Private** is visible only to the people invited to it. Access to its space does not reach it, and neither do space or instance administrators. Its decisions appear in the decision register only for the invited people, and its published note can be read only by the people who took part.
+
+Access is checked per date. Someone invited to one date of a private series sees that date, not the dates they were not invited to.
+
+## Personal data in Meetings
+
+| Data | Used for | Kept |
+|---|---|---|
+| **Name, email address, role, answer and attendance of participants** | Invitations and running the meeting | With the meeting |
+| **Email addresses of external participants** | Sending the invitation | Replaced by a placeholder 90 days after the meeting |
+| **Log of calendar mails sent** | Sending updates and cancellations to the right people | Deleted 90 days after the meeting. For a series, kept until the series has ended. |
+| **When a member last had the meeting open** | The presence marker in the live view | Overwritten each time, no history |
+| **Calendar subscription address** | The **My meetings** subscription | Until the member turns it off or creates a new one |
+| **Time booking proposals** | Offering each participant to book the meeting time | Open ones until booked or dismissed; booked ones with the meeting |
+
+Meetings, their agenda, outcomes, decisions and meeting notes stay until someone deletes them. Only drafts and cancelled one-off meetings can be deleted; a meeting that took place stays with its decisions. Deleting a space deletes its meetings with it. A meeting note is a page and follows the space's page rules.
+
+When an administrator deletes a member, the member is anonymized in meeting histories, like everywhere else in Collabase. Their calendar subscription, their personal meeting templates, their open time booking proposals and the calendar mail log entries with their address are deleted.
+
+<Note>
+  This page describes how the product behaves. Retention periods and the legal basis for processing meeting data are decided by your organisation; have them confirmed by your data protection officer.
+</Note>

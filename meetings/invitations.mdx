@@ -1,0 +1,115 @@
+---
+title: "Meeting invitations"
+description: "Send calendar invitations from Collabase, collect answers from participants, keep calendars up to date, and subscribe to your meetings."
+---
+
+Collabase sends each participant a calendar invitation by mail, as an `.ics` file their calendar app understands. Collabase stays the place where the meeting is managed: the time, the participant list and the answers are what Collabase says, and calendars receive a copy.
+
+## Send the invitations
+
+<Steps>
+  <Step title="Check the draft">
+    Make sure time, place and participants are right. A draft sends nothing.
+  </Step>
+  <Step title="Send">
+    Click **Send invitations**. The meeting moves to **Planned**.
+  </Step>
+  <Step title="Wait about two minutes">
+    Invitations go out about two minutes later. Changes made within that window are collected into one mail per person, so fixing a typo right after sending does not produce a second mail.
+  </Step>
+</Steps>
+
+For a series, the first invitation contains the whole series. Announcing one date of a draft series announces the later dates with it.
+
+## What people receive
+
+The mail is sent from your instance's system mail address, the one set under **Admin → Settings → Mail**. In the calendar entry, the meeting's organizer is named as organizer. Each member gets the mail in their own language; external people get it in the organizer's language.
+
+| Recipient | Mail |
+|---|---|
+| **Member with an account** | The invitation with **Respond in Collabase** and direct links to **Accept**, **Maybe** and **Decline**. The first line says: answer in Collabase, because replies from the calendar only reach the organizer. |
+| **External person** | The invitation without a link to Collabase. They answer with their calendar's buttons, which sends the answer to the organizer by mail. |
+| **Organizer** | Their own copy, with the note that rescheduling and cancelling only work in Collabase. |
+
+The calendar entry carries the title, time, duration, place or video link, the organizer, and the names and addresses of the participants. It never contains the agenda or notes.
+
+<Note>
+  Calendars may show a warning when the sender of an invitation is not the organizer. Make sure the domain of your system mail address has SPF, DKIM and DMARC records, so the mails are trusted. These records are set by whoever runs your mail domain.
+</Note>
+
+## Answer an invitation
+
+Members answer in Collabase, either on the meeting under **Will you attend?** with **Accept**, **Maybe** or **Decline**, or with the links in the mail. A link from the mail opens the meeting after sign-in and saves the answer. You can change your answer at any time.
+
+Organizers see the answers under **Participants**: a summary such as **4 accepted · 1 maybe · 1 declined**, the answer next to each person, and **No answer from 2** for those who have not answered.
+
+<Warning>
+  Collabase does not read answers sent from a calendar app. If a member clicks **Accept** in Outlook or Google Calendar, only the organizer's mailbox receives it, and Collabase still shows **No answer**. The same applies to deleting or declining the entry in your own calendar: the meeting in Collabase does not change.
+</Warning>
+
+### Answers of external people
+
+External people cannot sign in, so they have no view of the meeting, its agenda or its note. Their calendar reply reaches the organizer by mail. To record it, open the menu next to the person and set **Answer (entered by hand)**.
+
+## Keep calendars up to date
+
+Collabase works out what each calendar holds and sends only what is needed.
+
+| Change in Collabase | Who gets a mail |
+|---|---|
+| **Title, time, duration, location or video link** | Everyone invited, as an update |
+| **Person added** | Only that person, as an invitation |
+| **Person removed** | Only that person, as a cancellation |
+| **One date of a series moved** | Everyone invited to that date |
+| **One date of a series cancelled** | Everyone invited to that date |
+| **Series rule changed or ended** | Everyone invited to the series |
+| **New organizer** | Everyone invited, as an update naming the new organizer |
+| **Agenda, start or end of the meeting** | Nobody |
+
+A person added and removed again before the mail went out gets nothing.
+
+## Cancel or delete a meeting
+
+To cancel, open the status menu at the top of the meeting details and choose **Cancelled**. Add an optional **Reason**, then confirm with **Cancel meeting**. Everyone who received an invitation gets a cancellation in their calendar. A draft was never sent, so cancelling it notifies nobody.
+
+**Delete meeting** removes a meeting with its agenda, outcomes and decisions for good. It is available only for drafts and cancelled one-off meetings:
+
+- A planned meeting sits in people's calendars. Cancel it first, then delete it.
+- A meeting that took place stays, with its decisions and outcomes.
+- A date of a series is cancelled, not deleted.
+
+## When a mail does not arrive
+
+Collabase tries each mail up to three times. If a mail still fails, organizers see **These calendars did not get the latest mail** on the meeting, with the affected addresses. Check the address, or the mail settings under **Admin → Settings → Mail**. **Hide this notice** removes the warning once you have dealt with it.
+
+Bounces that arrive later, such as a full mailbox, are not reported back to Collabase.
+
+## Subscribe to your meetings
+
+The calendar subscription puts all your meetings into Outlook, Apple Calendar or Google Calendar as one subscribed calendar, called **My meetings**. It is personal: each member creates their own.
+
+<Steps>
+  <Step title="Open your preferences">
+    Click your avatar in the bottom-left corner, open your profile and go to the **Preferences** tab.
+  </Step>
+  <Step title="Create the address">
+    Under **Calendar subscription**, click **Create address**.
+  </Step>
+  <Step title="Copy it into your calendar app">
+    Click **Copy** and add the address in your calendar app as a calendar subscribed from the web. The address is shown only this once.
+  </Step>
+</Steps>
+
+What the subscription contains:
+
+- Meetings you are invited to, from 90 days back to a year ahead. Drafts are left out; cancelled meetings appear as cancelled.
+- Title, time and a link to the meeting. No place, no agenda and no other participants.
+- Your access is checked on every refresh. When you are removed from a meeting, it disappears with the next refresh. How often that happens is set by your calendar app.
+
+If you also receive the invitation by mail, the meeting appears twice in your calendar: once from the invitation and once from the subscription. Hide one of the two calendars if that bothers you.
+
+<Warning>
+  Anyone who has the address sees your meeting times and titles. If it got out, click **Create new address**: the old address stops working at once. **Turn off** ends the subscription.
+</Warning>
+
+Administrators who run their own reverse proxy should keep these addresses out of the access logs. See [Calendar subscriptions in access logs](/admin/hosting#calendar-subscriptions-in-access-logs).

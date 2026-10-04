@@ -1,0 +1,88 @@
+---
+title: "Meeting note"
+description: "How Collabase writes the minutes of a closed meeting as a page, where the page is stored, and who can read it before and after publishing."
+---
+
+When a meeting ends, Collabase writes its minutes as a page: the meeting note. The note is built from what was recorded in the meeting, the agenda, notes, outcomes, decisions and attendance, so nobody has to type up the minutes afterwards. It is an ordinary Collabase page, with versions, comments, search and the usual page permissions.
+
+## When the note is written
+
+The note is written automatically within about a minute after the meeting ends. While that happens, the **Meeting note** panel on the meeting says **The note is being written …**, then **Draft: only the organizers can read it.**
+
+A meeting in which nothing was recorded gets no note. The panel says **Nothing was recorded, so no note was written.** Organizers can still click **Create meeting note**.
+
+## Where the note is stored
+
+| Meeting | Location |
+|---|---|
+| **One-off meeting in a space** | A folder page **Meetings** in the space, with one page per meeting. |
+| **Meeting of a series in a space** | The **Meetings** folder, then a folder named after the series, with one page per date. |
+| **Meeting without a space** | No location yet. The panel shows **Choose location**: pick a space, and the note goes into that space's **Meetings** folder. |
+
+Collabase creates the folders the first time they are needed and finds them again even if someone renames them. If the **Meetings** folder was moved to the trash, a new one is created.
+
+The page is titled with the meeting's title and date, for example `Steering committee – 3 Oct 2026`. The organizer is the page's author, and the fixed headings are written in the organizer's language.
+
+The organizer needs the right to create pages in the space. If that right is missing, the panel says **The organizer may not create pages where the note would go** and offers to choose another space.
+
+## What the note contains
+
+| Section | Content |
+|---|---|
+| **Header** | When, where, the organizer, and links to the meeting and its series. |
+| **Summary** | A short AI summary, only when an administrator has switched it on. Marked **Created by Collabase AI**. See [AI and privacy](/meetings/ai-and-privacy). |
+| **Participants and attendance** | Members with the attendance recorded in the meeting. External participants are counted, not named. |
+| **Discussed** | Each agenda item with its notes and information outcomes. |
+| **Decisions** | Each decision with its details and rationale. Replaced and revoked decisions are marked as such. |
+| **Tasks** | Each task with the responsible person, the due date and a link to its work item. |
+| **Open and carried-over items** | Items that were not finished, and items marked as carried over to another meeting. |
+| **Linked pages** | Links to the pages linked in the meeting. |
+| **Planned and actual time** | Estimate against measured time per item, when both were used. |
+
+Links to work items and pages appear with their title only when the target is in the same space and not restricted. Otherwise the note shows **Linked object**, and the link only opens for readers who have access to the target. The note never copies content from linked work items or pages.
+
+## Draft and publish
+
+A new note is a draft. Only the organizer and co-organizers can read and edit it. The page itself shows a bar: **Draft of the meeting note for "…". Only the organizers can read it.**
+
+Read the draft, correct it like any page, then publish it:
+
+<Steps>
+  <Step title="Publish">
+    Click **Publish**, either in the **Meeting note** panel on the meeting or in the bar on the page. Only the organizer and co-organizers can publish.
+  </Step>
+  <Step title="Participants are told">
+    Participants with an account get a mail with a link to the note. External participants get nothing automatically.
+  </Step>
+</Steps>
+
+Who can read the note after publishing depends on the meeting:
+
+| Meeting | Readers of the published note |
+|---|---|
+| **Standard** | Everyone who can read the space, like any other page there. |
+| **Standard, linked to a project** | Only the people who took part, because the meeting itself is hidden from space readers without access to the project. |
+| **Private** | Only the people who took part. The organizer and co-organizers can edit. |
+
+When participants are added or removed later, the note's access follows. So does a change of the meeting's visibility, space or project. Permissions someone set by hand on the page are left alone.
+
+## After the meeting is reopened
+
+Reopening a closed meeting marks its note as out of date: **The meeting was reopened. Closing it again updates the note; changes made on the page stay.**
+
+When the meeting ends again:
+
+- If nobody edited the page since it was written, the note is written again from scratch.
+- If someone edited it, every word stays, and a section **Addendum of** with the date is added at the end. It contains only what changed: new or changed decisions, tasks and items. Earlier versions remain in the page history.
+
+A published note stays published.
+
+## If something goes wrong
+
+| Panel shows | What to do |
+|---|---|
+| **The note page was deleted.** | Click **Create again** to write a new page. |
+| **The note could not be written.** | Click **Create again**. If it keeps failing, ask an administrator to check the system logs. |
+| **This meeting belongs to no space.** | Click **Choose location** and pick a space. |
+
+Deleting the note page does not change the meeting itself. Outcomes, decisions and the decision register are kept in the meeting, not on the page.

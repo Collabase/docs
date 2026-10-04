@@ -1,7 +1,7 @@
 ---
 title: "Collabase (built-in) connector"
 sidebarTitle: "Collabase (built-in)"
-description: "Set up the Collabase (built-in) connector in Collabase Automation: 11 triggers such as Task Created and 21 actions such as Search Tasks."
+description: "Set up the Collabase (built-in) connector in Collabase Automation: 25 triggers such as Task Created and 24 actions such as Add Agenda Item."
 ---
 
 The Collabase connector provides native actions and triggers that operate directly inside your Collabase instance. No credentials, no API keys — it reads and writes your Collabase data with full access to tasks, pages, projects, the Registry, Test Management, and notifications.
@@ -25,6 +25,14 @@ The Collabase connector provides native actions and triggers that operate direct
 | **Test Case Passed** | A test case result is marked as PASSED |
 | **Test Run Started** | A new test run begins |
 | **Test Suite Created** | A new test suite is created |
+| **Meeting Created** | A meeting is created, including each new occurrence of a series |
+| **Meeting Updated** | The time, place or settings of a meeting change |
+| **Meeting Cancelled** | A meeting or one occurrence of a series is cancelled |
+| **Meeting Closed** | A running meeting is ended |
+| **Decision Recorded** | A decision is recorded in a meeting, also when it replaces an earlier one |
+| **Meeting Note Published** | The note of a closed meeting is published |
+
+Meeting triggers fire only for automations whose owner may see the meeting. A private meeting reaches only automations owned by its participants.
 
 ## Actions
 
@@ -68,6 +76,15 @@ The Collabase connector provides native actions and triggers that operate direct
     | **Create Test Run** | `testProjectId`, `name`, `description` | id, name |
     | **Search Test Cases** | `testProjectId`, `query` | results[] — id, title |
     | **Search Test Runs** | `testProjectId`, `query`, `status` | results[] — id, name, status |
+  </Accordion>
+  <Accordion title="Meetings">
+    | Action | Key inputs | Key outputs |
+    |---|---|---|
+    | **Create Meeting** | `title`, `date`, `time`, `durationMinutes`, `spaceId`, `projectId`, `location`, `videoUrl`, `visibility`, `plan` | id, planned |
+    | **Add Agenda Item** | `target` (a meeting or the next occurrence of a series), `meetingId` or `seriesId`, `title`, `description` | id, meetingId |
+    | **Invite to Meeting** | `target`, `meetingId` or `seriesId`, `userId` or `email`, `role` | id, meetingId |
+
+    Meeting actions act as the automation's owner and need the same rights the owner needs in the Meetings app: an automation can only add agenda items where its owner may edit the agenda, and only invite people where its owner may edit the meeting. `date` and `time` are read in the owner's time zone. With **Send invitations right away** the meeting is planned and the invitations go out; otherwise it stays a draft.
   </Accordion>
   <Accordion title="Notifications">
     | Action | Key inputs | Key outputs |

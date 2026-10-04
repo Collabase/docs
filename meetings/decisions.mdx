@@ -1,0 +1,101 @@
+---
+title: "Outcomes and decisions"
+description: "Record what a meeting settled, turn tasks into work items, link work items and pages, and find every decision again in the register."
+---
+
+A meeting produces two kinds of results. **Outcomes** belong to an agenda item: an information that was shared, or a task someone takes on. **Decisions** are recorded separately, with rationale and the people who made them, and stay findable in the decision register long after the meeting.
+
+Outcomes and decisions are recorded while the meeting is **Running**. Organizers and co-organizers can always record them; invited participants can when **Participants may edit the agenda** is turned on for the meeting.
+
+## Outcomes
+
+| Field | Description |
+|---|---|
+| **Kind of outcome** | **Information** for something that was settled or shared, **Task** for something someone has to do. |
+| **Text** | What was settled, or who does what. |
+| **Responsible** | A participant of the meeting. Tasks only. |
+| **Due** | A due date. Tasks only. |
+
+Add an outcome in the **Outcomes** block of an agenda item with **Add outcome**. In the live view, the block sits right below the current topic.
+
+### Create a work item from a task
+
+<Steps>
+  <Step title="Open the dialog">
+    On a task outcome, click **Create work item**.
+  </Step>
+  <Step title="Choose where it goes">
+    Choose the **Space** and **Project**. You can only pick projects in which you may create work items.
+  </Step>
+  <Step title="Check responsible and due date">
+    They are taken from the outcome. If the responsible person cannot open the chosen project, the dialog says so; pick someone else or nobody.
+  </Step>
+  <Step title="Create">
+    Click **Create work item**. The work item is created and linked to the outcome. Members who cannot open the project see **Not accessible** instead of the link.
+  </Step>
+</Steps>
+
+## Link work items and pages
+
+An agenda item can point to the work items and pages it is about, up to 20 per item.
+
+| Action | How |
+|---|---|
+| **Link a work item** | **Add link → Link work item**, choose the space and search by title or key. |
+| **Link a page** | **Add link → Link page**, choose the space and search by title. |
+| **Create a page for the item** | **Add link → New page from item** creates a page in the meeting's space and links it. |
+| **Remove a link** | **Remove link** on the linked entry. |
+
+The search only offers work items and pages you can open. A linked work item shows its status, assignee and due date.
+
+Each reader sees only the links they are allowed to open. A link to something they cannot open shows **not accessible**, without its title. A deleted target shows **deleted**.
+
+When the meeting ends, Collabase records how each linked work item and page stood at that moment. If the target has changed since, the closed meeting shows **Changed since the meeting** and, next to it, how it stood in the meeting.
+
+### Where the meeting shows up
+
+- A work item has a **Meetings** panel in its side bar. It lists the meetings it was discussed in and the agenda items it was linked to.
+- A page shows **Discussed in** with the meetings it was linked to.
+
+Both list only meetings the reader is allowed to see.
+
+## Decisions
+
+Record a decision in the **Decisions of this meeting** panel with **Record decision**.
+
+| Field | Description |
+|---|---|
+| **Decision** | What was decided, in one line. |
+| **Details (optional)** | Anything needed to understand the decision. |
+| **Rationale (optional)** | Why it was decided this way. |
+| **Agenda item (optional)** | The item it belongs to, or **Without agenda item**. In the live view, the current topic is preselected. |
+| **Decided by** | The participants who made the decision. |
+
+When the meeting ends, the dialog lists every decision once more, so the group confirms them together before the meeting closes.
+
+### Change, replace or revoke a decision
+
+A decision has one of three statuses: **Valid**, **Replaced** or **Revoked**. Only a valid decision can be changed.
+
+| Action | Effect |
+|---|---|
+| **Edit** | Corrects the wording of a valid decision. |
+| **Replace** | Records a new decision in its place. The old one is marked **Replaced** and shows **Replaced by a later decision**. |
+| **Revoke** | Marks the decision **Revoked**. It stays in the register. |
+
+A closed meeting is read-only. To change one of its decisions, reopen the meeting first, as described in [Running a meeting](/meetings/moderation#reopen-a-closed-meeting). Every change to a decision after the fact is recorded in the audit log.
+
+## The decision register
+
+Open **Decision register** in the Meetings sidebar. It lists the decisions of every meeting you can see, newest first.
+
+| Filter | What it narrows |
+|---|---|
+| **Search decisions** | Text in the decision's title. |
+| **Status** | **Valid**, **Replaced** or **Revoked**. |
+| **Space**, **Project** | Decisions of meetings in that space or project. |
+| **Series** | Decisions of one series. |
+| **Person** | Decisions that list the person under **Decided by**. |
+| **From**, **Until** | The decision date, in your time zone. |
+
+Click **Apply filters** to update the list. The register follows the same rule as the meetings themselves: decisions of a private meeting appear only for the people invited to it.

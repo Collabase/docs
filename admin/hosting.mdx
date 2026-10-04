@@ -77,6 +77,19 @@ If you use an IP address or `localhost`, a self-signed certificate is used inste
 
 Authentication endpoints are rate-limited to prevent brute-force login attempts. If a single IP address sends too many login requests in a short period, further requests from that address are temporarily blocked. This happens automatically — no configuration is required.
 
+### Calendar subscriptions in access logs
+
+People can subscribe to their meetings in Outlook, Apple Calendar or Google Calendar. The secret of such a subscription is part of its web address, so anyone who can read your access logs could copy it. If your proxy writes access logs, leave the address out for these requests.
+
+With the bundled Caddy, add this inside your site block in the `Caddyfile`:
+
+```caddyfile
+@calendarFeed path /api/meetings/feed/*
+log_skip @calendarFeed
+```
+
+`log_skip` needs Caddy 2.8 or newer. With another proxy, exclude the same path from its access log. Calendar apps keep working either way; this only keeps the addresses out of your logs.
+
 ---
 
 ## Data persistence
