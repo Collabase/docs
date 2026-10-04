@@ -6,10 +6,6 @@ description: "Plan meetings and series, run them with a shared agenda and timer,
 
 Meetings covers a meeting from the first agenda item to the minutes. You plan the agenda and the time in Collabase, send the calendar invitation from there, run the meeting with a timer per topic, and record outcomes and decisions while you talk. When the meeting ends, Collabase writes the minutes as a page in the space, built from what was recorded.
 
-<Note>
-  Meetings is in early access and is switched off on customer installations. See [How to access Meetings](#how-to-access-meetings) for how an administrator switches it on.
-</Note>
-
 ## Why use Meetings
 
 <AccordionGroup>
@@ -60,16 +56,7 @@ Series (optional, repeats by a rule)
 
 ## How to access Meetings
 
-Meetings is behind a feature switch called `MEETINGS`. On customer installations the switch is off until an administrator turns it on.
-
 <Steps>
-  <Step title="Turn the app on (administrator)">
-    On a self-hosted installation, add `MEETINGS=true` to the `FEATURE_FLAG_OVERRIDES` line in `deployment/.env`, for example `FEATURE_FLAG_OVERRIDES=MEETINGS=true`, then restart:
-    ```bash
-    bash deployment/docker/install.sh restart
-    ```
-    If the line already lists other switches, separate them with a comma. On a hosted instance, ask Collabase support to switch Meetings on for you.
-  </Step>
   <Step title="Open the app drawer">
     Click **More** at the bottom of the left sidebar.
   </Step>
@@ -77,10 +64,6 @@ Meetings is behind a feature switch called `MEETINGS`. On customer installations
     Click **Meetings**. The app opens on **Upcoming**. The sidebar also has **Today**, **Past**, **Series** and the **Decision register**.
   </Step>
 </Steps>
-
-<Warning>
-  Switching Meetings off again hides the app and stops all mails, but invitations already sent stay in your participants' calendars. Collabase cannot take them back, so cancel future meetings before you switch the app off for good.
-</Warning>
 
 ## Who can do what
 
