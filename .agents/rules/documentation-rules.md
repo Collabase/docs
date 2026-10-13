@@ -347,7 +347,7 @@ description: "..."
   shows its icon at `width="60"` above the first paragraph; the home page uses the same files as
   `Card` icons. Never use the old full-size icons in `images/` root.
 - **Logos and favicon** in `docs.json` are `images/logo-black.svg` (light), `images/logo-white.svg` (dark)
-  and `images/favicon.png`, copies from the brand
+  and `images/favicon-light.png` / `images/favicon-dark.png` (the black icon tile, light and dark), copies from the brand
   folder. Never reference `images/01_Collabase Logo/` directly: the folder is 174 MB, contains an
   archive of retired logos and is excluded in `.mintignore` and `.gitignore`.
 - Do not embed screenshots in subpages unless a UI state cannot be explained without one.
@@ -1079,7 +1079,7 @@ Change it only for a reason, and say the reason in the pull request. What we set
 
 | Setting | Value or policy |
 |---|---|
-| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: almond, lime, Outfit and Geist, lucide, grid. `colors.primary` is the dark green `#3f5a2e` because it colors text and links, `light` and `dark` are lime `#ccfc75` |
+| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: almond, lime, Outfit, lucide, page `#f7f7f7`. `colors.primary` is forest `#0f4d38` because it colors text and links, `light` and `dark` are lime `#ccfc75` |
 | `description` | One sentence about Collabase for search engines and AI tools |
 | `seo.metatags`, `seo.organization` | `og:site_name`, `twitter:card`, the organization with logo |
 | `thumbnails` | Preset `headline`, eyebrow from the tab |
@@ -1163,41 +1163,70 @@ The Mintlify plan we use has no CI checks, so we run our own, locally and in the
 
 ---
 
-## 25. Color
+## 25. Color, surface and type
 
-Lime is the brand. The surface decides which color a piece of interface gets, not the element. The palette
-and the rules follow the website. There is no gold.
+The docs follow the website's design system (Design V3). Lime is the brand, the surface decides which color a
+piece of interface gets, not the element. There is no gold.
+
+### Surfaces
+
+The page is not white. Page and card have different colors, so containers separate without heavy borders or
+shadows, and the fill of an element depends on what it sits on.
+
+| Layer | Hex | Use |
+|---|---|---|
+| Page | `#f7f7f7` | The page background (`docs.json` `background.color.light`). No grid, no decoration |
+| Card | `#ffffff` | Every card and field on the page |
+| Surface 2 / 3 | `#fafafa` / `#f2f2f2` | A row or a fill inside a card |
+| Border | `#e5e5e5` | The outer line of a card |
+
+A card carries the double edge: a visible outer line (`outline`, 5px offset), a gap through which the page shows,
+and the card with its own hairline. Never add a second `border` or a `shadow` on top. Inside a card, rows use
+only the hairline. Radius: 10px for controls (buttons, the search field), 14px for cards, 6 to 8px for pills.
+
+### Colors
 
 | Color | Hex | Use |
 |---|---|---|
 | Lime | `#ccfc75` | The brand: buttons, the headline marker, lights. On dark, text and tags |
-| Green | `#77f355` | On dark only |
+| Green | `#77f355` | Middle of the gradient, never alone. On dark only |
 | Mint | `#1ae299` | On dark only |
-| Sage 1 | `#dfe9c0` | Pill |
-| Sage 2 | `#c9dfae` | Marker and icon box |
-| Sage 3 | `#b5d2a0` | Lines and dots |
-| Dark text on sage | `#3f5a2e` | The only green allowed as text on light |
-| Dark text on lime, green, mint | `#10200a` | Text on a neon fill |
+| Sage 1, 2, 3 | `#dfe9c0` `#c9dfae` `#b5d2a0` | Fills only: pill, marker and icon box, lines and dots |
+| Forest (wald) | `#0f4d38` | Text and lines on light, text on sage, links, `colors.primary` |
+| Ink on neon | `#10200a` | Text on a lime, green or mint fill |
 
 | Surface | Color | Role |
 |---|---|---|
-| Action: hero, closing block, buttons | Lime | A button with dark text, a marker behind one headline word, lights |
-| Light content sections | Sage 1 to 3 | Sage 1 the pill, sage 2 the marker and the icon box, sage 3 lines and dots. Everything else is neutral: arrows, numbers, plus signs, menu icons |
+| Action: hero, buttons | Lime | A button with dark text, a marker behind one headline word |
+| Light sections, on a white card | Sage | Sage 1 the pill, sage 2 the icon box, sage 3 lines and dots, always with a hairline. Text and icon on it are forest. Everything else is neutral |
 | Dark surfaces | Lime, green, mint | Text, check marks, tags |
 
-- One gradient exists, the core gradient lime, green, mint. It appears on dark surfaces and in the logo,
-  nowhere else.
-- Never sage on dark, never neon text on light.
-- Lime is not a text color on light: it reaches 1.10:1 on a light page. Text on light is the dark green
-  `#3f5a2e`, and text on a lime fill is `#10200a`.
+- One gradient exists: lime, green, mint, in this order. Only on dark surfaces and in the logo. Never across a
+  whole section, never mixed with sage.
+- Never lime, green or mint as text or line on white: the contrast is under 2:1. Forest stands there.
+- Never sage on the page itself (1.18:1, it disappears). Sage lies on a white card with a hairline.
+- Never sage on dark, never neon as a fill behind running text.
+- At most one marker per section and one green moment per screen.
 
 | Pair | Contrast | Verdict |
 |---|---|---|
-| `#3f5a2e` on white | 7.7 | passes AAA |
-| `#3f5a2e` on sage 1, 2, 3 | 6.1, 5.4, 4.7 | passes AA |
-| `#10200a` on lime, green, mint | 14.4, 12.0, 10.0 | passes AAA |
+| Forest on white / on page | 9.8 / 9.2 | passes AAA |
+| Forest on sage 1, 2, 3 | at least 5.9 | passes AA |
+| Ink on lime, green, mint | 14.4, 12.0, 10.0 | passes AAA |
 | Lime text on `#0b0f0a` | 16.3 | passes AAA |
 | Lime fill on a white page | 1.10 | fails as an edge, the text on it carries the contrast |
+
+### Type
+
+Outfit, nothing else. Headlines weight 500 with tracking -0.03em, never 700 (too heavy). Body weight 400, 500 is
+too wide for Outfit. Home headline 56px with line height 1.05, section headline 24px. The section label above a
+headline is a pill in normal case (13px, weight 500, 1px ring), not an uppercase badge. Section heads are not
+centered, except the home hero.
+
+### Header and illustration
+
+The header is flat: white at 95 %, no shadow, no radius. Illustrations are drawn, not scattered: no decorative
+floating icons behind a headline. A picture that says nothing once the title is covered is dropped.
 
 ### How the docs apply it
 
@@ -1206,18 +1235,19 @@ default and dark on request, so each rule has a light and a dark form.
 
 | Piece | Light | Dark | How |
 |---|---|---|---|
+| Home cards and search | White card, double edge | Dark card, white 12 % edge | class `home-cards` on the wrapper, `home-search` on the field |
 | Hero headline marker | Lime fill, dark text | Lime fill, dark text | `<span className="brand-marker-action">word</span>`, one word, the hero only |
-| Section headline marker | Sage 2 fill, dark green text | Lime text, no fill | `<span className="brand-marker">word</span>`, one word per section |
-| Icon box of a card | Sage 2 tile | Lime outline and icon | `className="brand-cards"` on the `Columns` that holds the cards. Not on cards with an image icon |
+| Section headline marker | Sage 2 fill, forest text, inside a white card | Lime text, no fill | `<span className="brand-marker">word</span>`. Not on a bare page heading: sage never sits on the page |
+| Icon box of a card | Sage 2 tile with hairline, forest icon | Lime outline and icon | `className="brand-cards"` on the `Columns` that holds the cards. Not on cards with an image icon |
 | Sidebar tag | Sage 1 | The core gradient with dark text | `tag` in frontmatter or on a group |
 | Green `Badge` | Sage 1 | Lime fill | `<Badge color="green">`, the only badge color with the brand |
 | Buttons | Lime, dark text | Lime, dark text | `colors.dark` in `docs.json` and the text rule in `style.css` |
-| Hero line icons | Sage 3 | Lime, low opacity | Tailwind `text-[#b5d2a0] dark:text-[#ccfc75]` on the svg |
-| Text and links | Dark green `#3f5a2e` | Lime | `colors.primary` and `colors.light` in `docs.json` |
+| Text and links | Forest `#0f4d38` | Lime | `colors.primary` and `colors.light` in `docs.json` |
+| Fonts | Outfit 500 headings, Outfit 400 body | same | `fonts` in `docs.json`, tracking in `style.css` |
 
-Logo and favicon: `images/logo-black.svg` (light mode), `images/logo-white.svg` (dark mode) and
-`images/favicon.png` are the files of the brand set `Collabase_Logo_E`: the mark in mint and lime, with the
-wordmark in black or white. Replace a file and keep its name when the brand set changes.
+Logo and favicon: `images/logo-black.svg` (light mode), `images/logo-white.svg` (dark mode) are the files of the
+brand set `Collabase_Logo_E`. The favicon is the black icon tile in two files, `images/favicon-light.png` and
+`images/favicon-dark.png`. Replace a file and keep its name when the brand set changes.
 
 Not used: green in callouts, in code blocks, or gold anywhere. Screenshots of the product show the product's
 own colors and are not recolored.

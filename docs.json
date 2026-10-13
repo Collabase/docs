@@ -3,11 +3,14 @@
   "theme": "almond",
   "name": "Collabase",
   "colors": {
-    "primary": "#3f5a2e",
+    "primary": "#0f4d38",
     "light": "#ccfc75",
     "dark": "#ccfc75"
   },
-  "favicon": "/images/favicon.png",
+  "favicon": {
+    "light": "/images/favicon-light.png",
+    "dark": "/images/favicon-dark.png"
+  },
   "logo": {
     "light": "/images/logo-black.svg",
     "dark": "/images/logo-white.svg"
@@ -756,18 +759,17 @@
   "fonts": {
     "heading": {
       "family": "Outfit",
-      "weight": 600
+      "weight": 500
     },
     "body": {
-      "family": "Geist",
-      "weight": 500
+      "family": "Outfit",
+      "weight": 400
     }
   },
   "icons": {
     "library": "lucide"
   },
   "background": {
-    "decoration": "grid",
     "color": {
       "light": "#f7f7f7"
     }
