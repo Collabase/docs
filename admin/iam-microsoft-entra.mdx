@@ -194,6 +194,10 @@ Continue at the [checkpoint of this phase](#checkpoint-sign-in).
     Copy the **App Federation Metadata Url** from the **SAML Certificates** section into **Import from metadata URL** in Collabase and click **Import**. Collabase fills in **Identity provider entity ID**, **Single sign-on URL** and **Signing certificate**. Nothing is saved until you click **Save**. Only public HTTPS addresses work.
 
     To enter the values by hand, take them from **Set up Collabase** in Entra: **Login URL** is the **Single sign-on URL**, **Microsoft Entra Identifier** is the **Identity provider entity ID**, and the **Certificate (Base64)** goes into **Signing certificate**.
+
+    <Warning>
+      Use the certificate of the enterprise application, not the one of the tenant. The tenant's federation metadata (the address without `appid=`) lists several certificates, and none of them signs the assertion of your application. If you paste one of those, every sign-in ends with "The response from your identity provider was not accepted". Compare the **Thumbprint** shown in **SAML Certificates** with the certificate you saved. They must be the same.
+    </Warning>
   </Step>
   <Step title="Set the behavior and enable">
     Set **Default Role for new users** to **User**. Switch **Auto-create new users** off when SCIM provisions your accounts. Switch on **Enable provider** and click **Save**. The login page now shows **Sign in with SSO (SAML)**. Every setting is explained under [SAML single sign-on](/admin/saml-sso#configure-saml-in-collabase).
@@ -252,19 +256,24 @@ SCIM lets Entra create, update and deactivate accounts. It does not sign anybody
   <Step title="Test and create">
     Select **Test Connection**. When it succeeds, select **Create**. If it fails, see [SCIM problems](#scim-problems).
   </Step>
-  <Step title="Check the attribute mapping">
-    Open **Attribute mapping** and review the user mapping. Collabase uses these attributes:
+  <Step title="Reduce the attribute mapping">
+    Open **Attribute mapping** and open the user mapping. Entra's default mapping sends many attributes, and a person who has no value for one of them can be turned away with HTTP 400. Start with the attributes that every person has, and delete the other rows. Collabase uses these attributes:
 
-    | SCIM attribute | What Collabase does with it |
-    |---|---|
-    | `emails` | The primary address, or the first one, becomes the sign-in address. Entra sends `mail` here by default. |
-    | `userName` | Used as the address when no email is sent. Entra sends the user principal name here. |
-    | `displayName`, `name.givenName`, `name.familyName` | The name of the member. |
-    | `externalId` | Links the account to the person in Entra. Entra's default mapping sends `mailNickname`. Do not change this mapping after the first sync. |
-    | `active` | Inactive deactivates the account, active reactivates it. |
-    | `title` and the enterprise attribute `department` | Job title and department on the profile. |
+    | Entra attribute | SCIM attribute | What Collabase does with it |
+    |---|---|---|
+    | `mail` | `emails[type eq "work"].value` | The primary address, or the first one, becomes the sign-in address. |
+    | `userPrincipalName` | `userName` | Used as the address when no email is sent. |
+    | `displayName`, `givenName`, `surname` | `displayName`, `name.givenName`, `name.familyName` | The name of the member. |
+    | `mailNickname` | `externalId` | Links the account to the person in Entra. Do not change this mapping after the first sync. |
+    | `Switch([IsSoftDeleted], …)` | `active` | Inactive deactivates the account, active reactivates it. |
+
+    Delete the rows for addresses (`streetAddress`, `city`, `postalCode`, `state`, `country`, `physicalDeliveryOfficeName`), for fax, mobile and other phone numbers, for `manager`, `employeeId` and `preferredLanguage`. Collabase does not read them. Delete `jobTitle` and `department` too, unless every person you assign has a value. Add them back when they are filled for everyone.
 
     Make sure the address in `emails` is the one you settled in [Phase 1](#settle-the-email-address). Collabase never takes a role from the directory. Every account that SCIM creates starts as **User**.
+
+    <Tip>
+      Extend the mapping one attribute at a time. After each change, select **Provision on demand** for one person and look at the provisioning log. An attribute that is empty for a person is the usual reason for a failed creation.
+    </Tip>
   </Step>
   <Step title="Assign the pilot group and start">
     Open **Users and groups** and assign the pilot group. Entra provisions only assigned members when the scope is **Sync only assigned users and groups**. Open the **Overview** page and select **Start provisioning**. The first cycle takes longer, later ones run about every 40 minutes.
@@ -336,7 +345,7 @@ Three secrets expire. Put the dates in your calendar now.
 | What | Where it expires | What to do |
 |---|---|---|
 | **OAuth client secret** | In Entra, on the app registration | Create a new secret and enter it in the Microsoft provider settings before the date. |
-| **SAML signing certificate** | In Entra, in **SAML Certificates** | Paste both certificates into **Signing certificate** until the old one has expired. |
+| **SAML signing certificate** | In Entra, in **SAML Certificates** | Paste both certificates into **Signing certificate** until the old one has expired. To replace a certificate that does not match, create a new one in Entra with **New Certificate**, select **Make certificate active** and import it again. |
 | **SCIM token** | After 365 days | Generate a new token and enter it in Entra. The old one stops working at once. |
 
 Also review **Recently turned away** now and then, and keep the second administrator with a password. Both stay useful long after the rollout.
@@ -350,7 +359,7 @@ Also review **Recently turned away** now and then, and keep the second administr
 | This sign-in could not be matched to a Collabase account. | No single active account has the email address of the sign-in. Or **Auto-create new users** is off, the account is a guest, or two accounts share the address. | Compare the address in Collabase with the one Entra sends at sign-in. Make them identical. |
 | Your email domain is not permitted to sign in with this provider. | The address is outside **Allowed email domains**. | Add the domain or correct the address. |
 | No licence seat is free for a new account. | All licensed seats are in use. | Free a seat or extend the licence. |
-| The response from your identity provider was not accepted. | The assertion is unsigned, was not requested by Collabase, or the **Identifier (Entity ID)** in Entra differs from the metadata URL. | Check the signing option, the identifier, and that the member started at the Collabase login page. |
+| The response from your identity provider was not accepted. | The saved signing certificate is not the one of the application, the assertion is unsigned, was not requested by Collabase, or the **Identifier (Entity ID)** in Entra differs from the metadata URL. | Compare the **Thumbprint** in **SAML Certificates** with the saved certificate and import it again if they differ. If they match, check the signing option, the identifier, and that the member started at the Collabase login page. |
 | Your account has been disabled. | The account is deactivated, by SCIM or by an administrator. | Assign the person again in Entra or release the account in **Admin → Users**. |
 
 More causes and answers: [SAML single sign-on](/admin/saml-sso#troubleshooting).
@@ -365,6 +374,8 @@ More causes and answers: [SAML single sign-on](/admin/saml-sso#troubleshooting).
 | Requests are refused as unauthorized. | The token is wrong, revoked or older than 365 days. | Generate a new token and enter it in Entra. |
 | A person is not provisioned and shows as turned away with an email conflict. | An account with that address exists and is not linked. | See [Existing accounts](#existing-accounts). |
 | A person is not provisioned and shows as turned away with no seat. | No licensed seat is free. | Free a seat. The next provisioning cycle takes the person in. |
+| Creating a person fails with HTTP 400 and "Validation error" (`invalidValue`), while groups work. | The request contains an attribute that is empty for that person, often an address, a phone number or the manager. | Delete the rows for these attributes from the user mapping, see [Reduce the attribute mapping](#phase-4-scim), then restart provisioning. |
+| A group is created, but the log shows `UpdateForUnconnectedEntry`. | The members of the group were not created, so Entra has nothing to link them to. | Fix the creation of the persons first. The group follows in the next cycle. |
 
 More causes and answers: [User provisioning with SCIM](/admin/user-provisioning#troubleshooting).
 

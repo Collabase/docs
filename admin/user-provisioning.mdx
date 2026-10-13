@@ -70,6 +70,8 @@ For Microsoft Entra ID, see [IAM with Microsoft Entra ID](/admin/iam-microsoft-e
 
 A directory never grants a role. Every account that SCIM creates starts as **User**.
 
+Start with `userName`, `emails`, the name, `externalId` and `active`. These are the attributes that every person has. Add job title, department and other attributes later, one at a time, and only when every assigned person has a value for them. Some directories, Microsoft Entra ID among them, send an attribute without a value as empty. Collabase can turn such a creation away with HTTP 400. Addresses and phone numbers are not read, so leave them out.
+
 ## How existing accounts are handled {#how-existing-accounts-are-handled}
 
 - **No matching by email.** If your identity provider sends a person whose email address already belongs to a Collabase account that SCIM did not create, Collabase rejects the person with a conflict (HTTP 409). Change the email address of one of the two accounts, then let your provider try again.
@@ -137,6 +139,7 @@ A group can have at most 1,000 members.
 | Requests are refused as unauthorized. | The token is wrong, revoked or older than 365 days. Generate a new token and enter it in your provider. | No |
 | A person is not provisioned and shows as turned away because the email address belongs to another account. | Change the email address of one of the two accounts. | Yes, as `SCIM_USER_REJECTED` in the audit log and under **Recently turned away** |
 | A person is not provisioned and shows as turned away because no seat was free. | Free a seat. The next run takes the person in. | Yes, as `SCIM_USER_REJECTED` in the audit log and under **Recently turned away** |
+| Creating a person fails with HTTP 400 and "Validation error", while groups work. | Remove the attributes that are empty for that person from the mapping in your provider, for example addresses, phone numbers or the manager. Add them back one at a time. | No |
 | A person is active in your provider but stays deactivated in Collabase. | An administrator deactivated the account. Release it in **Admin → Users**. | No |
 | A person cannot sign in after provisioning. | Check the sign-in method and that the email address at sign-in equals the one SCIM sent, see [SAML single sign-on](/admin/saml-sso). | No |
 | A synced group cannot be edited in Collabase. | By design. Change it in your identity provider. | No |
