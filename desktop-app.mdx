@@ -13,7 +13,7 @@ your instance: nothing is stored on the device, and there is no offline mode.
 ## Download
 
 Download the installer for your platform from the
-[releases page](https://github.com/Collabase/collabase/releases/latest):
+[download page](https://collabase.ch/en/download):
 
 | Platform | File |
 |---|---|
@@ -26,38 +26,62 @@ The current builds are **not code-signed**. Your operating system will warn you 
 open the app. The steps below explain how to proceed, and what it means for updates.
 </Warning>
 
-## Install on macOS
+## Install {#install}
 
-1. Open the `.dmg` and drag **Collabase** into your Applications folder.
-2. Open it. macOS blocks it and shows a warning. Close the warning.
-3. Open **System Settings → Privacy & Security**.
-4. Scroll to the bottom. Next to the message about Collabase, click **Open Anyway**.
-5. Enter your administrator password and confirm.
+The steps differ by operating system. Pick yours.
 
-You only do this once per installed version.
+<Tabs>
+  <Tab title="macOS">
+    <Steps>
+      <Step title="Install the app">
+        Open the `.dmg` and drag **Collabase** into your Applications folder.
+      </Step>
+      <Step title="Open it">
+        Open it. macOS blocks it and shows a warning. Close the warning.
+      </Step>
+      <Step title="Open Privacy & Security">
+        Open **System Settings → Privacy & Security**.
+      </Step>
+      <Step title="Click Open Anyway">
+        Scroll to the bottom. Next to the message about Collabase, click **Open Anyway**.
+      </Step>
+      <Step title="Confirm with your password">
+        Enter your administrator password and confirm.
+      </Step>
+    </Steps>
 
-## Install on Windows
+    You only do this once per installed version.
+  </Tab>
+  <Tab title="Windows">
+    <Steps>
+      <Step title="Run the installer file">
+        Run the `.exe`.
+      </Step>
+      <Step title="Allow it in SmartScreen">
+        Windows SmartScreen shows a warning. Click **More info**, then **Run anyway**.
+      </Step>
+      <Step title="Follow the installer">
+        Follow the installer.
+      </Step>
+    </Steps>
 
-1. Run the `.exe`.
-2. Windows SmartScreen shows a warning. Click **More info**, then **Run anyway**.
-3. Follow the installer.
+    The installer does not require administrator rights. It installs for your user account only.
+  </Tab>
+  <Tab title="Linux">
+    Pick the package you downloaded:
 
-The installer does not require administrator rights — it installs for your user account only.
+    <CodeGroup>
+    ```bash AppImage
+    chmod +x Collabase-*.AppImage
+    ./Collabase-*.AppImage
+    ```
 
-## Install on Linux
-
-For the AppImage, mark it executable and run it:
-
-```bash
-chmod +x Collabase-*.AppImage
-./Collabase-*.AppImage
-```
-
-For Debian and Ubuntu, install the `.deb`:
-
-```bash
-sudo dpkg -i Collabase-*.deb
-```
+    ```bash Debian and Ubuntu
+    sudo dpkg -i Collabase-*.deb
+    ```
+    </CodeGroup>
+  </Tab>
+</Tabs>
 
 ## First start
 
@@ -89,7 +113,7 @@ The application itself updates differently per platform, because the builds are 
 
 <Note>
 macOS refuses to let an unsigned application update itself. Check **Collabase → Check for
-updates…** now and then, or watch the releases page.
+updates…** now and then, or watch the [download page](https://collabase.ch/en/download).
 </Note>
 
 ## Managing your signed-in devices
@@ -111,3 +135,11 @@ again** in the app window.
 **Support asks for a log.**
 Choose **Help → Open log folder** and send `collabase-desktop.log`. It contains server addresses
 and error messages only — no content and no credentials.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="layout-grid" href="/installation">
+    Set up Collabase on your server in a few minutes.
+  </Card>
+</CardGroup>

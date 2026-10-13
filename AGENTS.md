@@ -15,13 +15,16 @@ If anything here or in any other file contradicts it, `documentation-rules.md` w
 
 - A [Mintlify](https://mintlify.com) docs site. Pages are MDX with YAML frontmatter.
 - Configuration and navigation live in `docs.json`.
-- `mint dev` previews locally, `mint broken-links` validates internal links.
+- `mint dev` previews locally. `npm run docs:check` in the product repo, or `scripts/docs-check.sh`, runs
+  every check: `mint validate`, `mint broken-links --check-anchors`, `mint a11y`, `scripts/check-docs.mjs` and Vale.
 - The docs live in the [Collabase repo](https://github.com/Collabase/collabase) at `docs/docs/`, and
   are copied 1:1 into a private repo that Mintlify deploys from.
 
 ## Hard constraints
 
 - **Never move, rename, or restructure folders.** The two repos are kept identical by a manual copy.
+  `snippets/` (reusable text), `scripts/` and `styles/` (checks) and `.vale.ini` are part of the project.
+  The last three are listed in `.mintignore` and never published. `snippets/` is build input and is not.
 - **Never change `docs.json`** beyond adding or reordering pages unless the user asks for it. Theme,
   colors, logos, languages and redirects change only on an explicit request (see §11 and §15 of the
   rules).
@@ -46,11 +49,13 @@ the codebase. No library names, no architecture, no database fields, no internal
 - Sentence case for headings.
 - Bold for UI elements: Click **Settings**.
 - Inline code for file names, commands, paths, status values, and API field names.
-- `<Steps>` for every procedure — never raw Markdown numbered lists.
+- `<Steps>` for every procedure, never raw Markdown numbered lists. Pick other components as in
+  `documentation-rules.md` §19, and meet the quality bar in §23.
 - No marketing language ("powerful", "seamless", "out of the box") and no filler ("please note that",
   "in order to").
 
 ## Terminology
 
-Space (not workspace) · Member (not user) · Collabase Docs (not wiki) · Object Type (not entity) ·
-Object (not record). The full table is in `documentation-rules.md` §7.
+Space (not workspace) · Member for a person in a Space, user for an account, a role or a UI name ·
+Collabase Docs (not wiki) · Object Type (not entity) · Object (not record). The full table is in
+`documentation-rules.md` §7.

@@ -1,4 +1,5 @@
 ---
+title: "Updates"
 sidebarTitle: "Updates"
 description: "How to update Collabase to a new version. The update script handles everything automatically."
 ---
@@ -31,11 +32,11 @@ bash update.sh
 
 The script will:
 
-1. Create a database backup in `deployment/backups/` before making any changes. If the backup fails, the update stops there and nothing is changed.
-2. Download the latest version
-3. Check your database with the new version before switching to it. If the check finds something the new version cannot convert, the update stops, prints what to fix, and your current version keeps running.
-4. Restart all services with the new version. When the new version brings database changes, it takes a second backup of its own right before applying them.
-5. Wait for the application to come back online and confirm it is healthy
+- Create a database backup in `deployment/backups/` before making any changes. If the backup fails, the update stops there and nothing is changed.
+- Download the latest version
+- Check your database with the new version before switching to it. If the check finds something the new version cannot convert, the update stops, prints what to fix, and your current version keeps running.
+- Restart all services with the new version. When the new version brings database changes, it takes a second backup of its own right before applying them.
+- Wait for the application to come back online and confirm it is healthy
 
 The whole process typically takes **2–5 minutes** depending on your server's internet connection.
 
@@ -107,7 +108,7 @@ New versions occasionally add required configuration options. The update script 
 
 ---
 
-## Rolling back an update
+## Rolling back an update {#rolling-back-an-update}
 
 If the new version has a critical problem, restore the database backup created before the update and restart the previous version.
 

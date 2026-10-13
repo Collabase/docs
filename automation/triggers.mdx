@@ -18,7 +18,7 @@ A trigger is what starts an automation. Every automation has exactly one trigger
 
 ---
 
-## Collabase Events
+## Collabase Events {#collabase-events}
 
 These triggers fire on activity inside Collabase. Select one from the **Collabase** category when adding a trigger node.
 
@@ -29,9 +29,9 @@ These triggers fire on activity inside Collabase. Select one from the **Collabas
 | `task.status_changed` | A task moves to a different status column | `taskId`, `taskKey`, `taskTitle`, `oldStatus`, `newStatus`, `changedBy` |
 | `task.assigned` | A task is assigned or reassigned | `taskId`, `taskKey`, `taskTitle`, `assigneeId`, `assignedBy` |
 | `task.completed` | A task reaches a completed status | `taskId`, `taskKey`, `taskTitle`, `completedBy`, `completedAt` |
-| `page.created` | A new wiki page is created | `pageId`, `pageTitle`, `spaceId`, `createdBy` |
-| `page.updated` | A wiki page is edited | `pageId`, `pageTitle`, `spaceId`, `updatedBy` |
-| `page.commented` | A comment is posted on a wiki page | `pageId`, `pageTitle`, `commentId`, `commentBody`, `commentedBy` |
+| `page.created` | A new page is created | `pageId`, `pageTitle`, `spaceId`, `createdBy` |
+| `page.updated` | A page is edited | `pageId`, `pageTitle`, `spaceId`, `updatedBy` |
+| `page.commented` | A comment is posted on a page | `pageId`, `pageTitle`, `commentId`, `commentBody`, `commentedBy` |
 | `test.run.completed` | A test run finishes | `testRunId`, `testRunName`, `totalCases`, `passed`, `failed`, `blocked` |
 | `registry.object.created` | A new object is created in a registry | `objectId`, `registryId`, `registryName`, `spaceId`, `createdBy` |
 | `registry.object.updated` | An existing registry object is edited | `objectId`, `registryId`, `changedField`, `oldValue`, `newValue` |

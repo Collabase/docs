@@ -1,7 +1,7 @@
 ---
 title: "Test Suites"
 sidebarTitle: "Test Suites"
-description: "Test suites are hierarchical folders for organizing test cases within a project — by feature, component, priority, or any other grouping that makes sense for your team."
+description: "Test suites are hierarchical folders that organize test cases within a project by feature, component, priority or any grouping that fits your team."
 ---
 
 Test suites are organizational containers for test cases inside a test project. They work like folders in a file system — you can nest them to any depth and move cases between them freely.
@@ -63,10 +63,20 @@ When creating a new test case, select the suite from the **Suite** dropdown in t
 
 To move an existing case into a suite:
 
-1. Open the case detail view.
-2. Click the **Suite** field in the case sidebar.
-3. Select the target suite from the dropdown.
-4. The case moves to the new suite immediately.
+<Steps>
+  <Step title="Open the case">
+    Open the case detail view.
+  </Step>
+  <Step title="Open the Suite field">
+    Click the **Suite** field in the case sidebar.
+  </Step>
+  <Step title="Select the target suite">
+    Select the target suite from the dropdown.
+  </Step>
+  <Step title="Check the move">
+    The case moves to the new suite immediately.
+  </Step>
+</Steps>
 
 ## Navigating the suite tree
 
@@ -106,3 +116,11 @@ Each suite in the left panel shows a count of cases it contains. The count inclu
 <Note>
   Deleting a suite does not delete the test cases inside it. Cases from a deleted suite are moved to the project root (no suite). They remain in the project and can be reassigned to another suite at any time.
 </Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Test Management" icon="layout-grid" href="/test-management/overview">
+    Test Management is the built-in quality tool: define test cases, run manual tests, record results and track quality across releases with milestones.
+  </Card>
+</CardGroup>

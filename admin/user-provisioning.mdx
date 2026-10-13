@@ -1,18 +1,17 @@
 ---
 title: "User provisioning with SCIM"
 description: "Create, update and deactivate Collabase accounts and groups from your identity provider with SCIM 2.0: setup, supported operations and troubleshooting."
+tag: "Enterprise"
 ---
 
-User provisioning connects your identity provider to Collabase, so accounts and group memberships follow your directory. Assign a person in your identity provider and Collabase creates the account. Change the profile there and Collabase updates it. Remove the person and Collabase deactivates the account.
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+import TokenShownOnce from "/snippets/token-shown-once.mdx";
 
-Collabase uses the System for Cross-domain Identity Management (SCIM) in version 2.0. After you connect your identity provider, you manage names, email addresses, job titles, department and group memberships from your identity provider.
+User provisioning connects your <Tooltip tip="The system your team already uses to sign in, such as Microsoft Entra ID, Okta, Keycloak or Google." cta="Glossary" href="/glossary#identity-provider">identity provider</Tooltip> to Collabase, so accounts and group memberships follow your directory. Assign a person in your identity provider and Collabase creates the account. Change the profile there and Collabase updates it. Remove the person and Collabase deactivates the account.
 
-**Who can do this?**
+Collabase uses the System for Cross-domain Identity Management (<Tooltip tip="A standard for automated user provisioning. It creates, updates and deactivates accounts and group memberships from your identity provider." cta="Glossary" href="/glossary#scim">SCIM</Tooltip>) in version 2.0. After you connect your identity provider, you manage names, email addresses, job titles, department and group memberships from your identity provider.
 
-| | |
-|---|---|
-| **Role** | System administrator in Collabase, and a role in your identity provider that may configure provisioning |
-| **Edition** | Collabase Enterprise Edition |
+<WhoCanDoThis role="System administrator in Collabase, and a role in your identity provider that may configure provisioning" edition="Collabase Enterprise Edition" />
 
 SCIM does not sign anybody in. You need a sign-in method next to it, see [SAML single sign-on](/admin/saml-sso) or [Identity providers](/admin/identity-providers).
 
@@ -34,7 +33,7 @@ SCIM does not sign anybody in. You need a sign-in method next to it, see [SAML s
     Click **Generate token** and copy it when **SCIM token created** appears. Collabase shows it only once.
 
     <Frame caption="The token dialog. Copy the token before you click the button, you cannot show it again.">
-      <img src="/images/iam-scim-token-created.png" alt="The SCIM token created dialog with the token hidden" width="420" />
+      <img src="/images/iam-scim-token-created.png" alt="The SCIM token created dialog with the token hidden" className="w-[420px]" />
     </Frame>
   </Step>
   <Step title="Configure your identity provider">
@@ -54,9 +53,7 @@ SCIM does not sign anybody in. You need a sign-in method next to it, see [SAML s
   </Step>
 </Steps>
 
-<Warning>
-  A token is valid for 365 days. Generate a new one before the old one expires. The new token replaces the old one at once, so enter it in your identity provider before the next sync.
-</Warning>
+<TokenShownOnce days="365" />
 
 For Microsoft Entra ID, see [IAM with Microsoft Entra ID](/admin/iam-microsoft-entra).
 
@@ -73,7 +70,7 @@ For Microsoft Entra ID, see [IAM with Microsoft Entra ID](/admin/iam-microsoft-e
 
 A directory never grants a role. Every account that SCIM creates starts as **User**.
 
-## How existing accounts are handled
+## How existing accounts are handled {#how-existing-accounts-are-handled}
 
 - **No matching by email.** If your identity provider sends a person whose email address already belongs to a Collabase account that SCIM did not create, Collabase rejects the person with a conflict (HTTP 409). Change the email address of one of the two accounts, then let your provider try again.
 - **Matching by the directory's own ID.** A person whose external ID is already stored on a Collabase account is linked to that account. Name and email address then follow your provider.
@@ -100,11 +97,24 @@ When you do one of these in your identity provider, Collabase follows.
 | **Activate an account** | Collabase reactivates the account when a licensed seat is free and no administrator deactivated it. |
 | **Delete an account** | Collabase never deletes an account through SCIM. To delete a member for good, use **Admin → Users**, see [Members and groups](/admin/users-groups). |
 
+The diagram shows the life of an account that SCIM manages.
+
+```mermaid
+flowchart LR
+    A["Person assigned in the identity provider"] --> B["Account created with the role User"]
+    B --> C["Profile follows the provider"]
+    C --> D["Person removed or deactivated"]
+    D --> E["Account deactivated, sessions end, API tokens off"]
+    E --> F{"Reactivated before the deadline?"}
+    F -- "Yes" --> G["Account active again, anonymization cancelled"]
+    F -- "No, 30 days by default" --> H["Account anonymized"]
+```
+
 ### What happens after a deactivation
 
 A deactivated account is anonymized once its deadline passes: the name and email address are removed, and pages, work items and comments stay and show the name followed by `(deleted)`. The default is 30 days. You change it under **Anonymize locked accounts after** in the [security policies](/admin/security-policies). A changed period applies to accounts deactivated from then on. Reactivating the account before the date cancels the anonymization.
 
-## Supported group operations
+## Supported group operations {#supported-group-operations}
 
 Groups that SCIM pushes become Collabase groups. Their members follow your identity provider.
 
@@ -117,7 +127,7 @@ Groups that SCIM pushes become Collabase groups. Their members follow your ident
 
 A group can have at most 1,000 members.
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
 | Problem | Workaround | Recorded in the log |
 |---|---|---|

@@ -88,14 +88,14 @@ All action input fields support variable references. Use these forms to pull dat
 
 Supports dot-notation for nested values and array indexing:
 
-```
+```text
 {payload.assignee.name}
 {stepOutputs.searchResults.items[0].url}
 ```
 
 You can mix static text and variable references in the same field:
 
-```
+```text
 Task {payload.taskKey} was assigned to {payload.assignee.name}
 ```
 

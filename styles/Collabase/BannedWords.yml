@@ -1,0 +1,15 @@
+extends: existence
+message: "Avoid '%s'. See documentation-rules.md, voice and tone."
+level: error
+ignorecase: true
+tokens:
+  - powerful
+  - seamless
+  - seamlessly
+  - effortless
+  - effortlessly
+  - out of the box
+  - in order to
+  - please note
+  - it is important to
+  - click here

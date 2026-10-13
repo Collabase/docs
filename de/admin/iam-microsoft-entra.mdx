@@ -2,6 +2,7 @@
 title: "IAM mit Microsoft Entra ID"
 sidebarTitle: "IAM mit Microsoft"
 description: "Verbinde Microsoft Entra ID in fünf Phasen mit Collabase: Anmeldung mit OAuth oder SAML, Konten und Gruppen mit SCIM, Pilottest und sicherer Rollout."
+tag: "Enterprise"
 ---
 
 Members melden sich mit ihrem Microsoft-Geschäftskonto bei Collabase an, und Microsoft Entra ID legt ihre Collabase-Konten an, aktualisiert und deaktiviert sie. Dieser Leitfaden führt dich vom ersten Check bis zur ersten Test-Anmeldung. Geh die Phasen der Reihe nach durch. Jede Phase endet mit einem Kontrollpunkt und einem Link zur nächsten.
@@ -59,7 +60,7 @@ Prüfe das, bevor du beginnst. Phase 2 führt dich durch die Vorbereitung.
 
 Die Zeiten sind typische Werte für ein erstes Setup. Der erste Provisionierungszyklus in Entra dauert länger als spätere. Wenn etwas scheitert, geh zur [Fehlerbehebung](#fehlerbehebung).
 
-## Phase 1: Planen
+## Phase 1: Planen {#phase-1-planen}
 
 *Phase 1 von 5, etwa 10 Minuten. Weiter: [Phase 2, Vorbereiten](#phase-2-vorbereiten).*
 
@@ -76,13 +77,13 @@ Nimm für denselben Entra-Tenant entweder OAuth oder SAML, nicht beides. Zwei Bu
 
 Spricht nichts für SAML, nimm OAuth. Nimm SAML, wenn deine Sicherheitsvorgaben es verlangen oder wenn du in Entra selbst bestimmen willst, welche Attribute Collabase erhält. SCIM funktioniert mit beiden. Die Details zu SAML stehen unter [SAML single sign-on](/admin/saml-sso).
 
-### E-Mail-Adresse festlegen
+### E-Mail-Adresse festlegen {#e-mail-adresse-festlegen}
 
 Collabase verbindet Anmeldung und SCIM über die **E-Mail-Adresse**. Lies das einmal, denn es erklärt die meisten Fehler, auf die du stossen kannst.
 
-1. SCIM legt das Konto mit der E-Mail-Adresse an, die Entra sendet. Sendet Entra keine, nimmt Collabase den User Principal Name.
-2. Bei der ersten Anmeldung sucht Collabase genau ein aktives Konto mit der E-Mail-Adresse der Anmeldung und verknüpft es. Spätere Anmeldungen erkennt Collabase an der eigenen ID des Identity Providers.
-3. Hat kein Konto diese Adresse, entscheidet **Auto-create new users**: eingeschaltet legt ein zweites Konto an, ausgeschaltet verweigert die Anmeldung.
+- SCIM legt das Konto mit der E-Mail-Adresse an, die Entra sendet. Sendet Entra keine, nimmt Collabase den User Principal Name.
+- Bei der ersten Anmeldung sucht Collabase genau ein aktives Konto mit der E-Mail-Adresse der Anmeldung und verknüpft es. Spätere Anmeldungen erkennt Collabase an der eigenen ID des Identity Providers.
+- Hat kein Konto diese Adresse, entscheidet **Auto-create new users**: eingeschaltet legt ein zweites Konto an, ausgeschaltet verweigert die Anmeldung.
 
 Die Adresse, die Entra über SCIM sendet, und die Adresse bei der Anmeldung müssen also identisch sein. Nimm für beide `mail` oder für beide den User Principal Name. Schreib deine Wahl auf, du brauchst sie in den Phasen 3 und 4.
 
@@ -90,11 +91,13 @@ Die Adresse, die Entra über SCIM sendet, und die Adresse bei der Anmeldung müs
   Gastkonten lassen sich nicht mit einem Identity Provider verknüpfen, und ein deaktiviertes Konto kann sich nicht anmelden. Die vollständigen Regeln stehen unter [First sign-in and account matching](/admin/saml-sso#first-sign-in-and-account-matching).
 </Note>
 
-**Kontrollpunkt.** Du weisst, welche Methode du nimmst, ob du SCIM ergänzt und welches Entra-Attribut die E-Mail-Adresse ist.
+<Check>
+  **Kontrollpunkt.** Du weisst, welche Methode du nimmst, ob du SCIM ergänzt und welches Entra-Attribut die E-Mail-Adresse ist.
+</Check>
 
 **Weiter:** [Phase 2, Vorbereiten](#phase-2-vorbereiten).
 
-## Phase 2: Vorbereiten
+## Phase 2: Vorbereiten {#phase-2-vorbereiten}
 
 *Phase 2 von 5, etwa 15 Minuten. Zurück: [Phase 1](#phase-1-planen). Weiter: [Phase 3, Anmeldung](#phase-3-anmeldung).*
 
@@ -113,17 +116,19 @@ Die Adresse, die Entra über SCIM sendet, und die Adresse bei der Anmeldung müs
   </Step>
 </Steps>
 
-**Kontrollpunkt.** Ein zweiter Admin kann sich mit Passwort anmelden, Lizenzplätze sind frei, die Pilotgruppe existiert.
+<Check>
+  **Kontrollpunkt.** Ein zweiter Admin kann sich mit Passwort anmelden, Lizenzplätze sind frei, die Pilotgruppe existiert.
+</Check>
 
 **Weiter:** [Phase 3, Anmeldung](#phase-3-anmeldung).
 
-## Phase 3: Anmeldung
+## Phase 3: Anmeldung {#phase-3-anmeldung}
 
 *Phase 3 von 5, etwa 20 Minuten mit OAuth oder 30 Minuten mit SAML. Zurück: [Phase 2](#phase-2-vorbereiten). Weiter: [Phase 4, SCIM](#phase-4-scim).*
 
 Folge **einer** der beiden Optionen: [Option A: OAuth](#option-a-oauth) oder [Option B: SAML](#option-b-saml). Beide enden am selben [Kontrollpunkt](#kontrollpunkt-anmeldung).
 
-### Option A: OAuth
+### Option A: OAuth {#option-a-oauth}
 
 <Steps>
   <Step title="Anwendung in Entra registrieren">
@@ -131,7 +136,7 @@ Folge **einer** der beiden Optionen: [Option A: OAuth](#option-a-oauth) oder [Op
   </Step>
   <Step title="Redirect URI hinzufügen">
     Füge unter **Authentication** die Plattform **Web** mit dieser Redirect URI hinzu:
-    ```
+    ```text
     https://your-collabase-domain/api/auth/callback/microsoft
     ```
     Collabase zeigt dieselbe Adresse als **Redirect URI** in den Provider-Einstellungen.
@@ -151,12 +156,12 @@ Folge **einer** der beiden Optionen: [Option A: OAuth](#option-a-oauth) oder [Op
 </Steps>
 
 <Frame caption="Das Panel Configure Microsoft mit seinen Standardwerten. Auto-create new users bleibt eingeschaltet, bis du es ausschaltest.">
-  <img src="/images/iam-oauth-microsoft.png" alt="Das Panel Configure Microsoft mit Redirect URI, Client ID, Client Secret, Tenant ID, Default Role, Allowed email domains und den zwei Schaltern" width="420" />
+  <img src="/images/iam-oauth-microsoft.png" alt="Das Panel Configure Microsoft mit Redirect URI, Client ID, Client Secret, Tenant ID, Default Role, Allowed email domains und den zwei Schaltern" className="w-[420px]" />
 </Frame>
 
 Weiter am [Kontrollpunkt dieser Phase](#kontrollpunkt-anmeldung).
 
-### Option B: SAML
+### Option B: SAML {#option-b-saml}
 
 <Steps>
   <Step title="Enterprise application anlegen">
@@ -210,15 +215,17 @@ Weiter am [Kontrollpunkt dieser Phase](#kontrollpunkt-anmeldung).
   Das Signaturzertifikat in Entra läuft ab. Notiere sein Datum. Stellt Entra ein neues aus, füge beide Zertifikate in **Signing certificate** ein, bis das alte abgelaufen ist. So funktioniert die Anmeldung während des Wechsels weiter.
 </Tip>
 
-### Kontrollpunkt: Anmeldung
+### Kontrollpunkt: Anmeldung {#kontrollpunkt-anmeldung}
 
-Öffne die Collabase-Anmeldeseite in einem privaten Browserfenster und melde dich als dein eigener Administrator mit Microsoft an. Collabase verknüpft dein bestehendes Konto über die E-Mail-Adresse. Du landest in Collabase, und **Admin → Users** zeigt kein zweites Konto für dich.
+<Check>
+  Öffne die Collabase-Anmeldeseite in einem privaten Browserfenster und melde dich als dein eigener Administrator mit Microsoft an. Collabase verknüpft dein bestehendes Konto über die E-Mail-Adresse. Du landest in Collabase, und **Admin → Users** zeigt kein zweites Konto für dich.
+</Check>
 
 Scheitert das, siehe [Probleme bei der Anmeldung](#probleme-bei-der-anmeldung). Klappt es und du willst nur die Anmeldung, geh weiter zum [Test in Phase 5](#phase-5-testen-und-ausrollen).
 
 **Weiter:** [Phase 4, SCIM](#phase-4-scim).
 
-## Phase 4: SCIM
+## Phase 4: SCIM {#phase-4-scim}
 
 *Phase 4 von 5, etwa 25 Minuten plus bis zu 40 Minuten für die erste Synchronisierung. Zurück: [Phase 3](#phase-3-anmeldung). Weiter: [Phase 5, Testen und Ausrollen](#phase-5-testen-und-ausrollen).*
 
@@ -232,7 +239,7 @@ Mit SCIM legt Entra Konten an, aktualisiert und deaktiviert sie. SCIM meldet nie
     Klicke auf **Generate token** und kopiere das Token, sobald **SCIM token created** erscheint. Collabase zeigt es nur einmal. Ein Token ist 365 Tage gültig. Setz dir eine Erinnerung, vorher ein neues zu erzeugen, denn das neue Token ersetzt das alte sofort.
 
     <Frame caption="Der Token-Dialog. Kopiere das Token, bevor du auf den Button klickst.">
-      <img src="/images/iam-scim-token-created.png" alt="Der Dialog SCIM token created mit verdecktem Token" width="420" />
+      <img src="/images/iam-scim-token-created.png" alt="Der Dialog SCIM token created mit verdecktem Token" className="w-[420px]" />
     </Frame>
   </Step>
   <Step title="Provisionierung in Entra öffnen">
@@ -286,17 +293,19 @@ Ein deaktiviertes Konto wird standardmässig nach 30 Tagen anonymisiert: Name un
 
 Gruppen, die SCIM schickt, werden zu Collabase-Gruppen. Ihre Mitglieder verwaltest du in Entra, nicht in Collabase, und du kannst ihnen weiterhin Zugriff auf Spaces geben. Eine Gruppe kann höchstens 1000 Mitglieder haben. Mehr: [Supported group operations](/admin/user-provisioning#supported-group-operations).
 
-### Bestehende Konten
+### Bestehende Konten {#bestehende-konten}
 
 SCIM übernimmt nie ein Konto über die E-Mail-Adresse. Sendet Entra eine Person, deren Adresse schon zu einem Collabase-Konto gehört, das SCIM nicht angelegt hat, weist Collabase die Person mit einem Konflikt ab. Der Grund erscheint unter **Recently turned away** auf der Karte **SCIM Provisioning**, zusammen mit den letzten zehn abgewiesenen Personen. Willst du ein bestehendes Member unter SCIM bringen, ändere die E-Mail-Adresse eines der beiden Konten und lass Entra es erneut versuchen. Mehr: [How existing accounts are handled](/admin/user-provisioning#how-existing-accounts-are-handled).
 
 ### Kontrollpunkt: SCIM
 
-Wähle in Entra für eine Person der Pilotgruppe **Provision on demand**. In Collabase zeigt **Admin → Users** jetzt das Konto, und die Spalte **Identity** zeigt, woher es kommt. Fehlt die Person, schau unter **Recently turned away** und in den [SCIM-Problemen](#scim-probleme).
+<Check>
+  Wähle in Entra für eine Person der Pilotgruppe **Provision on demand**. In Collabase zeigt **Admin → Users** jetzt das Konto, und die Spalte **Identity** zeigt, woher es kommt. Fehlt die Person, schau unter **Recently turned away** und in den [SCIM-Problemen](#scim-probleme).
+</Check>
 
 **Weiter:** [Phase 5, Testen und Ausrollen](#phase-5-testen-und-ausrollen).
 
-## Phase 5: Testen und Ausrollen
+## Phase 5: Testen und Ausrollen {#phase-5-testen-und-ausrollen}
 
 *Phase 5 von 5, etwa 30 Minuten. Zurück: [Phase 4](#phase-4-scim). Weiter: [Betrieb sichern](#betrieb-sichern).*
 
@@ -318,11 +327,13 @@ Wähle in Entra für eine Person der Pilotgruppe **Provision on demand**. In Col
   </Step>
 </Steps>
 
-**Kontrollpunkt.** Ein Pilot-Member hat sich angemeldet, hat ein Konto und verliert den Zugriff, wenn es entfernt wird. Dein Setup ist fertig.
+<Check>
+  **Kontrollpunkt.** Ein Pilot-Member hat sich angemeldet, hat ein Konto und verliert den Zugriff, wenn es entfernt wird. Dein Setup ist fertig.
+</Check>
 
 **Weiter:** [Betrieb sichern](#betrieb-sichern).
 
-## Betrieb sichern
+## Betrieb sichern {#betrieb-sichern}
 
 Drei Geheimnisse laufen ab. Trag die Daten jetzt in deinen Kalender ein.
 
@@ -334,9 +345,9 @@ Drei Geheimnisse laufen ab. Trag die Daten jetzt in deinen Kalender ein.
 
 Wirf ausserdem ab und zu einen Blick auf **Recently turned away**, und behalte den zweiten Admin mit Passwort. Beides bleibt nach dem Rollout nützlich.
 
-## Fehlerbehebung
+## Fehlerbehebung {#fehlerbehebung}
 
-### Probleme bei der Anmeldung
+### Probleme bei der Anmeldung {#probleme-bei-der-anmeldung}
 
 | Was das Member sieht | Ursache | Was zu tun ist |
 |---|---|---|
@@ -348,7 +359,7 @@ Wirf ausserdem ab und zu einen Blick auf **Recently turned away**, und behalte d
 
 Weitere Ursachen und Antworten: [SAML single sign-on](/admin/saml-sso#troubleshooting).
 
-### SCIM-Probleme
+### SCIM-Probleme {#scim-probleme}
 
 | Was du in Entra siehst | Ursache | Was zu tun ist |
 |---|---|---|

@@ -1,0 +1,12 @@
+extends: substitution
+message: "Use '%s' instead of '%s'. See documentation-rules.md, terminology."
+level: error
+ignorecase: true
+swap:
+  workspace: Space
+  workspaces: Spaces
+  wiki: Collabase Docs
+  Google Workspace: Google Workspace
+  Slack workspace: Slack workspace
+  your workspace: your workspace
+  search across your workspace: search across your workspace

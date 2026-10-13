@@ -44,7 +44,7 @@ Only test cases with a status of **READY** are included in test runs. Cases in D
 | **Ready** | The case has been reviewed and is approved for execution. Included in test runs. |
 | **Deprecated** | The case is retired. Excluded from new test runs but preserved for history. |
 
-```
+```text
 Draft → Ready → Deprecated
 ```
 
@@ -151,9 +151,17 @@ Each test case can be linked to one page in Collabase Docs — typically a speci
 
 Once you have written and reviewed a case, change its status to READY so it is included in test runs.
 
-1. Open the case detail view.
-2. Click the **Status** field in the sidebar.
-3. Select **Ready**.
+<Steps>
+  <Step title="Open the case">
+    Open the case detail view.
+  </Step>
+  <Step title="Open the Status field">
+    Click the **Status** field in the sidebar.
+  </Step>
+  <Step title="Select Ready">
+    Select **Ready**.
+  </Step>
+</Steps>
 
 The case now appears with a READY badge and will be included in the next test run that covers this case or suite.
 
@@ -161,8 +169,27 @@ The case now appears with a READY badge and will be included in the next test ru
 
 When a test case no longer applies — because the feature was removed or the test was superseded — mark it as DEPRECATED rather than deleting it. This preserves its history in past runs while excluding it from future runs.
 
-1. Open the case detail view.
-2. Click the **Status** field.
-3. Select **Deprecated**.
+<Steps>
+  <Step title="Open the case">
+    Open the case detail view.
+  </Step>
+  <Step title="Open the Status field">
+    Click the **Status** field.
+  </Step>
+  <Step title="Select Deprecated">
+    Select **Deprecated**.
+  </Step>
+</Steps>
 
 Deprecated cases remain visible in the case list with a DEPRECATED badge and can be filtered out using the status filter.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Test Runs" icon="arrow-right" href="/test-management/test-runs">
+    A test run is an execution session.
+  </Card>
+  <Card title="Test Management" icon="layout-grid" href="/test-management/overview">
+    Test Management is the built-in quality tool: define test cases, run manual tests, record results and track quality across releases with milestones.
+  </Card>
+</CardGroup>

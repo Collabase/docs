@@ -2,6 +2,7 @@
 title: "IAM with Microsoft Entra ID"
 sidebarTitle: "IAM with Microsoft"
 description: "Connect Microsoft Entra ID to Collabase in five phases: sign-in with OAuth or SAML, accounts and groups with SCIM, a pilot test and a safe rollout."
+tag: "Enterprise"
 ---
 
 Members sign in to Collabase with their Microsoft work account, and Microsoft Entra ID creates, updates and deactivates their Collabase accounts for you. This guide takes you from the first check to the first test sign-in. Follow the phases in order. Every phase ends with a checkpoint and a link to the next one.
@@ -55,7 +56,7 @@ Check these before you start. Phase 2 walks you through the preparation.
 
 The times are typical values for a first setup. The first provisioning cycle in Entra takes longer than later ones. If something fails, go to [Troubleshooting](#troubleshooting).
 
-## Phase 1: Plan
+## Phase 1: Plan {#phase-1-plan}
 
 *Phase 1 of 5, about 10 minutes. Next: [Phase 2, Prepare](#phase-2-prepare).*
 
@@ -72,13 +73,13 @@ Use either OAuth or SAML for the same Entra tenant, not both. Two buttons that l
 
 If nothing speaks for SAML, choose OAuth. Choose SAML when your security rules ask for it or when you want to decide in Entra which attributes Collabase receives. SCIM works with both. For the details of SAML, see [SAML single sign-on](/admin/saml-sso).
 
-### Settle the email address
+### Settle the email address {#settle-the-email-address}
 
 Collabase connects sign-in and SCIM by **email address**. Read this once, because it explains most errors you can run into.
 
-1. SCIM creates the account with the email address Entra sends. When Entra sends none, Collabase uses the user principal name.
-2. At the first sign-in, Collabase looks for exactly one active account with the email address of the sign-in and links it. Later sign-ins are recognized by the identity provider's own ID.
-3. If no account has that address, **Auto-create new users** decides: on creates a second account, off refuses the sign-in.
+- SCIM creates the account with the email address Entra sends. When Entra sends none, Collabase uses the user principal name.
+- At the first sign-in, Collabase looks for exactly one active account with the email address of the sign-in and links it. Later sign-ins are recognized by the identity provider's own ID.
+- If no account has that address, **Auto-create new users** decides: on creates a second account, off refuses the sign-in.
 
 So the address Entra sends through SCIM and the address it sends at sign-in must be identical. Use `mail` for both, or the user principal name for both. Write your choice down, you need it in phases 3 and 4.
 
@@ -86,11 +87,13 @@ So the address Entra sends through SCIM and the address it sends at sign-in must
   Guest accounts cannot be linked to an identity provider, and a deactivated account cannot sign in. The full rules are under [First sign-in and account matching](/admin/saml-sso#first-sign-in-and-account-matching).
 </Note>
 
-**Checkpoint.** You know which method you use, whether you add SCIM, and which Entra attribute is the email address.
+<Check>
+  **Checkpoint.** You know which method you use, whether you add SCIM, and which Entra attribute is the email address.
+</Check>
 
 **Next:** [Phase 2, Prepare](#phase-2-prepare).
 
-## Phase 2: Prepare
+## Phase 2: Prepare {#phase-2-prepare}
 
 *Phase 2 of 5, about 15 minutes. Previous: [Phase 1](#phase-1-plan). Next: [Phase 3, Sign-in](#phase-3-sign-in).*
 
@@ -109,17 +112,19 @@ So the address Entra sends through SCIM and the address it sends at sign-in must
   </Step>
 </Steps>
 
-**Checkpoint.** A second administrator can sign in with a password, seats are free, the pilot group exists.
+<Check>
+  **Checkpoint.** A second administrator can sign in with a password, seats are free, the pilot group exists.
+</Check>
 
 **Next:** [Phase 3, Sign-in](#phase-3-sign-in).
 
-## Phase 3: Sign-in
+## Phase 3: Sign-in {#phase-3-sign-in}
 
 *Phase 3 of 5, about 20 minutes with OAuth or 30 minutes with SAML. Previous: [Phase 2](#phase-2-prepare). Next: [Phase 4, SCIM](#phase-4-scim).*
 
 Follow **one** of the two options: [Option A: OAuth](#option-a-oauth) or [Option B: SAML](#option-b-saml). Both end at the same [checkpoint](#checkpoint-sign-in).
 
-### Option A: OAuth
+### Option A: OAuth {#option-a-oauth}
 
 <Steps>
   <Step title="Register an application in Entra">
@@ -127,7 +132,7 @@ Follow **one** of the two options: [Option A: OAuth](#option-a-oauth) or [Option
   </Step>
   <Step title="Add the redirect URI">
     Under **Authentication**, add a **Web** platform with this redirect URI:
-    ```
+    ```text
     https://your-collabase-domain/api/auth/callback/microsoft
     ```
     Collabase shows the same address as **Redirect URI** in the provider settings.
@@ -147,12 +152,12 @@ Follow **one** of the two options: [Option A: OAuth](#option-a-oauth) or [Option
 </Steps>
 
 <Frame caption="The Configure Microsoft panel with its defaults. Auto-create new users is on until you switch it off.">
-  <img src="/images/iam-oauth-microsoft.png" alt="The Configure Microsoft panel with redirect URI, client ID, client secret, tenant ID, default role, allowed email domains and the two switches" width="420" />
+  <img src="/images/iam-oauth-microsoft.png" alt="The Configure Microsoft panel with redirect URI, client ID, client secret, tenant ID, default role, allowed email domains and the two switches" className="w-[420px]" />
 </Frame>
 
 Continue at the [checkpoint of this phase](#checkpoint-sign-in).
 
-### Option B: SAML
+### Option B: SAML {#option-b-saml}
 
 <Steps>
   <Step title="Create the enterprise application">
@@ -206,15 +211,17 @@ Continue at the [checkpoint of this phase](#checkpoint-sign-in).
   The signing certificate in Entra expires. Note its date. When Entra issues a new one, paste both certificates into **Signing certificate** until the old one has expired, so sign-in keeps working during the change.
 </Tip>
 
-### Checkpoint: sign-in
+### Checkpoint: sign-in {#checkpoint-sign-in}
 
-Open the Collabase login page in a private browser window and sign in with Microsoft as your own administrator. Collabase links your existing account by email address. You land in Collabase, and **Admin → Users** shows no second account for you.
+<Check>
+  Open the Collabase login page in a private browser window and sign in with Microsoft as your own administrator. Collabase links your existing account by email address. You land in Collabase, and **Admin → Users** shows no second account for you.
+</Check>
 
 If this fails, see [Sign-in problems](#sign-in-problems). If it works and you only want sign-in, continue with the [test in Phase 5](#phase-5-test-and-roll-out).
 
 **Next:** [Phase 4, SCIM](#phase-4-scim).
 
-## Phase 4: SCIM
+## Phase 4: SCIM {#phase-4-scim}
 
 *Phase 4 of 5, about 25 minutes plus up to 40 minutes for the first sync. Previous: [Phase 3](#phase-3-sign-in). Next: [Phase 5, Test and roll out](#phase-5-test-and-roll-out).*
 
@@ -228,7 +235,7 @@ SCIM lets Entra create, update and deactivate accounts. It does not sign anybody
     Click **Generate token** and copy it when **SCIM token created** appears. Collabase shows it only once. A token is valid for 365 days. Set a reminder to generate a new one before it expires, because the new token replaces the old one at once.
 
     <Frame caption="The token dialog. Copy the token before you click the button.">
-      <img src="/images/iam-scim-token-created.png" alt="The SCIM token created dialog with the token hidden" width="420" />
+      <img src="/images/iam-scim-token-created.png" alt="The SCIM token created dialog with the token hidden" className="w-[420px]" />
     </Frame>
   </Step>
   <Step title="Open provisioning in Entra">
@@ -282,17 +289,19 @@ A deactivated account is anonymized after 30 days by default: the name and email
 
 Groups that SCIM pushes become Collabase groups. You manage their members in Entra, not in Collabase, and you can still give them access to spaces. A group can have up to 1,000 members. More: [Supported group operations](/admin/user-provisioning#supported-group-operations).
 
-### Existing accounts
+### Existing accounts {#existing-accounts}
 
 SCIM never claims an account by email address. If Entra sends a person whose address already belongs to a Collabase account that SCIM did not create, Collabase turns the person away with a conflict. The reason shows under **Recently turned away** in the **SCIM Provisioning** card, together with the last ten rejected people. To bring an existing member under SCIM, change the email address of one of the two accounts and let Entra try again. More: [How existing accounts are handled](/admin/user-provisioning#how-existing-accounts-are-handled).
 
 ### Checkpoint: SCIM
 
-In Entra, select **Provision on demand** for one person of the pilot group. In Collabase, **Admin → Users** now shows the account, and the **Identity** column shows where it came from. If the person is missing, look under **Recently turned away** and in [SCIM problems](#scim-problems).
+<Check>
+  In Entra, select **Provision on demand** for one person of the pilot group. In Collabase, **Admin → Users** now shows the account, and the **Identity** column shows where it came from. If the person is missing, look under **Recently turned away** and in [SCIM problems](#scim-problems).
+</Check>
 
 **Next:** [Phase 5, Test and roll out](#phase-5-test-and-roll-out).
 
-## Phase 5: Test and roll out
+## Phase 5: Test and roll out {#phase-5-test-and-roll-out}
 
 *Phase 5 of 5, about 30 minutes. Previous: [Phase 4](#phase-4-scim). Next: [Keep it running](#keep-it-running).*
 
@@ -314,11 +323,13 @@ In Entra, select **Provision on demand** for one person of the pilot group. In C
   </Step>
 </Steps>
 
-**Checkpoint.** A pilot member signed in, has one account, and loses access when removed. Your setup is complete.
+<Check>
+  **Checkpoint.** A pilot member signed in, has one account, and loses access when removed. Your setup is complete.
+</Check>
 
 **Next:** [Keep it running](#keep-it-running).
 
-## Keep it running
+## Keep it running {#keep-it-running}
 
 Three secrets expire. Put the dates in your calendar now.
 
@@ -330,9 +341,9 @@ Three secrets expire. Put the dates in your calendar now.
 
 Also review **Recently turned away** now and then, and keep the second administrator with a password. Both stay useful long after the rollout.
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
-### Sign-in problems
+### Sign-in problems {#sign-in-problems}
 
 | What the member sees | Cause | What to do |
 |---|---|---|
@@ -344,7 +355,7 @@ Also review **Recently turned away** now and then, and keep the second administr
 
 More causes and answers: [SAML single sign-on](/admin/saml-sso#troubleshooting).
 
-### SCIM problems
+### SCIM problems {#scim-problems}
 
 | What you see in Entra | Cause | What to do |
 |---|---|---|

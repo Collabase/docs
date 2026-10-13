@@ -1,4 +1,5 @@
 ---
+title: "AI model and cost"
 sidebarTitle: "AI Model & Cost"
 description: "Which model to run CollabaseAI on, how many tokens a single question actually uses, and what that adds up to on an instance with 100 users."
 ---
@@ -68,7 +69,7 @@ Input tokens, summed across every step of one turn. Semantic search is off in th
 
 "My open work items", the most common shape of question:
 
-```
+```text
 Step 1   8,200 fixed  +    20 question                        =  8,220
 Step 2   8,220 above  +    30 the lookup  +  500 the results  =  8,750
                                                      Input    = 16,970
@@ -91,7 +92,7 @@ Output stays small on purpose. The assistant is instructed to answer in two to f
 - Of those, 25 percent need no lookup, 55 percent need one, 20 percent run multi-step over about four steps
 - Semantic search is off
 
-```
+```text
 Average per question   0.25 × 8,200  +  0.55 × 17,000  +  0.20 × 32,700
                      = 2,050        +  9,350          +  6,540          = 17,940
 
@@ -107,7 +108,7 @@ So roughly **1.9 million input and 26,000 output tokens per active user per mont
 
 **Assumptions:** 40 of the 100 use the assistant daily as above, the other 60 use it occasionally, around 10 questions a month.
 
-```
+```text
 Heavy users     40 × 1,900,000                    = 76,000,000 input
 Occasional      60 × 10 × 17,940                  = 10,800,000 input
                                           Total   ≈ 87,000,000 input tokens
@@ -117,7 +118,7 @@ Output          40 × 26,000  +  60 × 10 × 250     ≈  1,200,000 output token
 
 Turn that into money with your provider's prices:
 
-```
+```text
 Monthly bill = 87 × (price per million input) + 1.2 × (price per million output)
 ```
 
@@ -138,7 +139,7 @@ On a self-hosted provider the per-token price is zero and the cost is your hardw
 
 ---
 
-## Measuring instead of estimating
+## Measuring instead of estimating {#measuring-instead-of-estimating}
 
 Everything above is arithmetic. **Admin → Settings → AI settings → Usage** is the measurement: it records every model call your instance actually made, with tokens in, tokens out, and cost, broken down by area and by model over the last 7, 30 or 90 days.
 
@@ -152,7 +153,7 @@ Re-ranking, if you use the **Language model** option for it, appears as its own 
 
 ---
 
-## Setting a ceiling
+## Setting a ceiling {#setting-a-ceiling}
 
 The **Limits** card sits on the same Usage page, directly under the figures, so you set a limit next to what is actually being spent. All three are checked before a question reaches the model.
 

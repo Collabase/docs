@@ -1,4 +1,5 @@
 ---
+title: "Search"
 sidebarTitle: "Search"
 description: "Find anything in Collabase instantly — tasks, pages, registry objects, and more — using global search."
 ---
@@ -82,13 +83,13 @@ Advanced search works for **work items** (tasks) and **pages**.
 
 A query is one or more conditions in the form `field operator value`:
 
-```
+```text
 priority = "High"
 ```
 
 Combine conditions with `AND`, `OR`, and `NOT`, and group them with parentheses:
 
-```
+```text
 priority = "High" AND status != "Done"
 (priority = "High" OR priority = "Critical") AND author = "Ada Lovelace"
 ```
@@ -101,7 +102,7 @@ Text values go in quotes. Numbers and dates do not need quotes.
 
 You always filter by the **name or label** you see in the app — never an internal ID. Type a person's name for an assignee, the label for a dropdown option, or the object's name for a registry relation:
 
-```
+```text
 author = "Mitch Davies"
 taskType = "Bug"
 ```
@@ -123,7 +124,7 @@ The operators available depend on the kind of field:
 
 Use `IN` to match any of several values at once:
 
-```
+```text
 status IN ("To Do", "In Progress") AND label IN ("bug", "urgent")
 ```
 
@@ -131,7 +132,7 @@ status IN ("To Do", "In Progress") AND label IN ("bug", "urgent")
 
 Use `IS EMPTY` and `IS NOT EMPTY` to find items where a field has no value or any value:
 
-```
+```text
 author IS EMPTY
 dueDate IS NOT EMPTY
 ```
@@ -140,7 +141,7 @@ dueDate IS NOT EMPTY
 
 Reference a custom field by its key, prefixed with `cf.`. Custom fields support the operators that match their type — for example a number custom field supports ranges, and a dropdown supports `IN`:
 
-```
+```text
 cf.budget > 5000
 cf.stage IN ("Won", "Lost")
 cf.owner IS EMPTY
@@ -158,7 +159,7 @@ For date fields you can use relative offsets and helpers instead of typing a cal
 | `startOfWeek()`, `endOfWeek()` | The current week's boundaries |
 | `currentUser()` | The person running the search |
 
-```
+```text
 dueDate < today() AND author = currentUser()
 ```
 
@@ -176,7 +177,7 @@ For work items, a set of built-in functions answer common questions directly:
 | `hasChildren()` | Have at least one sub-item |
 | `hasStartAndDueDates()` | Have both a start and a due date |
 
-```
+```text
 isOverdue() AND hasNoAssignee()
 ```
 
@@ -184,7 +185,7 @@ isOverdue() AND hasNoAssignee()
 
 End a query with `ORDER BY` to control the order, adding `ASC` or `DESC`:
 
-```
+```text
 status = "In Progress" ORDER BY priority DESC, dueDate ASC
 ```
 

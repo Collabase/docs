@@ -51,7 +51,7 @@ The relay is a single lightweight process. Budget roughly **200–500 MB of RAM*
   If the relay is ever unreachable — it is stopped, out of memory, or still starting — pages fall back to single-writer editing on their own. Collaboration failing never blocks editing.
 </Note>
 
-## Turning it off
+## Turning it off {#turning-it-off}
 
 Collaboration is controlled by one setting: `COLLAB_RELAY_URL`. Clearing it turns collaboration off and stops the relay on the next run.
 

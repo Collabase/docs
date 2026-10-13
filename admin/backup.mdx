@@ -1,4 +1,5 @@
 ---
+title: "Backup and restore"
 sidebarTitle: "Backup & Restore"
 description: "How to back up your Collabase data and restore it when needed. There is no built-in backup UI — backups are run from the command line."
 ---
@@ -17,9 +18,23 @@ All Collabase data — pages, tasks, users, settings, automations, test cases, a
 
 ## Automatic pre-update backups
 
-Every time you run `bash update.sh`, Collabase automatically creates a database backup in `deployment/backups/` before applying the update. These backups are kept for 7 days and then removed automatically. They are intended as a safety net for rollbacks, not as your primary backup strategy. If this backup fails, the update stops before changing anything.
+Every time you run `bash update.sh`, Collabase creates two backups in `deployment/backups/` before it applies the update: a database dump and, with local file storage, an archive of the uploaded files. Both are kept for 7 days and then removed automatically. They are a safety net for rollbacks, not your primary backup strategy.
 
-### Backups before database changes
+<Tree>
+  <Tree.Folder name="deployment" defaultOpen>
+    <Tree.Folder name="backups" defaultOpen>
+      <Tree.File name="collabase-20261013-064318.sql.gz" />
+      <Tree.File name="collabase-files-20261013-064319.tar.gz" />
+    </Tree.Folder>
+  </Tree.Folder>
+</Tree>
+
+- `collabase-<date>-<time>.sql.gz` is the database dump.
+- `collabase-files-<date>-<time>.tar.gz` holds attachments, avatars and shared files. With `STORAGE_DRIVER=s3` there is no such archive, because the files live in the bucket.
+
+If the database backup fails, the update stops before changing anything. If only the file archive fails, the update continues and the script warns that the database dump alone is not a complete backup.
+
+### Backups before database changes {#backups-before-database-changes}
 
 Whenever a new version brings database changes, Collabase backs up the database once more, right before it applies them. This also happens when the update runs on its own at night, without `update.sh`. A restart without database changes takes no backup.
 
@@ -112,7 +127,7 @@ Mount your NAS share on the server and set the backup destination path to the mo
 
 ---
 
-## Restoring from a backup
+## Restoring from a backup {#restoring-from-a-backup}
 
 <Note>
   For the full procedure, including restoring onto a new server, checking the result and what to do when a restore fails, follow the [Restore runbook](/admin/restore-runbook).
@@ -154,7 +169,7 @@ Mount your NAS share on the server and set the backup destination path to the mo
 
 ---
 
-## Trash
+## Trash {#trash}
 
 Before you restore a backup to get back something one person deleted, look in the trash. Go to **Administration → Data & Backup → Trash**. It lists deleted Spaces, projects, pages and work items, and you can filter it by type.
 

@@ -145,7 +145,7 @@ Stores a value under a named key so downstream nodes can reference it by name in
 After this node runs, the value is available anywhere downstream as `{variableName}`.
 
 **Example:**
-```
+```text
 Variable name: taskLink
 Value: https://app.example.com/tasks/{payload.taskKey}
 ```
@@ -320,7 +320,7 @@ Makes a single call to a language model with a prompt you define. Use this for t
 Output: `{stepOutputs.nodeId.content}` contains the model's response text.
 
 **Example:**
-```
+```text
 System: You are a concise technical writer.
 User: Summarize this bug report in one sentence: {payload.description}
 ```

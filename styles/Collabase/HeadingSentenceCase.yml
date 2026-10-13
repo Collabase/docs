@@ -1,0 +1,46 @@
+extends: capitalization
+message: "'%s' should be in sentence case."
+level: suggestion
+scope: heading
+match: $sentence
+indicators:
+  - ":"
+exceptions:
+  - API
+  - AI
+  - Collabase
+  - CollabaseAI
+  - Docs
+  - Projects
+  - Test Management
+  - Automation
+  - Time Tracking
+  - Intranet
+  - Registry
+  - Meetings
+  - Space
+  - Spaces
+  - Object Type
+  - Object Types
+  - HERMES
+  - SAML
+  - SCIM
+  - SSO
+  - OAuth
+  - LDAP
+  - Entra
+  - Microsoft
+  - Okta
+  - Keycloak
+  - Google
+  - GitHub
+  - MCP
+  - Docker
+  - Kubernetes
+  - Swarm
+  - Phase
+  - Option
+  - Enterprise
+  - Edition
+  - Kanban
+  - Scrum

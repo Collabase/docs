@@ -32,10 +32,20 @@ Every automation is a graph of connected nodes. You start with a trigger, add lo
 
 When a trigger fires, the engine runs these steps:
 
-1. **Trigger fires** — the event passes its output fields to every connected downstream node.
-2. **Conditions evaluate** — each condition node checks its rule. If it fails, that branch stops; other branches continue independently.
-3. **Actions execute** — actions run in graph order. Each action receives upstream data and produces its own output.
-4. **Every step is logged** — all runs appear in the **Runs** tab with per-node input, output, and status.
+- **Trigger fires:** the event passes its output fields to every connected downstream node.
+- **Conditions evaluate:** each condition node checks its rule. If it fails, that branch stops; other branches continue independently.
+- **Actions execute:** actions run in graph order. Each action receives upstream data and produces its own output.
+- **Every step is logged:** all runs appear in the **Runs** tab with per-node input, output, and status.
+
+The diagram shows the order.
+
+```mermaid
+flowchart LR
+    T["Trigger fires"] --> C["Conditions evaluate"]
+    C -- "rule passes" --> A["Actions execute"]
+    C -- "rule fails" --> X["Branch stops, other branches continue"]
+    A --> L["Run is logged with input, output and status per node"]
+```
 
 ## Execution statuses
 
@@ -62,7 +72,7 @@ Reference data from any upstream node in your action fields using these syntax f
 Supports dot-notation for nested values (`{payload.task.priority}`) and array indexing (`{stepOutputs.parseResult.items[0].name}`).
 
 **Example:**
-```
+```text
 Task created by: {payload.assignee.name}
 Issue URL: {stepOutputs.createJiraIssue.url}
 Summary: {variableSummary}

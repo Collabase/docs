@@ -45,10 +45,20 @@ In the New Run form, select the milestone from the **Milestone** dropdown before
 
 **After a run is created:**
 
-1. Open the run.
-2. Click the **Milestone** field in the run's sidebar.
-3. Select the milestone from the dropdown.
-4. The run is linked immediately and its results begin contributing to the milestone's metrics.
+<Steps>
+  <Step title="Open the run">
+    Open the run.
+  </Step>
+  <Step title="Open the Milestone field">
+    Click the **Milestone** field in the run's sidebar.
+  </Step>
+  <Step title="Select the milestone">
+    Select the milestone from the dropdown.
+  </Step>
+  <Step title="Check the link">
+    The run is linked immediately and its results begin contributing to the milestone's metrics.
+  </Step>
+</Steps>
 
 A single milestone can have multiple runs linked to it. There is no limit on the number of runs per milestone.
 
@@ -119,3 +129,14 @@ Before shipping a release, open the milestone and check:
 - Are there BLOCKED cases that indicate unresolved environment issues?
 
 If the milestone meets your quality criteria, it is ready to ship. If not, create a follow-up run to address the failures, link it to the same milestone, and re-check the metrics.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Test Suites" icon="arrow-right" href="/test-management/suites">
+    Test suites are hierarchical folders that organize test cases within a project by feature, component, priority or any grouping that fits your team.
+  </Card>
+  <Card title="Test Management" icon="layout-grid" href="/test-management/overview">
+    Test Management is the built-in quality tool: define test cases, run manual tests, record results and track quality across releases with milestones.
+  </Card>
+</CardGroup>

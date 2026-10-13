@@ -1,4 +1,5 @@
 ---
+title: "Hosting and architecture"
 sidebarTitle: "Hosting & Architecture"
 description: "An overview of how Collabase runs on your server — what services are included, what they do, and what resources they use."
 ---
@@ -19,6 +20,18 @@ Collabase starts several services when it launches. Each one has a specific role
 | **Reverse proxy** | Handles HTTPS, routes traffic to the application, enforces security headers and rate limits |
 | **Document processor** | Converts uploaded files (PDFs, Word documents, etc.) and generates printable exports |
 | **Collaboration relay** | Syncs live edits, cursors, and presence between people on the same page. Runs by default; [live collaboration](/docs/collaboration) can be turned off |
+
+The diagram shows how the services connect. The reverse proxy is the only entry point from the network.
+
+```mermaid
+flowchart LR
+    People["People in the browser"] --> Proxy["Reverse proxy<br/>HTTPS, security headers, rate limits"]
+    Proxy --> App["Application"]
+    Proxy -. "live edits, if enabled" .-> Collab["Collaboration relay"]
+    App --> DB[("Database")]
+    App --> Queue["Queue<br/>background jobs"]
+    App --> Docs["Document processor"]
+```
 
 All services run as isolated processes with restricted permissions. None of them have access to your host system beyond what they need to function.
 
@@ -43,7 +56,7 @@ To match resources to your team size — and to move the database, uploads, or t
 
 ---
 
-## Disk usage
+## Disk usage {#disk-usage}
 
 | What | Typical size |
 |---|---|
@@ -77,7 +90,7 @@ If you use an IP address or `localhost`, a self-signed certificate is used inste
 
 Authentication endpoints are rate-limited to prevent brute-force login attempts. If a single IP address sends too many login requests in a short period, further requests from that address are temporarily blocked. This happens automatically — no configuration is required.
 
-### Calendar subscriptions in access logs
+### Calendar subscriptions in access logs {#calendar-subscriptions-in-access-logs}
 
 People can subscribe to their meetings in Outlook, Apple Calendar or Google Calendar. The secret of such a subscription is part of its web address, so anyone who can read your access logs could copy it. If your proxy writes access logs, leave the address out for these requests.
 
@@ -127,7 +140,7 @@ Updates are applied with a single command that handles everything automatically.
 
 ---
 
-## Monitoring your installation
+## Monitoring your installation {#monitoring-your-installation}
 
 To check whether all services are running:
 
@@ -143,7 +156,7 @@ docker compose -f deployment/docker/docker-compose.release.yml logs <service-nam
 
 ---
 
-## Usage statistics
+## Usage statistics {#usage-statistics}
 
 Collabase can report how the product is used, so we can see which features are worth improving and
 what the built-in AI costs to run. This is switched **off** after installation. Nothing is reported

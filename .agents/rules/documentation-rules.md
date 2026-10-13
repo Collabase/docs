@@ -10,6 +10,22 @@ write or edit any page.
 It lives next to the docs themselves, so it is identical in both places the docs exist (see below).
 If you find it contradicting anything else, this file wins and the other file is the bug.
 
+### Where to look
+
+| You are about to | Read |
+|---|---|
+| Write or edit any page | §2 audience, §5 structure, §6 voice, §7 terms, §23 quality bar |
+| Pick a component | §9 and §19 (catalog with when and when not) |
+| Set frontmatter, titles, descriptions | §4 and §20 |
+| Add a screenshot, image or download | §10, §17, §21 |
+| Build a guide or a setup page | §16 |
+| Change navigation or `docs.json` | §11 and §22 |
+| Write a release note | §12 |
+| Use color or the palette | §25 |
+| Translate to German | §14 and §15 |
+| State a fact about the product | §18 |
+| Check your work before the PR | §13 and §24 |
+
 ---
 
 ## 1. Where the docs live and how they ship
@@ -72,8 +88,11 @@ registry/              # Registry app
 admin/                 # Administration pages
 api/                   # API reference pages
 developer/             # Developer guides
-changelog/             # Release notes
+changelog/             # Release notes (one page, one <Update> per release)
 images/                # Screenshots (PNG only, named after the app)
+snippets/              # Reusable text blocks, imported by pages (§19)
+scripts/               # check-docs.mjs and docs-check.sh (§24), never published
+styles/, .vale.ini     # Vale prose rules (§24), never published
 ```
 
 ### Where a new page belongs
@@ -86,7 +105,7 @@ images/                # Screenshots (PNG only, named after the app)
 | Admin setup page for one area | `admin/` | `admin/saml-sso.mdx` |
 | Admin guide (journey across pages or systems) | `admin/`, listed in the Guides tab | `admin/iam-microsoft-entra.mdx`, see §16 |
 | API endpoint | `api/<group>/` | `api/automation/trigger-automation.mdx` |
-| Release note | `changelog/` | `changelog/v0-10-0.mdx` |
+| Release note | `changelog/overview.mdx` | One `<Update>` entry at the top, see §12 |
 
 After creating a page, register it in `docs.json` (see §10). A page that is not in `docs.json` does
 not exist on the site.
@@ -196,7 +215,7 @@ Use these consistently on every page.
 | Term | Not |
 |---|---|
 | Space | workspace, project, organisation |
-| Member | user, account |
+| Member | Use for a person in a Space. `user` is allowed for an account, a role and UI names (**Admin → Users**, the role **User**). Do not use both words for the same thing in one sentence. |
 | Collabase Docs | "Docs app", "wiki" |
 | Test Management | "test module", "QA tool" |
 | Automation | "workflow engine", "the automations" |
@@ -205,6 +224,8 @@ Use these consistently on every page.
 | Schema | "data model", "template" |
 | Object Type | "entity", "table" |
 | Object | "record", "entry", "item" |
+
+`workspace`, `wiki` and `entity` are never used for Collabase concepts. `record` is allowed only for a test or time record, never for an Object.
 
 ---
 
@@ -257,7 +278,7 @@ Use Mintlify components intentionally, not decoratively.
 | `<Note>` | Clarification that is not a warning |
 | `<Warning>` | Something destructive, or that breaks the feature if missed |
 | `<Tip>` | Optional best practice or shortcut |
-| `<img>` (not `![]()`) | App logo on overview pages only — always `width="60"` |
+| `<img>` (not `![]()`) | App logo on overview pages: `width="60"`. Every other image is sized with `className`, see §21 |
 
 A page with plain prose and one `<Steps>` block beats a page with five component types.
 
@@ -356,9 +377,16 @@ Add a new page's slug to the correct `group` → `pages` array:
   live under `de/` with the same file name as the English page. A path appears in exactly one
   language. German currently covers the home page, the guides (getting started, HERMES, glossary,
   «Warum es Collabase gibt»), the guide «IAM mit Microsoft Entra ID» and security and privacy; the app reference is English only.
-- **Tabs (en):** Guides · User guide · Administration · Security and privacy · API Reference ·
-  Developer · Release Notes. Guides start with the group «Welcome» (`index`, `introduction`,
-  `about/story`, `glossary`); `index` stays in the navigation so it appears in the sitemap.
+- **Header (en):** four items, three of them dropdowns (`menu` on the tab): **Guides** (Welcome,
+  Getting started, User guide, HERMES, IAM with Microsoft) · **Administration** · **Reference**
+  (API reference, Developer) · **Resources** (Security and privacy, Release notes). German has
+  **Leitfäden** (Willkommen, Erste Schritte, HERMES, IAM mit Microsoft) and **Sicherheit und
+  Datenschutz**. A new guide is a new item in the Guides dropdown, with its own group. A new top-level
+  tab needs a reason, the header must stay short. A tab either has `groups` or a `menu`, never both.
+  The Welcome item holds `index`, `introduction`, `about/story` and `glossary`; `index` stays in the
+  navigation so it appears in the sitemap.
+- **Language switch.** Each language block has its own `navbar` with a link to the other language
+  and the same primary button. The home pages repeat the link at the top right.
 - **Removing a page** always adds an entry under `redirects` to its successor. Indexed URLs must
   not end in a 404.
 - Do not touch theme, colors, logos, or navigation groups in a content PR.
@@ -369,20 +397,64 @@ Add a new page's slug to the correct `group` → `pages` array:
 
 **Paused until Collabase 1.0.** The pre-1.0 release notes were removed; `changelog/overview` says
 that release notes start with 1.0 and the old version URLs redirect to it. Do not add entries before
-1.0. From 1.0 on: every user-facing change gets an entry under `changelog/`. Release notes are customer-facing — hold
+1.0. From 1.0 on: every user-facing change gets an entry. Release notes are customer-facing, hold
 them to a higher bar than a page.
 
 **Never auto-generate release notes or changelogs.** Skills, commands, and agents must not write,
-update, or append a release note or changelog entry on their own initiative — not as a side effect of
-another task, not "to be helpful". Write one only when the user explicitly asks for it. When a change
+update, or append a release note or changelog entry on their own initiative, not as a side effect of
+another task, not "to be helpful". Write one only when the user explicitly asks. When a change
 would warrant a release note, flag that it is due and let the user decide; do not create it unprompted.
 
-Use these categories, in this order. Omit a category that has no entries.
+### Format: the Mintlify changelog standard
 
-1. `### ✨ New features & improvements`
-2. `### 🎨 Layout & UX`
-3. `### 🛠 Stability & Maintenance`
-4. `### 🔒 Security & Vulnerabilities`
+Release notes use the changelog format of Mintlify, with labels, category tags and an RSS feed.
+
+- **One page.** `changelog/overview.mdx` holds every release, newest first. There is no page per
+  release, so `docs.json` does not change when you add one. Keep the page in the default page mode:
+  `custom`, `center` and `wide` hide the tag filters and the table of contents.
+- **Frontmatter** has `rss: true`, which shows the RSS button.
+- **One `<Update>` per release:**
+
+  | Prop | Content |
+  |---|---|
+  | `label` | Month and year, for example `October 2026`. Becomes the entry in the table of contents. |
+  | `description` | The version, for example `v1.0.0` |
+  | `tags` | The categories this release has, from the fixed set below |
+  | `rss` | Only if the entry has components or code: an object `{ title, description, date }` with plain text for subscribers |
+
+- **Categories** are the tags, in this order, and the same words are the `###` headings inside the
+  entry. Omit a category with no entries.
+
+  | Tag and heading | What goes in |
+  |---|---|
+  | `New features` | New capabilities and improvements |
+  | `Layout & UX` | Changes to screens and workflows |
+  | `Stability` | Fixes, performance, maintenance |
+  | `Security` | Vulnerabilities and security updates |
+
+- **Filters and feed.** Readers filter by tag, several tags combine as AND, and the filter lives in
+  the URL as `?tags=`. The feed is the page address plus `/rss.xml`, and it exists only on public
+  docs. It contains plain Markdown only: components, code and HTML are left out, so every entry must
+  read well without them. The feed publishes when you add an `<Update>` or change a heading of an
+  existing one, so leave old headings alone.
+
+```mdx
+<Update
+  label="October 2026"
+  description="v1.0.0"
+  tags={["New features", "Security"]}
+  rss={{ title: "Collabase 1.0.0", description: "What changed for administrators in one plain sentence." }}
+>
+  ### New features
+
+  - One line per change, written for an administrator.
+
+  ### Security
+
+  - Performed routine security updates and patched non-critical third-party dependencies in the
+    backend and AI services.
+</Update>
+```
 
 **No stack details.** For stability or layout updates, never list dependency bumps by library name
 ("Updated React to 18.3"). Summarize generically.
@@ -391,13 +463,10 @@ Use these categories, in this order. Omit a category that has no entries.
 `playwright`). Name a production third-party library only for critical, widely known
 vulnerabilities. Otherwise summarize by affected component.
 
-**Every new release note must be registered twice:** in the `Release Notes` group in `docs.json`,
-and as a `<Card>` on `changelog/overview.mdx`.
-
-### Security format — with CVEs
+### Security format, with CVEs
 
 ```md
-### 🔒 Security & Vulnerabilities
+### Security
 
 | Vulnerability / CVE | Severity | Affected Component / Description |
 |---|---|---|
@@ -405,10 +474,10 @@ and as a `<Card>` on `changelog/overview.mdx`.
 | Third-Party | Medium | Patched a vulnerability in a third-party AI module to prevent potential data leakage. |
 ```
 
-### Security format — routine maintenance
+### Security format, routine maintenance
 
 ```md
-### 🔒 Security & Vulnerabilities
+### Security
 
 * Performed routine security updates and patched non-critical third-party dependencies in the
   backend and AI services.
@@ -419,9 +488,13 @@ and as a `<Card>` on `changelog/overview.mdx`.
 ## 13. Before you open the PR
 
 ```bash
-npm i -g mint      # once
-mint dev           # preview at localhost:3000
-mint broken-links  # every internal href must resolve
+npm i -g mint                   # once
+mint dev                        # preview at localhost:3000
+npm run docs:check              # in the product repo, runs everything below
+mint validate                   # strict build check
+mint broken-links --check-anchors
+mint a11y                       # contrast and alt text
+scripts/check-docs.mjs          # frontmatter, structure, style (§24)
 ```
 
 Checklist:
@@ -432,9 +505,11 @@ Checklist:
 - [ ] Terminology matches §7
 - [ ] Procedures use `<Steps>`
 - [ ] New pages registered in `docs.json`
-- [ ] `mint broken-links` is clean
+- [ ] `mint validate` and `mint broken-links --check-anchors` are clean
+- [ ] `scripts/check-docs.mjs` and Vale report nothing new (§24)
 - [ ] No folder moved, renamed, or restructured
-- [ ] Every `#anchor` link matches a heading, and every guide phase links to the next one (§16)
+- [ ] Every linked heading has an explicit `{#custom-id}`, and every guide phase links to the next one (§16)
+- [ ] The page meets the quality bar (§23) and uses components as in §19
 - [ ] Screenshots are named, redacted and resized as in §17
 - [ ] Statements about behavior are checked against the product, estimates are labeled (§18)
 - [ ] The German twin is updated where one exists (§15)
@@ -767,8 +842,8 @@ source and the guide is the bug.
 5. **Phases.** Each phase has the same parts, in this order:
    - a line in italics: *Phase n of N, about x minutes. Previous: link. Next: link.*
    - the work, in `<Steps>`, with exact UI labels in bold;
-   - a **Checkpoint** that says what the admin sees when the phase worked, and where to go if it did
-     not;
+   - a `<Check>` titled **Checkpoint** that says what the admin sees when the phase worked, and where
+     to go if it did not;
    - a **Next** link.
 6. **Keep it running.** A table of everything that expires or needs a recurring look: secrets,
    certificates, tokens, licences.
@@ -810,8 +885,10 @@ source and the guide is the bug.
   operations pages sit in the Administration tab under **Members and access**.
 - Each setup page opens with a `<Tip>` that links to the guide, and each guide links to the pages it
   relies on.
-- Headings create the anchors: lowercase, punctuation removed, spaces turned into hyphens. Keep the
-  headings stable. When you rename one, search for links to it.
+- Mintlify builds anchors from the heading text with its own rules, not GitHub's. Do not guess them:
+  give every heading that is linked, or that contains punctuation, an explicit `{#custom-id}`, for
+  example `## Phase 1: Plan {#phase-1-plan}`. The id stays when you reword the heading. Check links with
+  `mint broken-links --check-anchors`.
 
 ---
 
@@ -853,12 +930,12 @@ Open the finished file at full size and read it once before you copy it into `im
 
 ```mdx
 <Frame caption="One sentence that says what the reader sees.">
-  <img src="/images/iam-saml-settings.png" alt="What the screenshot shows" width="420" />
+  <img src="/images/iam-saml-settings.png" alt="What the screenshot shows" className="w-[420px]" />
 </Frame>
 ```
 
 - Use `<img>`, not `![]()`. Describe the content in `alt`.
-- Give tall panels `width="420"`. Wide pages need no width.
+- Give tall panels `className="w-[420px]"`. Wide pages need no size. Do not use the `style` prop.
 - Inside a `<Step>`, indent the frame with the step text.
 - When a label on a screen changes, replace the screenshot in the same change (see
   `.agents/rules/docs-update.md` in the product repo).
@@ -884,5 +961,253 @@ before it ships. A page that is well written and wrong costs more than a page th
 - A setting an admin cannot change in the UI is described as fixed, with its value.
 - What you cannot verify, leave out or label as an estimate. Name the unverified items in the pull
   request.
-- Check every internal link and every `#anchor` before the pull request. Do not rely on
-  `mint broken-links` for anchors, compare each one with the headings of its target page.
+- Check every internal link and every `#anchor` with `mint broken-links --check-anchors` before the
+  pull request.
+
+---
+
+## 19. Components: when to use which
+
+Mintlify ships a fixed set of components. Use the one that fits the job, and never two to say the same
+thing. One emphasis device per paragraph. Components without `className` support: Banner, MDX,
+Visibility. Style with Tailwind classes written out in full (`className="w-[420px]"`), never with the
+`style` prop, which can shift the layout on load.
+
+| Component | Use it when (example in our docs) | Do not use it when | Props that matter |
+|---|---|---|---|
+| `Steps`, `Step` | A procedure with an order: Option A OAuth, connecting SCIM | The items have no order | `title` on each step, `id` for a deep link |
+| `Tabs`, `Tab` | The same task in another environment: install the desktop app on macOS, Windows, Linux | You need each variant as a heading with an anchor, or the variants differ in more than a few lines | `title`, `sync` (same titles switch together), `defaultTabIndex` |
+| `CodeGroup` | The same command per shell or platform, every block has a title | One command | a title on every code block, `dropdown` |
+| `View` | A long page whose steps differ per variant: Docker, Swarm, Kubernetes. Sparingly. | Short differences, use Tabs | `title`, `icon`; one View per variant, the table of contents follows it |
+| `Accordion`, `AccordionGroup` | FAQ, optional depth, more than six troubleshooting entries | Steps the reader must do | `title`, `defaultOpen`, `description` |
+| `Expandable` | Nested fields in an API response | Prose | `title`, `defaultOpen` |
+| `Note` | A neutral clarification | A warning | none |
+| `Info` | Context the reader may need: edition, background | An instruction | none |
+| `Tip` | An optional shortcut or best practice | Something required | none |
+| `Warning` | Something breaks, is a security risk or cannot be undone: the token is shown once | A harmless remark | none |
+| `Danger` | Data is lost for good: anonymize an account, delete | Anything less | none |
+| `Check` | The checkpoint at the end of a guide phase, and any "this is what success looks like" | Prose | none |
+| `Card`, `Columns` | Next steps, related pages, the app overview. Use `horizontal` for lists of links | Body text | `title`, `icon`, `href`, `horizontal`, `cols` (1 to 4) |
+| `Tile` | A gallery with a preview image: templates, HERMES scenarios | No preview image exists | `href`, `title`, `description`; light and dark image |
+| `Frame` | Every screenshot, with a `caption` | Logos and icons | `caption`, `hint` |
+| `Tooltip` | A term at its first use, linked to the glossary: SCIM, Space | An explanation the reader needs to continue | `tip`, `headline`, `cta`, `href` |
+| `Badge` | A status in a table or a heading: Enterprise, Beta, deprecated | Running text | `color`, `size`, `shape`, `stroke` |
+| `Update` | Release notes, only there (§12) | Any other list | `label`, `description`, `tags`, `rss` |
+| `Prompt` | A copyable instruction for an AI tool: the example questions in the CollabaseAI skills, the setup text for an agent | Normal commands | `description`, `actions` (`copy`, `cursor`) |
+| `Icon` | A UI button in a step, with the lucide icon the product shows | Decoration | `icon`, `size` |
+| Mermaid | A flow, a state or an architecture that a table cannot show: permission fallback, meeting lifecycle, sign-in flow, hosting. Always with a sentence that says what it shows. | A table is enough | the fence prop `actions`, `placement` |
+| `Tree` | A folder layout: deployment package, backup folder, bucket | Menu paths | `Tree.Folder`, `Tree.File`, `defaultOpen`, `highlight` |
+| `Panel` | API pages that pin `RequestExample` and `ResponseExample` | Concept pages | none |
+| `Visibility` | Text only for AI agents, such as an exact path. Very sparingly, never for anything a person needs | Hiding sensitive content, it still reaches the browser | `for="humans"` or `"agents"` |
+| `Banner` | A site-wide notice, set per language in `docs.json` | Inside a page | `content`, `dismissible`, `type` |
+| `ParamField`, `ResponseField`, `RequestExample`, `ResponseExample` | The API reference (`api/`) | Admin and user pages | `path`/`body`/`query`/`header`, `type`, `required` |
+| `Color`, `GitHub`, `MDX`, `Callout` | Not used. The repository is private, and the typed callouts above cover every case | | |
+
+### Choosing a callout
+
+Ask in this order: does something break or leak, then `Warning`. Is data lost for good, then `Danger`.
+Is it a success state, then `Check`. Is it optional, then `Tip`. Is it background, then `Info`.
+Otherwise `Note`. More than two callouts on a screen means the text needs restructuring.
+
+### Reuse: snippets
+
+A statement that appears on three or more pages lives once in `snippets/` and is imported. The tag
+name starts with a capital letter, and a nested snippet imports its own children.
+
+| Snippet | Content | Props |
+|---|---|---|
+| `EnterpriseNote` | One line that the feature is part of the Enterprise Edition | none |
+| `WhoCanDoThis` | The two-row **Role** and **Edition** table | `role`, `edition` |
+| `TokenShownOnce` | The warning that a token is shown only once | `days` |
+
+Values from an imported expression do not appear to crawlers and AI tools, so write facts that
+matter as plain text and use snippets for text blocks only.
+
+---
+
+## 20. Frontmatter
+
+Every page has `title` and `description`. The other fields are used where they help.
+
+| Field | Use | Example |
+|---|---|---|
+| `title` | Required. Unique across the site, sentence case. Becomes the H1 and the browser title | `"SAML single sign-on"` |
+| `sidebarTitle` | A shorter label in the navigation | `"Overview"` |
+| `description` | Required. One sentence in the present tense, at most 160 characters, unique. It is also the text in `llms.txt`, which uses the first paragraph up to 300 characters | |
+| `icon` | An icon next to the page in the sidebar. Only for hub pages | `icon: "key-round"` |
+| `tag` | A label next to the title in the sidebar: `Enterprise`, `Beta` | `tag: "Enterprise"` |
+| `keywords` | Search terms that the text does not contain, as an array | `keywords: ["SAML", "SSO", "Entra"]` |
+| `boost` | Raises the page in the site search, 0.1 to 10. Entry points get 2 to 5, legacy pages below 1 | `boost: 3` |
+| `hideFooterPagination` | Hides the previous and next links on landing and changelog pages | `true` |
+| `deprecated` | Marks a legacy page. Remove it from the navigation later with a redirect | `true` |
+| `hidden` | Removes the page from the navigation and the search. Never write `false`, remove the line instead | `true` |
+| `noindex`, `searchable` | `noindex: true` keeps a page out of search engines. `searchable: false` keeps it out of the site search only | |
+| `contextual` | Overrides the page menu. `options: []` switches it off on the home page | |
+| `timestamp`, `lastUpdatedDate` | The "last modified" line comes from Git. Set `lastUpdatedDate` only for content that Git does not date | `"2026-10-13"` |
+| `thumbnail`, `og:image` | A custom social preview. Meta tags with a colon need quotes | `"og:image": "https://…"` |
+| `rss` | Only on the release notes page: shows the RSS button | `true` |
+| `mode` | Default for pages. `custom` only for the home pages. The release notes page stays in the default mode so tags and the table of contents work | |
+
+Not used: `related` (needs a paid add-on), `groups` (needs authentication).
+
+---
+
+## 21. Images, files and downloads
+
+- **Format:** PNG for screenshots, SVG for diagrams without `foreignObject` (export with formatted text
+  switched off), at most 20 MB per file. Alt text always describes what the image shows.
+- **Size:** `className="w-[420px]"` for narrow panels. No `style` prop.
+- **Zoom:** images zoom on click. Add `noZoom` to logos and to images that are links.
+- **Light and dark:** two files, `block dark:hidden` and `hidden dark:block`, when the image has a
+  background that clashes with the other mode.
+- **Decoration:** a purely decorative image sits inside an element with `aria-hidden="true"` and
+  still has a short `alt`, because `mint a11y` rejects an empty one. No image has `alt=""`.
+- **Home page backdrop:** Tailwind classes only, hidden below the `md` breakpoint.
+- **Files:** Mintlify serves images, video, audio, JSON, YAML, CSS, JS and fonts. PDF, TXT, XML, CSV
+  and ZIP need the Enterprise plan. Installers (`.dmg`, `.exe`, `.pkg`, `.msi`, `.AppImage`) are not
+  supported at all.
+- **Downloads:** installers and the deployment package are never part of the docs. Link to
+  `https://collabase.ch/en/download` (German: `https://collabase.ch/download`). Never link to the
+  private GitHub repository.
+- **Unused files:** an image that no page uses is deleted in the same change that removes its last use.
+
+---
+
+## 22. `docs.json`
+
+Change it only for a reason, and say the reason in the pull request. What we set, and why:
+
+| Setting | Value or policy |
+|---|---|
+| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: almond, gold, Outfit and Geist, lucide, grid |
+| `description` | One sentence about Collabase for search engines and AI tools |
+| `seo.metatags`, `seo.organization` | `og:site_name`, `twitter:card`, the organization with logo |
+| `thumbnails` | Preset `headline`, eyebrow from the tab |
+| `search.prompt` | The placeholder in the search field |
+| `styling.eyebrows` | `breadcrumbs` |
+| `errors.404` | A short text with a link to the home page |
+| `footer.links` | Website, Trust center, Download, Support. Social profiles only when they exist |
+| `navigation.languages[].navbar` and `.banner` | Language link per language, and the German notice that the app reference is English |
+| `contextual.options` | `copy`, `view`, `chatgpt`, `claude`, `perplexity`, `mcp`, `add-mcp`, `cursor`, `vscode`. Never `download-pdf` (Enterprise) or `download-spec` (needs OpenAPI) |
+| `markdown.instructions` | Two lines for AI agents: UI labels are English, Enterprise features are marked |
+| `variables` | Not used. The link checker does not resolve `{{name}}` in a link target, so links hold the address |
+| `metadata.timestamp` | On |
+| `redirects` | One per removed page, see §11 |
+| `integrations` | Analytics only behind the consent key, see §15 |
+
+Navigation limits: at most seven header items (we have four), a label of at most four words, verbs
+for tasks and nouns for reference. A group can open a `root` page, and `directory` can list its
+children as cards. `tag` marks Enterprise or Beta groups. Only one kind of child per level.
+
+Not configured because the plan does not offer them: page feedback, the assistant, analytics, CI
+checks of Mintlify. The rules describe our own checks in §24.
+
+---
+
+## 23. Quality bar
+
+A page is done when a reader can finish the task with it and nothing else. Check these before the
+pull request. They apply to every page, in English and German.
+
+1. **One job.** The page answers one question or does one task. The title says which.
+2. **Answer first.** The first paragraph holds the result and who needs it, not history.
+3. **Prerequisites and result.** Every procedure names what you need, says what you see afterwards,
+   and says what to do when it does not work.
+4. **Concrete.** Values, limits, menu paths, defaults. No "easily", "various", "several".
+5. **Verified.** Every statement about the product passed §18.
+6. **Structure.** Headings are tasks or questions in sentence case, no level is skipped, a paragraph has
+   two to four sentences, a sentence has about 25 words or fewer, a term means one thing.
+7. **Scannable.** Settings and options are in tables with a header row, steps are in `<Steps>`,
+   code blocks have a language and, in groups, a title.
+8. **Linked.** The first use of a term links to its page or glossary entry. The page ends with
+   **Next steps** or **Related**. A link text names the target, never "here".
+9. **Failure.** A page with something that can go wrong has a **Troubleshooting** section built from
+   real messages in `src/dictionaries/en.json`.
+10. **Accessible.** Alt text, table headers, no information only in color or in an image.
+11. **Findable.** Unique `title`, `description` in 160 characters or fewer, `keywords` for terms the
+    text does not use.
+12. **Readable by machines.** Descriptive link text, code language on every block, the fact as text
+    and not only in a screenshot or a diagram.
+
+Mintlify's four page types map onto ours: how-to and tutorial are guides and setup pages, concept
+and reference are operations pages and reference pages (§16).
+
+---
+
+## 24. Checks and tools
+
+The Mintlify plan we use has no CI checks, so we run our own, locally and in the product repo.
+
+| Check | Command | What it finds |
+|---|---|---|
+| Build | `mint validate` | A page or `docs.json` that does not build |
+| Links and anchors | `mint broken-links --check-anchors` | Dead internal links and anchors |
+| Accessibility | `mint a11y` | Contrast and missing alt text |
+| Score | `mint score https://collabase.ch/docs` | AI readiness of the live site, such as the `robots.txt` rules. Run it after a deploy, it needs the published URL |
+| Structure and style | `scripts/check-docs.mjs` | Errors: missing, long or duplicate title and description, H1 in the body, skipped heading levels, em dashes in added text, numbered lists outside `<Steps>`, code without language, images without alt or unused, undefined variables, missing snippets, pages and navigation that do not match, German pages without an English page. Warnings: pages without links, orphans, a German twin that did not change with its English page |
+| Prose | `vale .` | Forbidden words, headings not in sentence case, banned terms |
+| All of it | `npm run docs:check` in the product repo | Runs build, links and anchors, accessibility, structure and prose in one go |
+
+- `mint a11y` also scores the brand colors. The primary gold `#b79b65` has a contrast of 2.48:1 on the light
+  background, below the 4.5:1 of WCAG AA. `docs-check.sh` reports that result and fails only on findings
+  such as missing alt text. Changing the brand color is a decision for the brand owner, not for a docs change.
+- Vale is configured in `.vale.ini` with the style in `styles/Collabase/`. A word that is correct but
+  flagged goes into `styles/config/vocabularies/Collabase/accept.txt`. Switch Vale off for a block with
+  `{/* vale off */}` and `{/* vale on */}`, never between two `<Step>` elements.
+- `scripts/`, `styles/` and `.vale.ini` are listed in `.mintignore` and are never published.
+- The `docs` job in `.github/workflows/ci.yml` of the product repo runs `docs/docs/scripts/docs-check.sh`
+  for every pull request that changes `docs/docs/`. `scripts/ci-changes.sh` decides when it runs.
+- Em dashes: new and changed text has none. Old pages lose them when someone edits them, there is no
+  sweep.
+
+---
+
+## 25. Color
+
+Gold is the brand. Green is a signal. The surface decides which color a piece of interface gets, not
+the element. The palette and the rules follow the website.
+
+| Color | Hex | Use |
+|---|---|---|
+| Gold | `#b79b65` | Structure: lines, icons, buttons, the end of a headline |
+| Lime | `#ccfc75` | Neon, on dark only |
+| Green | `#77f355` | Neon, on dark only |
+| Mint | `#1ae299` | Neon, on dark only |
+| Sage 1, 2, 3 | `#dfe9c0`, `#c9dfae`, `#b5d2a0` | Light content surfaces |
+| Dark text on sage | `#3f5a2e` | The only green that is allowed as text on light |
+| Dark text on neon | `#10200a` | Text on a lime, green or mint fill |
+
+| Surface | Color | What exactly |
+|---|---|---|
+| Action surfaces: hero, buttons | Gold | Buttons, lights, icons. Unchanged, it comes from `docs.json` |
+| Light content sections | Sage | Exactly three roles: section marker, headline marker (one word per section), icon box. Everything else is neutral: arrows, numbers, plus signs, menu icons |
+| Dark surfaces | Neon | Text, check marks, pills and tags |
+
+- One gradient exists: lime, green, mint, and only on a dark surface. A gradient never runs from gold into
+  green, the middle turns olive.
+- Never sage on dark, never neon on light, never a green fill in the same block as the gold button.
+- Green is not a text color on light. Use the dark text tone from the table, or a fill with dark text.
+- Small gold text, such as the eyebrow above a headline, uses the dark gold `#7a663e` on light (5.5:1) and gold on dark.
+- Gold is not a text color for body text: it reaches 2.66:1 on white, below the 4.5:1 of WCAG AA. It is
+  fine for large display text, lines, icons and fills.
+
+| Pair | Contrast | Verdict |
+|---|---|---|
+| `#3f5a2e` on sage 1, 2, 3 | 6.1, 5.4, 4.7 | passes AA |
+| `#10200a` on lime, green, mint | 14.4, 12.0, 10.0 | passes AAA |
+| Lime text on `#0b0f0a` | 16.3 | passes AAA |
+| Gold text on white | 2.66 | fails AA, so not for body text |
+
+### How the docs apply it
+
+The colors live in `style.css` as variables, and Mintlify loads that file on every page. The docs are
+light by default and dark on request, so each rule has a light and a dark form.
+
+| Piece | Light | Dark | How |
+|---|---|---|---|
+| Headline marker | Sage fill, dark green text | Lime text, no fill | `<span className="brand-marker">word</span>`, one word per section |
+| Icon box of a card | Sage tile | Lime outline and icon | `className="brand-cards"` on the `Columns` that holds the cards. Not on cards with an image icon |
+| Sidebar tag | Sage | The neon gradient with dark text | `tag` in frontmatter or on a group |
+| Green `Badge` | Sage 1 | Lime fill | `<Badge color="green">`, the only badge color with the brand |
+
+Not used: green in callouts, in links or in code blocks. Hero and buttons stay gold.

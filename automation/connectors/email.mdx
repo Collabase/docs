@@ -24,7 +24,7 @@ Configure your SMTP server in **Admin Settings → Mail** before using this conn
 
 ## Example
 
-```
+```text
 [Trigger: Task Status Changed → Done]
     ↓
 [Email: Send Email]
@@ -32,3 +32,17 @@ Configure your SMTP server in **Admin Settings → Mail** before using this conn
     subject: Task completed: {{task.title}}
     html: <p>Your task <strong>{{task.title}}</strong> is now complete.</p>
 ```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Connectors overview" icon="layout-grid" href="/automation/connectors/overview">
+    All connectors for Collabase Automation by category: communication, calendar, storage, CRM and finance, developer tools, Swiss ERP and HR, AI.
+  </Card>
+  <Card title="Actions" icon="arrow-right" href="/automation/actions">
+    Action nodes perform operations when an automation runs.
+  </Card>
+  <Card title="Triggers" icon="arrow-right" href="/automation/triggers">
+    Triggers are the starting point of every automation.
+  </Card>
+</CardGroup>

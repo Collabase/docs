@@ -21,7 +21,7 @@ Transform nodes reshape data in-flight between steps. No external service is cal
 
 ## Example — format a date for a German-speaking audience
 
-```
+```text
 [Transform: Format Date]
     date: {{eventStartTime}}
     locale: de-CH
@@ -31,10 +31,24 @@ Transform nodes reshape data in-flight between steps. No external service is cal
 
 ## Example — filter completed tasks from an array
 
-```
+```text
 [Transform: Filter Array]
     array: {{tasks}}
     field: status
     value: DONE
 → outputs only tasks where status === "DONE"
 ```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Connectors overview" icon="layout-grid" href="/automation/connectors/overview">
+    All connectors for Collabase Automation by category: communication, calendar, storage, CRM and finance, developer tools, Swiss ERP and HR, AI.
+  </Card>
+  <Card title="Actions" icon="arrow-right" href="/automation/actions">
+    Action nodes perform operations when an automation runs.
+  </Card>
+  <Card title="Triggers" icon="arrow-right" href="/automation/triggers">
+    Triggers are the starting point of every automation.
+  </Card>
+</CardGroup>

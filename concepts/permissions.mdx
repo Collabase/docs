@@ -1,4 +1,5 @@
 ---
+title: "Permissions"
 sidebarTitle: "Permissions"
 description: "How access control works in Collabase — two independent permission worlds: global modules and space modules, each with their own roles and schemes."
 ---
@@ -9,16 +10,16 @@ Collabase uses two independent permission worlds. Understanding both helps you g
 
 ## Two permission worlds
 
-```
-┌────────────────────────────────────────────────────────┐
-│  GLOBAL MODULES — apply instance-wide                  │
-│  Registry · Automation · Intranet · Time Reports       │
-│  Access is granted to Groups by module, not per space  │
-├────────────────────────────────────────────────────────┤
-│  SPACE MODULES — governed by a Permission Scheme       │
-│  Projects · Docs · Test Management · Blog              │
-│  One Scheme covers all modules inside a space          │
-└────────────────────────────────────────────────────────┘
+The diagram shows the two worlds: global modules apply to the whole instance, space modules follow the <Tooltip tip="A reusable template that defines what Managers, Members and Viewers can do in a Space." cta="Glossary" href="/glossary#permission-scheme">Permission Scheme</Tooltip> of each Space.
+
+```mermaid
+flowchart TB
+    subgraph Global["Global modules: apply instance-wide"]
+        G["Registry, Automation, Intranet, Time Reports<br/>Access is granted to Groups by module, not per Space"]
+    end
+    subgraph SpaceWorld["Space modules: governed by a Permission Scheme"]
+        S["Projects, Docs, Test Management, Blog<br/>One Scheme covers all modules inside a Space"]
+    end
 ```
 
 **System Admins** bypass both worlds — they have full access to everything, everywhere.
@@ -100,7 +101,7 @@ The rule's creator always has all permissions. You can share specific permission
 
 ---
 
-## Space roles
+## Space roles {#space-roles}
 
 Within each space, every member has one of four roles. The Space Admin role grants fixed space-management rights; the other three roles are configured through a Permission Scheme.
 
@@ -314,7 +315,7 @@ Set page permissions from the **Share** button on any page. Page permissions are
 
 ---
 
-## Groups
+## Groups {#groups}
 
 Groups let you assign space roles and module access to entire teams at once.
 

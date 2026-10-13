@@ -51,12 +51,14 @@ You never need access to the publish repo to contribute.
 ## Local preview
 
 ```bash
-npm i -g mint          # once
-mint dev               # preview at http://localhost:3000
-mint broken-links      # every internal href must resolve
+npm i -g mint                          # once
+mint dev                               # preview at http://localhost:3000
+mint broken-links --check-anchors      # every internal link and anchor must resolve
+bash scripts/docs-check.sh             # every check, as the pull request runs it
 ```
 
-Run both from this folder — the one containing `docs.json`.
+Run these from this folder, the one containing `docs.json`. In the product repo, `npm run docs:check`
+does the same.
 
 Troubleshooting: if a page 404s, check you are in the folder with `docs.json`. If the dev server
 misbehaves, `mint update` pulls the latest CLI.

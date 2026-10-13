@@ -1,4 +1,5 @@
 ---
+title: "Troubleshooting"
 sidebarTitle: "Troubleshooting"
 description: "Solutions to the most common issues with a Collabase installation — database, authentication, email, AI, file uploads, and migrations."
 ---
@@ -24,7 +25,7 @@ This page covers the most common problems encountered when running a Collabase i
 
 ---
 
-## App not responding
+## App not responding {#app-not-responding}
 
 The first start after installation can take up to 3 minutes. If Collabase still does not respond after that, check the logs:
 
@@ -62,7 +63,7 @@ This shows which process is using the port. Stop that service and restart Collab
 
 ---
 
-## Database connection failures
+## Database connection failures {#database-connection-failures}
 
 Collabase connects to PostgreSQL using the `DATABASE_URL` environment variable.
 
@@ -78,7 +79,7 @@ Collabase connects to PostgreSQL using the `DATABASE_URL` environment variable.
   </Step>
   <Step title="Verify the DATABASE_URL is set correctly">
     Open your `.env` file and check the `DATABASE_URL` value. It should follow this format:
-    ```
+    ```bash
     DATABASE_URL=postgresql://collabase:password@localhost:5432/collabase
     ```
     The hostname, port, username, password, and database name must all match your PostgreSQL setup.
@@ -99,7 +100,7 @@ Collabase connects to PostgreSQL using the `DATABASE_URL` environment variable.
 
 ---
 
-## Authentication problems
+## Authentication problems {#authentication-problems}
 
 ### Forgot password
 
@@ -146,7 +147,7 @@ The standard email and password login is always available at `/auth/login`. Sign
 
 ---
 
-## LDAP sync issues
+## LDAP sync issues {#ldap-sync-issues}
 
 ### "This sync would disable an unusually large number of users"
 
@@ -176,7 +177,7 @@ Confirm the **Email Attribute** field matches the attribute your directory actua
 
 ---
 
-## SCIM provisioning issues
+## SCIM provisioning issues {#scim-provisioning-issues}
 
 ### Requests fail with "SCIM provisioning is disabled for this instance"
 
@@ -196,7 +197,7 @@ Confirm the group and its members were actually assigned to the Collabase applic
 
 ---
 
-## Email not sending
+## Email not sending {#email-not-sending}
 
 Collabase sends emails for password resets, notifications, and invitations. These go through the mail provider configured in **Admin → Settings → Mail**.
 
@@ -222,7 +223,7 @@ Collabase sends emails for password resets, notifications, and invitations. Thes
 
 ---
 
-## AI features not responding
+## AI features not responding {#ai-features-not-responding}
 
 ### Hosted provider (OpenAI, Gemini, Azure, Groq, Anthropic, Infomaniak)
 
@@ -282,7 +283,7 @@ docker compose -f deployment/docker/docker-compose.release.yml logs collabase-ap
 
 ---
 
-## File upload errors
+## File upload errors {#file-upload-errors}
 
 <Steps>
   <Step title="Check available disk space">
@@ -304,7 +305,7 @@ docker compose -f deployment/docker/docker-compose.release.yml logs collabase-ap
 
 ---
 
-## Work items missing from a board
+## Work items missing from a board {#work-items-missing-from-a-board}
 
 A work item that appears in the backlog and in the work item list, but never in any board column, is holding a status that does not belong to the project's workflow. The board builds its columns from that workflow, so a status from anywhere else matches no column and the card is not drawn.
 
@@ -328,7 +329,7 @@ This can affect items created before Collabase started checking the status on sa
 
 ---
 
-## Migration failures
+## Migration failures {#migration-failures}
 
 Database migrations run automatically during installation and updates. If a migration fails:
 
@@ -356,7 +357,7 @@ Database migrations run automatically during installation and updates. If a migr
 
 ---
 
-## Environment variables
+## Environment variables {#environment-variables}
 
 Missing or incorrect environment variables are the cause of many startup and authentication failures. Key variables to verify:
 

@@ -1,9 +1,10 @@
 ---
+title: "Spaces"
 sidebarTitle: "Spaces"
-description: "Spaces are the top-level workspaces in Collabase. Everything — pages, tasks, test cases, automations, and more — lives inside a space."
+description: "Spaces are the top-level containers in Collabase. Pages, tasks, test cases, automations and more live inside a Space."
 ---
 
-A space is a self-contained workspace with its own members, modules, and content. Think of it as a department, a product area, a project, or a team. A single Collabase instance can have as many spaces as you need.
+A Space is a self-contained area with its own members, modules, and content. Think of it as a department, a product area, a project, or a team. A single Collabase instance can have as many spaces as you need.
 
 Spaces are isolated from each other. Content, members, and settings in one space do not affect any other space. This makes spaces a reliable boundary for access control — you can give a contractor access to one space without exposing anything else on your platform.
 
@@ -15,7 +16,7 @@ Each space can have the following modules enabled:
 
 | Module | What it provides |
 |---|---|
-| **Docs** | A collaborative wiki — pages, templates, and a page tree for organizing knowledge |
+| **Docs** | Collaborative pages, templates, and a page tree for organizing knowledge |
 | **Projects** | Tasks, boards, sprints, and project tracking |
 | **Test Management** | Test cases, test suites, test runs, and quality tracking |
 | **Automation** | Workflow pipelines that trigger on events and run actions |
@@ -45,7 +46,7 @@ Visibility controls who can discover and read the space. Even in an Internal spa
 
 Every space has a unique short identifier called a **slug**. The slug appears in the URL for every page in that space:
 
-```
+```text
 https://your-collabase-domain/{slug}/docs
 https://your-collabase-domain/{slug}/projects
 https://your-collabase-domain/{slug}/tasks/{task-key}
@@ -126,7 +127,7 @@ Spaces and projects serve different purposes:
 
 | | Space | Project |
 |---|---|---|
-| **Purpose** | A top-level workspace for a department or product area | A structured initiative with tasks, milestones, and a board |
+| **Purpose** | A top-level area for a department or product area | A structured initiative with tasks, milestones, and a board |
 | **Members** | Managed independently from other spaces | Inherit from the space, with optional project-level role overrides |
 | **Modules** | Has multiple modules (Docs, Projects, Automation, etc.) | Lives inside the Projects module of a space |
 | **URL** | `/{slug}/` | `/{slug}/projects/{project-slug}/` |

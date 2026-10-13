@@ -43,13 +43,13 @@ Also off-limits in a content PR: theme, colors, and logos in `docs.json`.
    obvious factual fix (a wrong menu path, a stale setting name), say so in the issue and go ahead.
 2. **Branch:** `docs/<short-description>`.
 3. **Write**, following `.agents/rules/documentation-rules.md`.
-4. **Preview and check links:**
+4. **Preview and run the checks:**
    ```bash
-   npm i -g mint      # once
-   mint dev           # http://localhost:3000
-   mint broken-links  # every internal href must resolve
+   npm i -g mint            # once
+   mint dev                 # http://localhost:3000, run from the folder containing docs.json
+   npm run docs:check       # in the product repo: build, links and anchors, accessibility, structure, prose
    ```
-   Run both from the folder containing `docs.json`.
+   The same check runs on every pull request that changes `docs/docs/`.
 5. **Commit** using Conventional Commits — `docs: correct the backup schedule path`.
 6. **Open the PR.** The title follows `<type>(<scope>): <Summary>`. You must sign the CLA (once,
    automated via a PR comment) and disclose any AI tool use in the PR template.
@@ -66,6 +66,7 @@ Also off-limits in a content PR: theme, colors, and logos in `docs.json`.
 - [ ] Terminology matches the standard (Space, Member, Object Type, …)
 - [ ] Procedures use `<Steps>`
 - [ ] New pages registered in `docs.json`
-- [ ] Release notes also registered in `changelog/overview.mdx`
-- [ ] `mint broken-links` is clean
+- [ ] A release note is one `<Update>` at the top of `changelog/overview.mdx`, with tags for its categories
+- [ ] `npm run docs:check` finishes without errors
+- [ ] Components are chosen as in section 19 of the standard, screenshots are redacted as in section 17
 - [ ] No folder moved, renamed, or restructured

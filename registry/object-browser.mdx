@@ -86,10 +86,20 @@ Multiple filters are combined with AND logic — all conditions must be met for 
 
 To delete an object:
 
-1. Open the object's detail view by clicking its row in the table.
-2. Click the `...` menu at the top right of the detail view.
-3. Select **Delete object**.
-4. Confirm the deletion in the dialog that appears.
+<Steps>
+  <Step title="Open the object">
+    Open the object's detail view by clicking its row in the table.
+  </Step>
+  <Step title="Open the menu">
+    Click the `...` menu at the top right of the detail view.
+  </Step>
+  <Step title="Select Delete object">
+    Select **Delete object**.
+  </Step>
+  <Step title="Confirm the deletion">
+    Confirm the deletion in the dialog that appears.
+  </Step>
+</Steps>
 
 To delete multiple objects at once, check the boxes on the left of each row in the table, then click **Delete selected** in the action bar that appears.
 
@@ -97,8 +107,27 @@ To delete multiple objects at once, check the boxes on the left of each row in t
 
 To export all objects of the current type to a CSV file:
 
-1. Select the object type in the left panel.
-2. Click **Export → CSV** above the table.
-3. The CSV downloads to your browser immediately.
+<Steps>
+  <Step title="Select the object type">
+    Select the object type in the left panel.
+  </Step>
+  <Step title="Export as CSV">
+    Click **Export → CSV** above the table.
+  </Step>
+  <Step title="Get the file">
+    The CSV downloads to your browser immediately.
+  </Step>
+</Steps>
 
 The export includes all attribute columns and respects any active filters — filtered exports only include objects currently visible in the table.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Schema Settings" icon="arrow-right" href="/registry/settings">
+    Configure schema details, control who can see your schema, and manage schema-level actions including deletion.
+  </Card>
+  <Card title="Registry" icon="layout-grid" href="/registry/overview">
+    The Registry is Collabase's built-in structured data store.
+  </Card>
+</CardGroup>

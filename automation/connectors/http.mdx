@@ -37,7 +37,7 @@ The single action on this connector handles all HTTP methods.
 
 ## Example — call a private REST API
 
-```
+```text
 [HTTP Request]
     url: https://api.yourapp.com/v1/users
     method: GET
@@ -49,3 +49,17 @@ The single action on this connector handles all HTTP methods.
 <Tip>
   To use secrets in HTTP headers without hardcoding them, store the value in an automation variable using a **Set Variable** node, then reference it as `{{varName}}` in the header value.
 </Tip>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Connectors overview" icon="layout-grid" href="/automation/connectors/overview">
+    All connectors for Collabase Automation by category: communication, calendar, storage, CRM and finance, developer tools, Swiss ERP and HR, AI.
+  </Card>
+  <Card title="Actions" icon="arrow-right" href="/automation/actions">
+    Action nodes perform operations when an automation runs.
+  </Card>
+  <Card title="Triggers" icon="arrow-right" href="/automation/triggers">
+    Triggers are the starting point of every automation.
+  </Card>
+</CardGroup>

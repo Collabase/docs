@@ -1,13 +1,19 @@
 ---
+title: "Identity providers"
 sidebarTitle: "Identity Providers"
 description: "Let your team sign in to Collabase with their existing company accounts. Configure OAuth, SAML SSO, LDAP, and SCIM under Admin → Identity Providers."
+tag: "Enterprise"
 ---
+
+import EnterpriseNote from "/snippets/enterprise-note.mdx";
 
 Collabase supports several sign-in methods. You can mix and match — for example, enable Microsoft Entra ID for most users while keeping email/password available as a fallback.
 
 <Tip>
   Using Microsoft Entra ID? The guide [IAM with Microsoft Entra ID](/admin/iam-microsoft-entra) takes you through sign-in and SCIM from the first setting in Entra to the first test.
 </Tip>
+
+<EnterpriseNote />
 
 <Frame caption="The Identity Providers page: add a provider, then connect SCIM below.">
   <img src="/images/iam-identity-providers.png" alt="The Identity Providers page with the providers you can add and the SCIM Provisioning card" />
@@ -57,7 +63,7 @@ OAuth lets users sign in with an existing account from another service — Googl
   </Step>
   <Step title="Add the redirect URI">
     Under **Authorized redirect URIs**, add:
-    ```
+    ```text
     https://your-collabase-domain/api/auth/callback/google
     ```
   </Step>
@@ -82,7 +88,7 @@ OAuth lets users sign in with an existing account from another service — Googl
     Go to GitHub → **Settings → Developer settings → OAuth Apps → New OAuth App**.
   </Step>
   <Step title="Set the authorization callback URL">
-    ```
+    ```text
     https://your-collabase-domain/api/auth/callback/github
     ```
   </Step>
@@ -105,7 +111,7 @@ OAuth lets users sign in with an existing account from another service — Googl
   </Step>
   <Step title="Add the redirect URI">
     Under **Authentication → Add a platform → Web**, add:
-    ```
+    ```text
     https://your-collabase-domain/api/auth/callback/microsoft
     ```
   </Step>
@@ -132,11 +138,11 @@ OAuth lets users sign in with an existing account from another service — Googl
 <Steps>
   <Step title="Register Collabase as an application">
     In Okta or Keycloak, create a new OIDC application. Use:
-    ```
+    ```text
     https://your-collabase-domain/api/auth/callback/okta
     ```
     or
-    ```
+    ```text
     https://your-collabase-domain/api/auth/callback/keycloak
     ```
     as the redirect URI, depending on the provider.
@@ -154,7 +160,7 @@ OAuth lets users sign in with an existing account from another service — Googl
   </Step>
 </Steps>
 
-### Restricting sign-in by email domain
+### Restricting sign-in by email domain {#restricting-sign-in-by-email-domain}
 
 Every OAuth provider has an **Allowed email domains** field and an **Auto-create new users** toggle.
 
@@ -318,7 +324,7 @@ SCIM (System for Cross-domain Identity Management) connects your identity provid
     SCIM requests are rejected until this is on, even with a valid token.
   </Step>
   <Step title="Click Generate token">
-    Copy the token immediately — it is shown only once. A token is valid for 365 days.
+    Copy the token immediately. Collabase shows it only once. A token is valid for 365 days.
   </Step>
   <Step title="Configure your identity provider">
     In your IdP's SCIM settings, enter:
@@ -375,7 +381,7 @@ Tokens created before this update no longer work. Open **Admin → Identity Prov
 
 ---
 
-## Emergency admin access
+## Emergency admin access {#emergency-admin-access}
 
 Always keep at least one admin account that can sign in with email and password — in case your identity provider is unavailable.
 

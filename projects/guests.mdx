@@ -65,7 +65,7 @@ Click the bin button and confirm. Access to this project ends at once and the gu
 
 ## What a guest sees
 
-A guest has a reduced navigation: the project, or the project list of the Space if they were invited to several. After signing in they land there.
+A guest has a reduced navigation: the project, or the project list of the Space if they were invited to several. After signing in they land there. A guest without an active project has nothing to open and lands on their own profile instead, until someone invites them to a project.
 
 - **Comments.** A guest sees only comments marked as External. Their own comments are always External, and a reply takes the visibility of the thread it answers. Comments written by guests carry the label **Guest**.
 - **People.** A guest sees colleagues by name and picture only, never by email address. In the @ picker of a work item, a guest finds the colleagues of that project, and colleagues find its guests.
@@ -106,7 +106,7 @@ The audit log records these actions: **Guest invited**, **Guest rights changed**
 
 ## Convert a member into a guest
 
-A system administrator can turn a member into a guest under **Settings → Users**, in the menu of the account (**Convert to guest**). The account then stops counting towards the licence. It keeps only the projects it belonged to, as a guest of each, with commenting on, editing as before and reading pages off. Space roles, groups, API keys and sessions end. An administrator, your own account and an owner of Spaces cannot be converted; make the administrator a regular user first, and transfer the Spaces.
+A system administrator can turn a member into a guest under **Settings → Users**, in the menu of the account (**Convert to guest**). The account then stops counting towards the licence. It keeps only the projects it belonged to, as a guest of each, with commenting on, editing as before and reading pages off. Space roles, groups, API keys and sessions end. An administrator, your own account and an owner of Spaces cannot be converted; make the administrator a regular user first, and transfer the Spaces. A member who belonged to no project becomes a guest without any project, who lands on their profile after signing in.
 
 The project team of a public project is listed in **Settings → Members** too, so that you can give someone the **Manager** role there and let them invite guests.
 
@@ -117,3 +117,19 @@ System administrators see all guests under **Settings → Guests**: name, email 
 ## Limits
 
 You can send up to 30 invitations per hour. Beyond that, Collabase refuses further invitations until the hour has passed.
+
+## Troubleshooting
+
+| Problem | Cause | What to do |
+|---|---|---|
+| A guest lands on their profile and sees nothing else. | The guest has no active project: never invited to one, removed from all, or **Access until** has passed. A member converted without projects is in the same state. | Invite the guest to a project, or clear or move the date under **Access until**. |
+| A shared page does not appear for a guest. | **Read shared pages** is off for that project, the page is a draft or archived, it is shared with another project, it is a restricted subpage, or the project is in another Space than the page. | Check the switch, the page status and the sharing dialog of the page. |
+| A guest can open a folder but not one of its pages. | The page is a restricted subpage or a draft. A shared folder covers only readable pages. | Share the subpage on its own, or publish the draft. |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Projects" icon="layout-grid" href="/projects/overview">
+    Projects is Collabase's project management app.
+  </Card>
+</CardGroup>

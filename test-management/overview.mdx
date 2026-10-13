@@ -1,7 +1,7 @@
 ---
 title: "Test Management"
 sidebarTitle: "Overview"
-description: "Test Management is the built-in quality tool for Collabase — define test cases, run manual tests, record results, and track quality across releases with milestones."
+description: "Test Management is the built-in quality tool: define test cases, run manual tests, record results and track quality across releases with milestones."
 ---
 
 <img src="/images/apps/test-management.png" alt="Collabase Test Management app icon" width="60" />
@@ -35,7 +35,7 @@ Collabase stores your test specifications and results. Actual automated test exe
 
 ## Hierarchy
 
-```
+```text
 Test Project
 └── Test Suites (tree, unlimited depth)
     └── Test Cases
@@ -59,13 +59,29 @@ The following metrics are computed from test run results. They are not pre-store
 
 ## Typical workflow
 
-1. **Create test cases** — define what needs to be verified with steps and expected results. Set status to DRAFT while writing.
-2. **Mark cases READY** — once reviewed, change each case's status to READY. Only READY cases are eligible for test runs.
-3. **Organize into suites** — group cases by feature or priority to keep the project navigable.
-4. **Create a test run** — select which cases or suites to include. Optionally assign a milestone.
-5. **Execute the run** — go through each case, perform the test, and record the result with a note.
-6. **Complete the run** — mark the run as Completed. Results are locked and contribute to milestone metrics.
-7. **Review the milestone** — check the aggregate pass rate before a release.
+<Steps>
+  <Step title="Create test cases">
+    Define what needs to be verified with steps and expected results. Set status to DRAFT while writing.
+  </Step>
+  <Step title="Mark cases READY">
+    Once reviewed, change each case's status to READY. Only READY cases are eligible for test runs.
+  </Step>
+  <Step title="Organize into suites">
+    Group cases by feature or priority to keep the project navigable.
+  </Step>
+  <Step title="Create a test run">
+    Select which cases or suites to include. Optionally assign a milestone.
+  </Step>
+  <Step title="Execute the run">
+    Go through each case, perform the test, and record the result with a note.
+  </Step>
+  <Step title="Complete the run">
+    Mark the run as Completed. Results are locked and contribute to milestone metrics.
+  </Step>
+  <Step title="Review the milestone">
+    Check the aggregate pass rate before a release.
+  </Step>
+</Steps>
 
 ## Roles
 

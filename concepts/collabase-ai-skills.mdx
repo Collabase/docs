@@ -1,4 +1,5 @@
 ---
+title: "CollabaseAI skills"
 sidebarTitle: "CollabaseAI Skills"
 description: "Everything CollabaseAI can do, grouped by subject, with an example of how to ask for each one."
 ---
@@ -19,15 +20,17 @@ Nine of these skills change something, and each one stops for your approval befo
 
 Names the spaces you can open. CollabaseAI runs this on its own before it uses a space name you gave it, so it never acts on a space that does not exist.
 
-> **Ask:** "Which spaces do I have access to?"
-> **You get:** the list of spaces you can open, by name.
+<Prompt description={"You get: the list of spaces you can open, by name."} actions={["copy"]}>
+  Which spaces do I have access to?
+</Prompt>
 
 ### Listing projects
 
 Names the projects you can open, and the space each one belongs to.
 
-> **Ask:** "What projects are in the Marketing space?"
-> **You get:** the projects in that space. If the space name does not match anything, it lists the spaces that do exist instead of guessing.
+<Prompt description={"You get: the projects in that space. If the space name does not match anything, it lists the spaces that do exist instead of guessing."} actions={["copy"]}>
+  What projects are in the Marketing space?
+</Prompt>
 
 ---
 
@@ -39,8 +42,13 @@ Searches the text of pages, work-item descriptions and comments by what it means
 
 It needs semantic search to be switched on by an administrator. When it is off, CollabaseAI says so instead of reporting that nothing was found.
 
-> **Ask:** "What did we decide about the onboarding process?" or "Why did we drop the second payment provider?"
-> **You get:** the passages that answer the question, each with a link to the page or work item it came from. A comment is only ever as reachable as the thing it was written on, so results stay inside what you may open.
+<Prompt description={"You get: the passages that answer the question, each with a link to the page or work item it came from. A comment is only ever as reachable as the thing it was written on, so results stay inside what you may open."} actions={["copy"]}>
+  What did we decide about the onboarding process?
+</Prompt>
+
+<Prompt description={"Another way to ask the same."} actions={["copy"]}>
+  Why did we drop the second payment provider?
+</Prompt>
 
 ---
 
@@ -50,36 +58,45 @@ It needs semantic search to be switched on by an administrator. When it is off, 
 
 Searches work items across every project you can read. It can narrow by words in the title, by project, by space, by whether the item is assigned to you, and by whether it is still to do, in progress, done or closed.
 
-> **Ask:** "Show me my open work items" or "Which items in Website Relaunch mention the footer?"
-> **You get:** a list with the key, title, status and assignee of each item, each one a link.
+<Prompt description={"You get: a list with the key, title, status and assignee of each item, each one a link."} actions={["copy"]}>
+  Show me my open work items
+</Prompt>
+
+<Prompt description={"Another way to ask the same."} actions={["copy"]}>
+  Which items in Website Relaunch mention the footer?
+</Prompt>
 
 ### Reading work item
 
 Opens one item and reads everything on it: status, type, priority, assignee, group, labels, start and due date, story points, parent and subtasks, custom fields, and the description.
 
-> **Ask:** "What is on PROJ-42?"
-> **You get:** the full item, in prose, with a link to it. You can name it by key or by words from its title.
+<Prompt description={"You get: the full item, in prose, with a link to it. You can name it by key or by words from its title."} actions={["copy"]}>
+  What is on PROJ-42?
+</Prompt>
 
 ### Work item history
 
 Lists what changed on one item and who changed it, newest first.
 
-> **Ask:** "Who moved PROJ-42 and when?"
-> **You get:** the last 20 changes, each with the date and the person.
+<Prompt description={"You get: the last 20 changes, each with the date and the person."} actions={["copy"]}>
+  Who moved PROJ-42 and when?
+</Prompt>
 
 ### Creating work item
 
 Creates a new item in a project you are a member of. It searches for near-duplicates first and shows you what it found, then puts the new item up for approval before it writes anything.
 
-> **Ask:** "Create a work item in Website Relaunch: the footer links break on mobile"
-> **You get:** an approval card describing the item, and once you approve it, the new item with its key and a link. The item is assigned to you and starts at the first status of the project's workflow.
+<Prompt description={"You get: an approval card describing the item, and once you approve it, the new item with its key and a link. The item is assigned to you and starts at the first status of the project's workflow."} actions={["copy"]}>
+  Create a work item in Website Relaunch: the footer links break on mobile
+</Prompt>
 
 ### Updating work item
 
 Changes an existing item: title, priority, assignee, start or due date, story points, or the description. The assignee has to be a member of that item's project, named the way you would name them.
 
-> **Ask:** "Set PROJ-42 to high priority and give it to Anna"
-> **You get:** an approval card listing each field it would change, then the change, recorded in the item's activity feed under your name.
+<Prompt description={"You get: an approval card listing each field it would change, then the change, recorded in the item's activity feed under your name."} actions={["copy"]}>
+  Set PROJ-42 to high priority and give it to Anna
+</Prompt>
 
 Status is not part of this skill. Moving an item is its own step, below.
 
@@ -87,22 +104,25 @@ Status is not part of this skill. Moving an item is its own step, below.
 
 Shows where an item can go from where it stands right now. The workflow and its conditions are already applied, so a status missing from the list is one this item cannot reach from its current position, not one that does not exist.
 
-> **Ask:** "Where can I move PROJ-42 from here?"
-> **You get:** the statuses actually on offer. If the project runs without a governed workflow, it says so, because then the item can go anywhere.
+<Prompt description={"You get: the statuses actually on offer. If the project runs without a governed workflow, it says so, because then the item can go anywhere."} actions={["copy"]}>
+  Where can I move PROJ-42 from here?
+</Prompt>
 
 ### Changing status
 
 Moves an item to another status along the workflow transition, rather than setting the field directly. That is what makes transition rules, required fields and follow-up actions apply, exactly as they do when you drag the card on the board.
 
-> **Ask:** "Move PROJ-42 to In Review"
-> **You get:** an approval card naming the target status, then the move. If the target status is not in the list of reachable ones, it tells you which are, instead of forcing it.
+<Prompt description={"You get: an approval card naming the target status, then the move. If the target status is not in the list of reachable ones, it tells you which are, instead of forcing it."} actions={["copy"]}>
+  Move PROJ-42 to In Review
+</Prompt>
 
 ### Moving work item
 
 Moves an item to another project, in the same space or a different one. Sub-items travel with it and each gets a new key. CollabaseAI decides the status mapping itself, matching the destination column by name first and by state second, so an item never lands in a column nobody agreed to.
 
-> **Ask:** "Move PROJ-42 to the Platform project"
-> **You get:** an approval card naming the destination and what the move will clear, then the item at its new key. The old key keeps working, so existing links do not break. You need permission to move items, and permission to create them in the destination.
+<Prompt description={"You get: an approval card naming the destination and what the move will clear, then the item at its new key. The old key keeps working, so existing links do not break. You need permission to move items, and permission to create them in the destination."} actions={["copy"]}>
+  Move PROJ-42 to the Platform project
+</Prompt>
 
 ---
 
@@ -112,36 +132,41 @@ Moves an item to another project, in the same space or a different one. Sub-item
 
 Finds pages by words in their title, across every space you can read. Pages with restricted access are checked one by one, so a page you are not on the list for never appears.
 
-> **Ask:** "Find the pages about onboarding"
-> **You get:** the matching pages with their space, status, tags and when they last changed.
+<Prompt description={"You get: the matching pages with their space, status, tags and when they last changed."} actions={["copy"]}>
+  Find the pages about onboarding
+</Prompt>
 
 ### Reading page
 
 Opens one page and reads it: the full text, its status, tags, custom fields, and who last changed it. If the page has an unpublished draft, that is what it reads, because that is what you see in the editor.
 
-> **Ask:** "What does the Security Policy page say about passwords?"
-> **You get:** an answer grounded in that page, with a link to it.
+<Prompt description={"You get: an answer grounded in that page, with a link to it."} actions={["copy"]}>
+  What does the Security Policy page say about passwords?
+</Prompt>
 
 ### Page history
 
 Lists the saved versions of a page with their number, date and author.
 
-> **Ask:** "How often has the Security Policy page been edited?"
-> **You get:** the version list, newest first.
+<Prompt description={"You get: the version list, newest first."} actions={["copy"]}>
+  How often has the Security Policy page been edited?
+</Prompt>
 
 ### Creating page
 
 Writes a new page, or a new whiteboard, in a space you can create in. You describe what you want; CollabaseAI builds the document.
 
-> **Ask:** "Create a page in the Product space with meeting notes from today's planning: decisions, open questions, next steps"
-> **You get:** an approval card, then the finished page with a link. Ask for a whiteboard instead and it draws one.
+<Prompt description={"You get: an approval card, then the finished page with a link. Ask for a whiteboard instead and it draws one."} actions={["copy"]}>
+  Create a page in the Product space with meeting notes from today's planning: decisions, open questions, next steps
+</Prompt>
 
 ### Updating page
 
 Adds to a page you can edit. It can append to the end, put content at the top, or replace the whole document. Every write creates a version, so nothing is lost.
 
-> **Ask:** "Add a section on rollback to the Deployment Guide"
-> **You get:** an approval card showing what it would write and where, then the new section in the page.
+<Prompt description={"You get: an approval card showing what it would write and where, then the new section in the page."} actions={["copy"]}>
+  Add a section on rollback to the Deployment Guide
+</Prompt>
 
 Before it writes a page or a whiteboard, a **Checking the page format** card appears. That is CollabaseAI looking up how a Collabase document is built, so the result is a real page rather than a wall of plain text. Nothing to act on.
 
@@ -153,15 +178,17 @@ Before it writes a page or a whiteboard, a **Checking the page format** card app
 
 Lists the cycles of one project with their goal, state, dates and how many items are in them.
 
-> **Ask:** "Which cycles are running in Website Relaunch?"
-> **You get:** the project's cycles, newest first.
+<Prompt description={"You get: the project's cycles, newest first."} actions={["copy"]}>
+  Which cycles are running in Website Relaunch?
+</Prompt>
 
 ### Cycle review
 
 The numbers for one cycle: committed against delivered story points, how many items were planned and how many made it, who delivered what, which work was pulled in after the cycle started, and what did not finish.
 
-> **Ask:** "How did the last cycle in Website Relaunch go?"
-> **You get:** the review figures, with the unfinished items listed as links. Name a cycle to review that one; leave it out and you get the running cycle, or the one that finished last.
+<Prompt description={"You get: the review figures, with the unfinished items listed as links. Name a cycle to review that one; leave it out and you get the running cycle, or the one that finished last."} actions={["copy"]}>
+  How did the last cycle in Website Relaunch go?
+</Prompt>
 
 ---
 
@@ -173,36 +200,41 @@ Access to the Registry is decided per schema, not per space, so CollabaseAI reac
 
 Finds objects across every Registry schema you can read: assets, systems, teams, suppliers, whatever your organisation keeps records of.
 
-> **Ask:** "Which servers do we have in Zurich?"
-> **You get:** the matching objects with their key, type and schema, each one a link. A single unscoped search looks through up to 50 object types, so name the schema or the type on a large registry.
+<Prompt description={"You get: the matching objects with their key, type and schema, each one a link. A single unscoped search looks through up to 50 object types, so name the schema or the type on a large registry."} actions={["copy"]}>
+  Which servers do we have in Zurich?
+</Prompt>
 
 ### Reading Registry object
 
 Opens one object and reads every field value under the field's own name, plus the objects it is linked to.
 
-> **Ask:** "What is on SRV-12?"
-> **You get:** the object's fields and its relations, with the linked objects named rather than listed as references. Up to 10 relations are resolved to names per object.
+<Prompt description={"You get: the object's fields and its relations, with the linked objects named rather than listed as references. Up to 10 relations are resolved to names per object."} actions={["copy"]}>
+  What is on SRV-12?
+</Prompt>
 
 ### Registry object history
 
 Lists what changed on one object and who changed it, newest first.
 
-> **Ask:** "When did the owner of SRV-12 last change?"
-> **You get:** the last 20 changes with the date and the person.
+<Prompt description={"You get: the last 20 changes with the date and the person."} actions={["copy"]}>
+  When did the owner of SRV-12 last change?
+</Prompt>
 
 ### Creating Registry object
 
 Creates a new object in a schema you can write to. You name the object type and the label it should be listed under, and give field values by the field's own name.
 
-> **Ask:** "Add a server called db-prod-03 to the Infrastructure registry, environment production"
-> **You get:** an approval card, then the new Object with its generated key. Field names the Object Type does not carry are reported back untouched rather than silently dropped.
+<Prompt description={"You get: an approval card, then the new Object with its generated key. Field names the Object Type does not carry are reported back untouched rather than silently dropped."} actions={["copy"]}>
+  Add a server called db-prod-03 to the Infrastructure registry, environment production
+</Prompt>
 
 ### Updating Registry object
 
 Renames an object, or changes any of its field values, addressed by field name.
 
-> **Ask:** "Set the owner of SRV-12 to the Platform team"
-> **You get:** an approval card, then the change, recorded in the Object's history.
+<Prompt description={"You get: an approval card, then the change, recorded in the Object's history."} actions={["copy"]}>
+  Set the owner of SRV-12 to the Platform team
+</Prompt>
 
 ---
 
@@ -214,36 +246,41 @@ A test project is its own container for test cases, runs and milestones, and it 
 
 Names the test projects you can open, with the space each belongs to and how many test cases and runs it holds.
 
-> **Ask:** "Which test projects can I see?"
-> **You get:** the list, so you can name the right one in the questions below.
+<Prompt description={"You get: the list, so you can name the right one in the questions below."} actions={["copy"]}>
+  Which test projects can I see?
+</Prompt>
 
 ### Searching test cases
 
 Finds test cases by words from their title, across every test project you can read.
 
-> **Ask:** "Which test cases cover the checkout?"
-> **You get:** the matching cases with their state, priority, type, suite and the work items they cover.
+<Prompt description={"You get: the matching cases with their state, priority, type, suite and the work items they cover."} actions={["copy"]}>
+  Which test cases cover the checkout?
+</Prompt>
 
 ### Listing test runs
 
 Lists test runs with their state, milestone, dates and result counts.
 
-> **Ask:** "What is currently being tested in the Web QA project?"
-> **You get:** the recent runs, each with how many results passed, failed, are blocked, were skipped or are still open.
+<Prompt description={"You get: the recent runs, each with how many results passed, failed, are blocked, were skipped or are still open."} actions={["copy"]}>
+  What is currently being tested in the Web QA project?
+</Prompt>
 
 ### Reading a test run
 
 Opens one run and reads its results case by case.
 
-> **Ask:** "What failed in the Release 2.4 regression run?"
-> **You get:** every case in the run with its outcome, the tester's comment, when it was executed and who it is assigned to, plus the totals.
+<Prompt description={"You get: every case in the run with its outcome, the tester's comment, when it was executed and who it is assigned to, plus the totals."} actions={["copy"]}>
+  What failed in the Release 2.4 regression run?
+</Prompt>
 
 ### Reading a test milestone
 
 Opens one milestone: its due date, state, the runs attached to it, and the work items linked to it.
 
-> **Ask:** "Is the 2.4 release milestone ready to ship?"
-> **You get:** the milestone with its runs and their state, and the linked work items. Work items in projects you cannot open are left out.
+<Prompt description={"You get: the milestone with its runs and their state, and the linked work items. Work items in projects you cannot open are left out."} actions={["copy"]}>
+  Is the 2.4 release milestone ready to ship?
+</Prompt>
 
 ---
 
@@ -253,15 +290,17 @@ Opens one milestone: its due date, state, the runs attached to it, and the work 
 
 Reads the comments on one work item or one page.
 
-> **Ask:** "What was decided in the discussion on PROJ-42?"
-> **You get:** a summary of the last 20 comments with who said what.
+<Prompt description={"You get: a summary of the last 20 comments with who said what."} actions={["copy"]}>
+  What was decided in the discussion on PROJ-42?
+</Prompt>
 
 ### Writing a comment
 
 Posts a comment on a work item or a page as plain text, from you. Mentions and notifications behave exactly as they do when you type it yourself.
 
-> **Ask:** "Comment on PROJ-42 that we are waiting for the design review"
-> **You get:** an approval card with the exact wording, then the posted comment.
+<Prompt description={"You get: an approval card with the exact wording, then the posted comment."} actions={["copy"]}>
+  Comment on PROJ-42 that we are waiting for the design review
+</Prompt>
 
 ---
 
@@ -273,8 +312,13 @@ Gathers what is on your plate: work assigned to you that is overdue, due today, 
 
 CollabaseAI collects the facts, then draws the conclusion in its answer. It reads the priorities, how late something is and whether it sits in a running cycle, and says what to do first and what can wait. The reasoning is in the answer, where you can disagree with it.
 
-> **Ask:** "What should I do today?" or "What is on my plate this week, and what can wait?"
-> **You get:** your overdue and due work grouped, with a recommendation of where to start. The horizon is the next 7 days by default and at most 30.
+<Prompt description={"You get: your overdue and due work grouped, with a recommendation of where to start. The horizon is the next 7 days by default and at most 30."} actions={["copy"]}>
+  What should I do today?
+</Prompt>
+
+<Prompt description={"Another way to ask the same."} actions={["copy"]}>
+  What is on my plate this week, and what can wait?
+</Prompt>
 
 ---
 
@@ -284,8 +328,13 @@ CollabaseAI collects the facts, then draws the conclusion in its answer. It read
 
 A digest of what happened across your work: items created, completed and changed, pages written and edited, and comments. It covers the last two weeks by default.
 
-> **Ask:** "What happened in the last two weeks?" or "What did I miss while I was away for a month?"
-> **You get:** a grouped summary, with links. It looks back at most 90 days and returns at most 25 entries per category, so a very busy period is a sample rather than a complete record.
+<Prompt description={"You get: a grouped summary, with links. It looks back at most 90 days and returns at most 25 entries per category, so a very busy period is a sample rather than a complete record."} actions={["copy"]}>
+  What happened in the last two weeks?
+</Prompt>
+
+<Prompt description={"Another way to ask the same."} actions={["copy"]}>
+  What did I miss while I was away for a month?
+</Prompt>
 
 <Note>
   The digest covers work items, pages and comments. Registry objects, test runs and time entries are not in it yet.
@@ -299,5 +348,6 @@ A digest of what happened across your work: items created, completed and changed
 
 Reloads the live state of the work item, page or Registry object named in the pill under the panel header. CollabaseAI already has that context when you open the panel; this refreshes it after something has changed.
 
-> **Ask:** "What changed here just now?" while a work item is open.
-> **You get:** an answer read from the item as it stands this second, not as it was when you opened the chat.
+<Prompt description={"You get: an answer read from the item as it stands this second, not as it was when you opened the chat."} actions={["copy"]}>
+  What changed here just now?
+</Prompt>

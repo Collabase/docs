@@ -9,7 +9,7 @@ Collabase stores uploaded files — attachments, images, banners — in one of t
 
 | Mode | Where files live | When to use it |
 |---|---|---|
-| **Local disk** (default) | On the server, inside Docker volumes | Single-server installations. Works out of the box, nothing to configure. |
+| **Local disk** (default) | On the server, inside Docker volumes | Single-server installations. Works without configuration. |
 | **S3 object storage** | In a bucket you provide | Kubernetes, servers with small disks, or when you want storage managed and backed up by a provider. Required for running more than one application instance. |
 
 You do not need S3. Every standard installation runs on local disk and can stay there.
@@ -34,11 +34,11 @@ Collabase works with any storage that speaks the S3 protocol. Tested and known-g
 
 Create **one private bucket** for Collabase. Three rules matter:
 
-1. **The bucket must not be publicly readable.** Collabase serves every file through the
-   application, where access permissions are checked. A public bucket would let anyone
-   bypass those checks with a direct link. Do not attach public-read policies or ACLs.
-2. **Create a dedicated access key** for Collabase — do not reuse an admin key.
-3. **Grant only the three permissions Collabase needs**, limited to that one bucket:
+- **The bucket must not be publicly readable.** Collabase serves every file through the
+  application, where access permissions are checked. A public bucket would let anyone
+  bypass those checks with a direct link. Do not attach public-read policies or ACLs.
+- **Create a dedicated access key** for Collabase: do not reuse an admin key.
+- **Grant only the three permissions Collabase needs**, limited to that one bucket:
 
 | Permission | Used for |
 |---|---|
@@ -139,3 +139,5 @@ for example `https://minio.internal:9000`.
 **I need help.** Open a ticket at
 [collabase.featurebase.app](https://collabase.featurebase.app/en) with the output of a
 support bundle: `bash deployment/docker/install.sh support-bundle`.
+
+See also [Inbound mailbox](/admin/inbound-mail).

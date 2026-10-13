@@ -8,3 +8,8 @@ drafts/
 
 # Brand source folder: 174 MB incl. an archive of retired logos. Only the scaled copies in images/ are published.
 images/01_Collabase Logo/
+
+# Tooling for the docs checks, never published
+scripts/
+styles/
+.vale.ini

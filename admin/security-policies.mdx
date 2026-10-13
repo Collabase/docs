@@ -1,4 +1,5 @@
 ---
+title: "Security policies"
 sidebarTitle: "Security Policies"
 description: "Set password requirements and session lifetime, lock out failed logins, decide how long locked accounts are kept, and let named people bypass enforced SSO."
 ---
@@ -11,7 +12,7 @@ Security policies are under **Settings → Security → Policies**. Each policy 
 
 ---
 
-## Password requirements
+## Password requirements {#password-requirements}
 
 Sets the minimum length and the kinds of characters every new password must contain. This policy is always active and cannot be switched off.
 
@@ -88,7 +89,7 @@ Locked accounts are listed under **Settings → Security → Brute Force Protect
 
 ---
 
-## Locked accounts
+## Locked accounts {#locked-accounts}
 
 Sets how long a locked account is kept before it is anonymized. This policy is always active and cannot be switched off. It applies to accounts that an administrator locked and to accounts that your identity provider deactivated through SCIM or LDAP.
 
@@ -122,3 +123,11 @@ Keep at least one administrator on this list. If the identity provider becomes u
     Click **Save**.
   </Step>
 </Steps>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Users and groups" icon="layout-grid" href="/admin/users-groups">
+    Invite users, assign roles, organize teams into groups, and set up automated provisioning with SCIM.
+  </Card>
+</CardGroup>
