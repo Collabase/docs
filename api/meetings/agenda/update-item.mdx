@@ -39,7 +39,7 @@ changed the item since you read it, the request returns `409 CONFLICT` with the 
 
 ```bash cURL
 curl -X PATCH "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/items/cm5item0001" \
-  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
   -H "Content-Type: application/json" \
   -d '{ "estimateMinutes": 20, "ownerId": "cm0user0002", "baseUpdatedAt": "2026-10-14T09:15:30.000Z" }'
 ```

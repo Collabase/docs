@@ -20,7 +20,7 @@ https://your-collabase-domain/api
 Requests to `/api/v1` carry a personal API token in the `Authorization` header:
 
 ```bash
-Authorization: Bearer clb_xYz123ABCD...
+Authorization: Bearer cb_xYz123ABCD...
 ```
 
 ### Creating a token
@@ -54,7 +54,9 @@ For each area you choose a level: **Read**, **Read and write**, or **Administer*
 
 Each endpoint states the scope it needs. Automation connections hold stored credentials, so reading or changing them needs `automation:admin`.
 
-Tokens created before scopes existed keep working for reading time entries and moving work items.
+Tokens issued before API keys were introduced no longer work. Your profile tells you how many are left; create new tokens to replace them. Guests cannot create tokens.
+
+A token stops working when you revoke it, when it expires, and when your account is locked. Unlocking the account does not switch it on again; create a new token. Each token may make a limited number of requests per minute; beyond that the API answers `429` with a `Retry-After` header.
 
 You can revoke a token at any time in the same place. Systems using it lose access with their next request.
 

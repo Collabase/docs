@@ -43,13 +43,13 @@ All structured data is stored in the Collabase database, and uploaded files in l
 
 | Data flow | When | How to control it |
 |---|---|---|
-| **Usage statistics** | On after installation. Sends which features are opened, application errors and, for every AI request, the model, duration, token count and the text sent to and received from the AI. Documents, files, tasks and user records are never uploaded. | Switch it off under **Administration → Feedback & Privacy**. See [Usage statistics](/admin/hosting#usage-statistics). |
+| **Usage statistics** | Off after installation. When an administrator switches it on, it sends which features are opened, application errors and, for every AI request, the model, duration, token count and the text sent to and received from the AI. Documents, files, tasks and user records are never uploaded. | Switch it on or off under **Administration → Feedback & Privacy**. See [Usage statistics](/admin/hosting#usage-statistics). |
 | **AI requests** | Only when CollabaseAI is enabled with a hosted provider | Choose a self-hosted provider or Infomaniak. See [AI Configuration](/admin/ai-configuration#privacy-and-data-handling). |
 | **Hosted re-ranking** | Only when a hosted re-ranking service is selected | Use **Own server** or leave re-ranking off |
 | **Automation connectors** | Only for automations you build with external services | Each connector sends the data you map into it |
 
 <Warning>
-  If a data processing agreement does not permit content to be shared with a third party, switch usage statistics off before your members start using the AI assistant.
+  If a data processing agreement does not permit content to be shared with a third party, leave usage statistics switched off.
 </Warning>
 
 ---

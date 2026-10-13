@@ -94,6 +94,12 @@ helm upgrade collabase ./deployment/helm -n collabase \
   --reuse-values --set backup.enabled=true
 ```
 
+With the option on, Collabase also backs up the database right before it applies
+database changes, and every upgrade first checks that your data can be converted.
+If the check fails, the upgrade stops and your database stays as it was. Turn the
+option on in an upgrade before the one you want protected: the storage for the
+backups only exists once that first upgrade has finished.
+
 ---
 
 ## Using your own database

@@ -116,7 +116,7 @@ OAuth lets users sign in with an existing account from another service — Googl
 </Steps>
 
 <Warning>
-  **Tenant ID is required for Microsoft Entra ID.** Collabase will not save a Microsoft provider without one. This deliberately prevents sign-in from Microsoft accounts outside your organization — leaving the tenant unset would allow any Microsoft account in the world to sign in.
+  **Tenant ID is required for Microsoft Entra ID.** Collabase will not save a Microsoft provider without one. This deliberately prevents sign-in from Microsoft accounts outside your organization — leaving the tenant unset would allow any Microsoft account in the world to sign in. Enter the Tenant ID as the ID (a GUID such as `0b6f1a2c-…`), not as a domain name; a provider with a domain name cannot be used to sign in.
 </Warning>
 
 ### Setting up Okta or Keycloak
@@ -156,8 +156,25 @@ Every OAuth provider has an **Allowed email domains** field and an **Auto-create
 | **Auto-create new users** | When on (default), a new Collabase account is created automatically the first time someone signs in with this provider. When off, only people who already have a Collabase account can sign in with it. |
 
 <Warning>
-  Set **Allowed email domains** for every provider except perhaps GitHub. Without it, anyone with an account at that provider can sign in — and if a Collabase account with a matching email already exists, they sign in to that existing account. This is especially important for Microsoft, Okta, and Keycloak, where organizations are often shared across companies.
+  Set **Allowed email domains** for every provider except perhaps GitHub. Without it, anyone with an account at that provider can sign in and, if the setting above is on, get a new Collabase account. This is especially important for Microsoft, Okta, and Keycloak, where organizations are often shared across companies.
 </Warning>
+
+### How existing accounts are linked
+
+When someone who already has a Collabase account signs in with a provider for the first time, Collabase links the two accounts, but only if all of the following are true:
+
+- The provider is tied to your organization: Microsoft Entra ID with a Tenant ID, Okta or Keycloak with an issuer URL, or Google with a Google Workspace domain that matches the email address. GitHub never links an existing account.
+- The provider does not report the email address as unverified.
+- If you set **Allowed email domains**, the domain is on the list.
+- Exactly one active account has that email address, and it is not a guest.
+
+The person then receives an email telling them the account was linked, and the link is recorded in the audit log. Later sign-ins use the provider's own account ID, so a changed email address does not create a second account. If the provider reports an address that another Collabase account already uses, Collabase keeps the stored address and records the conflict in the audit log.
+
+If one of the conditions is not met, the person sees a message on the sign-in page and no account is linked or created. They can ask an administrator, or sign in with their password.
+
+<Note>
+  Providers that are already set up keep working after your Enterprise license expires, so nobody is locked out. You cannot add or change providers until the license is renewed.
+</Note>
 
 <Note>
   Credentials are stored encrypted and cannot be viewed again after saving. To update a credential, enter the new value and save — the old value is replaced.
@@ -175,10 +192,11 @@ Your identity provider needs these two values to register Collabase as a service
 
 | Value | Format |
 |---|---|
-| **Assertion Consumer Service (ACS) URL** | `https://your-collabase-domain/api/auth/saml/callback` |
-| **Entity ID / Metadata URL** | `https://your-collabase-domain/api/auth/saml/metadata` |
+| **Assertion Consumer Service (ACS) URL** | `https://your-collabase-domain/api/auth/sso/saml2/sp/acs/saml` |
+| **Metadata URL** | `https://your-collabase-domain/api/auth/sso/saml2/sp/metadata?providerId=saml` |
+| **Entity ID** | The value you enter as the service provider entity ID. Left empty, it is the metadata URL. |
 
-Most providers can import the full configuration by fetching the metadata URL automatically.
+Most providers can import the full configuration by fetching the metadata URL automatically. Collabase only accepts a response that answers a sign-in it started, so sign-in always begins at Collabase; logins started from the identity provider's own portal are refused.
 
 ### What you need from your identity provider
 
@@ -191,17 +209,17 @@ Most providers can import the full configuration by fetching the metadata URL au
 ### Configuring SAML
 
 <Steps>
-  <Step title="Open Admin → Identity Providers → SAML">
-    The panel shows the ACS URL and Entity ID you need to give your IdP.
+  <Step title="Open Admin → Identity Providers and choose SAML 2.0">
+    Under **Add an identity provider**, click **SAML 2.0**. The panel holds the settings Collabase needs from your IdP and lists the ACS URL and metadata URL your IdP needs, as described under **What to give your identity provider** above.
   </Step>
   <Step title="Register Collabase in your identity provider">
-    Use the ACS URL and Entity ID from step 1. Configure your IdP to send the user's **email** and **display name** in the SAML assertion attributes.
+    Use the ACS URL and Entity ID from the table above. Configure your IdP to send the user's **email** and **display name** in the SAML assertion attributes.
   </Step>
   <Step title="Enter the IdP SSO URL, certificate, and Entity ID in Collabase">
-    Paste the values from your identity provider into the corresponding fields.
+    Paste the values from your identity provider into the corresponding fields. If your provider publishes a metadata URL, enter it under **Import from metadata URL** and click **Import**: Collabase fills in the Entity ID, SSO URL, and certificate. Check the values, then continue. Only public HTTPS addresses are accepted.
   </Step>
-  <Step title="Set allowed email domains (recommended) and default role">
-    Restrict sign-in to your organization's email domains and choose the role assigned to new accounts.
+  <Step title="Choose the default role">
+    Choose the role new accounts get, and whether Collabase creates an account on a person's first sign-in.
   </Step>
   <Step title="Enable and save">
     Toggle SAML to **Enabled**. Users see a **Sign in with SSO** button on the login page.
@@ -229,7 +247,7 @@ Navigate to **Admin → Identity Providers → LDAP**.
 | **User Search Filter** | Which objects to treat as users — default: `(objectClass=person)` |
 | **Email Attribute** | Directory attribute that holds the user's email address |
 | **Name Attribute** | Directory attribute for the user's display name |
-| **Default Role** | Role assigned to users signing in — or synced in — for the first time |
+| **Default Role** | Role assigned to users signing in — or synced in — for the first time. For synced users this is **User**, or **Admin** if you choose it. A setting saved earlier as Viewer now creates User accounts |
 
 The panel includes preset configurations for **Active Directory** (`(objectClass=user)`, `userPrincipalName`, `displayName`) and **OpenLDAP** (`(objectClass=inetOrgPerson)`, `mail`, `cn`) that fill in the common attribute mappings automatically.
 
@@ -246,12 +264,23 @@ When **Enable auto sync** is on and a **Sync Interval** is set, Collabase automa
 - New users in the directory are created in Collabase.
 - Existing users have their name updated on each sync.
 - Users removed from the directory are disabled in Collabase — their content is not deleted.
+- A user who returns to the directory is enabled again, unless an administrator disabled that account by hand. A manual lock stays until an administrator lifts it.
+- The last active administrator is never disabled by a sync. If the directory no longer lists that account, it stays active and the sync result says so.
+- Synced users get no password from Collabase. They sign in with single sign-on, or with a password an administrator sets.
 
 Click **Sync Now** to trigger a manual sync at any time, in addition to the schedule.
 
 <Warning>
   **If a sync would disable an unusually large number of users, Collabase stops and asks you to confirm.** This protects you if the directory connection is misconfigured or briefly unreachable — for example, a broken search filter that only matches a fraction of your real users. Review the warning message carefully before choosing **Sync anyway**; only proceed if you expect that many users to have genuinely left the directory.
 </Warning>
+
+<Note>
+  Every new or re-enabled user takes one place of your licensed user limit. When no place is left, the sync skips the remaining users and reports how many it skipped. The next sync adds them once you have raised the limit or freed places.
+</Note>
+
+<Note>
+  If your Enterprise licence expires, directory sync stops: **Sync Now** answers with a licence error and the scheduled sync does nothing. Existing accounts and sign-in are not affected. Sync resumes as soon as the licence is renewed.
+</Note>
 
 <Note>
   A sync that finds zero users in your directory is always stopped automatically and cannot be forced through — this is treated as a configuration problem, not a real empty directory.
@@ -290,7 +319,7 @@ SCIM (System for Cross-domain Identity Management) connects your identity provid
 </Steps>
 
 <Warning>
-  The SCIM token is shown only once. If you lose it, revoke it in **Admin → Identity Providers → SCIM Provisioning** and generate a new one. A revoked token stops working immediately.
+  The SCIM token is shown only once. If you lose it, click **Generate token** again: the new token replaces the old one, and the old one stops working immediately. Update your identity provider with the new token before its next sync.
 </Warning>
 
 ### What SCIM syncs automatically
@@ -305,8 +334,27 @@ SCIM (System for Cross-domain Identity Management) connects your identity provid
 
 SCIM does not delete accounts — it only deactivates them. Content created by the user is preserved.
 
+### How users and groups are matched
+
+- **No matching by email.** If your IdP sends a user whose email address already belongs to a Collabase account that SCIM has not created, Collabase rejects the user with a conflict (HTTP 409) and records the rejection in the audit log as `SCIM_USER_REJECTED`. Resolve it by changing the email address of one of the two accounts, then let the IdP try again.
+- **Matching by the IdP's own ID.** A user whose external ID is already stored on a Collabase account is linked to that account. Name and email address then follow your IdP.
+- **Deactivation by an administrator stays.** If an administrator deactivated an account in **Admin → Users**, a later "active" message from your IdP does not reactivate it.
+- **No free licence seat.** When the licensed user limit is reached, new users and reactivations are rejected with HTTP 403.
+
+### Users that were turned away
+
+Below the token list, the **SCIM Provisioning** card shows **Recently turned away**: the last ten users your IdP tried to create and Collabase refused, with the reason and the time. The reason is either that the email address already belongs to another account or that no licensed seat was free. Fix the cause, and the next provisioning run of your IdP takes the user in.
+
+### Groups
+
+Groups pushed by SCIM become Collabase groups. Their members follow your IdP, so you cannot add or remove members, rename, or delete these groups in Collabase. You can still give them access to spaces. A group with the same name as an existing Collabase group takes over that group; its members are replaced by the members from your IdP. A group can have at most 1,000 members.
+
+### Updating from an earlier version
+
+Tokens created before this update no longer work. Open **Admin → Identity Providers → SCIM Provisioning**, click **Generate token**, enter the new token in your IdP, and restart provisioning there once (in Microsoft Entra ID: **Restart provisioning**). Users who already have an external ID in Collabase are linked again instead of being created twice.
+
 <Note>
-  Email address changes are not synced through SCIM. This is deliberate — email is how Collabase matches an incoming SCIM user to the correct account, so changing it through the sync could point a profile at the wrong person. To change a user's email, update it directly in **Admin → Users**.
+  SCIM stops when the Enterprise licence has expired: requests are answered with HTTP 403 until the licence is renewed.
 </Note>
 
 ---
@@ -316,6 +364,8 @@ SCIM does not delete accounts — it only deactivates them. Content created by t
 Always keep at least one admin account that can sign in with email and password — in case your identity provider is unavailable.
 
 The email/password login page is always accessible at `/auth/login`, even when SSO is the default sign-in method for all other users.
+
+Accounts you exempt from enforced single sign-on (by name or through a group in the SSO bypass policy) must have a second sign-in step before you can enforce SSO. If one of them signs in with a password only, Collabase refuses to save and names the accounts. Ask them to set up an authenticator app or a passkey first.
 
 <Warning>
   If every admin account relies exclusively on an external provider (Google, Microsoft, SAML, LDAP) and that provider goes down or is misconfigured, you will be locked out of the admin panel. Maintain one local admin account as a recovery option.

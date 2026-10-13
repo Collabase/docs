@@ -32,7 +32,7 @@ Every user in Collabase has one of two instance-level roles. This role controls 
     Fill in their name and email address.
   </Step>
   <Step title="Set a temporary password">
-    Enter a temporary password. The user will be prompted to set their own password on first login.
+    Enter a temporary password, or use the suggested one. It has to meet the [password requirements](/admin/security-policies#password-requirements). The user is prompted to set their own password on first login.
   </Step>
   <Step title="Assign an instance role">
     Choose **User** or **Admin**. Most new users should receive the **User** role.
@@ -55,7 +55,14 @@ From **Admin → Users**, you can take the following actions on any account:
 | **Re-enable** | Restores access for a previously disabled account |
 | **Edit profile** | Update name, email, job title, and department |
 | **Unlock** | Removes a lockout caused by repeated failed login attempts |
+| **Remove second step** | Takes the authenticator app, the passkeys and the trusted devices from a member who lost their device. The button appears only for members who have a second step. They sign in with the password alone until they set one up again, and Collabase tells them by email. |
 | **Delete** | Anonymizes the member for good. Pages, work items, comments, attachments and booked time stay, and the author shows as the name followed by `(deleted)`. The email address, password, two-factor setup, sessions, API tokens, and group and space memberships are removed. If the member owns automations, connections or registry schemas, you choose a new owner first; those move to that person and keep working unchanged. The email address can be used again right away. A deleted member cannot be re-enabled. A SCIM token the member created keeps working, so your identity provider stays connected; replace it under **SCIM** if you want it tied to someone else. |
+
+### Second step for administrators
+
+Every administrator who signs in with a password must set up a second sign-in step: an authenticator app or a passkey. After the password, Collabase takes them to the setup page. Until they finish it, they cannot open the administration pages or call the administration API, which answers `MFA_REQUIRED`. Their profile stays available. The rule cannot be switched off. It does not apply to administrators who sign in only through single sign-on, because their identity provider handles it, and it does not apply to other members.
+
+A member promoted to administrator is asked on their next request.
 
 <Warning>
   You cannot disable or delete your own account. Ask another admin to do this if needed.
@@ -97,6 +104,10 @@ When you add someone to a group, they immediately gain access to all spaces the 
 ### Adding or removing a member from a group
 
 Open the group from **Admin → Groups**, go to the **Members** tab, and use the add or remove controls. Changes take effect immediately — the user gains or loses space access right away.
+
+### Groups from your directory
+
+A group that your directory pushes by SCIM carries the label **Managed by directory**. Its name, its members, and deleting it are changed in your directory, so these controls are switched off in Collabase and a note explains why. The **Members** tab still lists who belongs to the group, and you can still give the group access to spaces and apps.
 
 ### Using groups in space settings
 

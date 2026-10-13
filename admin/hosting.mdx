@@ -114,7 +114,7 @@ All data is stored in named volumes on your server. These volumes survive contai
 Collabase is designed for self-hosted, private deployment:
 
 - **All services run as non-root users.** If a service is compromised, the attacker cannot access the rest of the host system.
-- **Your content stays on your server.** Documents, tasks, files, and user data are stored only in your own database and file storage. Product usage statistics are the one exception — see [Usage statistics](#usage-statistics) below, including how to switch them off.
+- **Your content stays on your server.** Documents, tasks, files, and user data are stored only in your own database and file storage. Product usage statistics are the one exception, and only when an administrator switches them on. See [Usage statistics](#usage-statistics) below.
 - **Authentication endpoints are rate-limited.** Brute-force attacks against login are blocked automatically.
 - **Security headers are set on all responses.** The reverse proxy adds headers that protect against common web attacks (clickjacking, MIME sniffing, etc.).
 - **The database is not accessible from the network.** It only accepts connections from other services on the same internal network.
@@ -145,10 +145,16 @@ docker compose -f deployment/docker/docker-compose.release.yml logs <service-nam
 
 ## Usage statistics
 
-Collabase reports how the product is used, so we can see which features are worth improving and what
-the built-in AI costs to run. This is switched **on** after installation.
+Collabase can report how the product is used, so we can see which features are worth improving and
+what the built-in AI costs to run. This is switched **off** after installation. Nothing is reported
+until an administrator switches it on.
 
-What is sent:
+<Note>
+Installations that had usage statistics switched on before this became opt-in were switched off by
+an update. To keep reporting, switch it on again.
+</Note>
+
+What is sent when it is switched on:
 
 - Which features are opened, and errors the application runs into
 - For every request to the built-in AI: the model used, how long it took, how many tokens it
@@ -158,15 +164,15 @@ What is sent:
 
 Nothing else leaves your server. Your documents, files, tasks, and user records are never uploaded.
 
-### Switching it off
+### Switching it on or off
 
-Go to **Administration → Feedback & Privacy** and turn telemetry off. This stops all reporting
-immediately, in the browser and on the server alike, including everything about AI requests.
+Go to **Administration → Feedback & Privacy** and use the **Usage Data & Telemetry** switch. Turning
+it off stops all reporting immediately, in the browser and on the server alike, including everything
+about AI requests.
 
 <Note>
 If you operate Collabase under a data processing agreement that does not permit content to be shared
-with a third party, switch usage statistics off before your users start working with the AI
-assistant.
+with a third party, leave usage statistics switched off.
 </Note>
 
 ---

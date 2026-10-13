@@ -1,0 +1,68 @@
+---
+title: "Apps and agents"
+sidebarTitle: "Apps and agents"
+description: "Decide how AI agents and other applications may ask your members for access, see who registered, and remove an application."
+---
+
+An AI agent, such as Claude or Cursor, can work in Collabase for a member: read projects, work items and pages, create a work item, change a status and write a comment. The agent connects through your Collabase address, and the member agrees once on a consent page. The agent then acts with that member's rights and never with more.
+
+Open **Admin → Members and access → Apps and agents** to control this. Only system administrators see the page.
+
+## Registration is off by default
+
+An application must be known to Collabase before it can ask anyone for access. Two ways exist, and both are off until you switch one on.
+
+| Setting | What it allows |
+|---|---|
+| **Client metadata documents** | An application is known by a public web address. Collabase fetches its description from that address. Addresses on your own network or on the loopback interface are always refused. |
+| **Dynamic registration** | An application registers itself at the registration address, without an administrator. |
+
+<Warning>
+  With either setting on, anyone who can reach your instance can make an application ask your members for access. Every member still decides on the consent page, and the page shows the name the application gave itself and the address it returns to. Switch a setting on when you expect agents, and off again when you do not.
+</Warning>
+
+A setting takes effect immediately. Every change is recorded in the audit log with the name of the setting, never a value.
+
+## Connect an agent
+
+<Steps>
+  <Step title="Switch on a way to register">
+    In **Registration**, switch on **Dynamic registration**. Most agents register this way.
+  </Step>
+  <Step title="Copy the MCP address">
+    Under **Connect an agent**, copy the **MCP endpoint** and enter it in the agent. The agent finds the sign-in addresses by itself.
+  </Step>
+  <Step title="Let a member agree">
+    The agent opens a Collabase sign-in. After signing in, the member sees what the agent asks for and chooses **Allow** or **Deny**.
+  </Step>
+</Steps>
+
+## What an agent may ask for
+
+Agents ask for the same areas an [API token](/concepts/profile) uses, such as work items, comments and pages, each with a level. Two rules limit them:
+
+- An agent never receives the level **Administer** of any area.
+- The scopes that list everyone on the instance, **Users** and **Groups**, go to system administrators only. A member who asks for them is simply not granted them.
+
+Guests cannot connect agents.
+
+## Registered applications
+
+The list shows every application that registered, how it registered, the address it returns to and the date.
+
+To remove an application, select the bin icon and confirm. Its tokens and the consent of every member are deleted at once, and its next call is refused. The application can register again only while a registration setting is on.
+
+## Take access away from one member
+
+Open **Admin → Users**, open the menu of the member and select **Connected apps**. The dialog lists what that member connected. Select an application to withdraw its access. The member can allow it again later.
+
+## What happens in other cases
+
+| Case | Result |
+|---|---|
+| A member is locked or deleted | All their agent access ends at once, and the consents are deleted. |
+| A member becomes a guest | Their agents are refused at the next call. |
+| A member withdraws an app in their profile | The agent is refused at the next call. See [Your profile](/concepts/profile). |
+| An agent changes something | The history of the work item names the agent. The audit log records the tool and the application, without the content. |
+
+An agent that changes things is limited to 30 changes per minute. Reading is not limited by this.

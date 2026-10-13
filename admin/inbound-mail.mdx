@@ -1,0 +1,119 @@
+---
+title: "Inbound mailbox"
+description: "Connect an IMAP mailbox so mails to Collabase become work items and replies to Collabase mails become comments."
+---
+
+With an inbound mailbox, members can work with Collabase from their mail program. A mail to the mailbox creates a work item in a project. A reply to a mail from Collabase adds a comment to the work item it came from. Collabase reads the mailbox every minute.
+
+## Before you start
+
+- **A dedicated mailbox** with IMAP access at your mail provider, for example `collabase@example.com`. Collabase moves every mail it reads, so do not use a personal mailbox.
+- **Redis.** The standard Docker installation includes it. If it is missing, the card shows **The inbound mailbox needs Redis to read mail**.
+- **The Admin instance role** in Collabase.
+
+## Who can send mail to Collabase
+
+Collabase accepts a mail only from an active Collabase member whose mail address matches the sender. The sender needs the same permissions as in the browser: to create a work item in the project, or to comment on the work item. Mails from anyone else are refused and show up in the list of recent mails.
+
+## Set up the mailbox
+
+<Steps>
+  <Step title="Open the mail settings">
+    Go to **Administration → Mail Server** and scroll to the card **Inbound mailbox**.
+  </Step>
+  <Step title="Enter the connection">
+    | Field | What to enter |
+    |---|---|
+    | **IMAP server** | The host name of your IMAP server, for example `imap.example.com` |
+    | **Port** | `993` by default |
+    | **TLS** | On by default. Leave it on unless your server does not support it. |
+    | **User** | The user name of the mailbox |
+    | **Password** | The password of the mailbox. When you edit the settings later, leave the field empty to keep the stored password. |
+  </Step>
+  <Step title="Choose the folders">
+    | Field | Default | Meaning |
+    |---|---|---|
+    | **Folder to read** | `INBOX` | Collabase reads new mails from this folder. |
+    | **Folder for handled mails** | `Collabase/Processed` | Collabase moves every mail it handled into this folder. |
+  </Step>
+  <Step title="Test the connection">
+    Click **Test connection**. On success, Collabase also proposes the server name for the authentication check (see below). Click **Use** to take it over.
+  </Step>
+  <Step title="Choose a default project">
+    Under **Project for mails without a target**, pick the project that receives mails whose subject or address names no project. Leave it empty to refuse such mails.
+  </Step>
+  <Step title="Switch it on">
+    Turn on **Read this mailbox** and click **Save Settings**.
+  </Step>
+</Steps>
+
+### Test connection messages
+
+| Message | What to do |
+|---|---|
+| **Connected** | The settings work. |
+| **Enter server and user first.** | Fill in **IMAP server** and **User**. |
+| **Sign-in refused.** | Check the user name and password. Some providers require an app password for IMAP. |
+| **No connection to the server.** | Check the server name, port and TLS setting, and that the Collabase server can reach the IMAP server. |
+
+## Sender authentication
+
+**Accept only mails the server authenticated (SPF/DKIM/DMARC)** is switched on by default. Collabase then accepts a mail only when your mail server confirmed that it really comes from the sender's domain. Your mail server writes that result into the mail, in a header called `Authentication-Results`, under its own server name.
+
+Collabase needs that server name in **Server name in Authentication-Results** so it only trusts results from your own mail server. **Test connection** reads it from the mailbox and proposes it.
+
+<Warning>
+  If you switch the check off, anyone can send a mail in the name of a member and create work items as that member. Leave it on.
+</Warning>
+
+## Where a mail ends up
+
+Collabase looks at the subject and the address in this order:
+
+| The mail | Result |
+|---|---|
+| Is a reply to a mail Collabase sent about a work item, such as an assignment, a mention or a confirmation | A comment on that work item. These mails also carry the work item key in square brackets in the subject, so the reply finds its work item even if the mail program drops the reply information. |
+| Has a work item key in square brackets in the subject, for example `[WEB-12]` | A comment on that work item. |
+| Has a project key in square brackets in the subject, for example `[WEB]`, or is sent to `inbox+WEB@example.com` | A new work item in that project. |
+| Names no target | A new work item in the project chosen under **Project for mails without a target**. |
+| Names no target and no default project is set | Refused. |
+
+The address with `+KEY` works only if your mail provider delivers plus addresses to the same mailbox. Most providers do.
+
+### What Collabase takes from a mail
+
+- **Text.** Quoted earlier messages below a reply are cut off, so a comment holds only the new text.
+- **Automatic replies** such as out-of-office messages are ignored.
+- **Attachments** are not imported. A new work item notes in its description how many attachments the mail had.
+- **Size.** Mails larger than 10 MB are refused.
+
+### Who is told
+
+The sender gets a confirmation mail. When a mail creates a new work item, the project lead gets a notification in Collabase.
+
+## Check what happened to a mail
+
+The card lists the recent mails with their outcome. It also shows when Collabase last read the mailbox and the last error.
+
+| Outcome | Meaning |
+|---|---|
+| **Work item created** | The mail became a new work item. |
+| **Comment added** | The mail became a comment. |
+| **Refused: not authenticated** | Your mail server did not confirm the sender. See [Sender authentication](#sender-authentication). |
+| **Refused: unknown sender** | The sender is not an active Collabase member. |
+| **Refused: no target** | The mail named no project and no default project is set. |
+| **Refused: no permission** | The sender may not create work items in that project or comment on that work item. |
+| **Refused: too large** | The mail is larger than 10 MB. |
+| **Ignored: automatic reply** | The mail was an automatic reply. |
+| **Ignored: no new text** | The reply contained only quoted text. |
+| **Failed** | Handling failed. Collabase tries again on the next run. |
+
+Collabase tries a mail at most three times. After the third failure, it moves the mail to the folder `Collabase/Failed` in the mailbox, where you can look at it.
+
+The list keeps no mail addresses. Entries are deleted after 90 days.
+
+## Related pages
+
+- [Users and groups](/admin/users-groups): members and their mail addresses
+- [Work items](/projects/tasks): what a work item contains
+- [Troubleshooting](/admin/troubleshooting): when the server cannot reach other systems

@@ -103,11 +103,21 @@ Collabase connects to PostgreSQL using the `DATABASE_URL` environment variable.
 
 ### Forgot password
 
-Use the **Forgot password** link on the login page. This sends a reset email to the address on file. If no email arrives, check that your mail provider is configured correctly in **Admin → Settings → Mail**.
+Use the **Forgot password** link on the login page. This sends a reset email to the address on file. The link works once and for one hour, and only the newest link counts: requesting a second one ends the first. Accounts that are locked, or managed by a directory or single sign-on, get no email. If no email arrives, check that your mail provider is configured correctly in **Admin → Settings → Mail**. If a link is requested for the same address several times in a row, further requests are ignored for a while.
 
 ### Account locked
 
 After several failed login attempts, an account may be locked by brute-force protection. An admin can unlock it from **Admin → Users** by clicking the account and selecting **Unlock**.
+
+### The only administrator lost their phone and their backup codes
+
+An administrator who is held at the second-step setup, or who cannot pass the code any more, can be reset from the container. Run this on the server, with the member's email address or ID:
+
+```bash
+docker compose -f deployment/docker/docker-compose.release.yml exec collabase-app node prisma/reset-mfa.bundle.cjs admin@example.com
+```
+
+The command removes the authenticator app, the passkeys and the trusted devices of that member and adds an entry to the audit log. They sign in with the password and set up a new second step. It exits with a non-zero code and changes nothing for an unknown member or a member without a second step. Another administrator can do the same from **Admin → Users** with **Remove second step**.
 
 ### SSO not working (Google, GitHub, Microsoft, Okta, Keycloak, SAML)
 
@@ -355,6 +365,7 @@ Missing or incorrect environment variables are the cause of many startup and aut
 | `DATABASE_URL` | PostgreSQL connection string | `postgresql://collabase:pass@localhost:5432/collabase` |
 | `NEXTAUTH_SECRET` | Session encryption key — must be long and random | 32+ character random string |
 | `NEXTAUTH_URL` | The public URL of your Collabase instance | `https://collabase.example.com` |
+| `COLLABASE_TRUSTED_PROXIES` | Optional. IPs or ranges of your reverse proxies, comma-separated. Sign-in rate limits use the client IP these proxies forward. If unset, the private ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `fc00::/7`) are trusted. On an intranet where users have private addresses, set it to your proxy's address only. | `10.0.5.2` |
 
 ---
 

@@ -1,0 +1,119 @@
+---
+title: "Guests"
+sidebarTitle: "Guests"
+description: "Invite external people to one project by email and decide with three switches what each guest may do."
+---
+
+A guest is an external person, such as a customer or a supplier, who works on one project and sees nothing else in Collabase. A guest has no access to other projects, Spaces, search, time tracking or administration.
+
+Guests do not use a licence seat.
+
+## Who can invite guests
+
+Guests are managed by the project's **Manager**, by an administrator of the Space, and by system administrators. A permission scheme that lets someone manage members does not include guests. Everyone else does not see the **Guests** section.
+
+## What a guest may do
+
+Every guest has the same base right, to view the work items of the project. Three switches add to it for each guest and project.
+
+| Switch | What it allows |
+|---|---|
+| **Comment** | Write comments. A guest sees only comments marked as External, and their own comments are External. |
+| **Create and edit work items** | Create work items and change them. |
+| **Read shared pages** | Read pages that someone with edit rights has shared with the guests of this project. |
+
+A guest never gets more than a viewer with the right to comment and edit work items. Deleting, changing members and settings, workflows and sprints stay closed. With **Create and edit work items** a guest creates work items and changes their fields and status, but never assigns them to someone and never plans them into a sprint.
+
+## Invite a guest
+
+<Steps>
+  <Step title="Open the project settings">
+    Open the project, select **Settings**, then **Members**. The **Guests** section is below the team.
+  </Step>
+  <Step title="Click Invite guest">
+    Enter the email address of the guest and set the three switches.
+  </Step>
+  <Step title="Set an end date (optional)">
+    Under **Access until**, pick the last day of access. Access ends at midnight of that day in the time zone of your instance.
+  </Step>
+  <Step title="Send the invitation">
+    Click **Send invitation**. The guest receives an email in your language, or in their own if they already have an account.
+  </Step>
+</Steps>
+
+The guest opens the link in the email and chooses a password. The link works once and for 7 days. After that, the guest can ask for a sign-in link to their address from the same page.
+
+<Note>
+  Collabase answers every invitation the same way, so the reply never tells you whether an address already has an account. If the address belongs to a colleague who can see the Space, the colleague becomes a normal member of the project and not a guest. An address that belongs to a locked account is turned away; the audit log records the reason.
+</Note>
+
+## Change what a guest may do
+
+Switch a right on or off directly in the list. The change applies from the guest's next request. Change **Access until** the same way, or clear the date to remove the end.
+
+## Send an invitation again
+
+Use the envelope button next to a guest who has not set up the account yet. The old link stops working at once. A new invitation can go out one hour after the last one; until then the button is disabled.
+
+## Remove a guest
+
+Click the bin button and confirm. Access to this project ends at once and the guest receives an email that names the project and nothing else.
+
+<Warning>
+  When you remove the last project of a guest, the account is locked and Collabase starts the anonymization period set under **Settings → Security → Policies**. Inviting the guest to a project again before then releases the account.
+</Warning>
+
+## What a guest sees
+
+A guest has a reduced navigation: the project, or the project list of the Space if they were invited to several. After signing in they land there.
+
+- **Comments.** A guest sees only comments marked as External. Their own comments are always External, and a reply takes the visibility of the thread it answers. Comments written by guests carry the label **Guest**.
+- **People.** A guest sees colleagues by name and picture only, never by email address. In the @ picker of a work item, a guest finds the colleagues of that project, and colleagues find its guests.
+- **Search.** The search finds the work items of the guest's own projects and the pages shared with them. Comments are not searched.
+- **Notifications.** A guest is told about a mention or an assignment only in their own projects, and never about an internal comment. A mention on a page reaches them only when the page is shared with their project.
+- **Files.** A guest opens the files of the work items and shared pages they can read. The Documents area and exports are closed.
+- **Pages.** Pages are read-only for a guest, so the page menu with move, clone, files and export is not shown.
+
+## Share a page with guests
+
+The switch **Read shared pages** opens nothing on its own. A page becomes readable for the guests of a project when someone with edit rights on the page shares it with that project.
+
+<Steps>
+  <Step title="Open the page menu">
+    Open the page and select the three dots at the top right, then **Share with guests**. The entry appears only if you can edit the page and see at least one project in its Space.
+  </Step>
+  <Step title="Switch the project on">
+    The dialog lists the projects of the Space that you can see. Switch on each project whose guests should read the page. The change applies at once.
+  </Step>
+</Steps>
+
+A shared page shows the badge **Shared with guests** next to the page menu. Switch the project off to withdraw the share; the guests' next request on the page is refused.
+
+- The share covers the subpages of the page as the tree stands now. A subpage that you restrict to selected people is not covered; share it on its own if guests should read it.
+- Moving a page below a shared page makes it readable for those guests. Moving it out of that branch, or into another Space, ends it.
+- A guest reads a shared page and never edits it. Guests whose **Read shared pages** switch is off see no shared pages.
+- A draft or an archived page is never readable for a guest, even when it is shared.
+- When you move a page below a shared page, Collabase warns you that the guests of that project will be able to read it.
+- Deleting the page removes its shares.
+
+### Share a folder
+
+A folder is shared the same way, with **Share with guests** in the folder header. Everything inside the folder is shared with it, as the tree stands now: a page you move out of the folder is no longer shared, a page you move in is. A guest who opens the folder sees the pages inside it as a list. Drafts, archived pages and pages restricted to selected people are left out.
+
+## Audit log
+
+The audit log records these actions: **Guest invited**, **Guest rights changed**, **Guest removed**, **Guest invitation accepted**, **Guest invitation turned away**, **Page shared with guests** and **Page guest share withdrawn**. The first five are recorded on the project, the last two on the page with the ID of the project. An entry shows the switches that were set and never the email address.
+
+## Convert a member into a guest
+
+A system administrator can turn a member into a guest under **Settings → Users**, in the menu of the account (**Convert to guest**). The account then stops counting towards the licence. It keeps only the projects it belonged to, as a guest of each, with commenting on, editing as before and reading pages off. Space roles, groups, API keys and sessions end. An administrator, your own account and an owner of Spaces cannot be converted; make the administrator a regular user first, and transfer the Spaces.
+
+The project team of a public project is listed in **Settings → Members** too, so that you can give someone the **Manager** role there and let them invite guests.
+
+## Guests across the instance
+
+System administrators see all guests under **Settings → Guests**: name, email address, projects, who invited them and the last sign-in. Per guest, the menu offers **Lock** and **Release**, **Remove from all projects** (one email names every project, and the account is locked) and **Anonymize**. The same list is available through the administration API at `/api/admin/guests`.
+
+## Limits
+
+You can send up to 30 invitations per hour. Beyond that, Collabase refuses further invitations until the hour has passed.

@@ -16,9 +16,17 @@ Your administrator gives you the address of your Collabase instance and tells yo
     Use the email address and the temporary password your administrator created for you.
   </Step>
   <Step title="Choose your own password">
-    On your first login, Collabase asks you to set a new password. Enter it, confirm it, and sign in again with the new password.
+    On your first login, Collabase asks you to enter the temporary password as your current password, then to choose a new one and confirm it. Your administrator sets the requirements for the new password. Afterwards you sign in again with the new password.
   </Step>
 </Steps>
+
+## Sign in with a passkey
+
+If you added a passkey in your profile, click **Use a passkey** on the login page and confirm with your fingerprint, face or PIN. You do not enter a password or a code. If your organization requires single sign-on, passkeys are switched off the same way passwords are.
+
+## Enter your second-step code
+
+If you set up a second step in your profile, Collabase asks for a code after your password. Enter the six-digit code from your authenticator app. If you lost your phone, click **Use a backup code instead** and enter one of the codes you saved. Each backup code works once. If the code screen says the sign-in expired, go back and sign in again.
 
 ## Sign in with your company account
 
@@ -29,6 +37,10 @@ If your administrator has connected an identity provider, the login page shows a
 | **Sign in with Google**, **GitHub**, **Microsoft Entra ID**, **Okta** or **Keycloak** | You sign in with your existing account at that service. |
 | **Sign in with SSO** | You are sent to your company's SAML identity provider and back. |
 | Company username and password | With LDAP or Active Directory, you sign in with your usual company credentials. |
+
+<Note>
+  Single sign-on does not ask for a second-step code in Collabase. Your company's identity provider handles it.
+</Note>
 
 <Note>
   If you sign in only through an external provider, you cannot change your password in Collabase. Change it at your identity provider or ask your IT administrator.

@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Security Policies"
-description: "Control how long a sign-in stays valid, lock out repeated failed logins, and let named people sign in with a password when SSO is enforced."
+description: "Set the password requirements, control how long a sign-in stays valid, lock out repeated failed logins, and let named people sign in with a password when SSO is enforced."
 ---
 
 Security policies are under **Settings → Security → Policies**. Each policy has a switch and its own settings, which open when you click the row.
@@ -8,6 +8,24 @@ Security policies are under **Settings → Security → Policies**. Each policy 
 <Note>
   Every installation starts with the default values described on this page.
 </Note>
+
+---
+
+## Password requirements
+
+Sets the minimum length and the kinds of characters every new password must contain. This policy is always active and cannot be switched off.
+
+| Setting | Default | What it does |
+|---|---|---|
+| **Minimum length** | 8 | The shortest password that is accepted, between 8 and 128 characters |
+| **Require a lowercase letter** | Off | The password must contain at least one lowercase letter |
+| **Require an uppercase letter** | Off | The password must contain at least one uppercase letter |
+| **Require a digit** | Off | The password must contain at least one digit |
+| **Require a symbol** | Off | The password must contain at least one character that is neither a letter nor a digit |
+
+The requirements are checked whenever a password is set: when someone changes their own password, resets a forgotten one, or when you create a user or set a temporary password. They are not checked at sign-in, so tightening them never locks anybody out. People keep signing in with their current password until they change it.
+
+When a password is refused, the message names every requirement it misses. The password suggested when you create a user or set a temporary password always meets the requirements, and is longer if you raise the minimum length.
 
 ---
 

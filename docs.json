@@ -87,7 +87,8 @@
                   "concepts/ai",
                   "concepts/collabase-ai",
                   "concepts/collabase-ai-skills",
-                  "concepts/profile"
+                  "concepts/profile",
+                  "concepts/connect-ai-agents"
                 ]
               },
               {
@@ -117,7 +118,8 @@
                       "projects/board",
                       "projects/backlog",
                       "projects/roadmap",
-                      "projects/portal"
+                      "projects/portal",
+                      "projects/guests"
                     ]
                   },
                   {
@@ -294,6 +296,7 @@
                 "pages": [
                   "admin/users-groups",
                   "admin/identity-providers",
+                  "admin/apps-and-agents",
                   "admin/security-policies"
                 ]
               },
@@ -316,7 +319,9 @@
                   "admin/hosting",
                   "admin/scaling",
                   "admin/file-storage",
+                  "admin/inbound-mail",
                   "admin/backup",
+                  "admin/restore-runbook",
                   "admin/updates",
                   "admin/troubleshooting"
                 ]

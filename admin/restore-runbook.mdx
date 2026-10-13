@@ -1,0 +1,148 @@
+---
+title: "Restore runbook"
+description: "Restore a Collabase server from a backup, step by step: what to prepare, the restore command, how to check the result and what to do when it fails."
+---
+
+This runbook takes you through a full restore of a Collabase installation that runs on Docker from the ZIP package. A full restore replaces the database and the uploaded files with the state of one backup. Everything entered after that backup is lost.
+
+<Warning>
+  A restore replaces all current data. It cannot be undone. Before you start, take a backup of the current state (see [Prepare](#prepare)) so you can return to it.
+</Warning>
+
+## When to restore
+
+Restore a backup when the data on the server is damaged or gone:
+
+- The server was lost or rebuilt and you are setting up Collabase again.
+- The database was damaged, or large parts of the content were deleted by mistake.
+- An update failed and `bash update.sh rollback` did not bring the application back. See [Updates](/admin/updates#rolling-back-an-update).
+
+Do not restore a backup to get back one project, work item, page or Space. Use the trash instead, see [Restoring one deleted project or work item](#restoring-one-deleted-project-or-work-item).
+
+## What you need
+
+| Item | Details |
+|---|---|
+| **Access to the server** | A shell on the Collabase server with permission to run Docker commands. |
+| **The deployment folder** | The `deployment/docker/` folder from the ZIP package. All commands below run from there. |
+| **The database backup** | A file named `collabase-<date>-<time>.sql.gz`, created by `bash install.sh backup` or by `bash update.sh`. |
+| **The files backup** | The file `collabase-files-<date>-<time>.tar.gz` with the same date and time. It holds attachments, avatars and banners. If your installation stores files in S3, there is no files backup and the files stay in your bucket. |
+| **The `.env` file** | Only when you restore onto a new server: the `.env` file from the old server. It holds the database password and the keys that encrypt stored credentials. Without the original file, saved connector and mail credentials cannot be read. |
+| **A maintenance window** | Collabase is unavailable while the restore runs. Tell your members beforehand. |
+
+<Note>
+  Backups in `deployment/docker/backups/` are deleted after 7 days, every time a backup or an update runs. Copy the backup you want to restore to another folder first, so it cannot be removed while you work.
+</Note>
+
+## Prepare
+
+<Steps>
+  <Step title="Copy the backup pair out of the backups folder">
+    ```bash
+    cd /path/to/deployment/docker
+    mkdir -p /root/restore
+    cp backups/collabase-20260723-030000.sql.gz backups/collabase-files-20260723-030000.tar.gz /root/restore/
+    ```
+    Replace the date and time with those of your backup. If the backup comes from off-server storage, copy both files to `/root/restore/` instead.
+  </Step>
+  <Step title="Back up the current state">
+    ```bash
+    bash install.sh backup
+    ```
+    Skip this step if the server is new or the database is unreadable.
+  </Step>
+  <Step title="On a new server only: install Collabase with the old configuration">
+    Unzip the deployment package, copy the old `.env` file to `deployment/docker/.env`, then run:
+    ```bash
+    bash deployment/docker/install.sh
+    ```
+    The installer finds the existing `.env` and uses it. If the file contains a `COLLABASE_VERSION` line, that version is installed. The installed version must be the same as the one the backup was taken with, or newer.
+  </Step>
+</Steps>
+
+## Restore the database and the files
+
+One command stops the application, restores the database and the uploaded files, and starts the application again. The database keeps running during the restore.
+
+<Warning>
+  Do not run `bash install.sh stop` before the restore. It removes the containers, and the restore needs the database and the application container to exist.
+</Warning>
+
+<Steps>
+  <Step title="Start the restore">
+    ```bash
+    cd /path/to/deployment/docker
+    bash install.sh restore /root/restore/collabase-20260723-030000.sql.gz
+    ```
+    The command finds the files backup with the same date and time in the same folder. If the files backup has a different name or sits elsewhere, pass it as a second argument:
+    ```bash
+    bash install.sh restore /root/restore/collabase-20260723-030000.sql.gz /root/restore/collabase-files-20260723-030000.tar.gz
+    ```
+  </Step>
+  <Step title="Check what will be replaced">
+    The command shows which database backup and which files backup it will use. If it says **No matching files archive**, cancel by typing anything other than `restore`, then start again with the files backup as a second argument.
+  </Step>
+  <Step title="Confirm">
+    Type `restore` and press Enter. The command stops the application, replaces the database, restores the files and starts Collabase again.
+  </Step>
+  <Step title="Wait for the end message">
+    The restore ends with **Done**. If the backup is older than the installed version, Collabase brings the database up to date on this start. That can take a few minutes.
+  </Step>
+</Steps>
+
+## Verify the restore
+
+<Steps>
+  <Step title="Check that the application is healthy">
+    ```bash
+    bash install.sh status
+    ```
+    All services should be running, and the last line should read **App is healthy**. Right after the restore, wait a minute and run it again if it does not.
+  </Step>
+  <Step title="Sign in">
+    Open Collabase in a browser and sign in with an account that existed at the time of the backup.
+  </Step>
+  <Step title="Open a project">
+    Open a project you know and check that its work items are there, up to the time of the backup.
+  </Step>
+  <Step title="Open an attachment">
+    Open a work item or page with an attachment and download the file. If the file is missing, the database was restored without the files backup.
+  </Step>
+</Steps>
+
+When everything checks out, tell your members that Collabase is back and up to which point in time the data was restored.
+
+## If the restore fails
+
+| Message or symptom | What it means | What to do |
+|---|---|---|
+| **is not a valid gzip archive — refusing to restore from it** | The file is damaged or was not copied completely. Nothing was changed. | Copy the file again from its original location, or use an older backup. |
+| **Restore reported errors — the database may be incomplete** | The database import stopped part way. The application was not started again. | Run the restore again with the same backup. If it fails again, use an older backup. Start the application only with a complete restore. |
+| **Could not restore uploaded files** | The database was restored, the files were not. Collabase starts, but attachments are missing. | Check the free disk space with `df -h`, then run the whole restore again with both files. |
+| **No matching files archive** | The command did not find the files backup. | Answer anything other than `restore`, then run the command again with the files backup as a second argument. |
+| **App is not responding** after the restore | The application did not start. | Read the last log lines with `bash install.sh logs collabase-app`. |
+| Attachments open with an error | The files backup was missing or belongs to a different date. | Restore again with the files backup that has the same date and time as the database backup. |
+
+If you cannot resolve the problem, collect a support bundle and send it to Collabase support:
+
+```bash
+bash install.sh support-bundle
+```
+
+The bundle contains container status, versions and recent logs. It contains no passwords or keys.
+
+To return to the state before the restore, restore the backup you created in [Prepare](#prepare) the same way.
+
+## Restoring one deleted project or work item
+
+When someone deletes a single project, work item, page or Space by mistake, restore it from the trash. The rest of the data stays as it is.
+
+Deleted projects and work items stay in the trash for 30 days. Go to **Administration → Data & Backup → Trash**, find the item and click **Restore**. A restored project comes back with its phases, members, sprints, costs and the other parts it had. See [Trash](/admin/backup#trash) for what is restored and when items are deleted for good.
+
+Use a full restore only when the item is no longer in the trash.
+
+## Related pages
+
+- [Backup & Restore](/admin/backup): what a backup contains and how to schedule it
+- [Updates](/admin/updates): rolling back a failed update
+- [Troubleshooting](/admin/troubleshooting): diagnosing a server that does not start

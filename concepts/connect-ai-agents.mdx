@@ -1,0 +1,57 @@
+---
+title: "Connect an AI agent"
+sidebarTitle: "Connect an AI agent"
+description: "Let an AI agent read and update your work in Collabase with your rights, and withdraw its access at any time."
+---
+
+You can connect an AI agent, such as Claude or Cursor, to Collabase. The agent can then look up projects, work items and pages for you, and make a few changes. It works as you: it sees what you see and can do what you can do, no more.
+
+Your administrator decides whether agents may register. If you cannot connect an agent, ask them to look at [Apps and agents](/admin/apps-and-agents). Guests cannot connect agents.
+
+## What an agent can do
+
+The agent has the same tools as Collabase AI. Each one needs the matching permission, which you grant when you connect it.
+
+| Area | What it does |
+|---|---|
+| **Spaces and projects** | Lists spaces and projects you can reach and shows a project with its open work. |
+| **Work items** | Finds, reads and creates work items, changes them, moves them to another project, moves them along their workflow, and reads their history and statuses. Shows your day and the recent activity. |
+| **Cycles** | Finds cycles and reads a cycle review. |
+| **Comments** | Reads and writes comments on work items and pages. |
+| **Pages** | Finds, reads and searches pages, reads their history, creates pages and changes them. |
+| **Registry** | Finds and reads registry objects and their history, creates them and changes them. |
+| **Time tracking** | Lists the time you booked, finds work items you may book on, and books time for you. |
+| **Meetings** | Lists your meetings, reads agenda, decisions and outcomes, adds agenda items, records decisions and outcomes, and turns a task outcome into a work item. |
+| **Cycles** (velocity) | Shows what a project's recent cycles committed and delivered. |
+| **Blog** | Lists the latest posts of the blogs you subscribed to. |
+| **Test management** | Finds test projects, cases, runs and milestones, and reads a run. |
+
+Search needs the search index of Collabase AI; without it the answer says that search is not available. Reading recent activity needs the permissions for work items, pages and comments together.
+
+An agent that reads a page or a comment treats its text as data. It does not obey instructions written inside it.
+
+## Connect an agent
+
+<Steps>
+  <Step title="Get the address">
+    Ask your administrator for the **MCP endpoint** of Collabase. It ends in `/api/mcp`.
+  </Step>
+  <Step title="Add it in your agent">
+    Enter the address as a remote MCP server in the agent. The agent opens a Collabase sign-in in your browser.
+  </Step>
+  <Step title="Check what it asks for">
+    The consent page names the application, shows the address it returns to and lists what it asks for. Select **Allow** only if you started the connection yourself.
+  </Step>
+</Steps>
+
+You receive an email that an application was connected. If it was not you, withdraw the access straight away.
+
+## See and withdraw what you connected
+
+Open your profile, then **Security**. **Connected apps** lists every application with what it may do, when you connected it and when it last acted.
+
+Select the bin icon and confirm to withdraw an application. It is refused from the next call, and it has to ask you again.
+
+<Note>
+  The history of a work item shows when an agent made a change: the entry names you and adds the agent, for example "via agent Claude".
+</Note>

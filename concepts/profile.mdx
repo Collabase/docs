@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Your Profile"
-description: "Update your personal information, choose your language, manage notifications, change your password, and create API tokens."
+description: "Update your personal information, choose your language, manage notifications, change your password, create API tokens, and manage connected apps."
 ---
 
 Your profile controls how you appear to others in Collabase and how you receive notifications. All profile settings are personal — they only affect your own account.
@@ -109,10 +109,10 @@ The **Security** tab is where you manage your login credentials and API access.
     You must verify your identity before setting a new password.
   </Step>
   <Step title="Enter and confirm the new password">
-    Type the new password and then type it again in the confirmation field. Passwords must be at least 8 characters.
+    Type the new password and then type it again in the confirmation field. The password has to meet the requirements your administrator has set; if it does not, Collabase names the missing ones.
   </Step>
   <Step title="Click Save">
-    Your password is updated immediately. Active sessions on other devices remain open — only the password itself changes.
+    Your password is updated immediately. Your other devices are signed out, unless your administrator has turned that off in the session policy. This device stays signed in.
   </Step>
 </Steps>
 
@@ -153,10 +153,18 @@ To revoke a token, click the **delete** button next to it. The token stops worki
 | Attribute | Detail |
 |---|---|
 | **Scope** | Tokens have the same permissions as your user account |
-| **Expiry** | Tokens do not expire automatically — revoke them manually when no longer needed |
+| **Expiry** | Every token expires, after 90 days unless you choose another lifetime (at most 365 days) |
+| **Locked account** | When your account is locked, its tokens are switched off and stay off after the account is unlocked. Create new tokens then |
+| **Earlier tokens** | Tokens issued before this change no longer work. The Security tab shows how many are left, so you can replace them |
 | **Storage** | Tokens are stored as a secure hash — Collabase cannot recover or display the original value |
 
 ---
+
+## Connected apps
+
+The Security tab also lists the applications and AI agents you allowed to act for you, with what each may do, when you connected it and when it last acted. Select the bin icon and confirm to withdraw an application. It is refused from its next call.
+
+See [Connect an AI agent](/concepts/connect-ai-agents) for how to connect one.
 
 ## Profile visibility
 

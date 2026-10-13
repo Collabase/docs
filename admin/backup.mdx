@@ -17,7 +17,19 @@ All Collabase data — pages, tasks, users, settings, automations, test cases, a
 
 ## Automatic pre-update backups
 
-Every time you run `bash update.sh`, Collabase automatically creates a database backup in `deployment/backups/` before applying the update. These backups are kept for 7 days and then removed automatically. They are intended as a safety net for rollbacks, not as your primary backup strategy.
+Every time you run `bash update.sh`, Collabase automatically creates a database backup in `deployment/backups/` before applying the update. These backups are kept for 7 days and then removed automatically. They are intended as a safety net for rollbacks, not as your primary backup strategy. If this backup fails, the update stops before changing anything.
+
+### Backups before database changes
+
+Whenever a new version brings database changes, Collabase backs up the database once more, right before it applies them. This also happens when the update runs on its own at night, without `update.sh`. A restart without database changes takes no backup.
+
+These backups are kept inside the application's storage, not in `deployment/backups/`. Collabase keeps the three most recent. To restore one, copy it out first, then restore it as described [below](#restoring-from-a-backup):
+
+```bash
+docker cp collabase-app:/app/storage/backups/ ./backups/pre-migration/
+```
+
+If this backup or the check before it fails, Collabase does not start the new version and the database stays unchanged. Start the previous version again with `bash update.sh rollback`.
 
 <Note>
   Pre-update backups cover the database only. Uploaded files are not included. Set up your own regular backup schedule (see below) that covers both the database and file storage.
@@ -102,6 +114,10 @@ Mount your NAS share on the server and set the backup destination path to the mo
 
 ## Restoring from a backup
 
+<Note>
+  For the full procedure, including restoring onto a new server, checking the result and what to do when a restore fails, follow the [Restore runbook](/admin/restore-runbook).
+</Note>
+
 <Warning>
   Restoring overwrites all current data in the database. Only proceed if you intend to roll back to a previous state. This cannot be undone.
 </Warning>
@@ -135,6 +151,30 @@ Mount your NAS share on the server and set the backup destination path to the mo
     Open Collabase in a browser and confirm that content, users, and settings are as expected.
   </Step>
 </Steps>
+
+---
+
+## Trash
+
+Before you restore a backup to get back something one person deleted, look in the trash. Go to **Administration → Data & Backup → Trash**. It lists deleted Spaces, projects, pages and work items, and you can filter it by type.
+
+Deleted projects and work items stay in the trash for 30 days. The list shows for each of them the date on which it is deleted for good. A maintenance job that runs every night removes the items whose date has passed. Until the job reaches an item, you can still restore it.
+
+### What comes back
+
+A restored project comes back with its phases, gates and gate decisions, milestones, members, sprints, groups, status reports, web links and costs.
+
+### When a restore is refused
+
+The trash tells you why it cannot restore an item instead of failing without a message:
+
+| Message | What to do |
+|---|---|
+| **Restore the space first** | The item belongs to a Space that is still in the trash. Restore the Space, then the item. |
+| **Restore the project first** | The work item belongs to a project that is still in the trash. Restore the project, then the work item. |
+| **Its address or key is now used by something else** | Since the deletion, another project or Space took the same key or address. Rename that one, then restore. |
+
+Deleting an item from the trash removes it for good. After that, only a [full restore](/admin/restore-runbook) brings it back.
 
 ---
 

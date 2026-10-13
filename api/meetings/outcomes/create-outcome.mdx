@@ -35,7 +35,7 @@ runs; otherwise the call returns `409 MEETING_NOT_RUNNING`. A meeting holds up t
 
 ```bash cURL
 curl -X POST "https://your-collabase.ch/api/v1/meetings/cm2meet0001abcd/agenda/items/cm5item0001/outcomes" \
-  -H "Authorization: Bearer clb_xYz123ABCD..." \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
   -H "Content-Type: application/json" \
   -d '{ "type": "TASK", "text": "Update the release checklist", "responsibleId": "cm0user0002", "dueDate": "2026-10-20" }'
 ```
