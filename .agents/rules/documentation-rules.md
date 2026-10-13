@@ -346,8 +346,8 @@ description: "..."
   `images/01_Collabase Logo/Collabase App Logos/collabase_appicon_*.png`). Every app overview page
   shows its icon at `width="60"` above the first paragraph; the home page uses the same files as
   `Card` icons. Never use the old full-size icons in `images/` root.
-- **Logos and favicon** in `docs.json` are `images/logo-goldblack.png` (light),
-  `images/logo-goldwhite.png` (dark) and `images/favicon-gold.png`, scaled copies from the brand
+- **Logos and favicon** in `docs.json` are `images/logo-black.png` (light), `images/logo-white.png` (dark),
+  `images/favicon-light.png` and `images/favicon-dark.png`, scaled copies from the brand
   folder. Never reference `images/01_Collabase Logo/` directly: the folder is 174 MB, contains an
   archive of retired logos and is excluded in `.mintignore` and `.gitignore`.
 - Do not embed screenshots in subpages unless a UI state cannot be explained without one.
@@ -1079,7 +1079,7 @@ Change it only for a reason, and say the reason in the pull request. What we set
 
 | Setting | Value or policy |
 |---|---|
-| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: almond, gold, Outfit and Geist, lucide, grid |
+| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: almond, lime, Outfit and Geist, lucide, grid. `colors.primary` is the dark green `#3f5a2e` because it colors text and links, `light` and `dark` are lime `#ccfc75` |
 | `description` | One sentence about Collabase for search engines and AI tools |
 | `seo.metatags`, `seo.organization` | `og:site_name`, `twitter:card`, the organization with logo |
 | `thumbnails` | Preset `headline`, eyebrow from the tab |
@@ -1148,9 +1148,10 @@ The Mintlify plan we use has no CI checks, so we run our own, locally and in the
 | Prose | `vale .` | Forbidden words, headings not in sentence case, banned terms |
 | All of it | `npm run docs:check` in the product repo | Runs build, links and anchors, accessibility, structure and prose in one go |
 
-- `mint a11y` also scores the brand colors. The primary gold `#b79b65` has a contrast of 2.48:1 on the light
-  background, below the 4.5:1 of WCAG AA. `docs-check.sh` reports that result and fails only on findings
-  such as missing alt text. Changing the brand color is a decision for the brand owner, not for a docs change.
+- `mint a11y` also scores the brand colors. The primary dark green passes at 7.2:1. It reports one failure that
+  is by design: the lime button fill against a light page is 1.10:1, below the 3:1 for a component edge,
+  while the dark text on the lime passes at 14:1. `docs-check.sh` prints that result and fails only on
+  findings such as missing alt text. Changing the button is a brand decision, not a docs change.
 - Vale is configured in `.vale.ini` with the style in `styles/Collabase/`. A word that is correct but
   flagged goes into `styles/config/vocabularies/Collabase/accept.txt`. Switch Vale off for a block with
   `{/* vale off */}` and `{/* vale on */}`, never between two `<Step>` elements.
@@ -1164,50 +1165,59 @@ The Mintlify plan we use has no CI checks, so we run our own, locally and in the
 
 ## 25. Color
 
-Gold is the brand. Green is a signal. The surface decides which color a piece of interface gets, not
-the element. The palette and the rules follow the website.
+Lime is the brand. The surface decides which color a piece of interface gets, not the element. The palette
+and the rules follow the website. There is no gold.
 
 | Color | Hex | Use |
 |---|---|---|
-| Gold | `#b79b65` | Structure: lines, icons, buttons, the end of a headline |
-| Lime | `#ccfc75` | Neon, on dark only |
-| Green | `#77f355` | Neon, on dark only |
-| Mint | `#1ae299` | Neon, on dark only |
-| Sage 1, 2, 3 | `#dfe9c0`, `#c9dfae`, `#b5d2a0` | Light content surfaces |
-| Dark text on sage | `#3f5a2e` | The only green that is allowed as text on light |
-| Dark text on neon | `#10200a` | Text on a lime, green or mint fill |
+| Lime | `#ccfc75` | The brand: buttons, the headline marker, lights. On dark, text and tags |
+| Green | `#77f355` | On dark only |
+| Mint | `#1ae299` | On dark only |
+| Sage 1 | `#dfe9c0` | Pill |
+| Sage 2 | `#c9dfae` | Marker and icon box |
+| Sage 3 | `#b5d2a0` | Lines and dots |
+| Dark text on sage | `#3f5a2e` | The only green allowed as text on light |
+| Dark text on lime, green, mint | `#10200a` | Text on a neon fill |
 
-| Surface | Color | What exactly |
+| Surface | Color | Role |
 |---|---|---|
-| Action surfaces: hero, buttons | Gold | Buttons, lights, icons. Unchanged, it comes from `docs.json` |
-| Light content sections | Sage | Exactly three roles: section marker, headline marker (one word per section), icon box. Everything else is neutral: arrows, numbers, plus signs, menu icons |
-| Dark surfaces | Neon | Text, check marks, pills and tags |
+| Action: hero, closing block, buttons | Lime | A button with dark text, a marker behind one headline word, lights |
+| Light content sections | Sage 1 to 3 | Sage 1 the pill, sage 2 the marker and the icon box, sage 3 lines and dots. Everything else is neutral: arrows, numbers, plus signs, menu icons |
+| Dark surfaces | Lime, green, mint | Text, check marks, tags |
 
-- One gradient exists: lime, green, mint, and only on a dark surface. A gradient never runs from gold into
-  green, the middle turns olive.
-- Never sage on dark, never neon on light, never a green fill in the same block as the gold button.
-- Green is not a text color on light. Use the dark text tone from the table, or a fill with dark text.
-- Small gold text, such as the eyebrow above a headline, uses the dark gold `#7a663e` on light (5.5:1) and gold on dark.
-- Gold is not a text color for body text: it reaches 2.66:1 on white, below the 4.5:1 of WCAG AA. It is
-  fine for large display text, lines, icons and fills.
+- One gradient exists, the core gradient lime, green, mint. It appears on dark surfaces and in the logo,
+  nowhere else.
+- Never sage on dark, never neon text on light.
+- Lime is not a text color on light: it reaches 1.10:1 on a light page. Text on light is the dark green
+  `#3f5a2e`, and text on a lime fill is `#10200a`.
 
 | Pair | Contrast | Verdict |
 |---|---|---|
+| `#3f5a2e` on white | 7.7 | passes AAA |
 | `#3f5a2e` on sage 1, 2, 3 | 6.1, 5.4, 4.7 | passes AA |
 | `#10200a` on lime, green, mint | 14.4, 12.0, 10.0 | passes AAA |
 | Lime text on `#0b0f0a` | 16.3 | passes AAA |
-| Gold text on white | 2.66 | fails AA, so not for body text |
+| Lime fill on a white page | 1.10 | fails as an edge, the text on it carries the contrast |
 
 ### How the docs apply it
 
-The colors live in `style.css` as variables, and Mintlify loads that file on every page. The docs are
-light by default and dark on request, so each rule has a light and a dark form.
+The colors live in `style.css`, which Mintlify loads on every page, and in `docs.json`. The docs are light by
+default and dark on request, so each rule has a light and a dark form.
 
 | Piece | Light | Dark | How |
 |---|---|---|---|
-| Headline marker | Sage fill, dark green text | Lime text, no fill | `<span className="brand-marker">word</span>`, one word per section |
-| Icon box of a card | Sage tile | Lime outline and icon | `className="brand-cards"` on the `Columns` that holds the cards. Not on cards with an image icon |
-| Sidebar tag | Sage | The neon gradient with dark text | `tag` in frontmatter or on a group |
+| Hero headline marker | Lime fill, dark text | Lime fill, dark text | `<span className="brand-marker-action">word</span>`, one word, the hero only |
+| Section headline marker | Sage 2 fill, dark green text | Lime text, no fill | `<span className="brand-marker">word</span>`, one word per section |
+| Icon box of a card | Sage 2 tile | Lime outline and icon | `className="brand-cards"` on the `Columns` that holds the cards. Not on cards with an image icon |
+| Sidebar tag | Sage 1 | The core gradient with dark text | `tag` in frontmatter or on a group |
 | Green `Badge` | Sage 1 | Lime fill | `<Badge color="green">`, the only badge color with the brand |
+| Buttons | Lime, dark text | Lime, dark text | `colors.dark` in `docs.json` and the text rule in `style.css` |
+| Hero line icons | Sage 3 | Lime, low opacity | Tailwind `text-[#b5d2a0] dark:text-[#ccfc75]` on the svg |
+| Text and links | Dark green `#3f5a2e` | Lime | `colors.primary` and `colors.light` in `docs.json` |
 
-Not used: green in callouts, in links or in code blocks. Hero and buttons stay gold.
+Logo and favicon: `images/logo-black.png`, `images/logo-white.png`, `images/favicon-light.png` and
+`images/favicon-dark.png` are the neutral variants from the brand folder, used until the brand files with
+the lime mark and the core gradient exist. Replace the four files and keep the names.
+
+Not used: green in callouts, in code blocks, or gold anywhere. Screenshots of the product show the product's
+own colors and are not recolored.

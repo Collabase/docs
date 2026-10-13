@@ -11,8 +11,8 @@ if command -v mint >/dev/null 2>&1; then MINT=(mint); else MINT=(npx --yes mint)
 
 run "${MINT[@]}" validate
 run "${MINT[@]}" broken-links --check-anchors --check-snippets
-# mint a11y also scores the brand colors and exits non-zero while the primary gold is below WCAG AA on
-# a light background. That is a design decision, so only missing alt text and similar findings fail here.
+# mint a11y also scores the brand colors and exits non-zero while the lime button fill is below 3:1 against a
+# light page. That is a brand decision, so only missing alt text and similar findings fail here.
 echo; echo "-> ${MINT[*]} a11y"
 a11y_output="$("${MINT[@]}" a11y 2>&1)"
 printf '%s\n' "$a11y_output"

@@ -3,14 +3,17 @@
   "theme": "almond",
   "name": "Collabase",
   "colors": {
-    "primary": "#b79b65",
-    "light": "#b79b65",
-    "dark": "#7a663e"
+    "primary": "#3f5a2e",
+    "light": "#ccfc75",
+    "dark": "#ccfc75"
   },
-  "favicon": "/images/favicon-gold.png",
+  "favicon": {
+    "light": "/images/favicon-light.png",
+    "dark": "/images/favicon-dark.png"
+  },
   "logo": {
-    "light": "/images/logo-goldblack.png",
-    "dark": "/images/logo-goldwhite.png"
+    "light": "/images/logo-black.png",
+    "dark": "/images/logo-white.png"
   },
   "navbar": {
     "primary": {

@@ -1,15 +1,15 @@
 /*
   Brand colors. The surface decides the color, not the element (documentation-rules.md, section 25).
 
-  - Action surfaces (hero, buttons): gold. Not touched here, it comes from docs.json.
-  - Light content surfaces: sage, in exactly three roles: section marker, headline marker, icon box.
-  - Dark surfaces: neon (lime, green, mint) for text, check marks, pills and tags.
-  - One gradient only, lime to green to mint, and only on a dark surface.
-  Never sage on dark, never neon on light, never a green fill next to the gold button.
+  - Action surfaces (hero, buttons): lime. A button has dark text, a headline word gets a lime marker.
+  - Light content sections: sage. Sage 1 is the pill, sage 2 the marker and the icon box, sage 3 lines and dots.
+    Everything else is neutral.
+  - Dark surfaces: lime, green and mint for text, check marks and tags. The core gradient (lime, green, mint)
+    exists only here and in the logo.
+  There is no gold. Never sage on dark, never neon text on light.
 */
 
 :root {
-  --brand-gold: #b79b65;
   --brand-lime: #ccfc75;
   --brand-green: #77f355;
   --brand-mint: #1ae299;
@@ -18,12 +18,12 @@
   --brand-sage-3: #b5d2a0;
   --brand-ink-on-sage: #3f5a2e;
   --brand-ink-on-neon: #10200a;
-  --brand-neon-gradient: linear-gradient(90deg, #ccfc75, #77f355, #1ae299);
+  --brand-core-gradient: linear-gradient(90deg, #ccfc75, #77f355, #1ae299);
 }
 
-/* Headline marker: one word per section. Sage fill with dark green text on light, neon text on dark. */
+/* Headline marker on a content section: one word, sage 2 with dark green text on light, lime text on dark. */
 .brand-marker {
-  background: var(--brand-sage-1);
+  background: var(--brand-sage-2);
   border-radius: 0.375rem;
   color: var(--brand-ink-on-sage);
   padding: 0 0.35em;
@@ -35,16 +35,26 @@
   padding: 0;
 }
 
-/* Icon box: a sage tile behind a card icon on light, a neon outline on dark. Only inside .brand-cards.
+/* Headline marker on an action surface such as the hero: a lime fill with dark text in both modes. */
+.brand-marker-action {
+  background: var(--brand-lime);
+  border-radius: 0.375rem;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  color: var(--brand-ink-on-neon);
+  padding: 0 0.3em;
+}
+
+/* Icon box: a sage 2 tile behind a card icon on light, a lime outline on dark. Only inside .brand-cards.
    Mintlify draws the icon as a mask, so the color is the background of the svg. */
 .brand-cards [data-component-part="card-icon"] {
   align-items: center;
   background: var(--brand-sage-2);
   border-radius: 0.5rem;
+  box-sizing: content-box;
   display: inline-flex;
   justify-content: center;
   padding: 0.4rem;
-  box-sizing: content-box;
 }
 
 .brand-cards [data-component-part="card-icon"] svg {
@@ -60,15 +70,23 @@
   background-color: var(--brand-lime) !important;
 }
 
-/* Tag next to a page or group in the sidebar, for example Enterprise. The color sits on the inner span. */
+/* Tag next to a page or group in the sidebar, for example Enterprise: the sage 1 pill on light, the core
+   gradient on dark. The color sits on the inner span. */
 .nav-tag-pill .nav-tag-pill-text {
-  background: var(--brand-sage-2);
+  background: var(--brand-sage-1);
   color: var(--brand-ink-on-sage);
 }
 
 .dark .nav-tag-pill .nav-tag-pill-text {
-  background: var(--brand-neon-gradient);
+  background: var(--brand-core-gradient);
   color: var(--brand-ink-on-neon);
+}
+
+/* Buttons are lime with dark text. Mintlify paints the button with colors.dark and white text. */
+#topbar-cta-button,
+#topbar-cta-button a,
+#topbar-cta-button span {
+  color: var(--brand-ink-on-neon) !important;
 }
 
 /* The top bar of the two home pages is transparent, so content scrolls under it. Give it a calm backing.
@@ -84,7 +102,7 @@ html.dark[data-current-path="/de"] header#navbar {
   background-color: rgb(9 9 9 / 0.8);
 }
 
-/* Green badge, the only badge color that carries the brand: sage on light, lime on dark. */
+/* Green badge, the only badge color that carries the brand: the sage 1 pill on light, lime on dark. */
 [data-badge][data-color="green"] {
   background: var(--brand-sage-1);
   border-color: var(--brand-sage-3);
