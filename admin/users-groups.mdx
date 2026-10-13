@@ -124,6 +124,7 @@ Some Collabase modules are instance-wide — not tied to any space. Access to th
 
 | Module | Available roles | What each role can do |
 |---|---|---|
+| **Collabase Core** | Admin, User | Admin: administers Collabase, that is users, groups, settings and every app. User: works in Collabase with the spaces and projects the person is given. The higher of the group role and the role on the account applies, so a group can raise a member to Administrator but never lowers one. Guests stay guests. |
 | **Registry** | Admin, User | Admin: create/delete schemas, global operations. User: access the Registry, with individual schema permissions controlling what they see. |
 | **Intranet** | Admin | Admin: create and manage content, configure settings. All logged-in users can read Intranet content without a group assignment. |
 | **Time Reports** | Admin, Manager | Admin: view all time across all users. Manager: view time from spaces where they are a space member. Without a group assignment, users see only their own time. |
@@ -145,6 +146,15 @@ Automation does not use group-based module roles — permissions are set per ind
 </Steps>
 
 To remove access, click the remove icon on the group's row for that module. Access is revoked immediately.
+
+### Administrators through a group {#administrators-through-a-group}
+
+A group with the role **Admin** for **Collabase Core** makes all its members administrators for as long as they belong to it. **Admin → Users** shows each member with the group they get the role from.
+
+- On a group that your directory maintains (**Managed by directory**), whoever manages the group in your directory appoints administrators. Collabase asks you to confirm this before it saves the role.
+- The role on the person's own account stays. Removing the person from the group lowers them to that role.
+- A group role does not count as an administrator that Collabase can rely on. You cannot remove the group role while no account is an administrator itself.
+- A change reaches other servers of the same instance within 10 seconds.
 
 ---
 

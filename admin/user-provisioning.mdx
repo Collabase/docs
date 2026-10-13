@@ -68,7 +68,7 @@ For Microsoft Entra ID, see [IAM with Microsoft Entra ID](/admin/iam-microsoft-e
 | `active` | Inactive deactivates the account, active reactivates it. |
 | `title` and the enterprise attribute `department` | Job title and department on the profile. |
 
-A directory never grants a role. Every account that SCIM creates starts as **User**.
+A directory never sets the role of an account. Every account that SCIM creates starts as **User**. A group that your directory maintains can only appoint administrators if you give it the role **Admin** for **Collabase Core** yourself and confirm it, see [Administrators through a group](/admin/users-groups#administrators-through-a-group).
 
 Start with `userName`, `emails`, the name, `externalId` and `active`. These are the attributes that every person has. Add job title, department and other attributes later, one at a time, and only when every assigned person has a value for them. Some directories, Microsoft Entra ID among them, send an attribute without a value as empty. Collabase can turn such a creation away with HTTP 400. Addresses and phone numbers are not read, so leave them out.
 
