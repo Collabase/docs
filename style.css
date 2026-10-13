@@ -243,3 +243,160 @@ body {
 [data-component-part="card-title"] {
   letter-spacing: -0.01em;
 }
+
+/* App landing pages: the hero panel from snippets/app-hero.mdx. A white card with the double edge and a soft
+   lime light in the corner, the action surface of the page. */
+.app-hero {
+  background: #fff;
+  background-image: radial-gradient(60% 90% at 100% 0%, rgb(204 252 117 / 0.35), transparent 70%);
+  border: 1px solid var(--card-hairline);
+  border-radius: 0.875rem;
+  margin: 6px 6px 3rem;
+  outline: 1px solid var(--card-line);
+  outline-offset: 5px;
+  padding: 1.75rem;
+}
+
+.dark .app-hero {
+  background-color: #171717;
+  background-image: radial-gradient(60% 90% at 100% 0%, rgb(204 252 117 / 0.12), transparent 70%);
+  border-color: rgb(255 255 255 / 0.08);
+  outline-color: rgb(255 255 255 / 0.12);
+}
+
+.app-hero-head {
+  align-items: center;
+  display: flex;
+  gap: 1.25rem;
+}
+
+.app-hero-icon img {
+  border-radius: 1.1rem;
+  height: 5rem;
+  margin: 0;
+  width: 5rem;
+}
+
+.app-hero-pill {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px var(--card-line);
+  color: #404040;
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin: 0;
+  padding: 0.125rem 0.625rem;
+}
+
+.dark .app-hero-pill {
+  background: rgb(255 255 255 / 0.06);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12);
+  color: #e5e5e5;
+}
+
+.app-hero-tagline {
+  color: #171717;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0.5rem 0 0;
+}
+
+.dark .app-hero-tagline {
+  color: #fafafa;
+}
+
+.app-hero-points {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.app-hero-points li {
+  background: #fafafa;
+  border: 1px solid var(--card-hairline);
+  border-radius: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.875rem 1rem;
+}
+
+.dark .app-hero-points li {
+  background: rgb(255 255 255 / 0.04);
+  border-color: rgb(255 255 255 / 0.08);
+}
+
+.app-hero-point-title {
+  color: #171717;
+  font-weight: 600;
+}
+
+.dark .app-hero-point-title {
+  color: #fafafa;
+}
+
+.app-hero-point-text {
+  color: #525252;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.dark .app-hero-point-text {
+  color: #a3a3a3;
+}
+
+.app-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.app-hero-primary,
+.app-hero-secondary {
+  border-bottom: 0 !important;
+  border-radius: 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  text-decoration: none !important;
+}
+
+.app-hero-primary {
+  background: var(--brand-lime);
+  color: var(--brand-ink-on-neon) !important;
+}
+
+.app-hero-secondary {
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--card-line);
+  color: #171717 !important;
+}
+
+.dark .app-hero-secondary {
+  background: rgb(255 255 255 / 0.06);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12);
+  color: #fafafa !important;
+}
+
+/* The announcement banner is dark with light text. Its text color is fixed by the theme, so the fill gives
+   the contrast, not the text. */
+html body #banner {
+  background: #0b0f0a;
+  border-bottom: 1px solid rgb(204 252 117 / 0.3);
+}
+
+.app-hero-points li::before {
+  display: none;
+}
+
+.app-hero-points li {
+  padding-inline-start: 1rem;
+}

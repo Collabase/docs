@@ -4,7 +4,11 @@ sidebarTitle: "Overview"
 description: "Collabase Docs is the built-in knowledge base of every Space: hierarchical pages, rich text, version history, comments and fine-grained permissions."
 ---
 
-<img src="/images/apps/docs.png" alt="Collabase Docs app icon" width="60" />
+import { AppHero } from "/snippets/app-hero.mdx";
+
+<AppHero app="docs" name="Collabase Docs" tagline="The knowledge base inside every Space." points={[{ title: "Pages", text: "A nested tree with rich text and slash commands." }, { title: "Version history", text: "Every change of a page is kept." }, { title: "Permissions", text: "Restrict a page to users or groups." }]} primary={{ label: "Write a page", href: "/docs/pages" }} secondary={{ label: "Use templates", href: "/docs/templates" }} />
+
+<div className="home-cards brand-cards">
 
 Collabase Docs is the built-in knowledge base for every Space. Teams use it to write and maintain technical specifications, runbooks, onboarding guides, meeting notes, process documentation, and anything else that needs to be written down and found again later.
 
@@ -82,3 +86,5 @@ Content is auto-saved when you move focus away from the editor. There is no manu
 - **Registry** — pages can document the purpose and usage of registry schemas
 - **Automation** — trigger automations when pages are created or updated
 - **CollabaseAI** — published pages are indexed and available through the assistant
+
+</div>

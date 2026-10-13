@@ -4,7 +4,11 @@ sidebarTitle: "Overview"
 description: "The Intranet is Collabase's internal communication hub — announcements, events, quick links, birthday recognition, and more."
 ---
 
-<img src="/images/apps/intranet.png" alt="Collabase Intranet app icon" width="60" />
+import { AppHero } from "/snippets/app-hero.mdx";
+
+<AppHero app="intranet" name="Intranet" tagline="Announcements, events and quick links in one feed." points={[{ title: "Company feed", text: "Blog posts from all Spaces, newest first." }, { title: "Events", text: "What is happening in your organization." }, { title: "Birthdays", text: "Recognize your colleagues." }]} primary={{ label: "Read the feed", href: "/intranet/blog-posts" }} secondary={{ label: "See events", href: "/intranet/events" }} />
+
+<div className="home-cards brand-cards">
 
 The Intranet is your organization's internal communication hub. It aggregates company announcements, events, blog posts, quick access links, and team birthdays into a single feed — accessible to everyone in the organization.
 
@@ -37,3 +41,5 @@ Admins control the Intranet's layout and branding under **Admin → Intranet Con
 - Enable or disable the birthday widget
 - Configure quick links available to all users (users can add personal quick links too)
 - Control which Spaces contribute to the company feed
+
+</div>

@@ -4,7 +4,11 @@ sidebarTitle: "Overview"
 description: "Test Management is the built-in quality tool: define test cases, run manual tests, record results and track quality across releases with milestones."
 ---
 
-<img src="/images/apps/test-management.png" alt="Collabase Test Management app icon" width="60" />
+import { AppHero } from "/snippets/app-hero.mdx";
+
+<AppHero app="test-management" name="Test Management" tagline="Test cases, runs and quality across releases." points={[{ title: "Test cases", text: "Write down what has to work." }, { title: "Test runs", text: "Run manual tests and record every result." }, { title: "Milestones", text: "Track quality from release to release." }]} primary={{ label: "Write test cases", href: "/test-management/test-cases" }} secondary={{ label: "Start a test run", href: "/test-management/test-runs" }} />
+
+<div className="home-cards brand-cards">
 
 Test Management is the built-in quality tool for every Collabase Space. Use it to organize test cases, execute manual test runs, track pass and fail results, and measure quality across releases — all without leaving Collabase.
 
@@ -90,3 +94,5 @@ The following metrics are computed from test run results. They are not pre-store
 | **Space Owner / Admin** | Create and delete test projects, manage access, view all results |
 | **Member** | Create and edit test cases, create and execute test runs, record results |
 | **Viewer** | View test cases, runs, and results — read only |
+
+</div>

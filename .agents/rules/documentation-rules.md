@@ -145,7 +145,8 @@ description: "One sentence describing what this page covers and why it matters."
 ```
 [frontmatter]
 
-<img src="/images/apps/<app>.png" alt="<App name> app icon" width="60" />   ← overview pages only
+<img src="/images/apps/<app>-light.png" alt="<App name> app icon" width="60" className="block dark:hidden" />   ← overview pages only
+<img src="/images/apps/<app>-dark.png" alt="<App name> app icon" width="60" className="hidden dark:block" />
 
 One short paragraph, no heading above it. What this is and why it matters.
 
@@ -342,10 +343,11 @@ description: "..."
 ## 10. Images
 
 - Screenshots go in `images/`.
-- **App icons** live in `images/apps/<app>.png` (256 px, derived from
-  `images/01_Collabase Logo/Collabase App Logos/collabase_appicon_*.png`). Every app overview page
-  shows its icon at `width="60"` above the first paragraph; the home page uses the same files as
-  `Card` icons. Never use the old full-size icons in `images/` root.
+- **App icons** live in `images/apps/<app>-light.png` and `<app>-dark.png` (256 px, from the brand set
+  `public/assets/brand_assets/v4/AppIcons/`). Every app overview page shows the pair at `width="60"` above the
+  first paragraph, switched with `block dark:hidden` and `hidden dark:block`; the home page uses the light file
+  as `Card` icon, the tile carries its own background in both modes. `collabase-ai.png` is the previous mark
+  until the brand set has a new one. Never put app icons behind a headline as decoration.
 - **Logos and favicon** in `docs.json` are `images/logo-black.svg` (light), `images/logo-white.svg` (dark)
   and `images/favicon-light.png` / `images/favicon-dark.png` (the black icon tile, light and dark), copies from the brand
   folder. Never reference `images/01_Collabase Logo/` directly: the folder is 174 MB, contains an

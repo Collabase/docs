@@ -4,7 +4,11 @@ sidebarTitle: "Overview"
 description: "An overview of Time Tracking in Collabase — log time against tasks, manage monthly timesheets, configure billing rules, and run detailed reports."
 ---
 
-<img src="/images/apps/time-tracking.png" alt="Collabase Time Tracking app icon" width="60" />
+import { AppHero } from "/snippets/app-hero.mdx";
+
+<AppHero app="time-tracking" name="Time Tracking" tagline="Log hours, approve timesheets, bill clients." points={[{ title: "Log time", text: "Against tasks and projects." }, { title: "Timesheets", text: "A monthly approval workflow." }, { title: "Reports", text: "Billable reports for clients and cost centers." }]} primary={{ label: "Log your time", href: "/time-tracking/logging-time" }} secondary={{ label: "Open timesheets", href: "/time-tracking/timesheets" }} />
+
+<div className="home-cards brand-cards">
 
 Collabase Time Tracking lets your team log hours directly against tasks and projects, work through a structured monthly approval workflow, and produce billable reports for clients or internal cost centers. Everything is connected — time logged on a task appears in reports, rolls up into timesheet periods, and is priced according to your billing rules.
 
@@ -96,3 +100,5 @@ Users can always log, edit, and delete their own entries — unless the relevant
     Admins run [reports](/time-tracking/reports) to review billable hours by account, project, and user.
   </Step>
 </Steps>
+
+</div>

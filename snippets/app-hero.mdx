@@ -1,0 +1,26 @@
+export const AppHero = ({ app, name, tagline, points, primary, secondary }) => (
+  <div className="app-hero">
+    <div className="app-hero-head">
+      <span className="app-hero-icon">
+        <img src={`/images/apps/${app}-light.png`} alt={`${name} app icon`} noZoom className="block dark:hidden" />
+        <img src={`/images/apps/${app}-dark.png`} alt={`${name} app icon`} noZoom className="hidden dark:block" />
+      </span>
+      <div>
+        <p className="app-hero-pill">Collabase app</p>
+        <p className="app-hero-tagline">{tagline}</p>
+      </div>
+    </div>
+    <ul className="app-hero-points">
+      {points.map((point) => (
+        <li key={point.title}>
+          <span className="app-hero-point-title">{point.title}</span>
+          <span className="app-hero-point-text">{point.text}</span>
+        </li>
+      ))}
+    </ul>
+    <div className="app-hero-actions">
+      <a href={primary.href} className="app-hero-primary">{primary.label}</a>
+      <a href={secondary.href} className="app-hero-secondary">{secondary.label}</a>
+    </div>
+  </div>
+);

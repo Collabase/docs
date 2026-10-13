@@ -191,7 +191,8 @@ const everything = pageFiles.map(read).join("\n") + read(join(ROOT, "docs.json")
 if (existsSync(join(ROOT, "images"))) {
   for (const file of walk2(join(ROOT, "images"))) {
     const name = file.split("/").pop();
-    if (!everything.includes(name)) report("error", relative(ROOT, file), 1, "unused-image", "Image is not used by any page");
+    const viaTemplate = everything.includes("/images/apps/${app}-") && /\/images\/apps\/[^/]+-(light|dark)\.png$/.test(file);
+    if (!viaTemplate && !everything.includes(name)) report("error", relative(ROOT, file), 1, "unused-image", "Image is not used by any page");
   }
 }
 function walk2(dir) {

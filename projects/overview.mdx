@@ -4,7 +4,11 @@ sidebarTitle: "Overview"
 description: "Projects is Collabase's project management app — tasks, boards, sprints, queues, SLA policies, and custom workflows in every Space."
 ---
 
-<img src="/images/apps/projects.png" alt="Collabase Projects app icon" width="60" />
+import { AppHero } from "/snippets/app-hero.mdx";
+
+<AppHero app="projects" name="Projects" tagline="Boards, sprints and workflows for every project in your Space." points={[{ title: "Board", text: "Drag tasks between status columns." }, { title: "Sprints", text: "Time-boxed iterations with burndown." }, { title: "Queues and SLA", text: "Triage with response and resolution targets." }]} primary={{ label: "Set up a project", href: "/projects/project-setup" }} secondary={{ label: "Open the board", href: "/projects/board" }} />
+
+<div className="home-cards brand-cards">
 
 Projects is the task and project management app built into every Collabase Space. It brings together a Kanban board, sprint planning, backlog management, a Gantt-style roadmap, queue-based helpdesk workflows, SLA tracking, and a customer portal — all in one place.
 
@@ -78,3 +82,5 @@ Manage project members from **Project → Settings → Members**.
 <Note>
   Administrators can configure global task types and custom fields that are available across all projects in the instance. Set these up in **Admin → Task Types** and **Admin → Custom Fields**. Global settings cascade down: global → space → project, with each level able to extend but not override the level above.
 </Note>
+
+</div>

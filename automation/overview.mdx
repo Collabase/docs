@@ -4,7 +4,11 @@ sidebarTitle: "Overview"
 description: "Build visual no-code workflows that react to events, apply logic, and take action across Collabase apps and 40+ external services."
 ---
 
-<img src="/images/apps/automation.png" alt="Collabase Automation app icon" width="60" />
+import { AppHero } from "/snippets/app-hero.mdx";
+
+<AppHero app="automation" name="Automation" tagline="Visual workflows that react to events." points={[{ title: "Triggers", text: "Start a workflow when something happens." }, { title: "Conditions", text: "Apply logic before anything runs." }, { title: "Actions", text: "Act across Collabase apps and 40+ services." }]} primary={{ label: "Pick a trigger", href: "/automation/triggers" }} secondary={{ label: "Browse actions", href: "/automation/actions" }} />
+
+<div className="home-cards brand-cards">
 
 Automation is the workflow engine built into Collabase. Connect Collabase apps and external services through a visual, drag-and-drop builder — no coding required. When an event happens, the automation evaluates your conditions and runs your actions automatically in the background.
 
@@ -154,3 +158,5 @@ Each rule has a **Run as** setting that controls how actions are attributed in t
 | **System bot** | Actions appear attributed to an anonymous system account. Useful for background jobs where the triggering user identity should not be visible. |
 
 Set the **Run as** option in the rule's **Settings** tab.
+
+</div>
