@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Security Policies"
-description: "Set the password requirements, control how long a sign-in stays valid, lock out repeated failed logins, and let named people sign in with a password when SSO is enforced."
+description: "Set password requirements and session lifetime, lock out failed logins, decide how long locked accounts are kept, and let named people bypass enforced SSO."
 ---
 
 Security policies are under **Settings → Security → Policies**. Each policy has a switch and its own settings, which open when you click the row.
@@ -85,6 +85,20 @@ Locks an account after repeated failed sign-in attempts, so a stolen email addre
 | **Lockout duration** | 15 minutes | How long the account stays locked |
 
 Locked accounts are listed under **Settings → Security → Brute Force Protection**, where you can release one early.
+
+---
+
+## Locked accounts
+
+Sets how long a locked account is kept before it is anonymized. This policy is always active and cannot be switched off. It applies to accounts that an administrator locked and to accounts that your identity provider deactivated through SCIM or LDAP.
+
+| Setting | Default | What it does |
+|---|---|---|
+| **Anonymize locked accounts after** | 30 days | Days between locking an account and anonymizing it, between 1 and 3,650 |
+
+Locking ends all sessions at once. Anonymization then removes the name, email address, sign-in methods and devices for good. Pages, work items and comments stay and show the name followed by `(deleted)`.
+
+A changed period applies to accounts locked from then on. Accounts that are already locked keep their date. Releasing an account before its date cancels the anonymization.
 
 ---
 

@@ -5,6 +5,14 @@ description: "Let your team sign in to Collabase with their existing company acc
 
 Collabase supports several sign-in methods. You can mix and match — for example, enable Microsoft Entra ID for most users while keeping email/password available as a fallback.
 
+<Tip>
+  Using Microsoft Entra ID? The guide [IAM with Microsoft Entra ID](/admin/iam-microsoft-entra) takes you through sign-in and SCIM from the first setting in Entra to the first test.
+</Tip>
+
+<Frame caption="The Identity Providers page: add a provider, then connect SCIM below.">
+  <img src="/images/iam-identity-providers.png" alt="The Identity Providers page with the providers you can add and the SCIM Provisioning card" />
+</Frame>
+
 Configure identity providers under **Admin → Identity Providers**.
 
 <CardGroup cols={3}>
@@ -186,6 +194,10 @@ If one of the conditions is not met, the person sees a message on the sign-in pa
 
 SAML 2.0 lets users sign in with Okta, Microsoft Entra, or any SAML 2.0-compatible identity provider. Once set up, users click **Sign in with SSO** on the login page and are redirected to your identity provider.
 
+<Tip>
+  The page [SAML single sign-on](/admin/saml-sso) describes every setting, the account matching and the troubleshooting in detail.
+</Tip>
+
 ### What to give your identity provider
 
 Your identity provider needs these two values to register Collabase as a service provider:
@@ -194,7 +206,7 @@ Your identity provider needs these two values to register Collabase as a service
 |---|---|
 | **Assertion Consumer Service (ACS) URL** | `https://your-collabase-domain/api/auth/sso/saml2/sp/acs/saml` |
 | **Metadata URL** | `https://your-collabase-domain/api/auth/sso/saml2/sp/metadata?providerId=saml` |
-| **Entity ID** | The value you enter as the service provider entity ID. Left empty, it is the metadata URL. |
+| **Entity ID** | The metadata URL. You cannot change it. After you save the provider, the expanded SAML row shows it as **Service provider entity ID**. |
 
 Most providers can import the full configuration by fetching the metadata URL automatically. Collabase only accepts a response that answers a sign-in it started, so sign-in always begins at Collabase; logins started from the identity provider's own portal are refused.
 
@@ -213,7 +225,7 @@ Most providers can import the full configuration by fetching the metadata URL au
     Under **Add an identity provider**, click **SAML 2.0**. The panel holds the settings Collabase needs from your IdP and lists the ACS URL and metadata URL your IdP needs, as described under **What to give your identity provider** above.
   </Step>
   <Step title="Register Collabase in your identity provider">
-    Use the ACS URL and Entity ID from the table above. Configure your IdP to send the user's **email** and **display name** in the SAML assertion attributes.
+    Use the ACS URL and Entity ID from the table above. Configure your IdP to send the member's email address in an attribute named `email` and the display name in an attribute named `displayName`, and to sign the assertion. Collabase reads exactly these names and refuses an assertion that is not signed. Without an `email` attribute it uses the name identifier as the email address. For Microsoft Entra ID, see [IAM with Microsoft Entra ID](/admin/iam-microsoft-entra).
   </Step>
   <Step title="Enter the IdP SSO URL, certificate, and Entity ID in Collabase">
     Paste the values from your identity provider into the corresponding fields. If your provider publishes a metadata URL, enter it under **Import from metadata URL** and click **Import**: Collabase fills in the Entity ID, SSO URL, and certificate. Check the values, then continue. Only public HTTPS addresses are accepted.
@@ -292,6 +304,10 @@ Click **Sync Now** to trigger a manual sync at any time, in addition to the sche
 
 SCIM (System for Cross-domain Identity Management) connects your identity provider to Collabase so user accounts — and their group memberships — are created, updated, and deactivated automatically.
 
+<Tip>
+  The page [User provisioning with SCIM](/admin/user-provisioning) lists the supported operations for accounts and groups and the troubleshooting steps.
+</Tip>
+
 ### Enabling SCIM
 
 <Steps>
@@ -302,7 +318,7 @@ SCIM (System for Cross-domain Identity Management) connects your identity provid
     SCIM requests are rejected until this is on, even with a valid token.
   </Step>
   <Step title="Click Generate token">
-    Copy the token immediately — it is shown only once.
+    Copy the token immediately — it is shown only once. A token is valid for 365 days.
   </Step>
   <Step title="Configure your identity provider">
     In your IdP's SCIM settings, enter:
@@ -319,7 +335,7 @@ SCIM (System for Cross-domain Identity Management) connects your identity provid
 </Steps>
 
 <Warning>
-  The SCIM token is shown only once. If you lose it, click **Generate token** again: the new token replaces the old one, and the old one stops working immediately. Update your identity provider with the new token before its next sync.
+  The SCIM token is shown only once. If you lose it, click **Generate token** again: the new token replaces the old one, and the old one stops working immediately. Update your identity provider with the new token before its next sync. Generate a new token before the current one reaches 365 days.
 </Warning>
 
 ### What SCIM syncs automatically

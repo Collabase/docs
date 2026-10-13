@@ -83,6 +83,8 @@ images/                # Screenshots (PNG only, named after the app)
 | App feature page | `<app-name>/` | `registry/schema-designer.mdx` |
 | Platform concept | `concepts/` | `concepts/search.mdx` |
 | Admin topic | `admin/` | `admin/backup.mdx` |
+| Admin setup page for one area | `admin/` | `admin/saml-sso.mdx` |
+| Admin guide (journey across pages or systems) | `admin/`, listed in the Guides tab | `admin/iam-microsoft-entra.mdx`, see §16 |
 | API endpoint | `api/<group>/` | `api/automation/trigger-automation.mdx` |
 | Release note | `changelog/` | `changelog/v0-10-0.mdx` |
 
@@ -353,7 +355,7 @@ Add a new page's slug to the correct `group` → `pages` array:
 - **Two languages.** `navigation.languages` holds `en` (default, full docs) and `de`. German pages
   live under `de/` with the same file name as the English page. A path appears in exactly one
   language. German currently covers the home page, the guides (getting started, HERMES, glossary,
-  «Warum es Collabase gibt») and security and privacy; the app reference is English only.
+  «Warum es Collabase gibt»), the guide «IAM mit Microsoft Entra ID» and security and privacy; the app reference is English only.
 - **Tabs (en):** Guides · User guide · Administration · Security and privacy · API Reference ·
   Developer · Release Notes. Guides start with the group «Welcome» (`index`, `introduction`,
   `about/story`, `glossary`); `index` stays in the navigation so it appears in the sitemap.
@@ -432,6 +434,10 @@ Checklist:
 - [ ] New pages registered in `docs.json`
 - [ ] `mint broken-links` is clean
 - [ ] No folder moved, renamed, or restructured
+- [ ] Every `#anchor` link matches a heading, and every guide phase links to the next one (§16)
+- [ ] Screenshots are named, redacted and resized as in §17
+- [ ] Statements about behavior are checked against the product, estimates are labeled (§18)
+- [ ] The German twin is updated where one exists (§15)
 
 ---
 
@@ -698,4 +704,185 @@ These rules come from the move of the docs to `collabase.ch/docs` (September 202
 - Swiss spelling (ss, never ß), Du-Form, no dashes as a stylistic device.
 - UI and product terms stay English as in the product (Space, Member, Collabase Docs, Object
   Type). Links go to the German page if it exists, otherwise to the English reference.
+- A German twin has the same path under `de/` and the same structure as the English page: same
+  phases, same tables, same screenshots (the product UI in screenshots stays English). Its anchors
+  follow the German headings, so check every `#anchor` again after translating.
+- Translate the guide and its checkpoints together. A guide that mixes German steps with English
+  checkpoints breaks the red thread.
+- Terms for identity topics, so the pages read the same:
 
+  | English | German |
+  |---|---|
+  | sign-in | Anmeldung |
+  | account | Konto |
+  | deactivate, reactivate | deaktivieren, reaktivieren |
+  | identity provider | Identity Provider |
+  | provisioning | Provisionierung |
+  | pilot group | Pilotgruppe |
+  | licensed seat | Lizenzplatz |
+  | checkpoint | Kontrollpunkt |
+  | claim, assertion, tenant, token | Claim, Assertion, Tenant, Token |
+
+---
+
+## 16. Admin journeys and guides
+
+Admins do not read pages, they do a job. A job that spans several pages, or two systems, gets a
+guide that carries the admin from the first check to the last test. The detail lives on the
+pages the guide links to.
+
+### When to write a guide
+
+Write a guide when an admin has to do one of these:
+
+- visit three or more Collabase pages in a fixed order to reach one result;
+- work in an external product, such as an identity provider, in the same job;
+- choose between two paths that share most steps.
+
+A topic with one setting stays a reference page. Do not turn a reference page into a guide to make
+it look complete.
+
+### Three page types, one job each
+
+| Page type | Job | Typical content |
+|---|---|---|
+| **Guide** | Carry the admin through the journey | Requirements, time, phases, checkpoints, troubleshooting by symptom |
+| **Setup page** | Explain one area completely | Who can do this, settings table, account matching, best practices, troubleshooting |
+| **Operations page** | Say what the product does with data | Supported operations tables, how existing data is handled, limits, troubleshooting with a log column |
+
+A fact has one home. The guide repeats only what the admin needs to act, never a whole settings
+table, and links to the page that owns it. When a guide and a page disagree, the page is the
+source and the guide is the bug.
+
+### Guide skeleton
+
+1. **Introduction.** The result in two sentences, then one sentence on how to read the guide.
+2. **At a glance.** A table with **Result**, **Time**, **You need** and **Edition**. Name the
+   paths through the guide when there is more than one, for example sign-in only, or sign-in and
+   provisioning.
+3. **Requirements.** In three groups: in Collabase, in the external system, network. Each item is
+   something the admin can check. A preparation phase of the guide handles what is missing.
+4. **Overview.** A table of the phases with what the admin does, the time, and a link to each phase
+   heading.
+5. **Phases.** Each phase has the same parts, in this order:
+   - a line in italics: *Phase n of N, about x minutes. Previous: link. Next: link.*
+   - the work, in `<Steps>`, with exact UI labels in bold;
+   - a **Checkpoint** that says what the admin sees when the phase worked, and where to go if it did
+     not;
+   - a **Next** link.
+6. **Keep it running.** A table of everything that expires or needs a recurring look: secrets,
+   certificates, tokens, licences.
+7. **Troubleshooting.** Grouped by where the admin sees the problem. Each row has what is seen, the
+   cause, and what to do. Link to the setup or operations page for more causes.
+8. **Related pages.** A `<CardGroup>` to the setup and operations pages.
+
+### The red thread
+
+- Number the phases and say where the admin is. Every phase links to the previous and the next one.
+- A checkpoint closes every phase. A guide with a phase that ends without a visible result has a
+  dead end.
+- Every reference to another page is a link, with an anchor when the answer is one section. Every
+  mention of a decision that was made earlier links back to it.
+- A failing step links to the troubleshooting group for that step.
+- Put the choice before the work. If two options exist, compare them in a table, give a default for
+  the reader who has no reason to choose otherwise, and make both options end at the same
+  checkpoint.
+- State the time as a typical value for a first run, rounded. Name the part that varies, such as a
+  first sync. Do not state a time nobody has measured as a fact.
+
+### Setup and operations pages
+
+- Open with **Who can do this?** as a two-row table: **Role** and **Edition**.
+- Follow with **Before you begin**, then how it works, then the procedure in `<Steps>`.
+- Describe settings in a **Setting** and **Details** table, in the order the screen shows them. List
+  every field the screen has and no field it does not have.
+- Describe what the product does with existing data in a situation and result table, for example
+  what happens at a first sign-in when no account, one account or two accounts match.
+- Operations pages list supported operations in an **Operation** and **Notes** table, once for
+  accounts and once for groups, and state the limits.
+- Troubleshooting tables on operations pages add a **Recorded in the log** column, so the admin knows
+  where to look.
+- Put **Best practices** after the settings, as short items with a reason each.
+
+### Navigation
+
+- A guide appears once in the English navigation, as its own group in the Guides tab. The setup and
+  operations pages sit in the Administration tab under **Members and access**.
+- Each setup page opens with a `<Tip>` that links to the guide, and each guide links to the pages it
+  relies on.
+- Headings create the anchors: lowercase, punctuation removed, spaces turned into hyphens. Keep the
+  headings stable. When you rename one, search for links to it.
+
+---
+
+## 17. Screenshots
+
+Screenshots show a state that words cannot carry, such as a panel full of fields or a dialog. Text
+with exact UI labels comes first.
+
+### Name and store
+
+- PNG files in `images/`, flat, lowercase with hyphens: `<topic>-<what>.png`, for example
+  `iam-saml-settings.png`. Screenshots of another vendor's product add the vendor:
+  `iam-entra-saml-claims.png`.
+- Keep the original out of the repo. Store a copy at most 2000 px wide.
+
+### Capture
+
+- Light mode, English UI, a demo instance with no customer data.
+- Capture the panel or the page region that matters. Include the navigation only when the shot
+  shows where to click.
+- Mark one thing with a red frame at most. Do not annotate more.
+- Prefer text steps for third-party screens. They change without notice, so each one costs
+  upkeep. Add one only where the reader cannot find the field without it.
+
+### Redact before you copy
+
+Cover values with a solid red bar. Do not blur, a blur can be undone.
+
+| Always cover | Why |
+|---|---|
+| Tokens, secrets and keys, **completely** | A visible first line is a leaked prefix. Revoke any token that appeared, even in part. |
+| Customer and demo host names | They identify a customer. The shared part, such as `.collabase.app`, can stay. |
+| Tenant, client and object IDs | They identify your organization. |
+| Names, email addresses and profile photos of real people | Personal data |
+
+Open the finished file at full size and read it once before you copy it into `images/`.
+
+### Embed
+
+```mdx
+<Frame caption="One sentence that says what the reader sees.">
+  <img src="/images/iam-saml-settings.png" alt="What the screenshot shows" width="420" />
+</Frame>
+```
+
+- Use `<img>`, not `![]()`. Describe the content in `alt`.
+- Give tall panels `width="420"`. Wide pages need no width.
+- Inside a `<Step>`, indent the frame with the step text.
+- When a label on a screen changes, replace the screenshot in the same change (see
+  `.agents/rules/docs-update.md` in the product repo).
+
+---
+
+## 18. Verify before you write
+
+Every statement about what Collabase does is checked against the code or the running product
+before it ships. A page that is well written and wrong costs more than a page that is missing.
+
+| What you write | Where you check it |
+|---|---|
+| A button, field or heading | `src/dictionaries/en.json`, word for word |
+| A default, limit or period | `src/config/constants` and the policy definitions |
+| A message the member sees | `src/dictionaries/en.json` |
+| What happens in a situation | The service that decides it, and its tests |
+| A step in another vendor's product | That vendor's own documentation, not memory |
+
+- A statement with "never" or "always" needs the code path that makes it true.
+- Do not document a field the screen does not have, and do not leave out one it has. If the screen
+  lacks a setting that the page needs, that is a product gap. Raise it, do not paper over it.
+- A setting an admin cannot change in the UI is described as fixed, with its value.
+- What you cannot verify, leave out or label as an estimate. Name the unverified items in the pull
+  request.
+- Check every internal link and every `#anchor` before the pull request. Do not rely on
+  `mint broken-links` for anchors, compare each one with the headings of its target page.

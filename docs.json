@@ -23,6 +23,20 @@
     "languages": [
       {
         "language": "en",
+        "navbar": {
+          "links": [
+            {
+              "label": "Deutsch",
+              "href": "https://collabase.ch/docs/de",
+              "icon": "languages"
+            }
+          ],
+          "primary": {
+            "type": "button",
+            "label": "Back to website",
+            "href": "https://collabase.ch"
+          }
+        },
         "tabs": [
           {
             "tab": "Guides",
@@ -69,6 +83,12 @@
                   "hermes/scenarios-and-modules",
                   "hermes/outcomes",
                   "hermes/collabase-setup"
+                ]
+              },
+              {
+                "group": "IAM with Microsoft",
+                "pages": [
+                  "admin/iam-microsoft-entra"
                 ]
               }
             ]
@@ -296,6 +316,8 @@
                 "pages": [
                   "admin/users-groups",
                   "admin/identity-providers",
+                  "admin/saml-sso",
+                  "admin/user-provisioning",
                   "admin/apps-and-agents",
                   "admin/security-policies"
                 ]
@@ -526,6 +548,20 @@
       },
       {
         "language": "de",
+        "navbar": {
+          "links": [
+            {
+              "label": "English",
+              "href": "https://collabase.ch/docs",
+              "icon": "languages"
+            }
+          ],
+          "primary": {
+            "type": "button",
+            "label": "Zur Website",
+            "href": "https://collabase.ch"
+          }
+        },
         "tabs": [
           {
             "tab": "Leitfäden",
@@ -571,6 +607,12 @@
                   "de/hermes/scenarios-and-modules",
                   "de/hermes/outcomes",
                   "de/hermes/collabase-setup"
+                ]
+              },
+              {
+                "group": "IAM mit Microsoft",
+                "pages": [
+                  "de/admin/iam-microsoft-entra"
                 ]
               }
             ]
