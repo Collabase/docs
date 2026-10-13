@@ -1,54 +1,54 @@
 ---
 title: "Create your first project"
 sidebarTitle: "Projects"
-description: "How to create a project in Collabase Projects, start from a project template, and add project members with the Owner, Member or Viewer role."
+description: "How to create a project in Collabase Projects, start from a project template, and add project members with the Manager, Member or Viewer role."
 ---
 
-A project collects the tasks for one piece of work, such as a release, a service desk or a customer rollout. Projects live in the **Projects** app of a Space. Each project has its own workflow, task types, members and settings.
+A project collects the work items for one piece of work, such as a release or a customer rollout. Projects live in the **Projects** app of a Space. Each project has its own work item types, workflows, members and settings.
 
 ## Create a project from a template
 
-Your administrator can prepare project templates. A template brings a workflow, task types, field collections and the views the project uses.
+Your administrator can prepare project templates. A template brings the workflows, work item types, field collections and views the project uses.
 
 <Steps>
   <Step title="Open the Space">
     Go to the Space where the project belongs.
   </Step>
-  <Step title="Click + New Project">
-    The project creation dialog opens.
+  <Step title="Click New Project">
+    Choose a template under **Custom Templates** and click **Continue with** the template name.
   </Step>
-  <Step title="Choose a template">
-    Pick a template from the gallery. Each template shows its workflow, task types and field collections.
-  </Step>
-  <Step title="Click Create Project">
-    Collabase applies the template's configuration to the new project.
+  <Step title="Name it">
+    Enter the **Project Name** and the **Project key**, the prefix of work item numbers, and click **Create Project**.
   </Step>
 </Steps>
 
-If there is no fitting template, you can set up the workflow, task types and fields yourself. See [Setting up a project](/projects/project-setup).
+To build the setup yourself, from fields to the template, see [Set up projects for a team](/projects/project-setup).
 
 ## Add project members
 
-Space membership does not give access to every project. Add people under **Project → Settings → Members**.
+A project either inherits its members from the Space or is **Private**, open only to the people you add, the Space owner and system administrators. Manage members under **Settings → Team → Members**.
 
 | Role | What they can do |
 |---|---|
-| **Owner** | Configures the project, including workflow, members and SLA policies. |
-| **Member** | Creates, assigns, updates and resolves tasks. Manages sprints and queues. |
-| **Viewer** | Reads tasks and all views. |
+| **Manager** | Defined by the Space's Permission Scheme, typically managing the project's work and cycles |
+| **Member** | Defined by the Permission Scheme, typically creating and updating work items |
+| **Viewer** | Defined by the Permission Scheme, typically reading only |
 
 ## Views
 
-Switch views with the view toggle in the top bar of the project.
+Each view is a tab in the project. A project admin switches tabs on and off under **Settings → Project features**.
 
 | View | Best for |
 |---|---|
-| **Board** | Moving tasks between status columns |
-| **Work Items** | A sortable table to search and review many tasks |
-| **Sprints** | Tracking the active sprint |
-| **Backlog** | Tasks not yet planned into a sprint |
-| **Roadmap** | A timeline of tasks with start and due dates |
-| **Queues** | Triage by named filters |
+| **Home** | The project at a glance |
+| **Board** | Moving work items between status columns |
+| **Work Items** | Reviewing, filtering and editing many work items in a table |
+| **Timeline** | Scheduling work items and dependencies on a calendar |
+| **Backlog** | Ranking open work and planning it into cycles |
+| **Time** | Time booked on the project's work items |
+| **Mindmap** | The project's work items as a map |
+
+**Cycles**, time-boxed iterations, are a feature with its own switch in the same place. See [Cycles](/projects/sprints).
 
 ## Next steps
 

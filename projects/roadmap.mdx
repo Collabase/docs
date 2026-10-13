@@ -1,65 +1,90 @@
 ---
-title: "Roadmap"
-sidebarTitle: "Roadmap"
-description: "A Gantt-style timeline view. Tasks with start and due dates appear as bars. Sprint periods appear as colored bands in the background."
+title: "Timeline"
+sidebarTitle: "Timeline"
+description: "Schedule work items as bars on a calendar, drag them to change dates, draw dependencies between them and mark project milestones."
+keywords: ["roadmap", "timeline", "Gantt", "dependencies", "blocks", "milestones", "schedule work", "Advanced Roadmaps"]
 ---
 
-The Roadmap is a Gantt-style timeline view that shows tasks plotted against a calendar. Each task with a start date, a due date, or both appears as a horizontal bar spanning its duration. Sprint periods appear as colored bands in the background so you can see how tasks relate to sprint boundaries.
+The **Timeline** tab shows each work item with dates as a bar on a calendar. Drag bars to reschedule, draw arrows to show what blocks what, and see cycles, phases and milestones in the same picture. Use it to plan dates and to explain the plan to others.
 
-The Roadmap is best for high-level planning and date management — identifying scheduling conflicts, adjusting timelines, and communicating delivery plans to stakeholders.
+## Read the timeline {#read}
 
-## Reading the roadmap
+The left side lists the work items with the columns **Key**, **Work Item**, **Status**, **Assignee**, **Priority**, **Due** and **Start**. You can resize and hide these columns, and edit **Status**, **Assignee** and **Priority** in place. Sub-items sit under their parent and can be collapsed.
 
-The Roadmap is divided into two panels:
+The right side is the calendar:
 
-- **Left panel** — the task list. Shows task titles, with subtasks indented under their parent tasks. Click any task title to open its detail view.
-- **Right panel** — the timeline. Shows task bars, sprint bands, and a vertical red line marking today's date.
-
-Each element on the timeline:
-
-| Element | Appearance | Meaning |
-|---|---|---|
-| **Task bar** | Colored horizontal bar | Duration from start date to due date |
-| **Sprint band** | Colored background band | Time range of a sprint |
-| **Today line** | Red vertical line | The current date |
-
-## Editing dates
-
-You can change task dates directly on the roadmap without opening the task detail view.
-
-- **Drag the left edge** of a task bar to change the start date.
-- **Drag the right edge** of a task bar to change the due date.
-- **Drag the entire bar** to shift both the start date and due date by the same number of days, keeping the duration constant.
-
-Changes save immediately. The task's fields are updated in real time and the bar repositions on the timeline.
-
-## Zoom levels
-
-Toggle between three zoom levels using the controls at the top right of the timeline:
-
-| Zoom level | Best for |
+| Element | Meaning |
 |---|---|
-| **Week** | Detailed day-by-day scheduling within a sprint or short planning window |
-| **Month** | Mid-range planning across sprints and milestones |
-| **Quarter** | High-level delivery planning across multiple sprints or releases |
+| Bar | From the start date to the due date of a work item |
+| Arrow | A dependency between two work items |
+| Bands in the header | Cycles and project phases |
+| Diamond | A project milestone |
+| **Today** line | The current date |
 
-Start with Quarter to see the overall shape of work, then zoom into Month or Week for specific scheduling adjustments.
+Select a bar and press `Enter` or `Space` to open the work item.
 
-## Tasks without dates
+## Change the view {#view}
 
-Only tasks with a start date, a due date, or both appear on the Roadmap itself. Tasks without any dates are collected in the **No dates** panel below the Roadmap, where you can assign dates to bring them onto it. That panel is paged when it holds many tasks.
+| Control | What it does |
+|---|---|
+| **Day**, **Week**, **Month**, **Quarter** | The zoom level. **Week** is the default |
+| **Show earlier dates**, **Show later dates** | Extend the visible range |
+| **Jump to today** | Scroll to the current date |
+| **Timeline settings** | **Start of week** (Monday, Sunday or Saturday), and **Dependencies → Show related links** to also draw "relates to" links |
+| **Enter fullscreen** | Use the whole screen. `Escape` leaves it |
 
-To add a task to the Roadmap:
+The filter pills **Status**, **Assignee**, **Label** and **Priority** work as on the [Board](/projects/board#quick-filters).
 
-- Open the task detail view and set the Start Date or Due Date field.
-- In the Work Items view, click the start or due date cell in the task row and enter a date.
+## Reschedule work items {#reschedule}
+
+- **Drag a bar** to move both dates by the same amount.
+- **Drag the left or right end** to change the start or due date.
+
+Changes save at once. Type a title in **Add a work item…** at the bottom of the list to create a work item from the timeline.
+
+## Work items without dates {#no-dates}
+
+Work items with neither a start nor a due date are listed under **Work items without scheduled dates**. Set a start and due date there to bring them onto the timeline.
+
+## Dependencies {#dependencies}
+
+A dependency says that one work item blocks another. Collabase draws it as an arrow from the blocking bar to the blocked bar.
+
+```mermaid
+flowchart LR
+  A["PROJ-4 Design API"] -- blocks --> B["PROJ-7 Build client"]
+  B -- blocks --> C["PROJ-9 Release"]
+```
+
+<Steps>
+  <Step title="Start the arrow">
+    Hover a bar. Drag from the dot at its right end to make it block another work item, or from the dot at its left end to make it blocked by one.
+  </Step>
+  <Step title="Drop on the other bar">
+    Release over the other work item. Collabase creates a **Blocks** relation. Press `Escape` to cancel while dragging.
+  </Step>
+  <Step title="Check or remove it">
+    Click an arrow to see the dependencies between the two bars. Remove one with **Delete dependency from … to …**.
+  </Step>
+</Steps>
+
+Dependencies created on the timeline are **Finish to start**: the blocked work starts after the blocking work finishes. Creating them needs the **Link task** permission. The same relations appear in the **Relations** section of each [work item](/projects/tasks#relations).
 
 <Note>
-  Subtasks appear indented under their parent task in the left panel, and their bars appear at the corresponding vertical position on the timeline. If a subtask falls outside its parent's date range, this is highlighted visually so you can identify scheduling mismatches.
+  Collabase does not move dependent bars for you and has no critical path. When you move a blocking bar, check the bars it points to.
 </Note>
 
-## Planning with sprint bands
+## Milestones {#milestones}
 
-Sprint bands in the background let you align task scheduling with sprint boundaries without switching views. When planning, aim to keep task bars within the sprint band they are assigned to. Task bars that extend past the sprint end date indicate scope or scheduling risk.
+Click **Milestones** to manage the project's milestones: give each a name (**Milestone**) and a **Due date**, **Mark as reached**, **Reopen**, or **Delete milestone**. Milestones appear as diamonds on the timeline.
 
-Use the Roadmap alongside the [Backlog](/projects/backlog) and [Sprints](/projects/sprints) views for a complete planning workflow: plan sprint scope in the Backlog, track day-to-day progress in the Sprint or Board view, and use the Roadmap for date management and delivery visibility.
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Planning across projects" icon="chart-gantt" href="/planning/overview">
+    Portfolios, the Planner and dependencies beyond one project.
+  </Card>
+  <Card title="Cycles" icon="repeat" href="/projects/sprints">
+    Time boxes shown as bands on the timeline.
+  </Card>
+</CardGroup>

@@ -3,6 +3,10 @@ title: "Approval wait-state"
 description: "Check and resolve an automation approval gate via its one-time token."
 ---
 
+<Warning>
+  The Approval node is not ready for production use yet. Do not build automations on it or on these endpoints: the approver is not notified, the timeout is not applied, any signed-in user can decide, and the automation does not continue after a decision. See [Flow control nodes](/automation/nodes#approval).
+</Warning>
+
 The Approval node pauses automation execution and waits for a human to approve or reject it. Each pending approval has a unique, one-time token. The automation sends this token to a reviewer (e.g. via email or Slack), and the reviewer responds via these endpoints.
 
 ## Get approval status

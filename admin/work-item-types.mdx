@@ -1,0 +1,92 @@
+---
+title: "Work item types"
+description: "Define the kinds of work your projects track, such as bug, feature or change request, and see which types a project offers."
+keywords: ["issue types", "work types", "issue type scheme", "task types", "bug", "story", "epic", "subtask"]
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+A work item type names a kind of work, such as **Bug**, **Feature** or **Change Request**. Members pick the type when they create a work item, and the type decides which [field collections](/admin/custom-fields) and which [workflow](/projects/workflows#mapping) apply to it.
+
+<WhoCanDoThis role="System administrator with a second factor set up" edition="Every installation" />
+
+## Where types come from {#where-types-come-from}
+
+You define types once for the instance. A project then offers them in one of two ways:
+
+| Project | Types offered when creating a work item |
+|---|---|
+| **Linked to a project template** | The types selected in the template |
+| **Detached or created without a template** | Every instance type, plus types that belong to the project itself |
+
+When a project type and an instance type have the same name, members see the project type only. A project cannot hide an instance type. If a team must not use a type, give it a project from a template that leaves the type out.
+
+## Create a work item type {#create}
+
+<Steps>
+  <Step title="Open Work Item Types">
+    Open **System Settings → Content & Organization → Work Item Types** and click **New Work Item Type**.
+  </Step>
+  <Step title="Fill in the panel">
+    | Setting | Details |
+    |---|---|
+    | **Name** | Required. Shown on work item cards and in lists. |
+    | **Icon** | Pick one of the icons in the grid. |
+    | **Description** | Optional. Explains when to use the type. |
+    | **Set as default** | Used when no type is explicitly chosen. |
+  </Step>
+  <Step title="Save">
+    Click **Save**. You see **Work item type created** and the type appears in the list.
+  </Step>
+</Steps>
+
+The list shows each type's **Name**, **Description**, linked **Collections** and whether it is the **Default**. To make an existing type the default, hover over its row and click **Set as default**.
+
+## Give a type its own fields {#fields-per-type}
+
+Link field collections to a type on the collection, not on the type:
+
+<Steps>
+  <Step title="Open the collection">
+    Open **System Settings → Content & Organization → Field Collections**, select the collection and click **Edit**.
+  </Step>
+  <Step title="Link the type">
+    Under **Work Item Types**, pick the type in **Link work item type…**. The **Collections** column on the **Work Item Types** page shows the link.
+  </Step>
+</Steps>
+
+A collection with no linked types applies to every type. Details: [How fields reach a work item](/admin/custom-fields#how-fields-apply).
+
+## Give a type its own workflow {#workflow-per-type}
+
+Each project, or each project template, maps work item types to workflows. A type without a mapping uses the project's default workflow. See [Workflows in a project](/projects/workflows#mapping).
+
+## Types in project settings {#project-types}
+
+A project's **Settings → Work Item Types** lists the types the project offers. Types from the instance carry the badge **Global**. Types without the badge belong to the project, for example the copies a project keeps when it is detached from its template. You can delete only types that belong to the project.
+
+If the project is linked to a template, the section is read-only and says **Work item types are managed by the linked template.**
+
+## Delete a type {#delete}
+
+| Where | Result |
+|---|---|
+| **Delete** on the **Work Item Types** page | The type is deleted. Work items of this type keep their data and become untyped. Links to templates and collections are removed. |
+| Delete a project type in project settings | **This work item type will be permanently removed. Work items using this type will become untyped.** |
+
+Types that come with Collabase as system types cannot be deleted.
+
+<Warning>
+  Deleting a type cannot be undone. Check the work items of that type before you delete it.
+</Warning>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Custom fields" icon="square-pen" href="/admin/custom-fields">
+    Fields and the collections you link to types.
+  </Card>
+  <Card title="Workflows" icon="git-branch" href="/admin/workflows">
+    The statuses a type's work items move through.
+  </Card>
+</CardGroup>

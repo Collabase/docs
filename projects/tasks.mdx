@@ -2,6 +2,7 @@
 title: "Tasks"
 sidebarTitle: "Tasks"
 description: "Tasks are the fundamental unit of work in Projects. Learn how to create, triage, link, and close tasks effectively."
+keywords: ["work item", "issue", "dependencies", "linked issues", "clone", "move work item", "bulk change", "relation graph"]
 ---
 
 A task represents a single unit of work — a feature request, bug report, support ticket, review item, or anything else your team needs to track. Every task lives inside a Project and has a structured set of fields that make it searchable, assignable, and automatable.
@@ -14,16 +15,16 @@ A task represents a single unit of work — a feature request, bug report, suppo
 | **Title** | Required. Short description of the work. |
 | **Status** | Current workflow state (e.g., Todo, In Progress, In Review, Done). Configured per project. |
 | **Type** | Task type — Task, Bug, Story, Epic, or custom types defined by your admin. |
-| **Priority** | `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`, or `NONE`. |
+| **Priority** | **Blocker**, **Highest**, **High**, **Medium** or **Low**. |
 | **Assignee** | The team member responsible for the task. |
 | **Reporter** | Who created or submitted the task. Set automatically on creation. |
 | **Parent** | Links this task as a subtask under a parent task. |
-| **Sprint** | The sprint this task belongs to. Empty means it is in the backlog. |
+| **Cycle** | The [cycle](/projects/sprints) this task belongs to. Empty means it is in the backlog. |
 | **Group** | Swimlane grouping field used on the board. |
 | **Story Points** | Numeric effort estimate used for sprint velocity tracking. |
 | **T-shirt Size** | Relative size estimate: XS, S, M, L, XL, XXL. |
 | **Time Estimate** | Planned effort in hours. |
-| **Start Date** | When work on the task is expected to begin. Used on the Roadmap. |
+| **Start Date** | When work on the task is expected to begin. Used on the [Timeline](/projects/roadmap). |
 | **Due Date** | Deadline. Overdue tasks are flagged in all views. |
 | **Labels** | Free-form tags for filtering and grouping. |
 | **Description** | Full rich-text body — supports headings, code blocks, images, tables, callouts, and mentions. |
@@ -33,10 +34,10 @@ A task represents a single unit of work — a feature request, bug report, suppo
 
 <Steps>
   <Step title="Open the project">
-    Navigate to your Space, select the project, and open any view — Board, List, Backlog, or Sprint.
+    Navigate to your Space and select the project.
   </Step>
   <Step title="Start a new task">
-    Click **+ New Task** in the top bar, or press **N** anywhere in the project to open the quick-create form.
+    Click **Add work item** on the **Board**, in **Work Items** or in the **Backlog**. From anywhere in Collabase, you can also use **Create → Create Work Item**.
   </Step>
   <Step title="Fill in the required fields">
     Title is required. Type defaults to the project's default task type. All other fields are optional and can be updated later. If the project uses estimation, an estimate field (story points, T-shirt size, or hours, depending on the project's method) is available here so you can size the task as you create it.
@@ -62,7 +63,7 @@ Click any task to open its full detail view. The detail view is organized into s
 | **Time log** | Time entries logged against this task (if time tracking is enabled). |
 
 <Note>
-  When you add a subtask to a task that is already in a sprint, the subtask can follow its parent into that sprint. Whether this happens automatically, or you are asked first, depends on the project's sprint settings — see [Sprints](/projects/sprints#subtasks-and-sprints).
+  Whether sub-items move together with their parent between the backlog and a cycle depends on the project's cycle settings. See [Subtasks and cycles](/projects/sprints#subtasks-and-sprints).
 </Note>
 
 ## Comments: Internal vs. External
@@ -93,18 +94,22 @@ Where subtasks show up depends on the view:
   Searching or filtering Work Items switches the table to a flat list of matches, so a matching subtask is shown on its own even when its parent does not match.
 </Note>
 
-## Linked tasks
+## Relations {#relations}
 
-Link tasks to show relationships between them. Four link types are available:
+Relations show how work items depend on each other. Open a work item, go to **Relations**, click **Add**, pick a **Relation type** and the other work item, then confirm with **Link work item**.
 
-| Link type | Meaning |
-|---|---|
-| **Depends on** | This task cannot proceed until the linked task is complete. |
-| **Blocks** | This task is blocking the linked task from proceeding. |
-| **Relates to** | Related context — no dependency implied. |
-| **Duplicates** | This task is a duplicate of the linked task. |
+| Relation type | Meaning | Seen from the other work item |
+|---|---|---|
+| **Blocks** | This work item must finish before the other can proceed | **Is blocked by** |
+| **Is blocked by** | This work item waits for the other | **Blocks** |
+| **Relates to** | Related context, no dependency | **Relates to** |
+| **Duplicates** | This work item repeats the other | **Is duplicated by** |
 
-To add a link, open a task → **Linked Tasks** section → click **+ Add Link**, choose the type, and search for the task to link.
+**Blocks** relations appear as arrows on the [Timeline](/projects/roadmap#dependencies), where you can also draw them. Adding relations needs the **Link task** permission.
+
+### Relation graph {#relation-graph}
+
+Click **Graph** in the top bar of a work item to open the **Relation Graph**. It shows the work item with its relations, sub-items, linked pages and test cases. Use **Show** to choose which kinds of items appear and **Depth** (1 to 4) to follow relations further. Right-click a node to open it.
 
 ## Integration panels
 
@@ -113,7 +118,7 @@ The task detail view includes integration panels that provide context from other
 | Panel | When it appears | What it shows |
 |---|---|---|
 | **Time** | When time tracking is enabled for the space | Logged time entries for this task. Start a timer, log time manually, or review the time history. |
-| **GitHub** | When the GitHub integration is active | Branches and pull requests linked to this task. Create a branch or PR directly from the panel. |
+| **GitHub** | When the GitHub integration is active | The branch, pull request, reviewers and CI checks of this task. See [GitHub](/projects/github). |
 | **Tests** | When Test Management is enabled for the space | Test cases that cover this task, and the test milestone this task is associated with. |
 
 Click the active panel icon a second time to close the panel and return to the activity feed.
@@ -130,41 +135,27 @@ The Tests panel shows two things:
   Updating the milestone from the Tests panel requires the **Edit Task** permission. Viewing the panel requires the **View Test Results** permission.
 </Note>
 
-## Keyboard shortcuts
+## Copy, move and delete {#actions}
 
-| Shortcut | Action |
+The menu in the top right of a work item offers:
+
+| Entry | What it does |
 |---|---|
-| `N` | Create a new task |
-| `T` | Open the task type picker |
-| `S` | Change the task's status |
-| `A` | Assign the task |
-| `Cmd/Ctrl + Enter` | Save a comment |
+| **Copy Work Item** | Creates a copy and opens it |
+| **Move work item** | Moves the work item to another project, see below |
+| **Delete Work Item** | Deletes the work item and all its data. This cannot be undone |
 
-## Bulk actions
+Press `Cmd + Enter` (Mac) or `Ctrl + Enter` (Windows and Linux) to post a comment. For all shortcuts, see [Keyboard shortcuts](/concepts/keyboard-shortcuts).
 
-<Warning>
-  Bulk actions are not available yet. This section describes the planned behaviour and is kept here as a reference; the Work Items table currently has no selection checkboxes.
-</Warning>
-
-Once available, you will select multiple work items using the checkbox in the Work Items view, then use the bulk action bar to apply changes to all selected items at once:
-
-| Action | Description |
-|---|---|
-| **Update status** | Move all selected tasks to a new status. |
-| **Update assignee** | Reassign all selected tasks to a different team member. |
-| **Update priority** | Set the same priority on all selected tasks. |
-| **Move to sprint** | Assign all selected tasks to a sprint. |
-| **Delete** | Permanently delete all selected tasks. |
-
-<Warning>
-  Bulk delete is permanent and cannot be undone. Confirm the selection before proceeding.
-</Warning>
+<Note>
+  Collabase has no bulk change. You change work items one at a time, in the detail view or inline in the [Work Items table](/projects/list-view#inline-edit).
+</Note>
 
 ## Moving a work item to another project
 
 A work item can be moved to a different project, including a project in another Space. Open the work
 item, then choose **Move work item** from the menu in the top right. The entry appears only if your
-role includes the **Move tasks** permission.
+role includes the **Move task** permission.
 
 The move runs in three steps.
 
@@ -213,7 +204,7 @@ Custom fields extend the standard field set with fields specific to your workflo
 
 Text, Textarea, Select, Multi-select, User, Multi-user, Date, Checkbox, Number, Rating, Progress, Location, Registry Object, Relation, Object Relation, Priority, URL, Email, Phone, Currency.
 
-Custom field values appear in the right sidebar of the task detail view. Admins configure which fields apply to which task types under **Settings → Fields & Task Types**.
+Custom field values appear in the right sidebar of the task detail view. Admins configure which fields apply to which work item types, see [Custom fields](/admin/custom-fields#how-fields-apply).
 
 ---
 

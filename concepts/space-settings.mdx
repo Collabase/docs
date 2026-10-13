@@ -1,169 +1,130 @@
 ---
 title: "Space settings"
 sidebarTitle: "Space Settings"
-description: "Configure a space — rename it, manage members, toggle modules, override AI settings, and archive or delete the space."
+description: "Configure a Space: name, owner, translation, features, members, roles, visibility, restricted zones, page structure, custom fields, archived pages and deletion."
+keywords: ["space settings", "space members", "space roles", "permission scheme", "space visibility", "public space", "restricted zones", "content map", "archived pages", "delete space"]
 ---
 
-Space settings let Space Owners configure how a space looks, which modules are active, and who has access. Open them by navigating to your space and clicking the **gear icon** or **Settings** in the space sidebar.
+Space settings control how one Space is set up and who can work in it. Open the Space and go to its settings. The settings open only for people with the right to manage the Space's settings, which the **Space Admin** role holds; everyone else gets a "not found" page. See [Permissions](/concepts/permissions#space-roles).
 
-Only **Space Owners** can access space settings. Admins at the instance level also have access to all spaces.
+The navigation groups the settings into three areas:
 
----
-
-## General settings
-
-The **General** tab controls the space's identity and visibility.
-
-| Setting | Description |
+| Group | Entries |
 |---|---|
-| **Name** | The display name shown in the sidebar and header. Can be changed at any time. |
-| **Mission statement** | A short description shown on the space home page. Helps members understand what the space is for. |
-| **Icon** | An emoji or image displayed next to the space name in the sidebar. |
-| **Color** | An accent color used in the space header and sidebar indicator. |
-| **Visibility** | Controls who can access the space — Private, Internal, or Public. See [Spaces](/concepts/spaces) for details. |
+| **Space** | **General**, **Translation**, **Features**, and **Integrations** when the GitHub integration is switched on |
+| **Access** | **Members**, **Roles & permissions**, **Visibility**, **Zones** |
+| **Content** | **Content map**, **Custom Fields**, **Archived pages** |
 
-Click **Save** after making any changes.
+## General {#general}
+
+**General** holds the name, icon and owner of the Space.
+
+| Setting | What it does |
+|---|---|
+| **Space Name** | The name shown in the space switcher and the header. Click the icon next to it to pick another icon. |
+| **Space owner** | The person who has full administrative access to the Space |
+
+Click **Save Changes**. Renaming the Space does not change its address, so existing links keep working, see [Spaces](/concepts/spaces).
+
+The **Danger Zone** at the bottom of **General** deletes the Space, see [Delete a Space](#delete).
+
+## Translation {#translation}
+
+**Translation** sets the **Default language (source)** of the Space and the **Allowed target languages** its pages may be translated into. See [Choose the languages of a Space](/docs/translation#space-languages).
+
+## Features {#features}
+
+The **Features** tab, under **Space** in the settings navigation, turns apps on or off for this Space. It shapes the Space sidebar for all members.
+
+| Switch | What it provides |
+|
+
+## Members {#members}
+
+**Members** lists the people with direct access to the Space and the groups that reach it.
+
+<Steps>
+  <Step title="Add a member">
+    Click **Add Member**. The dialog **Add space member** opens.
+  </Step>
+  <Step title="Pick the person and the role">
+    Under **User**, search for a person who already has a Collabase account. Under **Role**, pick the space role, then click **Save**.
+  </Step>
+</Steps>
+
+To change a member's role, pick another role in the row. To remove a member, click the trash icon in the row and confirm with **Remove member**. The person loses access to the Space at once and can be added again later. The owner's row cannot be changed here; change the owner under [General](#general).
+
+The section **Inherited group access** shows the groups that have access to this Space, with their role and number of members. It is read-only here. An administrator grants a group access in **Admin → Groups**, on the group's **Space Access** tab, see [Users & Groups](/admin/users-groups).
+
+## Roles & permissions {#roles-and-permissions}
+
+**Roles & permissions** lists the space roles with the number of members in each, and the **Permission scheme** that decides what each role may do.
+
+Under **Active scheme**, pick a scheme and click **Save**. **No scheme (default model)** applies the built-in role model. Click **View and edit scheme permissions** to open the scheme itself. Schemes are created and changed under **Admin → Permission Schemes**, see [Permissions](/concepts/permissions#permission-schemes).
+
+## Visibility {#visibility}
+
+**Visibility** decides who can read the Space without being a member.
+
+| Switch | What it does |
+|---|---|
+| **Make space public** | Every signed-in user can read pages in the Space without being a member. A public Space can show its blog posts as news in the Intranet; **Open intranet settings** leads there. |
+| **Allow viewer suggestions** | People without edit access can propose changes that are then reviewed, see [Suggestions](/docs/suggestions) |
+
+## Zones {#zones}
+
+**Zones** lists the **Restricted zones** of the Space: folders and pages with their own access list. From the list you can make a zone public again. See [Find all restricted content in a Space](/docs/page-restrictions#zones).
+
+## Content map {#content-map}
+
+**Content map** shows the page structure of the Space and moves pages to another place or another Space. See [Restructure a Space from the content map](/docs/organize-pages#content-map).
+
+## Custom Fields {#custom-fields}
+
+**Custom Fields** turns field collections on or off for the pages of this Space. The collections themselves are created by an administrator, see [Custom fields](/admin/custom-fields#create-collection).
+
+## Archived pages {#archived-pages}
+
+**Archived pages** lists the pages archived in this Space. Restore a page, or delete it for good. See [Restore an archived page](/docs/organize-pages#archived-pages).
+
+## Integrations {#integrations}
+
+**Integrations** appears when the GitHub integration is switched on. It connects the Space to GitHub, see [Connect a Space](/projects/github#connect-a-space).
+
+## AI settings {#ai}
+
+Collabase AI is configured for the whole instance, not per Space. See [AI configuration](/admin/ai-configuration).
+
+## Delete a Space {#delete}
+
+<Steps>
+  <Step title="Open the danger zone">
+    Open **General** and scroll to **Danger Zone**. Under **Delete this space**, click **Delete**.
+  </Step>
+  <Step title="Confirm with the name">
+    Type the space name exactly and click **Delete space**.
+  </Step>
+</Steps>
+
+Deleting needs the right to archive the Space, which the **Space Admin** role holds.
 
 <Warning>
-  The space **slug** (the short identifier used in all URLs) is set at creation time and cannot be changed. Changing it would break all existing links to content in this space.
+  The dialog says the Space and all its projects, work items, pages and files are deleted permanently. In fact the Space moves to the trash of the instance first. It stays there until an administrator restores it or deletes it for good; there is no expiry date. Ask your administrator at once if you deleted a Space by mistake. See [Trash](/admin/backup#trash) and [Data retention](/admin/data-retention).
 </Warning>
-
----
-
-## Members
-
-The **Members** tab lets you invite individual users or entire groups and assign their space role.
-
-### Inviting an individual member
-
-<Steps>
-  <Step title="Open Space Settings → Members">
-    Click **Add Member**.
-  </Step>
-  <Step title="Search for the user">
-    Type a name or email address. Only users who already have a Collabase account appear in the results.
-  </Step>
-  <Step title="Assign a space role">
-    Choose **Space Admin**, **Manager**, **Member**, or **Viewer**. See [Permissions](/concepts/permissions) for a breakdown of what each role can do.
-  </Step>
-  <Step title="Click Add">
-    The user immediately gains access to the space with the selected role.
-  </Step>
-</Steps>
-
-### Granting access to a group
-
-Instead of inviting users one by one, you can grant access to an entire group. All current and future members of the group automatically inherit the space role you assign.
-
-<Steps>
-  <Step title="Click Add Group in the Members tab">
-    Select the group from the dropdown. Groups are managed under Admin → Groups.
-  </Step>
-  <Step title="Assign a space role">
-    Choose the role for all members of this group.
-  </Step>
-  <Step title="Click Save">
-    Group membership is applied immediately. Adding or removing users from the group automatically updates their access to this space.
-  </Step>
-</Steps>
-
-### Changing or removing a member
-
-- To change a member's role, use the role dropdown on their row and save.
-- To remove a member, click the remove button on their row. The user immediately loses access to the space and its content.
-
----
-
-## Permissions
-
-The **Permissions** tab lets you assign a Permission Scheme to the space and configure per-member roles.
-
-### Permission Scheme
-
-A Permission Scheme defines what Managers, Members, and Viewers can do across all modules in this space. One scheme applies to the whole space.
-
-<Steps>
-  <Step title="Open Space Settings → Permissions">
-    The current scheme is shown at the top of the tab.
-  </Step>
-  <Step title="Select a scheme">
-    Choose from the available schemes in the dropdown. Collabase ships with four built-in schemes (Open, Default Software, Client / Read-only, Restricted / Confidential) plus any custom schemes created by your admin.
-  </Step>
-  <Step title="Save">
-    The new scheme takes effect immediately for all members of the space.
-  </Step>
-</Steps>
-
-<Note>
-  Only Space Admins and instance Admins can change the Permission Scheme for a space.
-</Note>
-
-Custom schemes are created and managed under **Admin → Permission Schemes**. See [Permissions](/concepts/permissions) for a full breakdown of what each scheme allows.
-
----
-
-## Modules
-
-The **Modules** tab (sometimes shown as **Apps**) lets you enable or disable modules within this space.
-
-| Module | What it provides |
-|---|---|
-| **Docs** | Pages, templates, and a collaborative knowledge base |
-| **Projects** | Tasks, boards, and project management |
-| **Test Management** | Test cases, suites, runs, and results |
-| **Automation** | Workflow pipelines and triggers |
-| **Intranet** | Announcements and team news |
-| **Registry** | Structured object database with custom fields |
-| **Time Tracking** | Time logging and reports |
-
-Disabling a module hides it from the space sidebar for all members. Existing data is preserved — re-enabling the module restores full access to everything that was there before.
-
----
-
-## AI settings
-
-AI is configured for the whole instance, not per space. An administrator selects the provider and the model under **Admin → Settings → AI settings**, and every space uses it. See [AI Configuration](/admin/ai-configuration).
-
----
-
-## Notifications
-
-The **Notifications** tab controls space-level notification defaults. Individual users can further customize their preferences from their own profile.
-
----
-
-## Danger zone
-
-The **Danger zone** tab contains irreversible actions.
-
-### Archive space
-
-Archiving makes the space read-only and hides it from the active space list. No content is deleted. Archived spaces can be restored from **Admin → Spaces**.
-
-### Delete space
-
-<Warning>
-  Deleting a space is permanent and cannot be undone. All content in the space — pages, tasks, test cases, automations, registry objects, and member assignments — is permanently deleted. Only the Space Owner can delete a space.
-</Warning>
-
-Before deleting, export or back up any content you want to keep. Once deleted, there is no recovery unless you restore from a database backup (see [Backup & Restore](/admin/backup)).
-
-<Steps>
-  <Step title="Open Space Settings → Danger zone">
-    Click the **Delete Space** button.
-  </Step>
-  <Step title="Type the space name to confirm">
-    Enter the exact space name in the confirmation field to prevent accidental deletion.
-  </Step>
-  <Step title="Click Delete">
-    The space and all its content is permanently removed.
-  </Step>
-</Steps>
-
----
 
 ## Related pages
 
-- [Spaces](/concepts/spaces) — what spaces are and how to create them
-- [Permissions](/concepts/permissions) — space roles in detail
-- [Users & Groups](/admin/users-groups) — managing groups for bulk space access
+<CardGroup cols={2}>
+  <Card title="Spaces" icon="layout-grid" href="/concepts/spaces">
+    What Spaces are and how to create them.
+  </Card>
+  <Card title="Permissions" icon="shield" href="/concepts/permissions">
+    Space roles and Permission Schemes in detail.
+  </Card>
+  <Card title="Users & Groups" icon="users" href="/admin/users-groups">
+    Grant whole groups access to a Space.
+  </Card>
+  <Card title="Restrict access to pages" icon="lock" href="/docs/page-restrictions">
+    Private folders inside a Space.
+  </Card>
+</CardGroup>

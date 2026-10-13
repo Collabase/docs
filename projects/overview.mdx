@@ -1,86 +1,103 @@
 ---
 title: "Projects"
 sidebarTitle: "Overview"
-description: "Projects is Collabase's project management app — tasks, boards, sprints, queues, SLA policies, and custom workflows in every Space."
+description: "Projects is Collabase's app for planning and tracking work: a board, a work item table, cycles, a timeline, phases and risks in every Space."
+keywords: ["Jira alternative", "project management", "work items", "issues", "kanban", "scrum", "sprints", "timeline"]
 ---
 
 import { AppHero } from "/snippets/app-hero.mdx";
 
-<AppHero app="projects" name="Projects" lead="Boards, sprints and workflows" rest="for every project in your Space." facts={[{ label: "Feature areas", value: "11" }, { label: "Views", value: "6" }, { label: "Roles", value: "3" }]} points={[{ icon: "columns-3", title: "Board", text: "Drag tasks between status columns." }, { icon: "gauge", title: "Sprints", text: "Time-boxed iterations with burndown." }, { icon: "clock", title: "Queues and SLA", text: "Triage with response and resolution targets." }]} primary={{ label: "Set up a project", href: "/projects/project-setup" }} secondary={{ label: "Open the board", href: "/projects/board" }} />
+<AppHero app="projects" name="Projects" lead="Boards, cycles and a timeline" rest="for every project in your Space." facts={[{ label: "Views", value: "7" }, { label: "Project roles", value: "3" }, { label: "Access modes", value: "2" }]} points={[{ icon: "columns-3", title: "Board", text: "Drag work items between status columns." }, { icon: "gauge", title: "Cycles", text: "Time-boxed iterations with burndown and velocity." }, { icon: "chart-gantt", title: "Timeline", text: "Dates, dependencies and milestones on one plan." }]} primary={{ label: "Set up a project", href: "/projects/project-setup" }} secondary={{ label: "Open the board", href: "/projects/board" }} />
 
 <div className="home-cards brand-cards">
 
-Projects is the task and project management app built into every Collabase Space. It brings together a Kanban board, sprint planning, backlog management, a Gantt-style roadmap, queue-based helpdesk workflows, SLA tracking, and a customer portal — all in one place.
+Projects is the app for planning and tracking work in every Collabase Space. A project holds work items that move through the statuses of a workflow, and you decide per project which views and features its members see.
 
-Every Space can have multiple Projects. Each Project is a self-contained area with its own workflow, task types, members, and settings. Tasks within a project move through custom statuses, can be organized into sprints or queues, and tracked against SLA targets.
+A Space can hold many projects. Each project has its own workflows, work item types, fields and members, and either all members of the Space can open it or only the people you add.
 
-## Feature areas
+## Work in a project
 
 <CardGroup cols={3}>
-  <Card title="Setting Up a Project" icon="sliders" href="/projects/project-setup">
-    Step-by-step guide to configuring workflows, task types, field collections, and applying a template.
-  </Card>
-  <Card title="Project Templates" icon="layout-template" href="/projects/templates">
-    Reusable configurations that bundle a workflow, task types, and field collections. Apply on project creation to skip manual setup.
-  </Card>
-  <Card title="Tasks" icon="circle-check" href="/projects/tasks">
-    The fundamental unit of work. Every task has a status, type, assignee, priority, due date, rich-text description, comments, attachments, subtasks, linked tasks, and a full change history.
+  <Card title="Work items" icon="circle-check" href="/projects/tasks">
+    The unit of work: status, type, assignee, priority, dates, description, comments, attachments, sub-items and relations.
   </Card>
   <Card title="Board" icon="columns-3" href="/projects/board">
-    A Kanban board where columns represent statuses. Drag tasks between columns to update their status. Configure swimlanes, card fields, and color rules.
+    Move work items between status columns. Set up columns, card colors, card fields and swimlanes.
   </Card>
-  <Card title="Sprints" icon="gauge-high" href="/projects/sprints">
-    Group tasks into time-boxed iterations. Track velocity with burndown charts and story points. Manage sprint scope with a dedicated backlog.
+  <Card title="Work Items table" icon="table" href="/projects/list-view">
+    Review many work items at once: columns, sorting, filters and inline edits.
   </Card>
-  <Card title="Backlog" icon="list-ul" href="/projects/backlog">
-    The holding area for all tasks not assigned to a sprint. Prioritize by dragging tasks, filter by any field, and assign tasks to upcoming sprints.
+  <Card title="Backlog" icon="list" href="/projects/backlog">
+    Rank open work items and move them into cycles.
   </Card>
-  <Card title="Roadmap" icon="chart-gantt" href="/projects/roadmap">
-    A Gantt-style timeline view. Tasks with start and due dates appear as bars. Sprint periods appear as colored bands in the background.
+  <Card title="Cycles" icon="gauge" href="/projects/sprints">
+    Time-boxed iterations with burndown, cycle health and velocity.
   </Card>
-  <Card title="Queues" icon="layer-group" href="/projects/queues">
-    Named filtered views within a project. Ideal for support teams, review pipelines, or any workflow that needs structured triage.
+  <Card title="Timeline" icon="chart-gantt" href="/projects/roadmap">
+    Work items as bars on a calendar, with dependencies and milestones.
   </Card>
-  <Card title="SLA Policies" icon="clock" href="/projects/sla">
-    Set response and resolution time targets per priority level. Collabase tracks breaches automatically and surfaces them in board and queue views.
+  <Card title="Reports" icon="chart-column" href="/projects/reports">
+    Project charts and the monthly status report with its traffic light.
   </Card>
-  <Card title="Workflows" icon="arrow-right-arrow-left" href="/projects/workflows">
-    Define custom statuses with names, colors, and categories. Control which status transitions are allowed and configure task types with field rules.
+  <Card title="Phases and gates" icon="milestone" href="/projects/approvals">
+    Run a project through phases and record each gate decision.
   </Card>
-  <Card title="Customer Portal" icon="globe" href="/projects/portal">
-    A branded external view for customers to submit tickets and track their status — no Collabase account required.
+  <Card title="Risks" icon="triangle-alert" href="/projects/risks">
+    Rate risks on a 3 by 3 matrix and link them to the work that handles them.
+  </Card>
+  <Card title="GitHub" icon="git-branch" href="/projects/github">
+    Branches from work items, pull requests and CI checks.
+  </Card>
+  <Card title="Guests" icon="user-plus" href="/projects/guests">
+    Let external people into one project, and nothing else.
   </Card>
 </CardGroup>
 
 ## Views
 
-Switch between views using the view toggle in the top bar of any project.
+Each view is a tab in the project. A project admin switches tabs on and off under **Settings → Project features**; the order of tabs is fixed.
 
 | View | Best for |
 |---|---|
-| **Board** | Kanban-style drag-and-drop by status column. Supports swimlanes and card color rules. |
-| **Work Items** | Dense sortable table, 50 rows per page by default. Best for searching and reviewing many items at once. |
-| **Sprints** | Active sprint tracking with scope, story points, and burndown progress. |
-| **Backlog** | Unassigned tasks waiting to be planned into sprints. |
-| **Roadmap** | Gantt-style timeline for tasks with start and due dates. |
-| **Queues** | Triage inbox organized by named filter sets. |
+| **Home** | The project at a glance |
+| **Board** | Moving work items between status columns |
+| **Work Items** | Reviewing, filtering and editing many work items in a table |
+| **Timeline** | Scheduling work items and dependencies on a calendar |
+| **Backlog** | Ranking open work and planning it into cycles |
+| **Time** | Time booked on the project's work items |
+| **Mindmap** | The project's work items as a map |
+
+**Cycles**, **Phases and gates**, **Risks** and **Costs** are features with their own switches in the same place. See [Project features](/projects/project-settings#features).
 
 ## Roles and access
 
-Project access is managed independently from Space membership. A Space member does not automatically have access to every project in that Space.
+A project either inherits its members from the Space or is **Private**, open only to the people you add, the Space owner and system administrators. Each member has one project role:
 
-| Role | Permissions |
+| Role | What it may do |
 |---|---|
-| **Owner** | Full project configuration, including workflow, members, SLA policies, and archive/delete. |
-| **Member** | Create, assign, update, and resolve tasks. Manage sprints and queues. |
-| **Viewer** | Read-only access to tasks, board, and all views. Cannot create or edit tasks. |
+| **Manager** | Defined by the Space's [Permission Scheme](/concepts/permissions), typically managing the project's work and cycles |
+| **Member** | Defined by the Permission Scheme, typically creating and updating work items |
+| **Viewer** | Defined by the Permission Scheme, typically reading only |
 
-Manage project members from **Project → Settings → Members**.
+Manage members and the access mode under **Settings → Team → Members**. Details: [Members and private projects](/projects/project-settings#private-projects).
 
-## Admin configuration
+## Set up and configure
 
-<Note>
-  Administrators can configure global task types and custom fields that are available across all projects in the instance. Set these up in **Admin → Task Types** and **Admin → Custom Fields**. Global settings cascade down: global → space → project, with each level able to extend but not override the level above.
-</Note>
+<CardGroup cols={2}>
+  <Card title="Set up projects for a team" icon="sliders" href="/projects/project-setup">
+    A guide from the first workflow to a running project.
+  </Card>
+  <Card title="Project settings" icon="settings" href="/projects/project-settings">
+    Every section of a project's Settings tab.
+  </Card>
+  <Card title="Workflows in a project" icon="git-fork" href="/projects/workflows">
+    Which workflow a work item follows, and how it moves.
+  </Card>
+  <Card title="Project templates" icon="layout-template" href="/projects/templates">
+    Reusable setups with workflows, types, fields and a phase model.
+  </Card>
+</CardGroup>
+
+Work item types, custom fields and workflows are defined for the whole installation and chosen per project. [How configuration works](/concepts/configuration-model) explains the levels.
 
 </div>

@@ -1,0 +1,122 @@
+---
+title: "Audit log"
+description: "See who changed what in Collabase and when, from sign-ins to permission changes, filter by area and action, and know how long entries are kept."
+tag: "Enterprise"
+keywords: ["audit log", "monitor and manage activity", "activity log", "audit trail", "who changed what", "compliance", "security events", "sign-in history", "admin activity"]
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+The audit log records changes and security events across the whole installation: who signed in, who changed a permission, who deleted a page, which agent changed a work item. Use it to answer "who did this, and when?" after an incident, and as evidence for an audit.
+
+<WhoCanDoThis role="System administrator" edition="Collabase Enterprise Edition" />
+
+## Open the audit log
+
+Go to **Administration → Audit Log**. The newest entries come first, 50 at a time. Click **Load more** at the bottom for older ones.
+
+Nobody can edit or delete an entry from this screen. Entries are written by Collabase itself when something happens.
+
+---
+
+## What an entry shows {#what-an-entry-shows}
+
+| Column | Details |
+|---|---|
+| **Timestamp** | Date and time to the second |
+| **Actor** | The person who acted, with IP address, operating system and browser. **System** when Collabase acted on its own, for example when it cleans up the trash. |
+| **Action** | What happened, for example **Signed in**, **User locked** or `PAGE_DELETED` |
+| **Entity** | The kind of thing affected, for example `Page`, `User` or `Space`, with its name or ID below |
+| **Summary** | One sentence that describes the change |
+
+Click a row to open its details:
+
+| Section | Details |
+|---|---|
+| **Context Details** | **Actor**, **Email**, **IP Address**, **Environment** (operating system and browser), **Timestamp** and **Entity ID** |
+| **Data Changes** | The values **Before** and **After** the change, side by side, when the entry records a change |
+| **Raw Details** | Everything the entry stores, when it records an event rather than a change |
+
+---
+
+## Find an entry {#find-an-entry}
+
+Two filters sit above the list. They combine, so you can show, for example, only deletions of pages.
+
+| Filter | Choices |
+|---|---|
+| **Entity** | **All Entities**, or one of `Page`, `Space`, `User`, `Group`, `Task`, `Project`, `Meeting`, `CustomField`, `Automation`, `App`, `ApiToken`, `PdfTemplate`, `PdfExport`, `Trash`, `Session`, `System` |
+| **Action** | **All Actions**, or one action, such as `USER_GLOBAL_ROLE_CHANGED` or `SECURITY_POLICY_CHANGED` |
+
+### Questions and where to look
+
+| Question | Filter |
+|---|---|
+| Who made this person an administrator? | **Action** `USER_GLOBAL_ROLE_CHANGED` |
+| Who changed a password or session rule? | **Action** `SECURITY_POLICY_CHANGED` |
+| Who deleted this page? | **Entity** `Page`, **Action** `PAGE_DELETED` |
+| What did the identity provider change? | **Action** `SCIM_USER_PROVISIONED`, `SCIM_USER_UPDATED`, `SCIM_USER_DEPROVISIONED` or `SCIM_USER_REJECTED` |
+| When did someone sign in, and from where? | **Action** `AUTH_SIGNED_IN` or `AUTH_SIGN_IN_FAILED` |
+| What did an AI agent change? | **Action** `MCP_TOOL_WRITE` |
+| Who emptied or restored something in the trash? | **Entity** `Trash` |
+
+---
+
+## What is recorded {#what-is-recorded}
+
+| Area | Examples |
+|---|---|
+| Sign-in and account security | Signed in, sign-in failed, signed out, session ended, password changed or reset, second factor enabled or reset, passkey added, account locked and unlocked |
+| Users and groups | Users created, changed, locked, released, anonymized; instance role changed; group members added or removed; module access changed |
+| Identity and provisioning | Identity provider, SCIM token and LDAP settings changed; accounts provisioned, updated or turned away by SCIM; identities linked |
+| Security settings | Security policies changed, licence updated or removed |
+| Guests | Guests invited or removed, their rights changed, pages shared with guests |
+| Content | Spaces, pages, work items, custom fields and automations created, changed or deleted; pages published or restored |
+| Trash | Items restored, deleted for good, and cleaned up after their retention |
+| Apps and agents | Apps installed or removed, OAuth applications registered, app access granted or withdrawn, changes made by an AI agent |
+| Meetings | Meetings cancelled or deleted, participants and organizers changed, notes published |
+| Exports | PDF templates changed, PDFs exported, export history cleared |
+
+---
+
+## How long entries are kept {#retention}
+
+| Entries | Kept for |
+|---|---|
+| Signed in, sign-in failed, signed out | 180 days. A maintenance job that runs every five minutes removes older ones. |
+| Every other entry | As long as the installation exists |
+
+The retention is fixed and cannot be changed on the screen. Entries are part of the database, so they are included in every [backup](/admin/backup).
+
+<Note>
+  The audit log stores the IP address and the browser of the person who acted. Take this into account in your record of processing activities.
+</Note>
+
+---
+
+## Troubleshooting
+
+| What you see | Cause | What to do |
+|---|---|---|
+| The page is blurred and asks for an upgrade | The installation has no Enterprise licence. | Add the licence key under **Administration → License**, see [Licence and editions](/admin/editions-and-license). |
+| **No logs found.** | No entry matches both filters. | Set one filter back to **All Entities** or **All Actions**. |
+| **The audit log could not be loaded.** | The server could not read the entries. | Reload the page. If it persists, check the application log, see [Troubleshooting](/admin/troubleshooting). |
+| **Unknown IP** for every entry | The reverse proxy in front of Collabase does not pass on the visitor's address. | Configure the proxy to send the header `X-Real-IP` or `X-Forwarded-For`. The standard installation does this. |
+| An action shows as a code, such as `PAGE_DELETED`, instead of a phrase | Only newer actions have a readable name. | The code names the action. The **Summary** column describes it in words. |
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Security policies" icon="shield-check" href="/admin/security-policies">
+    The rules whose changes appear as `SECURITY_POLICY_CHANGED`.
+  </Card>
+  <Card title="Data retention" icon="clock" href="/admin/data-retention">
+    Everything Collabase deletes on its own, and when.
+  </Card>
+  <Card title="Users and groups" icon="users" href="/admin/users-groups">
+    Instance roles, groups and module access.
+  </Card>
+  <Card title="Apps and agents" icon="bot" href="/admin/apps-and-agents">
+    Which agents may change content, and how their changes are recorded.
+  </Card>
+</CardGroup>

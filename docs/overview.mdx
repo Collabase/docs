@@ -6,85 +6,95 @@ description: "Collabase Docs is the built-in knowledge base of every Space: hier
 
 import { AppHero } from "/snippets/app-hero.mdx";
 
-<AppHero app="docs" name="Collabase Docs" lead="The knowledge base" rest="inside every Space." facts={[{ label: "Feature areas", value: "6" }]} points={[{ icon: "file-text", title: "Pages", text: "A nested tree with rich text and slash commands." }, { icon: "history", title: "Version history", text: "Every change of a page is kept." }, { icon: "lock", title: "Permissions", text: "Restrict a page to users or groups." }]} primary={{ label: "Write a page", href: "/docs/pages" }} secondary={{ label: "Use templates", href: "/docs/templates" }} />
+<AppHero app="docs" name="Collabase Docs" lead="The knowledge base" rest="inside every Space." facts={[{ label: "Feature areas", value: "8" }]} points={[{ icon: "file-text", title: "Pages, whiteboards, folders", text: "One page tree per Space, edited in a rich-text editor with slash commands." }, { icon: "history", title: "Version history", text: "Every save creates a version you can compare or restore." }, { icon: "lock", title: "Private folders", text: "Limit a folder and every page inside it to selected people and groups." }]} primary={{ label: "Write a page", href: "/docs/pages" }} secondary={{ label: "Use templates", href: "/docs/templates" }} />
 
 <div className="home-cards brand-cards">
 
 Collabase Docs is the built-in knowledge base for every Space. Teams use it to write and maintain technical specifications, runbooks, onboarding guides, meeting notes, process documentation, and anything else that needs to be written down and found again later.
 
-Every document is a **page**. Pages live in a nested tree inside their Space, support rich text with slash commands and embeds, track their full version history, and can be restricted to specific users or groups.
+Every document is a **page**. Pages, whiteboards and folders share one page tree per Space. Pages use a rich-text editor with slash commands, keep a version for every save, and can be placed in a private folder that only selected people and groups can open.
 
 ## What's inside Docs
 
 <CardGroup cols={3}>
   <Card title="Pages" icon="file-text" href="/docs/pages">
-    Rich-text documents organized in a hierarchical tree. Supports Standard, Blog, and Canvas page types with full version history.
+    Pages, whiteboards and folders. Edit, save, set a status and add labels.
+  </Card>
+  <Card title="Editor elements" icon="square-slash" href="/docs/editor-elements">
+    Blocks, macros and inline elements you insert with `/`.
+  </Card>
+  <Card title="Organize pages" icon="folder-tree" href="/docs/organize-pages">
+    Nest, move, archive and delete pages in the page tree.
   </Card>
   <Card title="Templates" icon="layout-template" href="/docs/templates">
-    Reusable page structures with placeholder variables. Create new pages from a template to save time and keep content consistent.
+    Reusable page structures with placeholder variables.
   </Card>
   <Card title="Suggestions" icon="message-circle" href="/docs/suggestions">
-    Readers can propose edits to page content without overwriting it. Authors accept or reject each suggestion individually.
+    Readers propose edits, authors accept or reject each one.
   </Card>
-  <Card title="Live Collaboration" icon="users" href="/docs/collaboration">
-    Several people edit the same page at once, with live changes, cursors, and presence avatars. On by default.
+  <Card title="Live collaboration" icon="users" href="/docs/collaboration">
+    Several people edit the same page at once. On by default.
   </Card>
 </CardGroup>
 
 <CardGroup cols={2}>
-  <Card title="Version History" icon="clock" href="/docs/pages#version-history">
-    Every save creates a snapshot. Restore any previous version at any time — the restore creates a new version rather than overwriting the current one.
+  <Card title="Version history" icon="history" href="/docs/version-history">
+    Every save creates a version. Compare two versions or restore one.
   </Card>
-  <Card title="Page Permissions" icon="lock" href="/docs/pages#permissions">
-    Permissions are set per page. They are not inherited from the parent page or the Space. Restrict any page to specific users or groups independently.
+  <Card title="Restrict access to pages" icon="lock" href="/docs/page-restrictions">
+    Make a folder private. The restriction applies to every page inside it.
   </Card>
 </CardGroup>
 
-## Page hierarchy
+## The page tree
 
 Pages are organized in a tree:
 
 ```text
 Space
+├── Folder
+│   └── Page
+│       └── Subpage
 └── Page (top-level)
-    ├── Subpage
-    │   └── Sub-subpage
     └── Subpage
 ```
 
-There is no depth limit. Drag and drop pages in the sidebar to reorder them or change their parent. Moving a page to a different Space is also supported from the page options menu.
+New pages land at the top level. Drag a page in the tree to reorder it or give it another parent, or use **Move Page** to move it to another place or another Space. See [Organize pages](/docs/organize-pages).
 
-## Page types
+## What you can create
 
-| Type | Best for |
+| Item | What it is |
 |---|---|
-| **Standard** | Regular documentation — specs, guides, runbooks, notes |
-| **Blog** | Posts with a publish date, displayed in chronological order |
-| **Canvas** | Freeform drawing and diagramming on an infinite canvas |
+| **Page** | A rich-text document with headings, lists, tables, macros and comments |
+| **Whiteboard** | A drawing board for sketches, diagrams and wireframes |
+| **Folder** | A container that groups pages and can carry its own access list |
+
+Details are on [Pages](/docs/pages#page-types).
 
 ## The editor
 
-The Docs editor supports:
+Type `/` to insert a block or macro. The editor offers basic blocks such as headings, lists, to-do lists and tables, media such as images and video embeds, advanced blocks such as a table of contents, Draw.io and Mermaid or PlantUML diagrams, and macros such as **Collabase Tasks**, a live table of work items. Type `@` to mention a person. The full list is on [Editor elements](/docs/editor-elements).
 
-- **Headings** (H1–H3) with automatic anchor links
-- **Lists** — bulleted, numbered, task lists
-- **Tables** — add, delete, and resize rows and columns
-- **Code blocks** — syntax highlighting with language picker
-- **Callouts** — info, tip, warning, and danger block types
-- **Embeds** — YouTube, Figma, Loom, and any URL-based embed
-- **Images** — upload or paste directly
-- **Slash commands** — type `/` to insert any block type instantly
-- **@mentions** — mention team members to send them a notification
-- **Markdown shortcuts** — `**bold**`, `# Heading`, `` `code` ``, and more
-
-Content is auto-saved when you move focus away from the editor. There is no manual save required.
+Collabase saves a page on its own about 1.5 seconds after you stop typing, and a whiteboard about 5 seconds after you stop drawing. With [live collaboration](/docs/collaboration) on, several people edit the same page at once and see each other's changes as they type.
 
 ## Connected to the rest of Collabase
 
-- **Test Management** — link a page as the requirement document for a test case
-- **Projects** — attach pages as project documentation
-- **Registry** — pages can document the purpose and usage of registry schemas
-- **Automation** — trigger automations when pages are created or updated
-- **CollabaseAI** — published pages are indexed and available through the assistant
+- **Projects:** the **Tasks** tab in **Page info** lists the work items linked to a page.
+- **Automation:** the events `page.created`, `page.updated` and `page.commented` can start an automation, see [Triggers](/automation/triggers).
+- **Collabase AI:** when your administrator has set it up, the editor offers AI commands, see [Collabase AI](/concepts/collabase-ai).
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Comments and mentions" icon="message-square" href="/docs/comments">
+    Discuss a passage and assign to-dos.
+  </Card>
+  <Card title="Translate pages" icon="languages" href="/docs/translation">
+    Read a page in another language.
+  </Card>
+  <Card title="Export a page" icon="download" href="/docs/export">
+    Save a page as PDF or Markdown.
+  </Card>
+</CardGroup>
 
 </div>

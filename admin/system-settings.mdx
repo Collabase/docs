@@ -1,0 +1,180 @@
+---
+title: "System settings"
+sidebarTitle: "System settings"
+description: "Find every instance-wide setting of Collabase, from branding and mail to the search index, attachments and DeepL translation, and the page that explains it."
+keywords: ["global settings", "general configuration", "configure Collabase", "site administration", "administration console", "Confluence-wide settings", "Jira global settings", "site settings", "search index", "reindex", "rebuild index", "content indexing", "attachments", "DeepL", "translation", "machine translation"]
+boost: 2
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+System settings apply to the whole installation and every Space in it. This page shows how to reach them, which screen does what, and where each one is documented. It also covers the three settings that are too small for a page of their own: [attachments on work items](#attachments), the [search index](#search-index) and [translation with DeepL](#translation).
+
+<WhoCanDoThis role="System administrator" edition="All editions" />
+
+Settings that belong to one Space, such as its members and modules, are in the Space itself, see [Space settings](/concepts/space-settings).
+
+## Open the system settings {#open}
+
+<Steps>
+  <Step title="Open the menu">
+    Click your profile picture at the top right, or the **Settings** button at the bottom of the left sidebar.
+  </Step>
+  <Step title="Choose System Settings">
+    Click **System Settings**. The entry appears only for accounts with the Admin instance role. Collabase opens **Brand Identity** and shows every other screen in the sidebar.
+  </Step>
+  <Step title="Find a setting">
+    Type into **Search settings...** at the top of the sidebar to filter the screens by name.
+  </Step>
+</Steps>
+
+<Note>
+  An administrator who signs in with a password must set up a second sign-in step before Collabase opens these screens. See [Second step for administrators](/admin/users-groups).
+</Note>
+
+---
+
+## Every screen and where it is documented {#map}
+
+The table follows the order of the sidebar. A group shows only the screens your installation offers.
+
+{/* vale off */}
+
+| Group | Screen | What you do there | Documented in |
+|---|---|---|---|
+| **Workspace & Brand** | **Brand Identity** | App name and logos | [Branding](/admin/branding#name-and-logos) |
+| | **Theme** | Accent color for everyone | [Branding](/admin/branding#accent-color) |
+| | **Login screen** | Sign-in design, image and announcement banner | [Branding](/admin/branding#login-screen) |
+| | **Translation** | DeepL key for page translation | [Translation](#translation) below |
+| **User Management** | **User**, **Groups**, **Roles & app access**, **Permission Schemes** | Accounts, instance roles, groups, app access and default permissions | [Users and groups](/admin/users-groups) |
+| | **Guests** | People from outside your organization | [Guests](/projects/guests) |
+| | **Identity Providers** | SAML, OpenID Connect, LDAP and SCIM | [Identity providers](/admin/identity-providers) |
+| | **Apps and agents** | Applications and AI agents that connect with OAuth | [Apps and agents](/admin/apps-and-agents) |
+| **Collabase License** | **License** | The licence key of the installation | [Licence and editions](/admin/editions-and-license) |
+| | **Feedback & Privacy** | Usage statistics, off by default | [Usage statistics](/admin/hosting#usage-statistics) |
+| **Security** | **Policies**, **Brute-Force Protection** | Passwords, sessions, lockout, SSO bypass, locked accounts | [Security policies](/admin/security-policies) |
+| **Infrastructure** | **Search Index** | Rebuild the search index, switch attachments on work items on or off | [Search index](#search-index) and [Attachments](#attachments) below |
+| | **Mail Server** | Outgoing mail and the inbound mailbox | [Outgoing mail](/admin/email), [Inbound mailbox](/admin/inbound-mail) |
+| | **Mail Templates** | Switch individual mails off | [Mail templates](/admin/email#mail-templates) |
+| | **Audit Log** | Who changed what, and when | [Audit log](/admin/audit-log) |
+| **AI settings** | **Language model**, **RAG model & pipeline**, **Re-ranking model**, **Meetings** | AI providers and models | [AI configuration](/admin/ai-configuration) |
+| | **Usage** | What the AI costs | [AI costs](/admin/ai-costs) |
+| **Extensibility** | **App Store**, and one entry per installed app | Install bundled apps and set them up | [App Store](/admin/app-store) |
+| **Content & Organization** | **Custom Fields**, **Field Collections** | Your own fields on pages and work items | [Custom fields](/admin/custom-fields) |
+| | **Work Item Types** | Kinds of work items and their fields | [Work item types](/admin/work-item-types) |
+| | **Workflows** | Statuses and transitions of work items | [Design workflows](/admin/workflows) |
+| | **Project Templates** | Starting points for new projects | [Project templates](/projects/templates) |
+| **Templates & Exports** | **Page Templates**, **PDF Templates**, **Export History** | Templates for several Spaces, PDF layouts, export log | [Page and PDF templates](/admin/templates-and-exports) |
+| **Time Intelligence** | **Teams**, **Workload Plans**, **Holiday Schemes**, **Worklog Attributes**, **Accounts**, **Billing Rules**, **Costs** | Time tracking and costs | [Time tracking](/admin/time-tracking) |
+| **Data & Backup** | **Trash** | Restore or permanently delete Spaces, projects, pages and work items | [Trash](/admin/backup#trash), [Data retention](/admin/data-retention) |
+| **Migrate to Collabase** | **Jira Data Center**, **Confluence Data Center** | Import from Atlassian Data Center. Shown only where the migration tools are switched on. | [From Jira](/admin/migrate-from-jira), [From Confluence](/admin/migrate-from-confluence) |
+
+{/* vale on */}
+
+---
+
+## Attachments on work items {#attachments}
+
+One switch decides whether members can attach files to work items anywhere in the installation. It sits at the top of **Administration → Search Index**, as the card **Attachments on work items**.
+
+| Setting | Default | Details |
+|---|---|---|
+| **Attachments on work items** | On | When off, nobody can attach new files to work items. Existing files stay readable. |
+
+The switch saves as soon as you click it. Turn it off when work items must not hold files, for example because documents belong in a managed file store. Where files are stored, and how much space they take, is described in [File storage](/admin/file-storage).
+
+---
+
+## Search index {#search-index}
+
+Search finds text inside pages through a search index that Collabase keeps in the database. **Administration → Search Index** shows its state and rebuilds it.
+
+| Element | Details |
+|---|---|
+| **Search Index Status** | **Healthy**, or **Unhealthy** when the last rebuild ended with an error |
+| Number of documents | How many pages are in the index |
+| **Last Sync** | When a page was last indexed. **Never** on a new installation. |
+| **Start full reindex** | Reads every page again and rebuilds its searchable text |
+| **Index Log** | The progress of the current or last rebuild. Only the last 50 lines are kept. |
+
+### Rebuild the index {#reindex}
+
+Rebuild the index after you restore a backup or import content, and when search does not find words that are on a page.
+
+<Steps>
+  <Step title="Start the rebuild">
+    Go to **Administration → Search Index** and click **Start full reindex**. **Reindex started** confirms it.
+  </Step>
+  <Step title="Follow the progress">
+    The card shows **Indexing...** with the number of pages done and the total. The **Index Log** names each page as it is indexed. Collabase stays usable while it runs, and you can leave the page.
+  </Step>
+  <Step title="Check the result">
+    When it is done, the log ends with `Index maintenance complete.` and **Last Sync** shows the current time.
+  </Step>
+</Steps>
+
+<Check>
+  Search for a word that appears only in the body of a page, not in its title. The page appears in the results.
+</Check>
+
+Only one rebuild runs at a time; the button is greyed out while one is running. The state and the log live in the memory of the running application. If Collabase restarts during a rebuild, the rebuild stops: start it again.
+
+The rebuild covers the full-text search. The index that the AI uses to answer questions is separate. It has its own **Rebuild** button in the AI settings, see [AI configuration](/admin/ai-configuration).
+
+### Troubleshooting the search index
+
+| What you see | Cause | What to do |
+|---|---|---|
+| **Unhealthy**, and the log ends with a line starting with `ERROR:` | The last rebuild stopped on an error. | Read the error in the **Index Log**, then click **Start full reindex** again. If it fails again, check the application log, see [Troubleshooting](/admin/troubleshooting). |
+| **Failed to load status** | The page could not reach the server. | Reload the page. |
+| Search finds a page by its title but not by its text | The page's text is not in the index yet. | Run a full reindex. |
+
+---
+
+## Translation with DeepL {#translation}
+
+With a DeepL key, members can read a page in another language. Collabase sends the text of the page to DeepL, stores the translation and translates again only after the page has changed. Code blocks and mentions stay as they are.
+
+<Warning>
+  Translation sends the content of a page to DeepL, a service outside your installation. Check that this is allowed for the content in your Spaces, and tell your members, before you add a key.
+</Warning>
+
+<Steps>
+  <Step title="Get a key from DeepL">
+    Create a DeepL API subscription, Free or Pro, and copy its authentication key.
+  </Step>
+  <Step title="Open the translation settings">
+    Go to **Administration → Translation**. The card **DeepL API Configuration** opens.
+  </Step>
+  <Step title="Enter the key">
+    Paste the key into **API Key** and choose the **Plan Type** that matches your subscription: **DeepL API Free** or **DeepL API Pro**.
+  </Step>
+  <Step title="Save">
+    Click **Save**. **Translation settings saved** confirms it. The key is stored encrypted and shown masked from then on.
+  </Step>
+</Steps>
+
+<Check>
+  Open a page and choose another language in its language menu. The page shows the translated text, and **Original** switches back.
+</Check>
+
+The card **Supported Languages** lists the languages offered for translation. To stop translation, delete the key in **API Key** and click **Save**.
+
+---
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Branding and login screen" icon="palette" href="/admin/branding">
+    Name, logos, accent color and the sign-in screen.
+  </Card>
+  <Card title="Outgoing mail and mail templates" icon="mail" href="/admin/email">
+    Mail server, sender and the mails Collabase sends.
+  </Card>
+  <Card title="Audit log" icon="list-checks" href="/admin/audit-log">
+    Who changed what in the installation, and when.
+  </Card>
+  <Card title="Data retention" icon="clock" href="/admin/data-retention">
+    What Collabase deletes on its own, and when.
+  </Card>
+</CardGroup>

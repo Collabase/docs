@@ -1,0 +1,83 @@
+---
+title: "Version history"
+description: "See every saved version of a Collabase Docs page, compare two versions line by line and restore an earlier state when a change went wrong."
+keywords: ["page history", "version history", "versions", "compare versions", "diff", "restore version", "undo changes", "revert page"]
+---
+
+Collabase keeps a version each time a page is saved, so nothing you write is lost when someone changes it later. Use the version history to see what changed, compare two states and go back to an earlier one.
+
+## When a version is created {#when}
+
+A version is saved with every save of the page content, including the automatic saves while you type. Each version records its number, its author and the time. Changing only the title, the icon or the status does not create a version.
+
+A version also stores the title, the icon and the status the page had at that moment. Restoring it brings those back together with the content.
+
+## Open the version history {#open}
+
+<Steps>
+  <Step title="Open the page info">
+    Open the page and click **Page info** (the **i** icon) at the top right.
+  </Step>
+  <Step title="Switch to Versions">
+    Click the **Versions** tab. The list shows the number of versions and every version from newest to oldest, with its number, author and time.
+  </Step>
+</Steps>
+
+## Look at an earlier version {#view}
+
+Click a version in the list, or its **View** icon. A preview of that version opens above the list. Close the preview to return to the list.
+
+## Compare two versions {#compare}
+
+<Steps>
+  <Step title="Select the first version">
+    Tick the check box of one version. The list shows **Select one more to compare**.
+  </Step>
+  <Step title="Select the second version">
+    Tick a second version. The button **Compare** appears.
+  </Step>
+  <Step title="Compare">
+    Click **Compare**. The older version is shown on the left and the newer one on the right, with the changed lines marked. The heading shows both numbers, for example `v12 → v15`.
+  </Step>
+</Steps>
+
+The comparison is based on the text of the page, converted to Markdown.
+
+## Restore a version {#restore}
+
+<Steps>
+  <Step title="Pick the version">
+    Click the **Restore** icon next to the version, or open its preview and click **Restore this version**.
+  </Step>
+  <Step title="Confirm">
+    The dialog **Restore this version?** warns that the current content will be replaced. Click **Restore**.
+  </Step>
+</Steps>
+
+The restored content replaces the page for everyone. The message **Version restored successfully** confirms it.
+
+<Warning>
+  The restore itself is not added to the list as a new version. The content you replaced is still in the list as long as it was saved, because every save creates a version. Before you restore, check that the newest version in the list matches what you see on the page.
+</Warning>
+
+## Troubleshooting {#troubleshooting}
+
+| Message | Cause | What to do |
+|---|---|---|
+| **No versions yet** | The page content has never been saved | Edit the page once. The first save creates version 1. |
+| **Failed to load markdown comparison** | The text of one of the two versions could not be prepared | Try another pair of versions. If it persists, ask your administrator to check the service logs. |
+| **Failed to restore version** | The restore did not reach the server | Reload the page and try again |
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Pages" icon="file-text" href="/docs/pages">
+    Edit and save pages.
+  </Card>
+  <Card title="Live collaboration" icon="users" href="/docs/collaboration">
+    Edit a page together in real time.
+  </Card>
+  <Card title="Organize pages" icon="folder-tree" href="/docs/organize-pages">
+    Archive and delete pages.
+  </Card>
+</CardGroup>

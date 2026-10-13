@@ -80,7 +80,7 @@ Collabase Docs ist die Wissensdatenbank in jedem Space. Jedes Dokument ist eine 
 
 ### Collabase Query Language (CQL)
 
-CQL ist die Filtersprache, die Collabase für die erweiterte Suche und für Queues verwendet, zum Beispiel `assignee = me` oder `dueDate < today and status != "Done"`. Du schreibst Ausdrücke direkt oder lässt sie vom Filter-Baukasten erzeugen. [Mehr zu CQL in Queues](/projects/queues).
+CQL ist die Abfragesprache des erweiterten Modus auf der Suchseite und der gespeicherten Filter, zum Beispiel `status = "In Progress" ORDER BY priority DESC`. Eine Abfrage lässt sich als Filter speichern und auf der Suchseite wieder öffnen. [Mehr zu CQL und Filtern](/concepts/filters).
 
 ### CollabaseAI
 
@@ -97,10 +97,6 @@ Eine Connection ist ein benannter, verschlüsselter Satz Zugangsdaten für einen
 ### Connector
 
 Ein Connector ist eine vorgefertigte Anbindung zwischen Automation und einem externen Dienst wie Slack, Microsoft Teams, GitHub oder bexio. Jeder Connector bringt eigene Trigger und Actions mit. [Mehr zu Connectors](/automation/connectors/overview).
-
-### Customer Portal (Kundenportal)
-
-Über das Customer Portal reichen externe Personen Tickets in ein Projekt ein und verfolgen deren Status, ohne ein Collabase-Konto zu haben. Sie sehen nur ihre eigenen Tickets und die Kommentare, die dein Team als External markiert. [Mehr zum Customer Portal](/projects/portal).
 
 ## D {#d}
 
@@ -226,10 +222,6 @@ Ein Project Template bündelt einen Workflow, Task Types, Field Collections und 
 
 ## Q {#q}
 
-### Queue (Warteschlange)
-
-Eine Queue ist eine benannte, gefilterte Ansicht innerhalb eines Projekts, etwa «Unassigned» oder «Critical open». Queues werden mit CQL-Filtern definiert, und ein Task kann in mehreren Queues gleichzeitig erscheinen. [Mehr zu Queues](/projects/queues).
-
 ### Quick links (Schnellzugriffe)
 
 Quick Links sind angeheftete Verknüpfungen auf der Intranet-Startseite. Organisationslinks setzen Admins, und alle sehen sie; persönliche Links sieht nur das Member, das sie angelegt hat. [Mehr zu Quick Links](/intranet/quick-links).
@@ -277,10 +269,6 @@ Security Policies legen fest, wie lange eine Anmeldung gültig bleibt, sperren K
 ### Semantic search (Semantische Suche)
 
 Mit der semantischen Suche stellst du eine Frage in normaler Sprache und erhältst eine Antwort aus deinen eigenen Seiten, Work Items und Kommentaren, mit Links auf die Quellen. Sie braucht ein Embedding-Modell, das eine Administratorin oder ein Administrator einrichtet. [Mehr zu KI in Collabase](/concepts/ai).
-
-### SLA policy (SLA-Richtlinie)
-
-Eine SLA Policy legt pro Priorität Ziele für die erste Reaktion und die Lösung der Tasks eines Projekts fest. Die Uhr pausiert in Wartestatus, und Tasks mit überschrittenem Ziel werden auf dem Board und in den Queues markiert. [Mehr zu SLA Policies](/projects/sla).
 
 ### Space
 

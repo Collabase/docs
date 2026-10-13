@@ -1,0 +1,172 @@
+---
+title: "Branding and login screen"
+sidebarTitle: "Branding"
+description: "Set the app name, upload light and dark logos, pick the accent color, and design the sign-in screen with an image and an announcement banner."
+keywords: ["look and feel", "customize layout and design", "site logo", "logo and favicon", "color scheme", "theme", "accent color", "login page", "sign-in page", "custom login", "announcement banner", "site title"]
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+Three screens decide how Collabase looks to everyone in your organization: **Brand Identity** sets the name and the logos, **Theme** sets the accent color, and **Login screen** sets what people see before they sign in. Each person still chooses light or dark mode for themselves.
+
+<WhoCanDoThis role="System administrator" edition="All editions" />
+
+All three screens sit in the first group of the administration sidebar. Open your profile menu at the top right, click **System Settings**, and the sidebar shows them at the top.
+
+| Screen | What it changes | Saved |
+|---|---|---|
+| **Brand Identity** | App name, wide logo and square logo, each for light and dark mode | When you click **Save** |
+| **Theme** | The accent color of primary buttons, active items and highlights | As soon as you click a color |
+| **Login screen** | Layout, image and announcement banner of the sign-in screen | Layout and image on click, the banner with **Save** |
+
+---
+
+## Name and logos {#name-and-logos}
+
+**Brand Identity** holds the app name and four logo slots. The page title reads **Brand & Identity Settings**.
+
+| Setting | Details |
+|---|---|
+| **App Name** | Appears in the browser tab and in the navigation. Leave it empty to keep the default. |
+| **Expanded Logo (Wide)**, **Light** | Shown when the sidebar is expanded and the person uses light mode. |
+| **Expanded Logo (Wide)**, **Dark** | The same place in dark mode. Without its own file, the light logo is used. |
+| **Collapsed Logo (Square/Icon)**, **Light** | Shown when the sidebar is collapsed and the person uses light mode. |
+| **Collapsed Logo (Square/Icon)**, **Dark** | The same place in dark mode. Without its own file, the light logo is used. |
+
+Each slot shows a preview on the matching background, so you can see whether a dark logo disappears on a dark sidebar before you save. A slot without an uploaded file shows the Collabase logo.
+
+<Steps>
+  <Step title="Open Brand Identity">
+    Go to **Administration → Brand Identity**.
+  </Step>
+  <Step title="Enter the app name">
+    Type the name your members know, for example the name of your intranet, into **App Name**.
+  </Step>
+  <Step title="Upload the logos">
+    Click **Replace Logo** under each slot and choose an image file. The message **Logo uploaded** confirms each upload. Click **Remove** to go back to the default for that slot.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The message **Settings saved** confirms it.
+  </Step>
+</Steps>
+
+<Check>
+  Collapse and expand the sidebar once in light mode and once in dark mode. Each of the four states shows the logo you uploaded for it, and the browser tab shows the new name.
+</Check>
+
+<Tip>
+  Upload a dark variant whenever your logo is dark text or a dark mark. A logo with a transparent background and dark lettering is unreadable on the dark sidebar.
+</Tip>
+
+---
+
+## Accent color {#accent-color}
+
+**Theme** sets one accent color for the whole installation. It colors primary buttons, active navigation items and highlights, for every person, in light and in dark mode. Open it under **Administration → Theme**, where the page title reads **System Theme**.
+
+The screen offers three ways to pick a color. Clicking a tile saves it at once, and the tile in use carries the label **Active**.
+
+| Section | Choices |
+|---|---|
+| **Collabase colors** | **Collabase Gold** (the default), **Lime**, **Mint**, **Green**, **Sage 1**, **Sage 2**, **Sage 3**, **Forest** |
+| **Global Color Accent** | **Zinc**, **Slate**, **Stone**, **Gray**, **Neutral**, **Red**, **Rose**, **Orange**, **Green**, **Blue**, **Yellow**, **Violet** |
+| **Custom** | Any color as a hex value, for example your corporate color. Enter it in **Custom color** or pick it with the color field, then click **Save**. Collabase derives the shades for light and dark mode from it. |
+
+The message **Theme updated** confirms the change. If it fails, **The theme could not be applied** appears and the previous color stays.
+
+<Note>
+  The accent color is the same for everybody. Light or dark mode is a personal choice: each person sets **Light**, **Dark** or **System** under **Preferences → Appearance** in their profile menu.
+</Note>
+
+---
+
+## Login screen {#login-screen}
+
+Open **Administration → Login screen**. It decides how the sign-in, password reset and password change screens look, for all users. It has three cards.
+
+### Design
+
+| Option | What people see |
+|---|---|
+| **Centered card** | An animated background with a single card in the middle |
+| **Split with image** | The form on the left, a full-height image on the right. This is the default for new installations. |
+
+Click a design to apply it. The design applies to every authentication screen.
+
+### Image
+
+The image appears next to the form in the **Split with image** design. Pick one of the photos that ship with Collabase, grouped by place (**Zurich**, **Matterhorn**, **Swiss Alps**, **Basel**, **Bern**), or upload your own under **Custom image**.
+
+One Matterhorn photo has a separate version for dark mode. Every other photo, and every uploaded image, is used in light and dark mode alike.
+
+| Rule for an uploaded image | Value |
+|---|---|
+| File types | PNG, JPEG, WebP, GIF |
+| Largest file | 8 MB |
+| Smallest size | 800 × 800 pixels |
+| Largest size | 10,000 pixels on a side |
+| Recommended | Portrait format, at least 1200 × 1600 pixels, ideally under 1 MB |
+
+Collabase accepts a file above 2 MB or wider than 4,000 pixels, but warns: **This image is large and will slow the login screen down.** Every visitor downloads the image before signing in, so a smaller file makes the sign-in screen appear faster.
+
+### Announcement banner {#announcement-banner}
+
+The announcement banner shows a notice above the sign-in form, for example planned maintenance. People see it before they sign in, so it reaches everybody, including people whose session has ended.
+
+| Setting | Details |
+|---|---|
+| **Show banner** | Shows or hides the banner. Switching it off keeps the wording, so you can show the same notice again later. |
+| **Title** | Optional heading, for example `Scheduled maintenance`. |
+| **Text** | Plain text only. Line breaks are kept, formatting and links are not. |
+| **Colour** | **Info** (the default), **Success**, **Warning**, **Critical** or **Brand**. Each color has a checked contrast in light and dark mode. |
+| **Allow closing** | Adds a close button. Closing hides the banner until the sign-in page is loaded again. Without it, the banner stays until you switch it off. On by default. |
+
+<Steps>
+  <Step title="Open the login screen settings">
+    Go to **Administration → Login screen** and scroll to **Announcement banner**.
+  </Step>
+  <Step title="Write the notice">
+    Fill in **Title**, **Text** or both. A banner with neither a title nor a text is not shown.
+  </Step>
+  <Step title="Choose a color and whether people may close it">
+    Pick a **Colour**. Use **Warning** or **Critical** for outages, so the banner stands out against the image.
+  </Step>
+  <Step title="Switch it on and save">
+    Turn on **Show banner** and click **Save**.
+  </Step>
+</Steps>
+
+<Check>
+  Open the sign-in page in a private browser window. The banner appears above the form in the color you chose.
+</Check>
+
+---
+
+## Troubleshooting
+
+| What you see | Cause | What to do |
+|---|---|---|
+| **Upload failed** with **The file is larger than 8 MB.** | The login image is too large. | Export the image again at a smaller size or a stronger compression. |
+| **Upload failed** with **Only PNG, JPEG, WebP and GIF images are accepted.** | The file is another format, such as SVG or HEIC. | Convert it to one of the four formats. |
+| **Upload failed** with **The image must be at least 800 × 800 pixels.** | The image is too small to fill the screen. | Use a larger image. |
+| **Upload failed** with **The image could not be read.** | The file is damaged or not really an image. | Open it in an image editor and save it again. |
+| **Only system administrators can change the login screen.** | Your account does not have the Admin instance role. | Ask an administrator. See [Instance roles](/admin/users-groups). |
+| The logo is invisible in dark mode | Only a light logo is uploaded and it has dark lettering. | Upload a file in the **Dark** slot. |
+| **Failed to save** | The settings could not be stored. | Try again. If it keeps failing, see [Troubleshooting](/admin/troubleshooting). |
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="System settings" icon="settings" href="/admin/system-settings">
+    Every screen of the administration area and where it is documented.
+  </Card>
+  <Card title="Outgoing mail and mail templates" icon="mail" href="/admin/email">
+    Set the sender of the mails Collabase sends, and switch mail events on or off.
+  </Card>
+  <Card title="Security policies" icon="shield-check" href="/admin/security-policies">
+    Password rules, session lifetime and lockout, which also shape the sign-in experience.
+  </Card>
+  <Card title="Your profile" icon="user" href="/concepts/profile">
+    Where each person chooses language and light or dark mode.
+  </Card>
+</CardGroup>

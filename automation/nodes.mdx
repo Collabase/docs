@@ -12,7 +12,7 @@ Nodes are organized into six categories:
 |---|---|
 | **Core** | Trigger, Action |
 | **Logic** | Filter, IfElse, Router, Split, ForEach, Set Variable, Transform, Code, Python Code |
-| **Flow Control** | Wait, Approval, Sub-flow, Merge, Error Handler |
+| **Flow Control** | Wait, Approval (not ready for use), Sub-flow, Merge, Error Handler |
 | **AI** | AI Prompt, AI Agent, MCP |
 | **Data** | Data Store |
 | **Utility** | Sticky Note |
@@ -237,27 +237,9 @@ The automation status shows as `PARTIAL` while waiting. No resources are consume
 
 ### Approval
 
-Pauses the automation until a designated person approves or rejects it. When the node runs, it sends a notification to the approver with an approve/reject link.
-
-| Config field | Description |
-|---|---|
-| **Approver** | The user to notify and request approval from |
-| **Message** | Optional instructions shown to the approver |
-| **Timeout** | How long to wait for a response (default: 72 hours) |
-| **On approve** | Nodes connected to the approved output |
-| **On reject** | Nodes connected to the rejected output |
-| **On timeout** | Nodes connected to the timeout output |
-
-**Approval states:**
-
-| State | Description |
-|---|---|
-| `PENDING` | Waiting for the approver to respond |
-| `APPROVED` | The approver clicked Approve — execution continues on the approved path |
-| `REJECTED` | The approver clicked Reject — execution continues on the rejected path |
-| `TIMED_OUT` | The timeout elapsed without a response — execution continues on the timeout path |
-
-The automation status shows as `PARTIAL` while approval is pending.
+<Warning>
+  The Approval node is not ready for production use yet. Do not use it in an automation: the approver is not notified, the timeout is not applied, any signed-in user can decide, and the automation does not continue after a decision.
+</Warning>
 
 ---
 

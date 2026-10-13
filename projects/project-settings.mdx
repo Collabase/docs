@@ -1,0 +1,130 @@
+---
+title: "Project settings"
+description: "Every section of a project's Settings tab: general details, features, members and private access, workflows, work item types, fields and planning."
+keywords: ["project configuration", "issue security scheme", "private project", "restrict access", "project roles", "enable features", "project navigation", "tabs"]
+---
+
+A project's settings decide which views its members see, who can open it, and which workflows, work item types and fields it uses. Open them with the **Settings** tab, the last tab of every project. Right after you create a project, Collabase opens this tab for you.
+
+**Who can do this:** members whose Space role may edit project settings (by default the Space Admin). Others do not see the tab. The project role **Manager** alone does not open it.
+
+## Sections {#sections}
+
+| Group | Section | What you set |
+|---|---|---|
+| **Project** | **General** | Name, icon, description, project profile, project status, template link, deletion |
+| | **Project features** | Which views and planning features the project shows |
+| | **Integrations** | Linked GitHub repositories |
+| **Team** | **Members** | Access mode, project members and their roles, guests |
+| **Workflow** | **Status** | Workflows and their mapping to work item types |
+| | **Work Item Types** | The types the project offers |
+| | **Fields** | Field collections for work items |
+| **Planning** | **Time** | Budget hours, and the portfolio and cost budget |
+| | **Cycles** | Defaults for cycles. Shown when **Cycles** is on. |
+| | **Estimation** | **Story Points**, **T-Shirt Sizes** or **Time (Hours)**. Shown when **Story Points** is on. |
+
+If the project is linked to a [project template](/projects/templates), **Project features**, **Status**, **Work Item Types** and **Fields** are read-only. **General** shows **Synced with template** and a **Detach** button.
+
+## General {#general}
+
+| Setting | Details |
+|---|---|
+| **Project Name** | With an icon picker on the left |
+| **Description** | Shown on the project home |
+| **Project profile** | **Start** and **End** of the project, plus the project fields the template asks for. **Still missing** lists required fields without a value. |
+| **Project status** | **Not started**, **Active**, **Suspended**, **Completed** or **Cancelled**. Phases and gates set it; **Suspend project**, **Cancel project**, **Resume project** and **Complete project** are decisions you make here. |
+| **Danger Zone** | **Delete Project**. Shown to members who may delete projects. |
+
+Click **Save Changes** after editing name and description, and the separate **Save Changes** under the project profile.
+
+<Danger>
+  **Delete Project** removes the project with its work items, cycles and project settings. Booked time entries are kept but lose their project link. Workflows, permission schemes and instance work item types are not affected. This cannot be undone.
+</Danger>
+
+## Project features {#features}
+
+Switch views and features on and off. Each switch saves at once for all members.
+
+| Group | Switch | Effect |
+|---|---|---|
+| **Views** | **Home**, **Board**, **Work Items**, **Timeline**, **Backlog**, **Time**, **Mindmap** | Shows or hides the tab in the project |
+| **Planning & tracking** | **Cycles** | Time-boxed cycles and the **Cycles** settings section |
+| | **Story Points** | Estimation and the **Estimation** settings section |
+| | **Time Tracking** | Time entries per work item |
+| | **Costs** | Budget, booked spend and forecast |
+| | **Phases and gates** | A **Phases** tab with phases and gate decisions, see [Phases and gate approvals](/projects/approvals) |
+| | **Risks** | A tab with the project's risks from the Space's risk register |
+| | **Attachments** | Files on work items. On by default. |
+
+The order of tabs is fixed. There is no setting to reorder or rename them.
+
+## Members and private projects {#private-projects}
+
+Under **Team → Members**, choose the **Access mode**:
+
+| Access mode | Who can open the project |
+|---|---|
+| **Inherited from Space** | Every member of the Space |
+| **Private** | Members you add to the project, plus the Space owner and system administrators |
+
+A private project is invisible to everyone else: it does not appear in lists or search, and its links lead to a "not found" page. A Space Admin who is not the Space owner needs to be added like any other member. What members may do inside the project still follows the Space's [Permission Scheme](/concepts/permissions).
+
+New projects always start as **Inherited from Space**. Make a project private before you add sensitive work items.
+
+<Steps>
+  <Step title="Make the project private">
+    Select **Private**. You see **Project set to private**.
+  </Step>
+  <Step title="Add members">
+    Click **Add Member**, search for a person and pick a role: **Manager**, **Member** or **Viewer**. Only members of the Space can be added.
+  </Step>
+</Steps>
+
+To remove a person, click **Remove** on their row. They lose access at once.
+
+### Guests {#guests}
+
+Under **Guests**, invite external people who see this project and nothing else. Details: [Guests](/projects/guests).
+
+## Status, work item types and fields {#workflow-group}
+
+| Section | Page with the details |
+|---|---|
+| **Status** | [Workflows in a project](/projects/workflows) |
+| **Work Item Types** | [Work item types](/admin/work-item-types#project-types) |
+| **Fields** | See below |
+
+### Fields {#fields}
+
+**Fields** lists every field collection of the instance. Tick the collections the project needs and click **Save Changes**. You see **Field collections saved.** The fields appear on work items as described in [How fields reach a work item](/admin/custom-fields#how-fields-apply).
+
+## Planning {#planning}
+
+| Section | Setting | Details |
+|---|---|---|
+| **Time** | **Budget hours** | Total hours planned. Leave empty for no cap. |
+| | **Portfolio**, **Budget**, **Currency** | Where the project is reported and what it may cost |
+| **Cycles** | **Default cycle duration** | Fills in the end date of a new cycle, in days |
+| | **Allowed work item types** | Only these types can be added to cycles and shown in the backlog. Leave all unchecked to allow every type. |
+| | **Carry parent work item**, **Carry child work items** | Move parents or sub-items along when a work item moves |
+| **Estimation** | **Estimation Method** | **Story Points**, **T-Shirt Sizes** or **Time (Hours)**, for all work items in this project |
+
+## Troubleshooting
+
+| What you see | Cause | What to do |
+|---|---|---|
+| The **Settings** tab is missing | Your Space role may not edit project settings | Ask a Space Admin |
+| A section says it is managed by the linked template | The project is linked to a project template | Change the template, or click **Detach** in **General** |
+| **Add Member** is disabled | **All space members already have access to this project** | Add the person to the Space first |
+| A colleague cannot find a private project | They are not a project member | Add them under **Members** |
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Configuration model" icon="layers" href="/concepts/configuration-model">
+    What is set for the instance, the Space and the project.
+  </Card>
+  <Card title="Project templates" icon="layout-template" href="/projects/templates">
+    Start projects with a ready configuration.
+  </Card>
+</CardGroup>

@@ -4,52 +4,54 @@ sidebarTitle: "Pages in Collabase Docs"
 description: "How to create a page in Collabase Docs, use the editor and slash commands, start from a template, and restore an earlier version of a page."
 ---
 
-Collabase Docs is the knowledge base of each Space. Every document is a page, and pages sit in a tree that you can nest as deep as you need.
+Collabase Docs is the knowledge base of each Space. Every document is a page, and pages, whiteboards and folders sit in one page tree per Space.
 
 ## Create a page
 
 <Steps>
   <Step title="Open the Space">
-    Select the Space in the left sidebar.
+    Pick the Space in the space switcher at the top of the screen.
   </Step>
-  <Step title="Click + New Page">
-    To place the page under another page, click the **+** next to that page in the tree. For a top-level page, click **+ New Page** at the bottom of the tree.
+  <Step title="Click Create, then Page">
+    The page is created at the top level of the Space and opens in edit mode. You can also click **Docs** in the left rail and then **Create Page** at the top of the page tree.
   </Step>
-  <Step title="Enter a title">
-    Type the title, then press **Enter** or click into the editor.
+  <Step title="Give it a title">
+    Click the title in the bar at the top of the page and type. A page without a title shows as **Untitled** in the tree.
   </Step>
   <Step title="Write">
-    Collabase saves your content when you move focus away. There is no save button.
+    Collabase saves your changes on its own about 1.5 seconds after you stop typing. The save button next to **Edit** shows a check mark when everything is saved.
   </Step>
 </Steps>
 
-To start from a template, click **+ New Page** and choose **From template**.
+To place the page under another page, drag it in the tree, see [Organize pages](/docs/organize-pages#reorder-and-nest). To start from a template instead of a blank page, see [Templates](/docs/templates).
 
 ## Use the editor
 
-Type `/` anywhere on the page to open the command menu and insert a block: headings, lists, task lists, tables, code blocks, callouts, images, embeds and more. Type `@` to mention a colleague.
+Type `/` anywhere on the page to insert a block: headings, lists, to-do lists, tables, code blocks, callouts, images, embeds, diagrams and macros. Type `@` to mention a person. See [Editor elements](/docs/editor-elements) for the full list.
 
 ## Restore an earlier version
 
-Collabase keeps a version each time you leave the editor.
+Collabase saves a version with every save of the page content.
 
 <Steps>
-  <Step title="Open Version History">
-    Click the `...` menu at the top right of the page and select **Version History**.
+  <Step title="Open the versions">
+    Click **Page info** (the **i** icon) at the top right of the page, then the **Versions** tab.
   </Step>
   <Step title="Pick a version">
-    Click a version to preview it. Author and time are shown next to each entry.
+    Click a version to preview it. Number, author and time are shown next to each entry.
   </Step>
-  <Step title="Click Restore this version">
-    Collabase first saves the current content as a new version, then restores the one you picked.
+  <Step title="Restore it">
+    Click **Restore this version** in the preview, then **Restore** in the dialog **Restore this version?**. The message **Version restored successfully** confirms it.
   </Step>
 </Steps>
+
+The restore replaces the current content for everyone. Details are on [Version history](/docs/version-history#restore).
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Pages reference" icon="file-text" href="/docs/pages">
-    Permissions, comments, labels, attachments and PDF export.
+  <Card title="Pages" icon="file-text" href="/docs/pages">
+    Page types, saving, status, page info and favorites.
   </Card>
   <Card title="Templates" icon="layout-template" href="/docs/templates">
     Reusable page structures.

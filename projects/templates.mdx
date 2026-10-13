@@ -1,124 +1,116 @@
 ---
-title: "Project Templates"
+title: "Project templates"
 sidebarTitle: "Project Templates"
-description: "Create and manage reusable project configurations that bundle a workflow, task types, and field collections."
+description: "Bundle workflows, work item types, field collections, views, project fields and phases into templates, and keep linked projects in step."
+keywords: ["project template", "company-managed", "team-managed", "shared configuration", "linked projects", "detach", "HERMES"]
 ---
 
-A project template is a saved configuration that bundles a workflow, task types, field collections, and the set of views (board, backlog, sprints, etc.) enabled for a project. When a team creates a new project and selects a template, the full configuration is applied automatically — no manual setup needed.
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
 
-Templates are managed by administrators under **Admin → Project Templates**.
+A project template is the starting configuration for new projects. It bundles workflows, work item types, field collections, the views a project shows, the fields a project must fill in and an optional phase model. Projects created from it stay linked, so a change to the template reaches them.
 
-## Template components
+<WhoCanDoThis role="System administrator with a second factor set up" edition="Every installation" />
 
-| Component | What it controls |
+## System templates and your templates {#kinds}
+
+**System Settings → Content & Organization → Project Templates** has two lists:
+
+| List | Content |
 |---|---|
-| **Workflow** | The statuses tasks move through and transition rules (see [Workflows](/projects/workflows)). |
-| **Task types** | The kinds of work tracked in the project (Bug, Feature, etc.) and their per-field rules. |
-| **Field collections** | Groups of custom fields attached to the project. |
-| **Views** | Which project views are enabled: Board, List, Backlog, Sprints, Timeline, Calendar, Queues, Portal, SLA, Time, Docs, Files, Reports. |
+| **System templates** | Shipped with Collabase and kept up to date, such as **HERMES klassisch** and **HERMES agil**. They cannot be edited. Switch off **Offer when creating a project** for the ones your organisation does not use. |
+| **Your templates** | Templates your organisation defines and maintains. Each card shows **Offered** or **Hidden**. |
 
-## Template scope
+Templates are available in every Space.
 
-| Scope | Description |
-|---|---|
-| **Global** | Available in every Space across the instance. Managed in **Admin → Project Templates**. |
-| **Space** | Available only within one Space. Created by Space administrators. |
+## Create a template {#create}
 
----
-
-## Creating a template
+Create the parts first: [workflows](/admin/workflows), [work item types](/admin/work-item-types) and [field collections](/admin/custom-fields). Then:
 
 <Steps>
-  <Step title="Open Project Templates">
-    Go to **Admin → Project Templates** and click **+ New Template**.
+  <Step title="Start a template">
+    Click **New Template**.
   </Step>
-  <Step title="Set the name, icon, and description">
-    Give the template a clear name that describes the use case (e.g. "IT Service Desk", "Software Sprint", "Customer Onboarding"). Add an optional description so project creators know what the template is for.
-  </Step>
-  <Step title="Assign a workflow">
-    Select one or more workflows from the list of global workflows. Mark one as the **default** — this is the workflow applied when a project is created from the template.
-
-    <Note>
-      Only workflows created under **Admin → Workflows** appear here. Create your workflow there first if it does not appear in the list.
-    </Note>
-  </Step>
-  <Step title="Assign task types">
-    Select the task types to include. Mark one as the default type — new tasks will use this type unless the user changes it. Task types must exist at the global level (**Admin → Task Types**) before they can be added to a template.
-  </Step>
-  <Step title="Assign field collections">
-    Select one or more field collections to attach. All custom fields in those collections will be available on tasks in projects created from this template.
-  </Step>
-  <Step title="Choose enabled views">
-    Toggle which project views are enabled. Disabling a view removes it from the navigation for all projects created from this template.
-
-    | View | What it provides |
+  <Step title="Fill in the editor">
+    | Setting | Details |
     |---|---|
-    | **Board** | Kanban columns by status |
-    | **Work Items** | Dense, paged table of all work items |
-    | **Backlog** | Unplanned tasks outside sprints |
-    | **Sprints** | Sprint planning and burndown |
-    | **Timeline** | Gantt-style roadmap |
-    | **Calendar** | Task dates in a calendar layout |
-    | **Queues** | Named filtered triage views |
-    | **Portal** | External customer submission form |
-    | **SLA** | Response and resolution time tracking |
-    | **Time** | Time entry and logging |
-    | **Docs** | Project-scoped documentation |
-    | **Files** | File attachments |
-    | **Reports** | Project-level reports |
-  </Step>
-  <Step title="Publish the template">
-    Enable the **Published** toggle to make the template available in the project creation gallery. Unpublished templates are only visible to administrators.
+    | **Template Name** | With an icon picker. Up to 100 characters. |
+    | **Description** | When to use the template. Up to 500 characters. |
+    | **Published** | Published templates are visible in the project creation dialog. |
+    | **Views & Apps** | The tabs a new project shows: **Home**, **List**, **Board**, **Backlog**, **Timeline**, **Time**, **Mindmap**, **Settings** |
+    | **Features** | **Sprints**, **Story Points**, **Time Tracking** |
+    | **Workflows** | Pick workflows with **Add Workflow**. The first one is the **Default**; change it with **Set as default**. |
+    | **Workflow → Work Item Type Mapping** | Shown with two or more workflows. Assign types to a workflow; unmapped types use **Project default**. |
+    | **Work Item Types** | The types the project offers |
+    | **Field Collections** | The collections for work items |
   </Step>
   <Step title="Save">
-    Click **Save**. The template is now available when creating a project.
+    Click **Create Template**.
+  </Step>
+  <Step title="Add project fields and phases (optional)">
+    Open the template again with **Edit Template**. Two more sections appear, each with its own save button:
+
+    | Section | Details |
+    |---|---|
+    | **Project fields** | Fields a project fills in when it is created, shown in its settings and on its home tab. Add with **Add existing field** or **Create field**, mark them **Required**, then click **Save project fields**. Up to 30. |
+    | **Phase model** | Phases with an optional **Gate**, **Gate criteria, one per line**, and **Milestones** as "name; days after project start". Click **Save phases**. Projects created later get these phases; existing projects keep their own copy. |
   </Step>
 </Steps>
 
----
+Members choose the template in the first step of **New Project**, under **System Templates** or **Custom Templates**, then enter **Project Name** and **Project key** in **Project Details**.
 
-## Editing a template
+## Linked projects and propagation {#propagation}
 
-Open a template from the gallery and click **Edit**. You can change the name, description, workflow, task types, field collections, or enabled views at any time.
+A project created from a template is linked to it. Its **Settings → General** shows **Synced with template**, and the sections **Project features**, **Status**, **Work Item Types** and **Fields** are read-only.
 
-### Propagating changes to linked projects
+Every time you save a template, Collabase updates the linked projects in the background:
 
-Every time you save structural changes to a template (adding/removing a workflow, task type, or field collection), the template's version number increments. Collabase detects which linked projects are behind the current version.
+| Part of the template | What linked projects get |
+|---|---|
+| **Views & Apps** | Replaced by the template's list |
+| **Default workflow** | Replaced by the template's default |
+| **Features** | Added where the project has no own value. A project's own setting wins. |
+| **Field Collections** | Added when missing. Collections are never removed. |
+| **Work Item Types** | Read from the template |
+| **Project fields** and **Phase model** | Not propagated |
 
-To push the updated configuration to all linked projects, click **Propagate to linked projects** on the template detail page. This applies the changes to every project that is still linked to this template and has not been detached.
+Propagation never removes anything from a project. To take a collection away from linked projects, remove it in each project after detaching it, or create a new template.
+
+## Detach a project {#detach}
+
+Detach a project when its team needs its own configuration.
+
+<Steps>
+  <Step title="Open General">
+    In the project, open **Settings → General**.
+  </Step>
+  <Step title="Detach">
+    Click **Detach** and confirm with **Detach Project**. You see **Project successfully detached from template.**
+  </Step>
+</Steps>
 
 <Warning>
-  Propagation overwrites the workflow, task type, and field collection assignments on all linked projects with the current template configuration. Any manual overrides made directly on those projects will be replaced.
+  Detaching cannot be undone. The project keeps its current configuration, gets its own copies of the template's work item types, and no longer receives template changes.
 </Warning>
 
----
+## Delete a template {#delete}
 
-## Deleting a template
+Click **Delete Template** on a card and confirm. Projects linked to the template are not affected, but no new project can use it. This cannot be undone.
 
-Click **Delete** on a template to remove it. Deleting a template does not delete the projects that were created from it — it only breaks the template link. Affected projects are automatically detached and keep their current configuration.
+## Troubleshooting
 
----
+| What you see | Cause | What to do |
+|---|---|---|
+| A template is missing in **New Project** | It is not **Published**, or a system template is switched off | Switch on **Published** or **Offer when creating a project** |
+| A workflow is missing in **Add Workflow** | It does not exist yet | Create it in **Workflows** first |
+| A linked project still has a removed collection | Propagation only adds | Detach the project and untick the collection under **Fields** |
 
-## Linked vs. detached projects
+## Related pages
 
-A project created from a template stays **linked** to it by default. Linked projects can receive propagated updates from the template.
-
-A project can be **detached** from its template at any time from **Project → Settings → General → Detach from template**. After detaching:
-
-- The project keeps its current workflow, task types, and field collections.
-- It no longer appears in the list of linked projects for the template.
-- Future template changes do not affect it.
-
-Detaching is permanent and cannot be undone.
-
----
-
-## Setup checklist
-
-Before creating a template, make sure these exist at the global level:
-
-- [ ] At least one workflow configured in **Admin → Workflows**
-- [ ] Task types configured in **Admin → Task Types** (if you want per-type field rules)
-- [ ] Field collections configured in **Admin → Custom Fields → Collections** (if you need custom fields)
-
-Once those are in place, creating the template itself takes under five minutes.
+<CardGroup cols={2}>
+  <Card title="Set up projects for a team" icon="list-checks" href="/projects/project-setup">
+    The order in which to build fields, types, workflows and templates.
+  </Card>
+  <Card title="Configuration model" icon="layers" href="/concepts/configuration-model#linked-and-detached">
+    Linked and detached projects compared.
+  </Card>
+</CardGroup>

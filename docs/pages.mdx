@@ -1,206 +1,133 @@
 ---
 title: "Pages"
 sidebarTitle: "Pages"
-description: "Pages are the core unit of Collabase Docs — rich-text documents with version history, per-page permissions, comments, labels, and attachments."
+description: "Create pages, whiteboards and folders in Collabase Docs, edit and save them, set a status, add labels and keep your favorite pages one click away."
+keywords: ["create page", "edit page", "page status", "draft", "whiteboard", "folder", "labels", "favorites", "star", "duplicate page", "copy page", "page icon", "emoji"]
 ---
 
-A page is the core unit of Collabase Docs. It can hold any kind of documentation — a technical specification, a runbook, a meeting record, an onboarding guide. Pages are organized in a hierarchical tree inside their Space and can be nested to any depth.
+A page is the unit of Collabase Docs: a document in a <Tooltip tip="The top-level container in Collabase, with its own members, apps and content." cta="Glossary" href="/glossary#space">Space</Tooltip> that you write in a rich-text editor, share with the members of that Space and find again later. This page covers what you can create, how editing and saving work, and the information every page carries.
 
-## Page types
+## What you can create {#page-types}
 
-| Type | Description |
-|---|---|
-| **Standard** | General-purpose rich-text document. The default type for most documentation. |
-| **Blog** | A post with a publish date, displayed in reverse chronological order. Suitable for announcements and updates. |
-| **Canvas** | An infinite freeform drawing surface. Suitable for diagrams, wireframes, and visual planning. |
+The **Create** button at the top of the screen offers three kinds of content for Collabase Docs. All three sit in the same page tree.
 
-## Page width modes
+| Item | What it is | Opens after creation |
+|---|---|---|
+| **Page** | A rich-text document with headings, lists, tables, macros and comments | In edit mode |
+| **Whiteboard** | A drawing board for sketches, diagrams and wireframes | In edit mode |
+| **Folder** | A container that groups pages. A folder can carry its own access list, see [Restrict access to pages](/docs/page-restrictions) | Stays in the tree |
 
-| Mode | Effect |
-|---|---|
-| **Narrow** | Constrained reading width. Best for long prose documents. |
-| **Wide** | Default width. Balanced for mixed content. |
-| **Full** | Full browser width. Best for pages with wide tables or embeds. |
+The same menu also offers **Create Work Item** when the Space has Projects switched on. The Docs entries appear only when **Documents** is switched on for the Space, see [Spaces](/concepts/spaces#turn-modules-on-or-off).
 
-Change the width mode from the page options menu (the `...` icon at the top right of the page).
-
-## Creating a page
+## Create a page {#create-a-page}
 
 <Steps>
-  <Step title="Open the target Space">
-    Navigate to the Space where you want to create the page using the left sidebar.
+  <Step title="Open the Space">
+    Pick the Space in the space switcher at the top of the screen.
   </Step>
-  <Step title="Click + New Page">
-    Click the **+** icon next to the parent page in the tree where you want the new page to appear. To create a top-level page, click **+ New Page** at the bottom of the page tree.
+  <Step title="Create the page">
+    Click **Create**, then **Page**. The page is created at the top level of the Space and opens in edit mode.
+
+    You can also click **Docs** in the left rail and then the **Create Page** button at the top of the page tree. To create a page inside a folder, open the folder and click **Create Page** there.
   </Step>
-  <Step title="Enter a title">
-    Type the page title. Press Enter or click the editor body to begin writing.
+  <Step title="Give it a title">
+    Click the title in the bar at the top of the page and type. A page without a title shows as **Untitled** in the tree.
   </Step>
-  <Step title="Start editing">
-    The editor opens immediately. Content is auto-saved when you move focus away. You do not need to save manually.
+  <Step title="Write">
+    Type `/` to insert a block or macro. See [Editor elements](/docs/editor-elements) for everything you can insert.
   </Step>
 </Steps>
+
+New pages land at the top level. To place a page under another page, drag it in the tree, see [Organize pages](/docs/organize-pages#reorder-and-nest).
+
+To start from a template instead of a blank page, see [Templates](/docs/templates).
+
+## Edit and save {#edit-and-save}
+
+A page opens for reading. Click **Edit** at the top right to change it. The button appears only when you are allowed to edit the page.
+
+Collabase saves your changes on its own about 1.5 seconds after you stop typing. Whiteboards save about 5 seconds after you stop drawing. The save button next to **Edit** shows the state:
+
+| Save button | Meaning |
+|---|---|
+| Check mark | Everything is saved |
+| **Unsaved** | A change is waiting to be saved. Click the button to save at once. |
+| Spinner | The change is being saved |
+| Warning icon, tooltip **Saving failed, try again** | The last save did not reach the server. Click the button to try again. |
+
+If you leave the page while a change is still unsaved, the dialog **You have unsaved changes** opens. Click **Save & Continue** to keep your work, or **Discard Changes** to drop it.
 
 <Note>
-  To create a page from a template instead of starting blank, click **+ New Page** and then select **From template** in the dialog that appears. See [Templates](/docs/templates) for details.
+  With [live collaboration](/docs/collaboration) on, several people edit the same page at once and see each other's changes as they type. Without it, Collabase protects you from overwriting someone else: if another person saved the page while you were editing, the **Save conflict** dialog appears. **Overwrite anyway** replaces their changes. Their state stays available in the [version history](/docs/version-history).
 </Note>
 
-## Editor features
+The toolbar of the editor has a mode switch with three positions: **Editing**, **Suggestion** and **Viewing**. **Suggestion** records your changes as proposals that the author accepts or rejects, see [Suggestions](/docs/suggestions).
 
-The Docs editor supports the following content blocks:
+## Rename a page and set its icon {#title-and-icon}
 
-| Block type | How to insert |
+- **Title:** double-click the title in the bar at the top of the page, type the new title and press **Enter** or click elsewhere.
+- **Icon:** click the icon in front of the title and pick an emoji. The icon also shows in the page tree.
+
+You can also rename a page from the page tree, see [Organize pages](/docs/organize-pages#rename).
+
+## Set the page status {#page-status}
+
+Every page and whiteboard has a status that tells readers how far the content is. The status badge sits at the top right of the page. In edit mode, click it to choose another status.
+
+| Status | Use it for |
 |---|---|
-| Heading (H1–H3) | `/heading1`, `/heading2`, `/heading3` or `#`, `##`, `###` |
-| Bulleted list | `/bulletedlist` or `-` followed by a space |
-| Numbered list | `/numberedlist` or `1.` followed by a space |
-| Task list | `/tasklist` |
-| Table | `/table` |
-| Code block | `/codeblock` or ` ``` ` |
-| Callout | `/callout` |
-| Image | `/image` or paste/drag a file |
-| Embed | `/embed` then paste a URL |
-| Divider | `/divider` or `---` |
-| Quote | `/blockquote` or `>` |
+| **Draft** | Work that is not ready. New pages and copies start here. |
+| **In Progress** | Content that is being written |
+| **In Review** | Content that waits for a review |
+| **Published** | Content that is ready to be read |
+| **Verified** | Content that someone checked and confirmed, marked with a shield |
 
-Type `/` anywhere in the editor to open the full slash command menu and search for any block.
+An archived page shows the badge **Archived**. You archive a page with the **Archive** action, not with the status, see [Organize pages](/docs/organize-pages#archive).
 
 <Note>
-  Images and files you add to a page can only be opened by signed-in members. If you copy an image's address and use it outside Collabase, for example in an email or on another website, anyone who is not signed in sees nothing. Your logos and the sign-in background are the exception: they show on the sign-in page and are open to everyone.
+  Project guests never see pages in **Draft**. Members of the Space see a page in any status.
 </Note>
 
-## Version history {#version-history}
+## Page info {#page-info}
 
-Every time you leave the editor (on blur), a version snapshot is saved automatically. You can view and restore any previous version at any time.
+Click **Page info** (the **i** icon) at the top right of a page. The panel has four tabs:
 
-<Steps>
-  <Step title="Open page history">
-    Click the `...` options menu at the top right of the page, then select **Version History**. A panel opens on the right showing all saved versions, ordered from newest to oldest.
-  </Step>
-  <Step title="Select a version">
-    Click any version entry to preview its full content in the main editor area. The version's author and timestamp are shown next to each entry.
-  </Step>
-  <Step title="Restore the version">
-    Click **Restore this version** at the top of the preview. The current page content is saved as a new version first, then the selected version becomes the active content. No content is ever permanently overwritten.
-  </Step>
-</Steps>
-
-<Note>
-  Restoring a version does not delete the current version — it saves it as a snapshot first. You can always return to it later.
-</Note>
-
-## Permissions {#permissions}
-
-Page permissions are set individually on each page. They are **not inherited** from the parent page or from the Space. If you restrict a parent page, child pages remain accessible to anyone who had access before unless you restrict them separately.
-
-<Steps>
-  <Step title="Open page permissions">
-    Click the `...` options menu at the top right of the page, then select **Permissions**.
-  </Step>
-  <Step title="Switch to restricted access">
-    By default, the page uses the Space's access settings. Toggle to **Restricted** to define a custom access list.
-  </Step>
-  <Step title="Add users or groups">
-    Search for a user by name or select a group. Set their permission level to **View** or **Edit**.
-  </Step>
-  <Step title="Save">
-    Click **Save permissions**. The change takes effect immediately.
-  </Step>
-</Steps>
-
-<Warning>
-  Restricting a page does not automatically restrict its child pages. Each subpage must be configured separately if you want to limit access to the whole subtree.
-</Warning>
-
-## Comments
-
-Pages support two types of comments.
-
-| Type | Description |
+| Tab | What it shows |
 |---|---|
-| **Inline thread** | Anchored to a specific selection of text in the page body. Select text, then click the comment icon that appears. |
-| **Footer comment** | Appears at the bottom of the page, below the content. Not anchored to specific text. |
+| **Details** | The author, **Created** and **Last changed**, and the custom fields of the page |
+| **Labels** | The labels of the page. Type in **Search or create labels…** to add an existing label or create a new one. |
+| **Tasks** | Work items linked to this page |
+| **Versions** | Every saved version of the page, see [Version history](/docs/version-history) |
 
-Both types support threaded replies. Comments also have a **visibility** setting:
+## Mark a page as favorite {#favorites}
 
-| Visibility | Who can see it |
-|---|---|
-| **Internal** | Team members only (Space members with at least View access) |
-| **External** | Shareable with external parties (visible when the page is shared publicly) |
+Click the star at the top right of a page (**Add to favorites**). Your favorite pages appear under **Your Favorites** on your home page. Click the star again (**Remove from favorites**) to remove it.
 
-## Labels
+## Duplicate a page {#duplicate}
 
-Labels are tags you can add to any page for organization and filtering.
+Open the **...** menu at the top right of the page and click **Clone Page**, or right-click the page in the tree and click **Duplicate**. The copy appears next to the original with **(Copy)** after its title and the status **Draft**. Subpages are not copied.
 
-- Click the **Labels** field in the page's information panel to add or remove labels.
-- Labels are free text — type a new label name to create it, or select an existing one.
-- Multiple labels per page are supported.
-- Use labels to filter pages in the Space sidebar or in search.
+## Whiteboards {#whiteboards}
 
-## Attachments
+A whiteboard is a drawing board for diagrams, wireframes and sketches. It comes with shape libraries for wireframes, forms, icons, data visualization, decision flows and DevOps diagrams.
 
-You can attach files to any page without embedding them in the content.
+- Click **Open in full screen** at the top right to draw in a separate browser tab.
+- Several people can draw on the same whiteboard at once when [live collaboration](/docs/collaboration) is on.
+- Whiteboards cannot be exported or translated. The **Export** entry is not shown in their **...** menu.
 
-- Click `...` → **Attachments** to open the attachments panel.
-- Drag files into the panel or click **Upload** to add files.
-- Attached files are listed at the bottom of the page and downloadable by anyone with view access.
+## Next steps
 
-To show the files inside the page content, insert the **Attachments** macro. To find and organize the
-attachments of all your pages and work items, use the Documents app. See
-[Documents and attachments](/concepts/documents).
-
-## Exporting to PDF
-
-<Steps>
-  <Step title="Open the export option">
-    Click `...` → **Export as PDF**.
-  </Step>
-  <Step title="Confirm the export">
-    A PDF is generated from the current page content and downloads to your browser automatically.
-  </Step>
-</Steps>
-
-The PDF export includes the page title, body content, and tables. Embeds and interactive blocks are rendered as static images where possible.
-
-## Moving a page
-
-<Steps>
-  <Step title="Open the move option">
-    Click `...` → **Move page**.
-  </Step>
-  <Step title="Select the new parent">
-    Choose a new parent page in the current Space, or select a different Space entirely. The page tree picker shows all Spaces and pages you have edit access to.
-  </Step>
-  <Step title="Confirm">
-    Click **Move**. The page and all its children are moved to the new location. Existing links to the page continue to work.
-  </Step>
-</Steps>
-
-## Archiving and deleting a page
-
-<Steps>
-  <Step title="Archive the page">
-    Click `...` → **Archive page**. The page is removed from the sidebar tree but is not permanently deleted. Archived pages can be found via **Space Settings → Archived Pages** and can be restored at any time.
-  </Step>
-  <Step title="Permanently delete">
-    From the archived pages list, select the page and click **Delete permanently**. This cannot be undone.
-  </Step>
-</Steps>
-
-<Warning>
-  Permanent deletion removes the page, all its versions, all its comments, and all its attachments. This action cannot be reversed. Archive the page first if you are not certain.
-</Warning>
-
-## Keyboard shortcuts
-
-| Shortcut | Action |
-|---|---|
-| `/` | Open the slash command menu |
-| `@` | Mention a team member |
-| `Cmd/Ctrl + B` | Bold |
-| `Cmd/Ctrl + I` | Italic |
-| `Cmd/Ctrl + U` | Underline |
-| `Cmd/Ctrl + K` | Insert or edit a link |
-| `Cmd/Ctrl + Z` | Undo |
-| `Cmd/Ctrl + Shift + Z` | Redo |
-| `Cmd/Ctrl + Enter` | Toggle task list item done/undone |
+<CardGroup cols={2}>
+  <Card title="Editor elements" icon="square-slash" href="/docs/editor-elements">
+    Every block and macro you can insert with `/`.
+  </Card>
+  <Card title="Organize pages" icon="folder-tree" href="/docs/organize-pages">
+    Move, nest, archive and delete pages.
+  </Card>
+  <Card title="Version history" icon="history" href="/docs/version-history">
+    Compare and restore earlier versions.
+  </Card>
+  <Card title="Comments and mentions" icon="message-square" href="/docs/comments">
+    Discuss a page with your team.
+  </Card>
+</CardGroup>

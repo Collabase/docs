@@ -1,0 +1,71 @@
+---
+title: "Export a page"
+description: "Save a Collabase Docs page as a PDF with your company's PDF template, or as a Markdown file for use in another tool."
+keywords: ["export to PDF", "PDF export", "Markdown export", "download page", "Word export", "print page", "PDF template"]
+---
+
+Export a page when its content has to leave Collabase: a PDF for a customer or an audit file, or a Markdown file for a code repository. The export always contains the content as you see it in the editor.
+
+## Export formats {#formats}
+
+| Format | Where | Who can use it |
+|---|---|---|
+| **PDF** | The **...** menu of the page, or **Export** in the editor toolbar | Administrators, see the note below |
+| **Markdown** | **Export** in the editor toolbar, while you edit the page | Every member who can open the page |
+
+Whiteboards cannot be exported. Collabase has no export to Word. To bring a Word document into a page, see [Import a Word document](/docs/editor-elements#import-word).
+
+<Info>
+  In this version, generating a PDF requires the administrator role. Members without it can open the **PDF Export** dialog, but no file is downloaded. Use the Markdown export, or ask an administrator to create the PDF.
+</Info>
+
+## Export a page as PDF {#pdf}
+
+<Steps>
+  <Step title="Open the export dialog">
+    Open the page, click the **...** menu at the top right and click **Export**. The dialog **PDF Export** opens.
+  </Step>
+  <Step title="Pick a template">
+    Under **Select pdf template**, click **Default Template** or one of the PDF templates your administrator has set up. A template decides the layout and the color scheme of the PDF.
+  </Step>
+  <Step title="Generate the PDF">
+    Click **Generate PDF**. The button shows **Processing Engine...** while the file is built, then the PDF downloads, named after the page title.
+  </Step>
+</Steps>
+
+The PDF carries the name, the logo and the brand color of your Collabase instance. Your administrator manages PDF templates and these branding settings in the administration area.
+
+## Export a page as Markdown {#markdown}
+
+<Steps>
+  <Step title="Open the page in edit mode">
+    Open the page and click **Edit**.
+  </Step>
+  <Step title="Export">
+    In the editor toolbar, click **Export**, then **Export as Markdown**. The `.md` file downloads and the message **Markdown exported successfully** appears.
+  </Step>
+</Steps>
+
+The same menu has **Export as PDF**, which opens the **PDF Export** dialog described above.
+
+## Troubleshooting {#troubleshooting}
+
+| What you see | Cause | What to do |
+|---|---|---|
+| **Markdown export failed. Is the document processor running?** | The service that converts pages is not reachable | Ask your administrator to check the document processor |
+| The **PDF Export** dialog stays open and no file downloads | You do not have the administrator role, the page has no content yet, or the document processor is not reachable | Check that the page has content. Then ask an administrator to export it. |
+| **PDF export requires a saved page.** or **Markdown export requires a saved page.** | The editor is not attached to a saved page | Save the page first, then export again |
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Pages" icon="file-text" href="/docs/pages">
+    Create and edit pages.
+  </Card>
+  <Card title="Editor elements" icon="square-slash" href="/docs/editor-elements">
+    Import a Word document into a page.
+  </Card>
+  <Card title="Documents and attachments" icon="paperclip" href="/concepts/documents">
+    Download the files attached to pages.
+  </Card>
+</CardGroup>

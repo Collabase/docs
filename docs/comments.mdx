@@ -1,0 +1,75 @@
+---
+title: "Comments and mentions"
+description: "Comment on a passage of a Collabase Docs page, mention colleagues so they are notified, and assign a to-do to a person right in the page."
+keywords: ["inline comments", "comment on page", "discussion", "mention", "@mention", "notify colleague", "assign task in page", "to-do", "action item", "page comments", "footer comments"]
+---
+
+Comments keep the discussion about a page next to the text it is about. Mentions bring the right person into it. This page shows how to comment on a passage, how mentions notify people, and how a to-do in a page becomes a task for someone.
+
+## Comment on a passage {#inline-comments}
+
+An inline comment is attached to the text you select. The text is highlighted, and the comment appears next to its block.
+
+<Steps>
+  <Step title="Open the page in edit mode">
+    Open the page and click **Edit**.
+  </Step>
+  <Step title="Select the text">
+    Select the words the comment is about. A floating toolbar appears above the selection.
+  </Step>
+  <Step title="Write the comment">
+    Click **Comment** in the floating toolbar, type your comment and send it. Type `@` to mention someone.
+  </Step>
+</Steps>
+
+The highlight is part of the page content, so it is kept with the next save of the page. Adding a comment needs the right to edit pages in the Space, see [Permissions](/concepts/permissions).
+
+<Warning>
+  In this version only the first comment of a thread is stored. Replies, edits, resolving a thread and deleting a comment show on your screen but are gone after the page is reloaded. Start a new comment for a new point instead of replying.
+</Warning>
+
+Collabase Docs pages have no comment section at the end of the page. To propose a change to the text instead of commenting on it, use [Suggestions](/docs/suggestions).
+
+## Mention a colleague {#mentions}
+
+Type `@` followed by a name, in the page text or in a comment, and pick the person from the list. The mention shows as a name chip.
+
+| Where you mention | What the person gets |
+|---|---|
+| **In a comment** | A notification "mentioned you in a discussion" in the notification center, and an email in their own language |
+| **In a to-do item** | A notification **Task Assigned**, see [Assign a to-do](#to-dos) |
+| **In the page text** | No notification. The mention is a link to the person only. |
+
+A project guest who cannot read the page is not notified, even when mentioned.
+
+## Assign a to-do to a person {#to-dos}
+
+A to-do list item becomes a task as soon as it mentions a person. The first person mentioned in the item is its assignee.
+
+<Steps>
+  <Step title="Add a to-do list">
+    In edit mode, type `/to-do` and press **Enter**.
+  </Step>
+  <Step title="Write the task and mention the assignee">
+    Write the task, then type `@` and pick the person, for example "Send the offer to the customer @Anna Muster".
+  </Step>
+  <Step title="Save the page">
+    The task is created with the next save. The assignee receives the notification **Task Assigned** with a link to the page.
+  </Step>
+</Steps>
+
+Ticking the check box marks the task as done with the next save. Removing the item from the page removes the task.
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Notifications" icon="bell" href="/concepts/notifications">
+    Where notifications and emails come from.
+  </Card>
+  <Card title="Suggestions" icon="message-circle" href="/docs/suggestions">
+    Propose changes for the author to accept.
+  </Card>
+  <Card title="Live collaboration" icon="users" href="/docs/collaboration">
+    Edit a page together in real time.
+  </Card>
+</CardGroup>

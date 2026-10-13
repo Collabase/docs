@@ -1,119 +1,100 @@
 ---
-title: "Workflows"
+title: "Workflows in a project"
 sidebarTitle: "Workflows"
-description: "Configure custom statuses, transition rules, task types, and per-type field rules to match how your team works."
+description: "Choose which workflows a project uses, map them to work item types, switch the default safely and see how members move work items."
+keywords: ["workflow scheme", "statuses", "transitions", "change workflow", "status mapping", "issue type workflow"]
 ---
 
-Every project has its own workflow — a set of statuses that tasks move through and rules that govern which transitions are allowed. You can fully customize statuses, define which transitions are valid, and configure task types with per-field rules.
+A project does not design its own statuses. It uses workflows that a system administrator builds in [Design workflows](/admin/workflows). In the project you choose which of them apply, which one is the default, and which work item type follows which workflow.
 
-## Statuses
+**Who can do this:** members whose Space role may edit project settings. If the project is linked to a project template, the template decides and this section is read-only.
 
-A status represents the current state of a task. Each status has a name, a color, and a category.
+## Which workflow a work item follows {#which-workflow}
 
-### Status categories
+A project can use several workflows. For each work item, Collabase picks the first one that applies, in this order:
 
-Every status must be assigned to one of three categories:
+```mermaid
+flowchart TB
+    A["Work item of type X"] --> B{"Project maps type X<br/>to a workflow?"}
+    B -- yes --> W1["That workflow"]
+    B -- no --> C{"Project has a<br/>default workflow?"}
+    C -- yes --> W2["Project default"]
+    C -- no --> D{"Template has a<br/>default workflow?"}
+    D -- yes --> W3["Template default"]
+    D -- no --> F["No workflow:<br/>any status can be set"]
+```
 
-| Category | Meaning |
-|---|---|
-| **TODO** | Work not yet started. Tasks in this category appear in the backlog. |
-| **IN_PROGRESS** | Work actively underway. Used for velocity calculations and sprint health metrics. |
-| **DONE** | Completed work. Tasks in this category are excluded from SLA tracking and are counted toward sprint velocity. |
+Without any workflow, members can set any status directly. With a workflow, they can only use the transitions it defines.
 
-### Configuring statuses
+## Assign workflows {#assign}
 
 <Steps>
-  <Step title="Open project settings">
-    Navigate to your project, click **Settings** in the sidebar, then select **Statuses**.
+  <Step title="Open the Status section">
+    Open the project, click the **Settings** tab and select **Workflow → Status**.
   </Step>
-  <Step title="Add a new status">
-    Click **+ New Status**. Enter a name (e.g., "In Review", "Blocked", "Waiting on Customer").
+  <Step title="Add a workflow">
+    Click **Add Workflow**, search for the workflow and select it. The first workflow you add becomes the **Default**.
   </Step>
-  <Step title="Set the category">
-    Choose TODO, IN_PROGRESS, or DONE. This determines how the status is treated in velocity, burndown, and SLA calculations.
-  </Step>
-  <Step title="Choose a color">
-    Select a color to distinguish the status visually on the board and in lists.
-  </Step>
-  <Step title="Order the statuses">
-    Drag statuses to reorder them. The order here matches the left-to-right order of columns on the board.
+  <Step title="Change the default (optional)">
+    Hover over a workflow and click **Set as default**. If work items already exist, see [Switch the default workflow](#switch-default).
   </Step>
 </Steps>
 
-## Transition rules
+Click **View workflow** to see a workflow's statuses, and **Edit Workflow** in that preview to open it in the editor. To add or remove statuses, change the workflow itself; the project section only assigns workflows.
 
-By default, tasks can move from any status to any other status. You can restrict this by configuring explicit transition rules.
+## Map work item types to workflows {#mapping}
 
-| Mode | Behavior |
-|---|---|
-| **Free select** | Tasks can be moved to any status at any time. No restrictions. |
-| **Governed workflow** | Only explicitly configured transitions are permitted. Any attempt to move a task to a status that is not a valid transition is blocked. |
-
-To configure transitions, open **Settings → Transitions** and define which statuses can move to which. For each status, select the statuses it is allowed to transition into.
-
-<Note>
-  Governed workflows are recommended for regulated or audit-sensitive processes where task progression must follow a defined path.
-</Note>
-
-## Task types
-
-Task types categorize different kinds of work. Each type has a name, an icon, and a color. Types control which custom fields are required, optional, or hidden on a task.
-
-### Inheritance chain
-
-Task types follow a three-level inheritance chain:
-
-| Level | Where configured | Who configures it |
-|---|---|---|
-| **Global** | Admin → Task Types | Instance administrator |
-| **Space** | Space Settings → Task Types | Space administrator |
-| **Project** | Project Settings → Task Types | Project owner |
-
-Global types are available in every project. Space types extend the global set for a specific Space. Project types extend the space set for a specific project. Each level can add new types but cannot remove or override types from levels above.
-
-### Creating a task type
+When a project has two or more workflows, the section **Workflow → Work Item Type Mapping** appears. It lists the instance work item types.
 
 <Steps>
-  <Step title="Navigate to the correct level">
-    For a global type, go to **Admin → Task Types**. For a project type, go to **Project → Settings → Task Types**.
-  </Step>
-  <Step title="Add a new type">
-    Click **+ New Task Type**. Enter a name (e.g., "Incident", "Change Request", "Feature").
-  </Step>
-  <Step title="Set the icon and color">
-    Choose an icon from the icon picker and a color. These appear on task cards and in lists.
-  </Step>
-  <Step title="Configure field rules">
-    Add field rules to control how standard and custom fields behave for this task type (see below).
+  <Step title="Pick a workflow per type">
+    For each type, choose a workflow, or leave **Project default**.
   </Step>
   <Step title="Save">
-    Click **Save**. The new type is immediately available when creating tasks at the configured level.
+    Click **Save**. You see **Workflow mapping saved**.
   </Step>
 </Steps>
 
-## Task type field rules
+Example: bugs follow a triage workflow, everything else follows the team's delivery workflow.
 
-Field rules let you control how each field behaves for a specific task type. For example, a "Bug" type might require a "Steps to Reproduce" custom field, while an "Epic" type might hide the "Story Points" field entirely.
+## Switch the default workflow {#switch-default}
 
-| Rule | Effect |
-|---|---|
-| **Required** | The field must be filled before the task can be saved. |
-| **Hidden** | The field is not shown in the task form or detail view for this type. |
-| **Ordered** | Sets the display position of the field within the task detail view. |
+When work items already sit in statuses of the old workflow, Collabase asks where they should go.
 
-To add a field rule, open a task type's configuration page and click **+ Add Field Rule**. Select the field, choose the rule type, and save.
+<Steps>
+  <Step title="Set the new default">
+    Click **Set as default** on the new workflow and save.
+  </Step>
+  <Step title="Map the statuses">
+    The dialog **Reassign existing tasks** lists each **Current status**. Pick a **New status** from the new workflow for each one.
+  </Step>
+  <Step title="Confirm">
+    Click **Migrate & Save**. The work items move to the new statuses and the project uses the new default.
+  </Step>
+</Steps>
 
-<Note>
-  Field rules apply to both standard fields (such as Story Points or Due Date) and custom fields configured by your admin. A field marked as Hidden for a task type cannot be set even through the API.
-</Note>
+## Move a work item through the workflow {#move-work-items}
 
-## Next steps
+Members change the status on the work item or by dragging its card on the [board](/projects/board). Collabase offers only the transitions that start at the current status and whose conditions are met.
+
+If the transition asks for fields, a dialog opens. Fill in the fields marked with an asterisk and click **Confirm Transition**. If a validator fails, the work item stays where it is and the message says what is missing.
+
+## Troubleshooting
+
+| What you see | Cause | What to do |
+|---|---|---|
+| **No workflow assigned** | The project has no workflow | Click **Add Workflow**, or **Manage Workflows** to create one first |
+| **Workflows are managed by the linked template.** | The project is linked to a project template | Change the template, or detach the project in **Settings → General** |
+| The mapping section is missing | The project has fewer than two workflows | Add a second workflow |
+| A status is missing on the board | The work item type follows another workflow | Check the type mapping |
+
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="The Board View" icon="arrow-right" href="/projects/board">
-    The Kanban board view.
+  <Card title="Design workflows" icon="git-branch" href="/admin/workflows">
+    Statuses, transitions and rules.
   </Card>
-  <Card title="Projects" icon="layout-grid" href="/projects/overview">
-    Projects is Collabase's project management app.
+  <Card title="Project settings" icon="settings" href="/projects/project-settings">
+    Every section of a project's settings.
   </Card>
 </CardGroup>

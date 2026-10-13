@@ -1,0 +1,88 @@
+---
+title: "Translate pages"
+description: "Read a Collabase Docs page in another language with one click, and decide per Space which languages pages may be translated into."
+keywords: ["translate page", "translation", "multilingual", "language", "DeepL", "source language", "target language", "German", "French", "Italian"]
+---
+
+In a Swiss team, a page written in German often has readers who prefer French, Italian or English. Collabase translates a page on request, so readers pick their language while the author keeps writing in one.
+
+Translation works on pages and blog posts. Whiteboards and folders are not translated.
+
+<Info>
+  Translation uses DeepL, an external translation service. The text of the page is sent to DeepL when someone requests a translation. Your administrator connects DeepL for the whole instance. Until then, a request for a translation fails.
+</Info>
+
+## Read a page in another language {#read}
+
+<Steps>
+  <Step title="Open the page">
+    Open the page. The language selector sits at the top right, left of the status badge. It shows **Original** while you read the page as written.
+  </Step>
+  <Step title="Pick a language">
+    Click the selector and pick one of the languages the Space allows. The translated content replaces the page view.
+  </Step>
+  <Step title="Go back">
+    Pick **Original** to see the page as written.
+  </Step>
+</Steps>
+
+A translation is read-only. The **Edit** button is hidden while you read a translation, so changes always go into the original. When the original changes, the next request translates the new content. As long as it is unchanged, Collabase reuses the stored translation.
+
+## Set the source language of a page {#source-language}
+
+Collabase tells DeepL which language the page is written in. By default this is the default language of the Space. When a single page is written in another language, set it on the page.
+
+<Steps>
+  <Step title="Open the page language settings">
+    Open the page and click **Page Language** (the gear next to the language selector). The gear is shown to members who can edit the page.
+  </Step>
+  <Step title="Pick the source language">
+    Under **Source Language**, pick the language the page is written in. Choose **Inherit from Space** to use the Space's default language again.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The message **Source language updated** confirms it.
+  </Step>
+</Steps>
+
+## Choose the languages of a Space {#space-languages}
+
+Space administrators decide in which language pages of a Space are written and into which languages they may be translated.
+
+<Steps>
+  <Step title="Open the translation settings">
+    Open the Space, go to its settings and click **Translation** in the **Space** group.
+  </Step>
+  <Step title="Set the default language">
+    Under **Default language (source)**, pick the language the content of the Space is written in. Content in this language is not translated automatically.
+  </Step>
+  <Step title="Allow target languages">
+    Under **Allowed target languages**, tick every language readers may choose. The default language is marked **Default** and cannot be unticked.
+  </Step>
+  <Step title="Save">
+    Click **Save Changes**. The message **Translation rules updated** confirms it.
+  </Step>
+</Steps>
+
+When no target language is allowed, the language selector is hidden on all pages of the Space.
+
+## Troubleshooting {#troubleshooting}
+
+| Message | Cause | What to do |
+|---|---|---|
+| **Page has no content to translate** | The page is empty | Write content first |
+| **Language "…" not enabled for this space.** | The language was removed from the allowed target languages | Ask a Space administrator to allow it again |
+| **Translation failed** | DeepL did not answer, or is not connected | Ask your administrator to check the DeepL connection |
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Pages" icon="file-text" href="/docs/pages">
+    Write and edit pages.
+  </Card>
+  <Card title="Spaces" icon="layout-grid" href="/concepts/spaces">
+    What a Space is and how it is set up.
+  </Card>
+  <Card title="Space settings" icon="settings" href="/concepts/space-settings">
+    Who can change the settings of a Space.
+  </Card>
+</CardGroup>

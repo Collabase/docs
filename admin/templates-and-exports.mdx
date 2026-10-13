@@ -1,0 +1,141 @@
+---
+title: "Page and PDF templates"
+sidebarTitle: "Templates and exports"
+description: "Offer page templates in every Space or in chosen ones, design PDF export templates with cover, watermark and numbering, and review the export history."
+keywords: ["global templates", "site templates", "blueprints", "page templates", "PDF export", "export to PDF", "PDF layout", "PDF stylesheet", "watermark", "cover page", "table of contents", "export history"]
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+The group **Templates & Exports** in the administration sidebar holds three screens. **Page Templates** offers page structures in more than one Space at once. **PDF Templates** decides how a page looks when it is exported to PDF. **Export History** lists the PDF exports of the whole installation.
+
+<WhoCanDoThis role="System administrator" edition="All editions" />
+
+<Note>
+  Members also save templates inside a Space, from any page. That is described in [Templates](/docs/templates). This page covers the templates that an administrator manages for the whole installation.
+</Note>
+
+---
+
+## Page templates for several Spaces {#page-templates}
+
+A template created here appears in the template picker of every Space you choose, next to the Space's own templates. Members use it like any other template when they create a page.
+
+<Steps>
+  <Step title="Open Page Templates">
+    Go to **Administration → Page Templates** and click **Create Template**, or **Create First Template** when the list is empty.
+  </Step>
+  <Step title="Describe the template">
+    Under **Template Details**, fill in:
+
+    | Setting | Details |
+    |---|---|
+    | **Name** | The name members see in the template picker. Required. |
+    | **Description** | When to use the template. Shown on its card. |
+    | **Icon Picker (Emoji)** | One emoji for the card. The default is 📄. |
+  </Step>
+  <Step title="Choose where it appears">
+    Under **Space Visibility**, leave **Available in All Spaces** on to offer it everywhere. Switch it off to pick Spaces one by one under **Select Specific Spaces**.
+  </Step>
+  <Step title="Write the content">
+    Write the page structure in **Template Content**, with the same editor as a normal page.
+  </Step>
+  <Step title="Save">
+    Click **Save Template**.
+  </Step>
+</Steps>
+
+<Check>
+  The template appears in the list with **All Spaces** or the number of Spaces it is offered in. Create a page in one of those Spaces and pick the template.
+</Check>
+
+To change a template, click **Edit** on its card. Changes apply to pages created from then on, pages created earlier stay as they are. **Delete** removes the template after a confirmation.
+
+---
+
+## PDF templates {#pdf-templates}
+
+A PDF template sets the look of an exported page: colors, cover page, table of contents, numbered headings and a watermark. The **PDF Export** dialog, opened with **Export** in a page's menu, lists every active template under **Select pdf template**, next to **Default Template**.
+
+### Create a template
+
+<Steps>
+  <Step title="Add a template">
+    Go to **Administration → PDF Templates** and click **New Template**. A template named `New PDF Template` appears in the list.
+  </Step>
+  <Step title="Open it">
+    Click the template. Give it a **Friendly Name** that members recognize, for example `Customer report`.
+  </Step>
+  <Step title="Set the look">
+    Work through the tabs **Branding**, **Cover & Content** and **Expert Mode**. The settings are described below.
+  </Step>
+  <Step title="Check the result">
+    Open **Live Preview**. Collabase renders a sample document with your settings and renders it again after each change, so you see the effect before you save.
+  </Step>
+  <Step title="Activate and save">
+    Turn on **Template Status** so it reads **Active**, then click **Save Changes**.
+  </Step>
+</Steps>
+
+### Settings
+
+| Tab | Setting | Details |
+|---|---|---|
+| **Branding** | **Visual Theme** | **Light** ("Classic white paper"), **Dark** ("Modern slate theme") or **Branded** ("Uses organization logo") |
+| **Branding** | **Text Overlay** | Watermark text across every page, for example `DRAFT` or `CONFIDENTIAL`. Leave it empty for no watermark. |
+| **Branding** | **Intensity** | How visible the watermark is, from 1 % to 20 % |
+| **Branding** | **Overlay Color** | The color of the watermark |
+| **Cover & Content** | **Enable Premium Cover** | Adds a cover page with a large title and a background |
+| **Cover & Content** | **Gradient Presets** | The background of the cover page |
+| **Cover & Content** | **Automated Indexing** | Adds a table of contents built from the headings of the page |
+| **Cover & Content** | **Hierarchy System** | Numbers the headings: 1, 1.1, 1.2 and so on |
+| **Expert Mode** | **CSS Injector** | Your own CSS rules, applied on top of the template. For layouts the settings above cannot express. |
+| **Expert Mode** | **Metadata Tokens** | Placeholders for your CSS and the document: `{{title}}` (page title), `{{date}}` (export date), `{{page}}` (current page), `{{pages}}` (total pages) |
+
+The list shows each template with **Active** or **Inactive**, and the badges **Cover** and **TOC** when the cover page or the table of contents is switched on.
+
+<Tip>
+  Switch a template to inactive instead of deleting it when you are unsure. It disappears from the export dialog and keeps its settings.
+</Tip>
+
+---
+
+## Export history {#export-history}
+
+**Administration → Export History** lists the PDF exports across all users and Spaces, newest first: who exported, when, from which page or Space, the type (`single` or `bulk`), the file size and the number of pages.
+
+| Action | What it does |
+|---|---|
+| **Refresh** | Loads the list again |
+| **Re-download** | Exports the page again with its current content. Only for single-page exports. |
+| **Clear >30 Days** | Deletes every record older than 30 days, after a confirmation. The clearing is recorded in the [audit log](/admin/audit-log). |
+
+Collabase never clears the history on its own. See [Data retention](/admin/data-retention).
+
+---
+
+## Troubleshooting
+
+| What you see | Cause | What to do |
+|---|---|---|
+| A template is missing from the **PDF Export** dialog | It is inactive. | Open it, turn on **Template Status** and click **Save Changes**. |
+| **Live Preview** stays empty or shows an error | The custom CSS has an error, or the preview could not be rendered. | Empty **CSS Injector**, check the preview, then add the rules back one at a time. |
+| A page template does not appear in a Space | **Available in All Spaces** is off and the Space is not selected. | Edit the template and select the Space. |
+| **Re-download** is missing on a row | It is a bulk export. | Export the pages again from their Space. |
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Templates in a Space" icon="layout-template" href="/docs/templates">
+    How members save and use templates inside one Space.
+  </Card>
+  <Card title="Pages" icon="file-text" href="/docs/pages">
+    Writing pages and exporting them.
+  </Card>
+  <Card title="Branding and login screen" icon="palette" href="/admin/branding">
+    App name, logos and accent color of the installation.
+  </Card>
+  <Card title="System settings" icon="settings" href="/admin/system-settings">
+    Every screen of the administration area.
+  </Card>
+</CardGroup>

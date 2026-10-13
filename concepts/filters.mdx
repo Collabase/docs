@@ -1,0 +1,164 @@
+---
+title: "Filters and query language"
+sidebarTitle: "Filters and CQL"
+description: "Write precise queries for work items and pages in the Collabase Query Language, save them as personal filters, and run them again with one click."
+keywords: ["JQL", "CQL", "advanced search", "save a search as a filter", "saved filter", "filter", "query", "ORDER BY", "currentUser"]
+---
+
+A filter is a saved search. You build the search on the **Search** page, either with the visual builder or by writing a query in the <Tooltip tip="The query syntax of Collabase, for example dueDate < today() AND author = currentUser()." cta="Glossary" href="/glossary#cql">Collabase Query Language (CQL)</Tooltip>, and save it under a name. Run it again from **My Filters** whenever you need the current answer.
+
+## Build a query {#build}
+
+Open the [Search page](/concepts/search#search-page). The **Filters** area has two modes:
+
+| Mode | How it works |
+|---|---|
+| **Basic** | Pick a **Type**, then **Add filter** to add conditions under **Where**. **Match** decides whether **ALL (AND)** or **ANY (OR)** conditions must hold. Click **Apply** |
+| **Advanced** | Type a CQL query. The field suggests fields, operators and values as you type |
+
+Switch with the button that shows the other mode. A query with `ORDER BY`, a function, nested parentheses or mixed `AND` and `OR` cannot go back to **Basic**; the button explains why.
+
+<Note>
+  Advanced queries search **work items** and **pages**. Without a type, a query searches work items.
+</Note>
+
+## Query syntax {#syntax}
+
+A condition has the form `field operator value`. Combine conditions with `AND`, `OR` and `NOT`, and group them with parentheses. Text values go in quotes.
+
+```text
+priority = "High" AND status != "Done"
+(priority = "High" OR priority = "Highest") AND author = currentUser()
+```
+
+### Fields {#fields}
+
+| Field | Work items | Pages | Meaning |
+|---|---|---|---|
+| `title` | Yes | Yes | The title |
+| `content` | | Yes | The page body |
+| `status` | Yes | Yes | Work items: the status name. Pages: `PUBLISHED`, `DRAFT` or `ARCHIVED` |
+| `priority` | Yes | | The priority |
+| `taskType` | Yes | | The work item type, for example `"Bug"` |
+| `author` | Yes | Yes | Work items: the **assignee**. Pages: the author |
+| `createdBy` | Yes | | Who created the work item |
+| `label` | Yes | Yes | Labels |
+| `sprint` | Yes | | The cycle |
+| `storyPoints` | Yes | | The story point estimate |
+| `parent` | Yes | | The key of the parent, for example `"ABC-1"` |
+| `space` | Yes | Yes | The Space, by its short name in the address |
+| `startDate`, `dueDate` | Yes | | Scheduled dates |
+| `created`, `updated` | Yes | Yes | Creation and last change |
+
+Words without a field search the title and key of work items, or the title and content of pages.
+
+<Warning>
+  The assignee field is `author`, not `assignee`. A query with `assignee = …` returns **Unknown field**.
+</Warning>
+
+Use names, not IDs. Write a person's name or email for `author`, a status name for `status`, the type name for `taskType`. If a name matches several people, the query matches all of them.
+
+### Operators {#operators}
+
+| Operator | Meaning | Example |
+|---|---|---|
+| `=`, `!=` | Equals, does not equal. On a date, `=` matches the whole day | `status = "In Progress"` |
+| `>`, `>=`, `<`, `<=` | Greater or less than, for numbers and dates | `storyPoints >= 5` |
+| `~`, `!~` | Contains, does not contain (text) | `title ~ "invoice"` |
+| `~"text*"`, `~"*text"` | Starts with, ends with | `title ~ "Onboard*"` |
+| `IN (…)`, `NOT IN (…)` | Any of several values | `status IN ("To Do", "In Progress")` |
+| `IS EMPTY`, `IS NOT EMPTY` | The field has no value, or any value | `dueDate IS EMPTY` |
+
+Which operators a field accepts depends on its type. Text fields take `~` but not `IN`. Choice and people fields take `IN` but not `~`. `label` takes only `IN`, `NOT IN`, `IS EMPTY` and `IS NOT EMPTY`, so write `label IN ("urgent")`. `space` takes only `=` and `!=`. A wrong combination shows **Operator not supported for field …**.
+
+### Dates and the current user {#relative-values}
+
+| Value | Meaning |
+|---|---|
+| `-7d`, `-2w`, `-3m`, `-1y` | Days, weeks, months or years before today. Without the minus, after today. No space between number and unit |
+| `today()` | The start of today |
+| `now()` | This moment |
+| `startOfWeek()`, `endOfWeek()` | Monday and the end of the current week |
+| `currentUser()` | You |
+
+```text
+dueDate < today() AND author = currentUser()
+updated >= -7d
+```
+
+### Functions for work items {#functions}
+
+| Function | Matches work items that |
+|---|---|
+| `isOverdue()` | Have a due date in the past, whatever their status |
+| `hasNoAssignee()` | Have nobody assigned |
+| `hasNoLabel()` | Have no label |
+| `isTopLevel()` | Are not a sub-item |
+| `isSubWorkItem()` | Are a sub-item |
+| `hasChildren()` | Have at least one sub-item |
+| `hasStartAndDueDates()` | Have both a start and a due date |
+
+```text
+isOverdue() AND status != "Done" AND hasNoAssignee()
+```
+
+`isOverdue()` also matches finished work items, so combine it with a status condition.
+
+### Sort the results {#order-by}
+
+End the query with `ORDER BY`, a field and `ASC` (the default) or `DESC`. Separate several fields with commas.
+
+```text
+status = "In Progress" ORDER BY priority DESC, dueDate ASC
+```
+
+Work items sort by `title`, `priority`, `storyPoints`, `dueDate`, `startDate`, `created`, `updated`, `status` and `author`. Pages sort by `title`, `created`, `updated` and `space`. Other fields show **Cannot sort by …**.
+
+## Save a search as a filter {#save}
+
+<Steps>
+  <Step title="Build the search">
+    On the Search page, add at least one condition, choose a type, or write an advanced query.
+  </Step>
+  <Step title="Save it">
+    Click **Save as Filter**. In **Save search as filter**, enter a name and click **Save Filter**.
+  </Step>
+  <Step title="Find it again">
+    The filter appears on **My Filters** and in the **Filters** sidebar.
+  </Step>
+</Steps>
+
+Saving always creates a new filter. To change a filter, run it, adjust the query and save it under a new name, then delete the old one.
+
+## Use your filters {#my-filters}
+
+Open **Filters** from the app drawer, then **View all filters** to reach **My Filters**.
+
+| Action | How |
+|---|---|
+| Run a filter | **Run** opens the Search page with the saved query |
+| Find a filter | **Search filters by name...** |
+| Mark a favorite | The star icon (**Favorite**) |
+| Delete a filter | **Delete**, then confirm **Delete filter?** This cannot be undone |
+
+Filters are personal. Only you see your filters, and there is no way to share one. To give a team the same view, share the query text, for example in a page.
+
+## Troubleshooting {#troubleshooting}
+
+| Message | Cause | What to do |
+|---|---|---|
+| **Unknown field** | The field name is not in the [field list](#fields), for example `assignee` | Use `author` for the assignee |
+| **Operator not supported for field …** | The operator does not fit the field type | See [Operators](#operators) |
+| **Unknown function …()** | A work item function used for pages | Functions work for work items only |
+| **Cannot sort by …** | The field cannot be used in `ORDER BY` | Use one of the [sortable fields](#order-by) |
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Search" icon="search" href="/concepts/search">
+    Header search and the Search page.
+  </Card>
+  <Card title="Work Items table" icon="table" href="/projects/list-view">
+    Search, filter and edit many work items of one project.
+  </Card>
+</CardGroup>

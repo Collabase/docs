@@ -39,17 +39,17 @@ HERMES separates decisions by hierarchy level. The **steering** level, led by th
 
 ## In Collabase
 
-Model each milestone as a task of a **Milestone** task type with a governed workflow, and let an automation request the decision.
+Model the steering decisions that release a phase as [gates](/projects/approvals) at the end of each phase, and the other milestones as work items of a **Milestone** work item type with a governed workflow.
 
 <Steps>
   <Step title="Create a milestone workflow">
     In **Admin → Workflows**, create statuses such as `Open`, `Submitted for decision`, `Released` and `Rejected`. Under **Settings → Transitions**, allow only the paths you want, so a milestone cannot jump to `Released`. See [Workflows](/projects/workflows).
   </Step>
   <Step title="Create the Milestone task type">
-    In **Admin → Task Types**, create **Milestone** and make the fields for the decision required, for example the decision rationale.
+    In **System Settings → Content & Organization → Work Item Types**, create **Milestone** and make the fields for the decision required, for example the decision rationale. See [Work item types](/admin/work-item-types).
   </Step>
-  <Step title="Build the approval automation">
-    Create an automation with the Collabase event `task.status_changed` as trigger, a condition on the new status `Submitted for decision`, and an [Approval](/automation/nodes) node with the project sponsor as approver. Connect the approved and rejected outputs to actions that move the task on. See [Triggers](/automation/triggers).
+  <Step title="Let the sponsor decide phase releases at the gate">
+    Switch on **Phases and gates** in the project, add a gate to each phase and give the project sponsor a space role whose Permission Scheme grants **Decide phase gate**. The phase closes only with the gate decision, which is kept with its rationale. See [Phases and gate approvals](/projects/approvals).
   </Step>
   <Step title="Record the decision">
     Add every decision to the **Decision** object type in [Registry](/registry/overview), with context, rationale, decided by and date. This is your list of project decisions.
@@ -57,5 +57,5 @@ Model each milestone as a task of a **Milestone** task type with a governed work
 </Steps>
 
 <Note>
-  The Approval node asks one user. If a committee decides, name the person who records the committee's decision as approver, and store the minutes with the decision.
+  A gate is decided by one person. If a committee decides, let the person who records the committee's decision take the gate decision, and store the minutes with the decision.
 </Note>

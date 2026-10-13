@@ -1,270 +1,83 @@
 ---
 title: "Search"
 sidebarTitle: "Search"
-description: "Find anything in Collabase instantly — tasks, pages, registry objects, and more — using global search."
+description: "Find spaces, pages, projects, work items and Registry objects from the header search or the full search page, and narrow results by type."
+keywords: ["search", "find work items", "quick search", "advanced search", "search results", "Cmd K"]
 ---
 
-Collabase has a single unified search that spans all content you have access to. Open it from anywhere in the app — you do not need to navigate away from what you are working on.
+Collabase has two ways to search. The header search answers "where is that page or work item?" in a few keystrokes. The **Search** page lists every match with sorting and paging, and it is where you build [filters with the query language](/concepts/filters). Both only show content you have access to.
 
-Search respects permissions. You only see results for content in spaces and projects you have access to.
+## Header search {#header-search}
 
----
+Click **Search...** in the header, or press `Cmd + K` (Mac) or `Ctrl + K` (Windows and Linux). Results appear as you type, grouped by kind:
 
-## Opening search
-
-| Platform | Keyboard shortcut |
+| Group | Contains |
 |---|---|
-| Mac | `Cmd + K` |
-| Windows / Linux | `Ctrl + K` |
+| **Spaces** | Spaces by name or mission |
+| **Projects** | Projects, work items and Registry objects |
+| Pages | Pages of Collabase Docs |
 
-You can also click the **search icon** in the top navigation bar.
+Use the arrow keys to move through results and `Enter` to open one. To see every match, click **View all results** at the bottom of the panel.
 
----
+### Narrow the header search
 
-## What is indexed
+Click **Filter** to limit results to an **Author**, a **Label** or a **Space**. **Reset** removes the filter.
 
-Collabase indexes the following content types:
+### Before you type
 
-| Content type | What is searched |
+With an empty search field, the panel shows **Recently viewed**: the last six items you opened from this search panel, stored in your browser. **Quick actions** links to the full search and to **Settings**.
+
+## The Search page {#search-page}
+
+The Search page searches across spaces, pages, projects, work items, Registry objects and the other content types listed under **Type**. Enter at least two characters.
+
+<Steps>
+  <Step title="Open the Search page">
+    In the header search, click **View all results**.
+  </Step>
+  <Step title="Enter your terms">
+    Type in **Search across all entities…** and click **Search**.
+  </Step>
+  <Step title="Narrow by type">
+    Under **Filters**, pick a **Type** to search only one kind of content, for example projects, test runs or automation rules.
+  </Step>
+  <Step title="Sort the results">
+    Choose **Relevance**, **Recently updated**, **Oldest update**, **Newest first** or **Oldest first**. Results come 20 per page.
+  </Step>
+</Steps>
+
+If nothing matches, the page shows **No results for "…"**. Try other words or a different type.
+
+### How words are matched {#matching}
+
+| Content | Matching |
 |---|---|
-| **Tasks** | Title, description, and comments |
-| **Pages** (Docs) | Title and full page content |
-| **Registry objects** | Object label and all field values |
-| **Test cases** | Name and description |
-| **Test runs** | Name and associated test project |
-| **Automations** | Rule name |
+| Pages | Every word must appear. Each word also matches longer words that start with it, so "onboard" finds "onboarding" |
+| Spaces, projects, work items | The text appears anywhere in the name or title |
 
-Search matches on full words and partial words. Typing "onboard" will match "onboarding" and "onboarded".
-
----
-
-## Navigating results
-
-Once search is open, results appear as you type.
-
-| Action | How to do it |
-|---|---|
-| Move between results | `Arrow Up` / `Arrow Down` |
-| Open the highlighted result | `Enter` |
-| Close search without navigating | `Escape` |
-| Open a result in a new tab | `Cmd + Enter` (Mac) / `Ctrl + Enter` (Windows) |
-
-Click any result with the mouse to open it directly.
-
----
-
-## Understanding result types
-
-Each result shows an icon indicating its type, the content title, and the space it belongs to. Results are grouped or labeled so you can quickly see whether a match is a page, a task, a registry object, or another content type.
-
----
-
-## Filtering results
-
-After entering a search term, use the filter options to narrow results:
-
-| Filter | Options |
-|---|---|
-| **Type** | Pages, Tasks, Registry objects, Test cases, Test runs, Automations |
-| **Space** | Limit results to a specific space |
-| **Status** | Filter by the content's current status |
-
-Filters can be combined. For example, filtering by **Type: Tasks** and **Space: Engineering** shows only tasks in the Engineering space.
-
----
-
-## Advanced search with CQL
-
-For precise filtering, switch the filter bar from **Basic** to **Advanced** to write a query in the Collabase Query Language (CQL). CQL lets you express conditions that would be hard to build with the visual filters — like "work items assigned to me, due in the past, and not yet done". As you type, the search bar suggests the available fields, operators, and values, so you rarely need to memorize anything.
-
-Advanced search works for **work items** (tasks) and **pages**.
-
-### How a query is built
-
-A query is one or more conditions in the form `field operator value`:
-
-```text
-priority = "High"
-```
-
-Combine conditions with `AND`, `OR`, and `NOT`, and group them with parentheses:
-
-```text
-priority = "High" AND status != "Done"
-(priority = "High" OR priority = "Critical") AND author = "Ada Lovelace"
-```
-
-The field for the assigned person is written `author`, and the person who created the item is `createdBy` — the search bar shows the friendly name ("Assignee") next to each field as you pick it.
-
-Text values go in quotes. Numbers and dates do not need quotes.
-
-### Choosing values by name, never by ID
-
-You always filter by the **name or label** you see in the app — never an internal ID. Type a person's name for an assignee, the label for a dropdown option, or the object's name for a registry relation:
-
-```text
-author = "Mitch Davies"
-taskType = "Bug"
-```
-
-If a name matches more than one person, the query matches all of them. If it matches nobody, the search bar tells you so instead of silently returning everything.
-
-### Operators by field type
-
-The operators available depend on the kind of field:
-
-| Field type | Operators you can use |
-|---|---|
-| Text (title, and text custom fields) | `=`, `!=`, `~` (contains), starts-with (`~"Onboard*"`), ends-with (`~"*review"`) |
-| Number (story points, number custom fields) | `=`, `!=`, `>`, `>=`, `<`, `<=` |
-| Date (due date, start date, created, updated) | `=`, `!=`, `>`, `>=`, `<`, `<=` |
-| Choice (status, priority, type, dropdowns) | `=`, `!=`, `IN (…)`, `NOT IN (…)` |
-| People (`author` = assignee, `createdBy`) | `=`, `!=`, `IN (…)`, `NOT IN (…)` |
-| Labels | `IN (…)`, `NOT IN (…)` |
-
-Use `IN` to match any of several values at once:
-
-```text
-status IN ("To Do", "In Progress") AND label IN ("bug", "urgent")
-```
-
-### Checking for empty or filled fields
-
-Use `IS EMPTY` and `IS NOT EMPTY` to find items where a field has no value or any value:
-
-```text
-author IS EMPTY
-dueDate IS NOT EMPTY
-```
-
-### Filtering on custom fields
-
-Reference a custom field by its key, prefixed with `cf.`. Custom fields support the operators that match their type — for example a number custom field supports ranges, and a dropdown supports `IN`:
-
-```text
-cf.budget > 5000
-cf.stage IN ("Won", "Lost")
-cf.owner IS EMPTY
-```
-
-### Relative dates
-
-For date fields you can use relative offsets and helpers instead of typing a calendar date:
-
-| Value | Meaning |
-|---|---|
-| `-7d`, `-2w`, `-3m`, `1y` | Days, weeks, months, or years from today |
-| `today()` | The start of today |
-| `now()` | The current moment |
-| `startOfWeek()`, `endOfWeek()` | The current week's boundaries |
-| `currentUser()` | The person running the search |
-
-```text
-dueDate < today() AND author = currentUser()
-```
-
-### Ready-made questions (functions)
-
-For work items, a set of built-in functions answer common questions directly:
-
-| Function | Matches work items that… |
-|---|---|
-| `isOverdue()` | Have a due date in the past |
-| `hasNoAssignee()` | Have nobody assigned |
-| `hasNoLabel()` | Have no labels |
-| `isTopLevel()` | Are not a sub-item |
-| `isSubWorkItem()` | Are a sub-item of another |
-| `hasChildren()` | Have at least one sub-item |
-| `hasStartAndDueDates()` | Have both a start and a due date |
-
-```text
-isOverdue() AND hasNoAssignee()
-```
-
-### Sorting results
-
-End a query with `ORDER BY` to control the order, adding `ASC` or `DESC`:
-
-```text
-status = "In Progress" ORDER BY priority DESC, dueDate ASC
-```
-
-<Note>
-  Advanced search always respects your permissions — it only ever returns work items and pages in Spaces you can access, exactly like Basic search.
-</Note>
-
----
-
-## Semantic search (AI-powered)
-
-When an admin has enabled semantic search under **Admin → Settings → AI settings → RAG model & pipeline**, you can ask questions in plain language and receive answers grounded in your actual content:
-
-- "What is our onboarding process for new hires?"
-- "Which test cases cover the payment module?"
-- "What did we decide about the API versioning policy?"
-
-Semantic search retrieves the most relevant passages and generates a summary with links to the sources. This is separate from keyword search — both run when semantic search is enabled.
-
-### What it covers
-
-| Content | Covered |
-|---|---|
-| **Pages** (Collabase Docs) | Title and body |
-| **Work items** | The description. A title on its own is already found by keyword search |
-| **Comments** | On work items and on pages |
-| **Registry objects** | No. Found by keyword search, and by CollabaseAI's own Registry skills |
-
-Comments are the addition worth knowing about, because no search in Collabase reached them before — and the reasoning behind a decision usually sits in a comment thread rather than in the page it belongs to.
-
-<Note>
-  A comment is only ever as reachable as the page or work item it was written on. If you cannot open the item, its comments never appear in your results. Pages with restricted access are left out of semantic search entirely.
-</Note>
-
-For semantic search setup, see [AI Configuration](/admin/ai-configuration).
-
----
+For precise conditions, such as "assigned to me and overdue", switch the filter to **Advanced** and write a query. See [Filters and query language](/concepts/filters).
 
 ## Search and permissions
 
-Search results are filtered automatically to show only content you have permission to see. If you search for something and get no results, it may exist but be in a space or project you are not a member of. Contact your administrator if you believe you are missing access.
+Results only include content in Spaces and projects you can open. If you expect a result and do not see it, it may be in a Space you are not a member of. Ask a Space admin for access.
 
----
+## Search with CollabaseAI {#semantic-search}
 
-## Recent searches and quick navigation
+Questions in plain language, such as "What did we decide about API versioning?", go to [CollabaseAI](/concepts/collabase-ai). When an administrator enables <Tooltip tip="Search by meaning instead of exact words. CollabaseAI uses it to find the passages that answer a question." cta="Glossary" href="/glossary#semantic-search">semantic search</Tooltip> in the [AI settings](/admin/ai-configuration), CollabaseAI finds the relevant pages, work item descriptions and comments by meaning and answers with links to them. The header search and the Search page match words, not meaning.
 
-The search panel also shows:
+## Related
 
-- **Recent searches** — your last few search terms, for quick re-use
-- **Recent pages** — Docs pages you visited recently, listed before you start typing
-- **Quick links** — keyboard shortcut hints for navigating directly to common sections
-
-These appear when the search panel is open but no text has been entered yet.
-
----
-
-## Tips for better results
-
-- **Be specific.** "Q3 budget approval" finds more precise results than "budget".
-- **Use the task key.** If you know a task's key (e.g. `ENG-42`), searching for it returns the exact task immediately.
-- **Filter by space.** In large installations with many spaces, adding the space filter dramatically reduces noise and speeds up finding what you need.
-- **Try different word forms.** If "onboard" returns no results, try "onboarding" — the index matches on word boundaries.
-- **Semantic search for questions.** If keyword search is not finding the answer to a question, try phrasing it as a question in the search bar — if semantic search is enabled, it will answer from your pages, work items and comments.
-
----
-
-## Search shortcut reference
-
-| Action | Mac | Windows / Linux |
-|---|---|---|
-| Open search | `Cmd + K` | `Ctrl + K` |
-| Move through results | `↑` / `↓` | `↑` / `↓` |
-| Open selected result | `Enter` | `Enter` |
-| Open in new tab | `Cmd + Enter` | `Ctrl + Enter` |
-| Close search | `Escape` | `Escape` |
-
----
-
-## Related pages
-
-- [AI Features](/concepts/ai) — how semantic search works and what it covers
-- [AI Configuration](/admin/ai-configuration) — enabling and configuring semantic search
+<CardGroup cols={2}>
+  <Card title="Filters and query language" icon="filter" href="/concepts/filters">
+    Write queries, save them and run them again.
+  </Card>
+  <Card title="Keyboard shortcuts" icon="keyboard" href="/concepts/keyboard-shortcuts">
+    Open search and other panels from the keyboard.
+  </Card>
+  <Card title="AI features" icon="sparkles" href="/concepts/ai">
+    How semantic search works.
+  </Card>
+  <Card title="Home and favorites" icon="house" href="/concepts/home-and-favorites">
+    Your work items and starred pages at a glance.
+  </Card>
+</CardGroup>

@@ -1,0 +1,227 @@
+---
+title: "Move work from Jira"
+sidebarTitle: "Move from Jira"
+description: "Move Jira projects into Collabase in five phases: map the setup, bring people in, rebuild workflows and types, load the work items, then switch over."
+keywords: ["Jira import", "Jira migration", "import Jira issues", "Jira Cloud", "Jira Data Center", "migrate issues", "CSV import Jira", "Jira to Collabase"]
+---
+
+Your Jira projects run in Collabase: the same work items, in workflows and work item types that match how your teams work. Collabase has no automatic importer for Jira. You rebuild the project setup in Collabase, then bring the open work items across, by hand or with the REST API. Follow the phases in order. Every phase ends with a checkpoint and a link to the next one.
+
+## At a glance
+
+| | |
+|---|---|
+| **Result** | Each Jira project you move has a Collabase project with matching workflows, work item types and fields, and its open work items. |
+| **Time** | About two hours for the setup of the first project. Loading the work items depends on their number and on the path you choose. These are estimates. |
+| **You need** | A system administrator in Collabase. For the API path, someone who can write a small script, and access to the Collabase API. In Jira, someone who can export the issues of each project. |
+| **Edition** | Every installation |
+
+Two paths bring the work items across. Choose in [phase 1](#phase-1-plan):
+
+- **By hand:** you create the open work items in Collabase. Right for a few dozen items.
+- **With the REST API:** a script reads your Jira export and creates the work items, comments and attachments. Right for anything larger. The Collabase API is in closed beta, see [API reference](/api/introduction).
+
+## Requirements
+
+### In Collabase
+
+- A **system administrator** account.
+- Enough **free seats** for the people you bring in, if your licence sets a seat count. See [Licence and editions](/admin/editions-and-license#seats).
+- For the API path: access to the API beta, and a personal API token with the scopes `tasks:write`, `comments:write` and `attachments:write`. See [Creating a token](/api/introduction).
+
+### In Jira
+
+- Read access to every project you move.
+- A way to export the issues of a project with their fields, comments and attachments. Which export your Jira offers depends on your version and plan. Check Atlassian's documentation.
+
+## Overview
+
+| Phase | What you do | Time |
+|---|---|---|
+| [1. Plan](#phase-1-plan) | Map Jira projects, issue types, workflows and fields to Collabase, choose the path. | 45 minutes |
+| [2. Bring people in](#phase-2-people) | Create the accounts and groups the work items will be assigned to. | 15 minutes, longer without a directory |
+| [3. Rebuild the setup](#phase-3-setup) | Create workflows, work item types, fields, the Space and the project. | 1 hour per project |
+| [4. Load the work items](#phase-4-load) | Create the work items by hand or with the API. | Depends on the number of items |
+| [5. Check and switch over](#phase-5-switch) | Compare, freeze Jira, announce. | 30 minutes |
+
+## Phase 1: Plan {#phase-1-plan}
+
+*Phase 1 of 5, about 45 minutes. Next: [Phase 2, Bring people in](#phase-2-people).*
+
+### Map Jira to Collabase
+
+| Jira | Collabase | How it moves |
+|---|---|---|
+| Project | A project inside a <Tooltip tip="The top-level container in Collabase. Pages, projects and their members live inside a Space." cta="Glossary" href="/glossary#space">Space</Tooltip> | You create it, phase 3 |
+| Issue type | Work item type | You create it, phase 3 |
+| Workflow and statuses | Workflow and statuses | You create it, phase 3 |
+| Custom field | Custom field, grouped in a field collection | You create it, phase 3 |
+| Users and groups | Users and groups | Phase 2 |
+| Issue | Work item | Phase 4 |
+| Comment, attachment, issue link | Comment, attachment, link between work items | Phase 4, API path |
+| Sprints, boards, filters | Sprints and boards of the project | You set them up again after phase 4 |
+| Issue history, worklogs | Not moved | Collabase history starts with the import |
+
+### What the API takes for a work item
+
+| Data | In the API |
+|---|---|
+| Title, description as plain text, priority (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`), assignee, start and due date, estimate, work item type | Set when the work item is created |
+| Status | Set afterwards with a transition |
+| Comments, attachments, links to other work items | Added afterwards, one call each |
+| Custom field values, parent and sub-items, sprint | Not available in the API. Set them in Collabase after the load |
+
+### Decide
+
+- **Move open work only.** Closed issues are history. Keep the Jira export of them as an archive instead of loading them.
+- **Merge before you copy.** Jira installations collect near-identical issue types, statuses and fields. Map them to as few Collabase types and fields as your teams need.
+- **Choose the path.** By hand for a few dozen open items, the API for more.
+
+<Check>
+  **Checkpoint.** You have a written mapping for every project you move: the target Space and project, the work item types, the workflow statuses, the fields, and the path. If a Jira field has no use in the mapping, leave it out.
+</Check>
+
+**Next:** [Phase 2, Bring people in](#phase-2-people).
+
+## Phase 2: Bring people in {#phase-2-people}
+
+*Phase 2 of 5, about 15 minutes. Previous: [Phase 1](#phase-1-plan). Next: [Phase 3, Rebuild the setup](#phase-3-setup).*
+
+<Steps>
+  <Step title="Create the accounts">
+    Create an account for everyone who is an assignee in the moved projects, on the **Users** page, or let your directory create them. See [Users and groups](/admin/users-groups) and [User provisioning](/admin/user-provisioning).
+  </Step>
+  <Step title="Create the groups">
+    Create the groups your Spaces will be shared with, or take them from your directory.
+  </Step>
+</Steps>
+
+<Check>
+  **Checkpoint.** Every assignee in your Jira export has a Collabase account. If an account cannot be created because no seat is free, see [How seats are counted](/admin/editions-and-license#seats).
+</Check>
+
+**Next:** [Phase 3, Rebuild the setup](#phase-3-setup).
+
+## Phase 3: Rebuild the setup {#phase-3-setup}
+
+*Phase 3 of 5, about one hour per project. Previous: [Phase 2](#phase-2-people). Next: [Phase 4, Load the work items](#phase-4-load).*
+
+<Steps>
+  <Step title="Create the workflows">
+    In **Settings → Content & Organization → Workflows**, create a workflow with the statuses from your mapping. See [Workflows](/projects/workflows).
+  </Step>
+  <Step title="Create the work item types">
+    In **Settings → Content & Organization → Work Item Types**, create the types from your mapping.
+  </Step>
+  <Step title="Create the fields">
+    In **Settings → Content & Organization → Custom Fields**, create the fields, and group them under **Field Collections**. See [Setting up a project](/projects/project-setup).
+  </Step>
+  <Step title="Create the Space and the project">
+    Create the Space, give the groups from phase 2 their roles, and create the project in it. See [Spaces](/concepts/spaces).
+  </Step>
+</Steps>
+
+<Check>
+  **Checkpoint.** You can create a work item of each type in the new project by hand, and move it through every status of its workflow. If a status or type is missing, add it before you load any data. Delete the test work item afterwards, unless you use it for the IDs in phase 4.
+</Check>
+
+**Next:** [Phase 4, Load the work items](#phase-4-load).
+
+## Phase 4: Load the work items {#phase-4-load}
+
+*Phase 4 of 5. Previous: [Phase 3](#phase-3-setup). Next: [Phase 5, Check and switch over](#phase-5-switch).*
+
+<Tabs>
+  <Tab title="By hand">
+    Create each open work item in the project with its type, title, description and assignee, then move it to its status on the board. See [Tasks](/projects/tasks).
+  </Tab>
+  <Tab title="With the REST API">
+    <Steps>
+      <Step title="Collect the IDs">
+        Create one work item by hand in the project. Read it with `GET /api/v1/tasks`: the answer holds the `projectId`, the `taskTypeId` and the status. `GET /api/v1/tasks/{taskId}/transitions` lists the statuses it can move to. `GET /api/v1/users` lists the user IDs for assignees.
+      </Step>
+      <Step title="Create the work items">
+        For each Jira issue, call `POST /api/v1/tasks` with the project, title, description and the fields from your mapping. Send an `Idempotency-Key` header with the Jira issue key: when your script retries after an error, Collabase returns the first result instead of creating a second work item.
+      </Step>
+      <Step title="Set the status">
+        Call `POST /api/v1/tasks/{taskId}/transition` with the `statusId` from your mapping.
+      </Step>
+      <Step title="Add comments, attachments and links">
+        Use `POST /api/v1/tasks/{taskId}/comments`, `POST /api/v1/tasks/{taskId}/attachments` and `POST /api/v1/tasks/{taskId}/links`.
+      </Step>
+    </Steps>
+    Every API token is limited to a number of requests per minute. When the API answers `429`, wait for the time in `Retry-After` and continue.
+  </Tab>
+</Tabs>
+
+<Check>
+  **Checkpoint.** The number of work items in each Collabase project matches the number of open issues in your Jira export, and each status column holds the expected count. If items are missing, check your script's log for refused requests, see [Troubleshooting](#troubleshooting).
+</Check>
+
+**Next:** [Phase 5, Check and switch over](#phase-5-switch).
+
+## Phase 5: Check and switch over {#phase-5-switch}
+
+*Phase 5 of 5, about 30 minutes. Previous: [Phase 4](#phase-4-load). Next: [Keep it running](#keep-it-running).*
+
+<Steps>
+  <Step title="Set the remaining fields">
+    Set custom field values, parent work items and sprints that the API does not take.
+  </Step>
+  <Step title="Let the teams check">
+    Ask one person per team to compare a sample of work items with Jira.
+  </Step>
+  <Step title="Freeze Jira">
+    Make the moved Jira projects read-only, so nobody keeps working in the old copy.
+  </Step>
+  <Step title="Announce">
+    Tell your teams the address of their new project and the day Jira became read-only.
+  </Step>
+</Steps>
+
+<Check>
+  **Checkpoint.** Your teams work in Collabase and the Jira projects no longer change.
+</Check>
+
+## Keep it running {#keep-it-running}
+
+| Item | What to do |
+|---|---|
+| API token used for the load | Revoke it in your profile under **Security** once the load is done. Every token expires after the period chosen when it was created |
+| Jira export of closed issues | Keep it with your records for as long as your retention rules require |
+
+## Troubleshooting {#troubleshooting}
+
+### API answers
+
+| What your script receives | Cause | What to do |
+|---|---|---|
+| `401` | The token is missing, expired or revoked | Create a new token |
+| `403` | The token lacks a scope, or your account lacks the permission in the Space | Check the token's scopes and your Space role |
+| `404` | Wrong ID, or the work item is in a project you cannot see | Read the IDs again, step 1 of the API path |
+| `422` | A field is invalid, for example a title over 500 characters, or an `Idempotency-Key` reused with another body | Fix the field. Use one key per Jira issue |
+| `429` | Too many requests per minute | Wait for `Retry-After` and continue |
+
+### In Collabase
+
+| What you see | Cause | What to do |
+|---|---|---|
+| An account cannot be created | No seat is free | Free a seat, see [Licence and editions](/admin/editions-and-license#seats) |
+| A work item cannot reach a status | The workflow has no transition to it | Add the transition to the workflow, phase 3 |
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Workflows" icon="git-branch" href="/projects/workflows">
+    Statuses, transitions and work item types.
+  </Card>
+  <Card title="Setting up a project" icon="settings" href="/projects/project-setup">
+    Workflows, types and field collections in the order a project needs them.
+  </Card>
+  <Card title="API reference" icon="code" href="/api/introduction">
+    Tokens, scopes and the work item endpoints.
+  </Card>
+  <Card title="Move content from Confluence" icon="arrow-right" href="/admin/migrate-from-confluence">
+    The matching guide for Confluence spaces.
+  </Card>
+</CardGroup>

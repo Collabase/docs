@@ -108,7 +108,7 @@ Within each space, every member has one of four roles. The Space Admin role gran
 | Role | Fixed capabilities |
 |---|---|
 | **Space Admin** | Manage space members, change space settings, assign a Permission Scheme, archive the space. Full access to all modules in the space. |
-| **Manager** | Configurable via scheme — typically: manage projects, start/complete sprints, approve content |
+| **Manager** | Configurable via scheme, typically: manage projects, start and complete cycles, approve content |
 | **Member** | Configurable via scheme — typically: create tasks, pages, test cases, log time |
 | **Viewer** | Configurable via scheme — typically: read-only access to content |
 
@@ -116,7 +116,7 @@ Space roles are assigned in **Space Settings → Members**.
 
 ---
 
-## Permission Schemes
+## Permission Schemes {#permission-schemes}
 
 A Permission Scheme is a named, reusable template that defines exactly what Managers, Members, and Viewers can do in a space. One scheme can be assigned to many spaces at once — when you update a scheme, all assigned spaces are updated together.
 
@@ -131,7 +131,7 @@ A maximally open scheme — ideal for trusting teams where everyone should be ab
 | Create and edit tasks | Yes | Yes | No |
 | Edit any task (including others') | Yes | Yes | No |
 | Delete tasks | Yes | Yes | No |
-| Create and start sprints | Yes | Yes | No |
+| Create and start cycles | Yes | Yes | No |
 | Configure boards | Yes | Yes | No |
 | Create and edit pages | Yes | Yes | No |
 | Edit any page (including others') | Yes | Yes | No |
@@ -144,14 +144,14 @@ A maximally open scheme — ideal for trusting teams where everyone should be ab
 
 ### Default Software Scheme
 
-A balanced scheme for engineering and product teams — Members can create and edit their own work; Managers control structural operations like sprints and project settings.
+A balanced scheme for engineering and product teams. Members can create and edit their own work; Managers control structural operations like cycles and project settings.
 
 | Capability | Manager | Member | Viewer |
 |---|---|---|---|
 | Create and edit tasks | Yes | Yes | No |
 | Edit any task (including others') | Yes | No | No |
 | Delete tasks | Yes | No | No |
-| Create and start sprints | Yes | No | No |
+| Create and start cycles | Yes | No | No |
 | Configure boards | Yes | No | No |
 | Create and edit pages | Yes | Yes | No |
 | Edit any page | Yes | No | No |
@@ -215,7 +215,7 @@ All schemes are managed under **Admin → Permission Schemes**. You can:
 
 ## Full permission reference
 
-### Projects — Tasks
+### Projects: Tasks
 
 | Permission | Space Admin | Manager | Member | Viewer |
 |---|---|---|---|---|
@@ -232,17 +232,17 @@ All schemes are managed under **Admin → Permission Schemes**. You can:
 Moving a work item to another project also requires **Create tasks** and **View tasks** in the
 destination Space, because the move creates a work item there.
 
-### Projects — Sprints
+### Projects: Cycles
 
 | Permission | Space Admin | Manager | Member | Viewer |
 |---|---|---|---|---|
-| Create sprints | Yes | Yes | No | No |
-| Start a sprint | Yes | Yes | No | No |
-| Complete a sprint | Yes | Yes | No | No |
-| Edit sprint details | Yes | Yes | No | No |
-| Delete sprints | Yes | No | No | No |
+| Create cycle | Yes | Yes | No | No |
+| Start cycle | Yes | Yes | No | No |
+| Complete cycle | Yes | Yes | No | No |
+| Edit cycle | Yes | Yes | No | No |
+| Delete cycle | Yes | No | No | No |
 
-### Projects — Admin
+### Projects: Admin
 
 | Permission | Space Admin | Manager | Member | Viewer |
 |---|---|---|---|---|
@@ -265,7 +265,7 @@ destination Space, because the move creates a work item there.
 | Delete own attachments | Yes | Yes | Yes | No |
 | Delete any attachment | Yes | Yes | No | No |
 
-### Docs — Pages
+### Docs: Pages
 
 | Permission | Space Admin | Manager | Member | Viewer |
 |---|---|---|---|---|
@@ -302,12 +302,11 @@ destination Space, because the move creates a work item there.
 
 ---
 
-## Page-level permissions
+## Page-level permissions {#page-level-permissions}
 
-For pages in the Docs module, you can restrict or grant access beyond the space role — per individual page.
+The space role decides who can read and edit pages in a Space at all. To keep some pages with a smaller circle, put them in a private folder: only the people and groups on the folder's list see it and every page below it. The folder's author, the Space owner and instance administrators always see restricted content. See [Restrict access to pages](/docs/page-restrictions).
 
-| Permission | What it allows |
-|---|---|
+---|---|
 | **View** | The user or group can read the page |
 | **Edit** | The user or group can edit the page |
 
@@ -324,7 +323,7 @@ Groups let you assign space roles and module access to entire teams at once.
     Go to **Admin → Groups** and create a new group. Add the users who belong to it.
   </Step>
   <Step title="Grant space access">
-    In Space Settings → Members, add the group and assign a space role. Every member of the group inherits that role immediately.
+    In **Admin → Groups**, open the group, go to the **Space Access** tab, pick the Space and assign a space role. Every member of the group gets that role immediately. The Space's **Members** settings list the group under **Inherited group access**.
   </Step>
   <Step title="Grant module access">
     In **Admin → Roles & App Access**, assign the group a role for Registry, Intranet, or Time Reports.
@@ -341,7 +340,7 @@ When you add or remove someone from a group, their access across all assigned sp
 |---|---|
 | External contractor — read-only to one space | Space role: **Viewer**, scheme: Default Software |
 | Developer creating tasks and pages | Space role: **Member**, scheme: Open or Default Software |
-| Team lead managing sprints and project settings | Space role: **Manager** |
+| Team lead managing cycles and project settings | Space role: **Manager** |
 | Space administrator | Space role: **Space Admin** |
 | Global IT admin | Instance role: **Admin** |
 | Registry data steward | Registry group: **Editor** or **Admin** |

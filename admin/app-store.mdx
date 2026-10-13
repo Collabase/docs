@@ -1,0 +1,117 @@
+---
+title: "App Store"
+description: "Install and uninstall the apps bundled with Collabase, check what each app needs, and open an installed app's settings."
+keywords: ["Marketplace apps", "Atlassian Marketplace", "apps", "add-ons", "plugins", "install app", "manage apps", "Requirement Traceability Matrix", "RTM"]
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+The App Store adds apps to your Collabase installation. Every app ships with Collabase itself and is built by the same team, so nothing is downloaded from outside and an app looks and behaves like the rest of the product. An installed app appears for everyone in the rail under **More**.
+
+<WhoCanDoThis role="System administrator" edition="Every installation" />
+
+## How apps work {#how-apps-work}
+
+- **Bundled, not downloaded.** The store lists the apps your Collabase version contains. A new app arrives with an [update](/admin/updates), not from a marketplace.
+- **Installed per installation.** Installing switches the app on for the whole installation. There is no per-Space installation.
+- **Uninstalling keeps the data.** An uninstalled app disappears for everyone, but its data and settings stay. Install it again and everything is back.
+- **Recorded.** Every installation and uninstallation is written to the audit log.
+
+## Find an app {#find-an-app}
+
+Open **Settings → Extensibility → App Store**. The header shows how many apps are **Available** and how many are **Installed**.
+
+| Control | Details |
+|---|---|
+| **Search apps** | Searches the app names, the short descriptions on the cards and the vendor names |
+| **Topic** | Shows the apps of one topic, for example **Requirements engineering** |
+| **Price** | **Included** or **Paid**. The label is information only: installing an app does not check a licence |
+| **Vendor** | Shows the apps of one vendor |
+
+Click an app card to open its details. The dialog shows **About this app** and a summary:
+
+| Field | Details |
+|---|---|
+| **Vendor** | Who builds the app |
+| **Topic** | The area the app belongs to |
+| **Price** | **Included** or **Paid** |
+| **Version** | The app's version in your Collabase build |
+| **Requires** | What the installation needs before the app can be installed, for example **Collabase AI enabled**, or **None** |
+| **Status** | **Installed** or **Not installed** |
+
+## Install an app {#install}
+
+<Steps>
+  <Step title="Open the app">
+    In **Settings → Extensibility → App Store**, click the app card.
+  </Step>
+  <Step title="Check the requirements">
+    Read **Requires**. If the installation does not meet a requirement, the dialog says so, for example **This app needs Collabase AI.**, and **Install** stays disabled. Follow the link next to the message, such as **Enable Collabase AI**, then come back.
+  </Step>
+  <Step title="Install">
+    Click **Install**. The dialog shows **Checking requirements**, **Activating the app** and **Finishing setup** and stays open until it is done.
+  </Step>
+</Steps>
+
+<Check>
+  **Checkpoint.** The dialog says **Installed. The app now appears for everyone under More.** and offers **Open app**. Apps with their own settings also show **Settings**. If it says **Installation failed.**, click **Try again**.
+</Check>
+
+<Note>
+  An app that needs Collabase AI stays installed when AI is switched off later. It then tells its users itself that AI is missing.
+</Note>
+
+## Configure an installed app {#configure}
+
+Some apps have settings that apply to the whole installation. Once such an app is installed, its settings page appears in the settings menu right after **App Store**, and the app's dialog in the store shows **Settings**.
+
+The **Requirement Traceability Matrix** app, for example, has the tabs **Overview**, **Generation**, **Transfer** and **Activity**:
+
+| Tab | Details |
+|---|---|
+| **Overview** | When and by whom the app was installed, the version, and the Collabase AI usage of the app this month |
+| **Generation** | **Defaults for new RTMs**, preselected in the form, and **House rules**: your organisation's testing standards, applied to every RTM |
+| **Transfer** | How requirements and test cases are created in Test Management, such as the **Label prefix** and the **Status of created test cases** |
+| **Activity** | Who created, retried or deleted an RTM, and when one finished or failed. Kept in the app, not in the Collabase audit log |
+
+## Uninstall an app {#uninstall}
+
+<Steps>
+  <Step title="Open the app">
+    In **Settings → Extensibility → App Store**, click the app card.
+  </Step>
+  <Step title="Uninstall">
+    Click **Uninstall**, read **Uninstall this app?** and confirm with **Uninstall**.
+  </Step>
+</Steps>
+
+<Check>
+  **Checkpoint.** The message **App uninstalled** appears and the app is gone from **More** for everyone. Its data is kept and returns when you install the app again.
+</Check>
+
+## Server-side extensions {#server-side-extensions}
+
+The App Store holds apps built into Collabase. Extensions that your own developers write as WebAssembly modules are a separate topic, described for developers in [WASM plugins](/developer/wasm).
+
+## Troubleshooting {#troubleshooting}
+
+| What you see | Cause | What to do |
+|---|---|---|
+| **Install** is disabled and the dialog says **This app needs Collabase AI.** | No AI provider is set up for the installation | Click **Enable Collabase AI** and set up a provider, see [AI configuration](/admin/ai-configuration) |
+| **Installation failed.** **The app could not be activated. Please try again.** | Activation did not complete | Click **Try again**. If it fails again, check the logs, see [Troubleshooting](/admin/troubleshooting) |
+| **The app could not be uninstalled** | Uninstalling did not complete | Try again, then check the logs |
+| **No apps found** | The search or a filter excludes every app | Change the search or reset the filters |
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="AI configuration" icon="brain" href="/admin/ai-configuration">
+    Set up the AI provider that apps such as the Requirement Traceability Matrix need.
+  </Card>
+  <Card title="Updates" icon="refresh-cw" href="/admin/updates">
+    New apps and new app versions arrive with Collabase updates.
+  </Card>
+  <Card title="Licence and editions" icon="key-round" href="/admin/editions-and-license">
+    What the Enterprise licence unlocks.
+  </Card>
+</CardGroup>

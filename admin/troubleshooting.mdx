@@ -104,7 +104,7 @@ Collabase connects to PostgreSQL using the `DATABASE_URL` environment variable.
 
 ### Forgot password
 
-Use the **Forgot password** link on the login page. This sends a reset email to the address on file. The link works once and for one hour, and only the newest link counts: requesting a second one ends the first. Accounts that are locked, or managed by a directory or single sign-on, get no email. If no email arrives, check that your mail provider is configured correctly in **Admin → Settings → Mail**. If a link is requested for the same address several times in a row, further requests are ignored for a while.
+Use the **Forgot password** link on the login page. This sends a reset email to the address on file. The link works once and for one hour, and only the newest link counts: requesting a second one ends the first. Accounts that are locked, or managed by a directory or single sign-on, get no email. If no email arrives, check that your mail provider is configured correctly in **Administration → Mail Server**. If a link is requested for the same address several times in a row, further requests are ignored for a while.
 
 ### Account locked
 
@@ -199,19 +199,21 @@ Confirm the group and its members were actually assigned to the Collabase applic
 
 ## Email not sending {#email-not-sending}
 
-Collabase sends emails for password resets, notifications, and invitations. These go through the mail provider configured in **Admin → Settings → Mail**.
+Collabase sends emails for password resets, notifications, and invitations. These go through the mail provider configured in **Administration → Mail Server**.
+
+The mail settings, the test mail and the messages it returns are described in [Outgoing mail and mail templates](/admin/email#troubleshooting).
 
 <Steps>
-  <Step title="Open Admin → Settings → Mail">
+  <Step title="Open Administration → Mail Server">
     Check that a mail provider is configured and enabled.
   </Step>
   <Step title="Verify SMTP settings (if using SMTP)">
     Double-check the host, port, username, and password. Common issues:
-    - Port 465 requires SSL; port 587 uses STARTTLS — make sure the setting matches your server
+    - The screen has no SSL option. Use a port that offers STARTTLS, usually 587. A server that accepts only SSL on port 465 cannot be set up on the screen
     - Some providers require the full email address as the username, not just the local part
   </Step>
   <Step title="Send a test email">
-    Use the **Send Test Email** button in the mail settings to send a test message to your own address. Check your spam folder if it does not arrive.
+    Click **Test Connection** in the mail settings to send a test message to your own address. Check your spam folder if it does not arrive.
   </Step>
   <Step title="Check the application logs">
     ```bash
@@ -371,6 +373,8 @@ Missing or incorrect environment variables are the cause of many startup and aut
 ---
 
 ## Getting help
+
+For licence messages such as **License expired** or **License is bound to another device**, see [Licence and editions](/admin/editions-and-license#troubleshooting).
 
 If you cannot resolve an issue using this guide, [submit a support request](https://collabase.featurebase.app/en) with:
 

@@ -1,153 +1,142 @@
 ---
-title: "Sprints"
-sidebarTitle: "Sprints"
-description: "Group tasks into time-boxed iterations. Plan, run, and review sprints with burndown charts, velocity tracking, and story points."
+title: "Cycles (sprints)"
+sidebarTitle: "Cycles"
+description: "Plan time-boxed cycles, start and complete them, and follow progress with the burndown chart, cycle health and the velocity chart."
+keywords: ["sprints", "scrum", "burndown", "velocity", "sprint report", "iteration", "story points", "estimation"]
 ---
 
-Sprints let you group tasks into time-boxed iterations — typically one to two weeks. Each sprint has a defined start date, end date, and an optional goal. When a sprint starts, the committed story points are snapshotted so you can detect scope changes over the course of the sprint.
+A cycle is a time box, often one or two weeks, with a set of work items the team commits to. Collabase calls sprints **Cycles**. You plan a cycle in the [Backlog](/projects/backlog), run it on the [Board](/projects/board), and review it in the **Cycles** tab.
 
-## Sprint lifecycle
+## Switch cycles on {#enable-cycles}
+
+Cycles are a project feature. A project admin switches them on under **Settings → Project features → Planning & tracking → Cycles**. Projects created from the **Scrum** template have them on.
+
+The **Cycles** tab is visible to members whose role can create, start, complete, edit or delete cycles.
+
+## Cycle lifecycle
+
+```mermaid
+stateDiagram-v2
+  [*] --> Planned: Create Cycle
+  Planned --> Active: Start Cycle
+  Active --> Completed: Complete Cycle
+  Completed --> [*]
+```
 
 | Status | Meaning |
 |---|---|
-| **Planned** | Sprint is created and tasks are being added. Not yet active. Multiple planned sprints can exist at once. |
-| **Active** | Sprint is underway. Only one sprint can be active at a time. Story points are snapshotted at activation. |
-| **Completed** | Sprint is closed. Incomplete tasks are moved to the backlog or the next sprint. Velocity data is recorded. |
+| **Planned** | Created, work is being added. Several planned cycles can exist |
+| **Active** | Running. A project has one active cycle at a time |
+| **Completed** | Closed. Its numbers are kept for the report and the velocity chart |
 
-## Creating a sprint
+The **Cycles** tab groups them in **Active**, **Upcoming** and **Completed**.
+
+## Create a cycle {#create}
 
 <Steps>
-  <Step title="Open the Sprint view">
-    Navigate to your project and select the **Sprints** view from the top navigation.
+  <Step title="Open the dialog">
+    Click **Add Cycle** in the **Cycles** tab, or **Create Cycle** in the Backlog.
   </Step>
-  <Step title="Create a new sprint">
-    Click **+ New Sprint** above the sprint list. A new sprint card appears in Planned status.
+  <Step title="Fill in the cycle">
+    Enter a **Name** and, optionally, a **Cycle Goal**. **Start Date** defaults to today, **Due Date** to today plus the project's **Default cycle duration**.
   </Step>
-  <Step title="Set the sprint details">
-    Give the sprint a name (e.g., "Sprint 14 — Billing Module"). Set the start date and end date. Add a sprint goal if your team uses them.
-  </Step>
-  <Step title="Add tasks">
-    Drag tasks from the Backlog into the sprint panel. Alternatively, open individual tasks and set their Sprint field directly.
+  <Step title="Create it">
+    Confirm, or press `Cmd + Enter` (Mac) or `Ctrl + Enter` (Windows and Linux). The cycle appears under **Upcoming** with the status **Planned**.
   </Step>
 </Steps>
 
-## Sprint fields
+Change a cycle later with **Edit Cycle** in its actions menu.
 
-| Field | Description |
-|---|---|
-| **Name** | Descriptive label for the sprint, e.g., "Sprint 12 — Auth Hardening". |
-| **Start Date** | The date the sprint begins. |
-| **End Date** | The sprint deadline. Used to calculate days remaining. |
-| **Goal** | Optional plain-text description of what the sprint aims to achieve. Shown at the top of the Sprint view during the sprint. |
+## Start a cycle {#start}
 
-## Starting a sprint
-
-<Steps>
-  <Step title="Review the sprint scope">
-    Confirm all tasks intended for the sprint are included. Check story point totals against team capacity.
-  </Step>
-  <Step title="Click Start Sprint">
-    On the sprint card, click **Start Sprint**. A confirmation dialog appears showing the number of tasks and total story points.
-  </Step>
-  <Step title="Confirm activation">
-    Confirm to activate the sprint. The sprint moves to Active status and the committed story points are snapshotted. Any tasks added after this point are counted as scope creep.
-  </Step>
-</Steps>
+Open the actions menu of a planned cycle and choose **Start Cycle**. The cycle starts at once, without a confirmation. Collabase records the committed story points at that moment, so work added later shows as scope change.
 
 <Note>
-  Collabase records the committed story points at the moment the sprint starts. If tasks are added later, the burndown chart reflects the original commitment separately from the added scope.
+  If another cycle is already active, the start does not happen. Complete the active cycle first.
 </Note>
 
-## Running a sprint
+## Follow a running cycle {#follow}
 
-While a sprint is active, the board and sprint view show only the tasks in that sprint. The sprint header displays:
+Expand the active cycle to see its charts.
 
-- **Remaining tasks** — tasks still in a non-Done status
-- **Completed tasks** — tasks in a Done-category status
-- **Days remaining** — countdown to the sprint end date
-- **Sprint goal** — displayed at the top for team alignment
+| Element | What it tells you |
+|---|---|
+| **Cycle Burndown** | Remaining work against the ideal pace, with the lines **Scope**, **Ideal** and **Remaining** and a **Today** marker. The ideal line drops on working days only |
+| **Cycle Health** | **Ahead of schedule**, **On track**, **At risk** or **Behind schedule**, from how far remaining work is above or below the ideal line |
+| Scope change | How many work items were added or removed since the start |
 
-Team members move tasks through status columns as work progresses. The burndown chart updates as tasks are completed.
+The burndown uses the estimates of the work items. When nothing is estimated, it counts work items instead.
 
-## Burndown chart
+On the **Board**, the **Scope** menu shows only the active cycle's work items by default.
 
-The burndown chart tracks how many story points remain each day of the sprint. It shows:
-
-- **Ideal burndown line** — a straight diagonal from the committed point total at day one to zero at the end date
-- **Actual burndown line** — the real story points remaining each day based on completed tasks
-
-When the actual line is above the ideal line, the sprint is at risk of not completing on time. When it is below, the team is ahead of schedule.
-
-## Completing a sprint
+## Complete a cycle {#complete}
 
 <Steps>
-  <Step title="Click Complete Sprint">
-    At the end of the sprint period, click **Complete Sprint** on the active sprint card.
+  <Step title="Choose Complete Cycle">
+    Open the actions menu of the active cycle and choose **Complete Cycle**. The dialog shows how many work items are done.
   </Step>
-  <Step title="Handle incomplete tasks">
-    A dialog shows all tasks that did not reach a Done status. Choose to move them to the backlog or to a specific upcoming sprint.
+  <Step title="Decide where unfinished work goes">
+    Under **Move unfinished work items to**, choose **Move to Backlog** (the default) or a planned cycle.
   </Step>
-  <Step title="Review the sprint summary">
-    After completing, a sprint review summary is generated showing: total tasks completed, story points delivered, velocity for this sprint, and a comparison to recent sprints.
+  <Step title="Confirm">
+    The cycle moves to **Completed** and the unfinished work items move as chosen.
   </Step>
 </Steps>
+
+## Review completed cycles {#review}
+
+| View | Where | Content |
+|---|---|---|
+| Cycle report | **Report** on a completed cycle | **Committed**, **Delivered**, **Completion**, the burndown and the **Scope Change Log** with **Added** and **Removed** work items |
+| **Velocity Chart** | **Completed** sub-tab | **Committed** against **Completed** story points for every cycle, oldest first |
+
+Use the velocity chart to size the next cycle. If the team completes about 30 points per cycle, a cycle planned at 50 points will likely carry work over.
+
+## Estimation {#estimation}
+
+When **Story Points** is switched on under **Project features**, **Settings → Estimation** offers one **Estimation Method** for the whole project:
+
+| Method | Values |
+|---|---|
+| **Story Points** | Fibonacci sequence: 0, 1, 2, 3, 5, 8, 13, 21 |
+| **T-Shirt Sizes** | XS, S, M, L, XL, XXL |
+| **Time (Hours)** | Effort in hours |
+
+<Note>
+  The committed value recorded at the start of a cycle counts story points only. With T-shirt sizes or hours, the burndown and velocity fall back to counting work items for the committed side.
+</Note>
+
+## Subtasks and cycles {#subtasks-and-sprints}
+
+Two settings under **Settings → Cycles** keep parents and children together when they move between the backlog and cycles:
+
+| Setting | Effect |
+|---|---|
+| **Carry child work items** | When a work item is moved, its sub-items move with it |
+| **Carry parent work item** | When a sub-item is moved, its parent moves with it |
+
+Both reach one level only. The same section holds **Default cycle duration** and **Allowed work item types**.
+
+## Who can manage cycles {#permissions}
+
+Each action has its own permission in the Space's [Permission Scheme](/concepts/permissions): **Create cycle**, **Start cycle**, **Complete cycle**, **Edit cycle**, **Delete cycle** and **Manage cycle scope** (moving work in and out).
+
+| Scheme | Create, start, complete, edit, manage scope | Delete |
+|---|---|---|
+| **Open Scheme**, **Default Software Scheme** | Space Admin, Manager, Member | Space Admin, Manager |
+| **Client / Read-only**, **Restricted / Confidential** | Space Admin | Space Admin |
 
 <Warning>
-  Completing a sprint is final. Incomplete tasks are moved out of the sprint immediately. If you need to extend the sprint, update the end date before clicking Complete.
+  **Delete Cycle** runs without a confirmation.
 </Warning>
-
-## Velocity tracking
-
-Velocity is the average number of story points completed per sprint, calculated across the last six completed sprints. It is shown in the Sprint view's velocity chart.
-
-Use velocity to set realistic sprint goals. If your team consistently completes 40 story points per sprint, planning a sprint with 60 points will likely result in carry-over.
-
-| Metric | Description |
-|---|---|
-| **Velocity** | Average story points completed per sprint (last 6 sprints). |
-| **Health: On track** | Actual burndown is at or below the ideal line. |
-| **Health: At risk** | Actual burndown is above the ideal line but within range. |
-| **Health: Off track** | Sprint is significantly behind — unlikely to complete on time at current pace. |
-
----
-
-## Subtasks and sprints {#subtasks-and-sprints}
-
-A project can keep parent and child tasks together when their sprint changes, using two settings under **Project settings → Cycles**:
-
-| Setting | What it does |
-|---|---|
-| **Carry child work items** | When a task moves in or out of a sprint, its subtasks move with it. It also applies when you create a new subtask under a task that is already in a sprint — the subtask is placed in the same sprint automatically. |
-| **Carry parent work item** | When a subtask moves in or out of a sprint, its parent task moves with it. |
-
-If **Carry child work items** is off but the parent task is in a sprint, creating a subtask shows a short prompt offering to add the new subtask to that sprint, so it is never placed there without your say-so. These behaviours are only available to members who are allowed to manage sprint scope (see below).
-
----
-
-## Who can manage sprints
-
-Sprint management actions are restricted by the space's Permission Scheme.
-
-| Action | Space Admin | Manager | Member | Viewer |
-|---|---|---|---|---|
-| Create sprints | Yes | Yes | No | No |
-| Start a sprint | Yes | Yes | No | No |
-| Complete a sprint | Yes | Yes | No | No |
-| Edit sprint name, goal, dates | Yes | Yes | No | No |
-| Delete sprints | Yes | No | No | No |
-| Add tasks to a sprint | Yes | Yes | Yes | No |
-
-<Note>
-  The default **Open Scheme** allows Members to create and start sprints. The **Default Software Scheme** restricts these actions to Managers only. Your space may use a custom scheme with different settings — check with your Space Admin if you are unsure what applies.
-</Note>
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Queues" icon="arrow-right" href="/projects/queues">
-    Named filtered views within a project.
+  <Card title="Backlog" icon="inbox" href="/projects/backlog">
+    Rank work and plan it into cycles.
   </Card>
-  <Card title="Projects" icon="layout-grid" href="/projects/overview">
-    Projects is Collabase's project management app.
+  <Card title="Project reports" icon="chart-column" href="/projects/reports">
+    All charts and reports in one place.
   </Card>
 </CardGroup>

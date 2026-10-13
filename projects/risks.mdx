@@ -1,0 +1,82 @@
+---
+title: "Risk register"
+sidebarTitle: "Risks"
+description: "Record project risks in a Space's risk register, rate probability and impact on a 3 by 3 matrix, and link each risk to the work item that handles it."
+keywords: ["risk register", "risk matrix", "heat map", "probability", "impact", "mitigation", "RAID"]
+---
+
+The risk register lists what could go wrong in the projects of a Space, rated by probability and impact. Every risk sits on a 3 by 3 matrix, so the critical ones stand out. Each risk can name an owner, a project and the work item that handles it.
+
+## How it works {#how-it-works}
+
+Risks are [Registry](/registry/overview) Objects. The register reads them from one Object Type and maps its fields to the roles it needs:
+
+| Role | Required | Use |
+|---|---|---|
+| **Probability** | Yes | 1 to 3 |
+| **Impact** | Yes | 1 to 3 |
+| **Score** | No | Probability times impact |
+| **Status** | No | The state of the risk |
+| **Owner** | No | Who watches the risk |
+| **Review date** | No | When to look at it again |
+| **Project** | No | The project the risk belongs to |
+| **Measure** | No | The work item that handles the risk |
+
+## Set up the register {#set-up}
+
+<Steps>
+  <Step title="Switch on the module">
+    In **Space Settings → Features**, switch on **Risks**.
+  </Step>
+  <Step title="Connect a schema">
+    Open the Space's **Risks** page. Choose **Create from template**, which creates the Project Governance schema with risks, assumptions and decisions. Or accept the **Suggested connection** with **Connect**, or use **Map fields yourself** for a schema you already have.
+  </Step>
+  <Step title="Show risks in projects">
+    In each project, switch on **Risks** under **Settings → Project features**. The project gets a **Risks** tab with its own risks. If the risk type has no project field yet, use **Add project field**.
+  </Step>
+</Steps>
+
+## Read the matrix {#matrix}
+
+| Score | Band |
+|---|---|
+| 1 to 2 | **Low** |
+| 3 to 4 | **Medium** |
+| 5 to 9 | **High**, counted as critical |
+
+Risks without a rating are counted as **… unrated**. Filter the matrix with **All projects** or one project, and with **Critical only**. To re-rate a risk, drag it to another cell.
+
+## Record a risk {#record}
+
+<Steps>
+  <Step title="Start">
+    Click **Record risk**.
+  </Step>
+  <Step title="Describe and rate it">
+    Enter the **Title** ("What could go wrong?"), choose probability and impact, and optionally the owner, the project and the measure.
+  </Step>
+  <Step title="Link the measure">
+    For the measure, search for an existing work item and pick it. The risk then shows **Measure** with the work item key. Create the work item first if it does not exist yet.
+  </Step>
+</Steps>
+
+Recording a risk needs contributor rights on the risk schema in the Registry and the right to edit work items in the Space.
+
+## Troubleshooting {#troubleshooting}
+
+| What you see | What to do |
+|---|---|
+| **No risk schema connected yet** | A Space manager connects a schema, see [Set up the register](#set-up) |
+| **Recording risks needs contributor rights on the risk schema in the registry.** | Ask the schema's owner for contributor rights |
+| **Risks are not tied to projects yet** | Use **Add project field**. It needs the editor right on the schema |
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Portfolios" icon="folder-tree" href="/planning/portfolios">
+    Open and critical risks per project.
+  </Card>
+  <Card title="Registry" icon="database" href="/registry/overview">
+    Where the risks are stored.
+  </Card>
+</CardGroup>

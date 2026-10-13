@@ -83,9 +83,14 @@
                     "pages": [
                       "concepts/spaces",
                       "concepts/space-settings",
+                      "concepts/configuration-model",
                       "concepts/permissions",
                       "concepts/search",
+                      "concepts/filters",
+                      "concepts/home-and-favorites",
+                      "concepts/keyboard-shortcuts",
                       "concepts/documents",
+                      "concepts/notifications",
                       "concepts/ai",
                       "concepts/collabase-ai",
                       "concepts/collabase-ai-skills",
@@ -101,9 +106,16 @@
                         "pages": [
                           "docs/overview",
                           "docs/pages",
-                          "docs/templates",
+                          "docs/editor-elements",
+                          "docs/organize-pages",
+                          "docs/version-history",
+                          "docs/comments",
+                          "docs/collaboration",
                           "docs/suggestions",
-                          "docs/collaboration"
+                          "docs/templates",
+                          "docs/page-restrictions",
+                          "docs/translation",
+                          "docs/export"
                         ]
                       },
                       {
@@ -111,17 +123,29 @@
                         "pages": [
                           "projects/overview",
                           "projects/project-setup",
+                          "projects/project-settings",
                           "projects/templates",
                           "projects/tasks",
-                          "projects/sprints",
-                          "projects/queues",
-                          "projects/sla",
-                          "projects/workflows",
+                          "projects/list-view",
                           "projects/board",
                           "projects/backlog",
+                          "projects/sprints",
                           "projects/roadmap",
-                          "projects/portal",
+                          "projects/reports",
+                          "projects/approvals",
+                          "projects/risks",
+                          "projects/workflows",
+                          "projects/github",
                           "projects/guests"
+                        ]
+                      },
+                      {
+                        "group": "Planning",
+                        "pages": [
+                          "planning/overview",
+                          "planning/portfolios",
+                          "planning/planner-capacity",
+                          "planning/dependencies"
                         ]
                       },
                       {
@@ -306,6 +330,19 @@
                 ]
               },
               {
+                "item": "Move to Collabase",
+                "icon": "arrow-right-left",
+                "groups": [
+                  {
+                    "group": "Move to Collabase",
+                    "pages": [
+                      "admin/migrate-from-jira",
+                      "admin/migrate-from-confluence"
+                    ]
+                  }
+                ]
+              },
+              {
                 "item": "IAM with Microsoft",
                 "icon": "key-round",
                 "groups": [
@@ -330,7 +367,8 @@
                   "installation-kubernetes",
                   "installation-swarm",
                   "first-run",
-                  "desktop-app"
+                  "desktop-app",
+                  "admin/editions-and-license"
                 ]
               },
               {
@@ -342,6 +380,27 @@
                   "admin/user-provisioning",
                   "admin/apps-and-agents",
                   "admin/security-policies"
+                ]
+              },
+              {
+                "group": "Instance settings",
+                "pages": [
+                  "admin/system-settings",
+                  "admin/branding",
+                  "admin/email",
+                  "admin/inbound-mail",
+                  "admin/templates-and-exports",
+                  "admin/audit-log",
+                  "admin/data-retention",
+                  "admin/app-store"
+                ]
+              },
+              {
+                "group": "Work configuration",
+                "pages": [
+                  "admin/custom-fields",
+                  "admin/work-item-types",
+                  "admin/workflows"
                 ]
               },
               {
@@ -363,7 +422,6 @@
                   "admin/hosting",
                   "admin/scaling",
                   "admin/file-storage",
-                  "admin/inbound-mail",
                   "admin/backup",
                   "admin/restore-runbook",
                   "admin/updates",
@@ -680,6 +738,18 @@
     }
   },
   "redirects": [
+    {
+      "source": "/projects/queues",
+      "destination": "/projects/overview"
+    },
+    {
+      "source": "/projects/sla",
+      "destination": "/projects/overview"
+    },
+    {
+      "source": "/projects/portal",
+      "destination": "/projects/overview"
+    },
     {
       "source": "/api/meetings/meetings",
       "destination": "/api/meetings/list-meetings"

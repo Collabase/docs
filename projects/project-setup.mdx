@@ -1,179 +1,154 @@
 ---
-title: "Setting Up a Project"
+title: "Set up projects for a team"
 sidebarTitle: "Setting Up a Project"
-description: "A step-by-step guide to configuring a project from scratch — workflows, task types, field collections, and templates."
+description: "The order in which administrators build fields, work item types, workflows and a template, so a team can start a fully configured project."
+keywords: ["configure work items", "project configuration", "issue types", "workflow scheme", "field configuration", "screens", "setup"]
 ---
 
-A project in Collabase is made up of four building blocks that work together: **workflows**, **task types**, **field collections**, and optionally a **project template** that bundles all three into a reusable starting point. This guide walks you through setting up each piece and explains how they connect.
+This guide takes you from an empty instance to a project that a team can use on day one: its own fields, work item types, workflows and views, packed into a template. Follow the phases in order; each one builds on the previous one.
 
-## The building blocks
+## At a glance
 
-<CardGroup cols={2}>
-  <Card title="Workflows" icon="arrow-right-arrow-left">
-    Define the statuses a task moves through (e.g. Open → In Review → Done) and the transition rules between them.
-  </Card>
-  <Card title="Task Types" icon="tag">
-    Categorize work by kind — Bug, Feature, Change Request, Incident. Each type controls which fields appear or are required.
-  </Card>
-  <Card title="Field Collections" icon="database">
-    Named groups of custom fields that can be attached to a project or bundled into a template. One collection can be reused across many projects.
-  </Card>
-  <Card title="Project Templates" icon="layout-template">
-    A saved configuration that bundles a workflow, task types, field collections, and enabled views. Apply a template when creating a project to skip manual setup.
-  </Card>
-</CardGroup>
+| | |
+|---|---|
+| **Result** | A published project template and a first project created from it |
+| **Time** | About 45 minutes for a first template (an estimate), longer when you design several workflows |
+| **You need** | A system administrator account with a second factor, and a Space where you may create projects |
+| **Edition** | Every installation |
 
----
+## Overview
 
-## Step 1 — Configure a workflow
+| Phase | What you do | Time |
+|---|---|---|
+| [1. Fields](#phase-1-fields) | Create custom fields and group them into collections | 10 minutes |
+| [2. Work item types](#phase-2-types) | Define the kinds of work | 5 minutes |
+| [3. Workflows](#phase-3-workflows) | Design statuses and transitions | 15 minutes |
+| [4. Template](#phase-4-template) | Bundle everything | 10 minutes |
+| [5. Project](#phase-5-project) | Create the project and check it | 5 minutes |
 
-A workflow defines the statuses that tasks in your project can have and how they move between them.
+## Phase 1: Fields {#phase-1-fields}
+
+*Phase 1 of 5, about 10 minutes. Next: [Work item types](#phase-2-types).*
 
 <Steps>
-  <Step title="Open Workflow settings">
-    Navigate to **Admin → Workflows** (for a global workflow reused across projects) or **Project → Settings → Statuses** (for a project-specific workflow).
+  <Step title="Create the fields">
+    In **System Settings → Content & Organization → Custom Fields**, click **New Field** for each value the team must record, for example "Customer" as **Single choice**.
+  </Step>
+  <Step title="Group them">
+    In **Field Collections**, click **New**, name the collection and add the fields. Click **Edit**, switch on **Work Items** under **Applies To**, and switch on **Show on Create** if members should fill them in right away.
+  </Step>
+</Steps>
+
+<Check title="Checkpoint">
+  The collection shows **Tasks** in the list and the fields under **Fields**. If a field is missing, see [Create a field collection](/admin/custom-fields#create-collection).
+</Check>
+
+**Next:** [Phase 2: Work item types](#phase-2-types)
+
+## Phase 2: Work item types {#phase-2-types}
+
+*Phase 2 of 5, about 5 minutes. Previous: [Fields](#phase-1-fields). Next: [Workflows](#phase-3-workflows).*
+
+<Steps>
+  <Step title="Create the types">
+    In **Work Item Types**, click **New Work Item Type** for each kind of work, for example "Bug" and "Feature". Mark the most common one with **Set as default**.
+  </Step>
+  <Step title="Link type-specific fields (optional)">
+    If a collection belongs to one type only, link that type to it under **Work Item Types** in the collection.
+  </Step>
+</Steps>
+
+<Check title="Checkpoint">
+  The **Work Item Types** list shows your types with their **Collections**. Details: [Work item types](/admin/work-item-types).
+</Check>
+
+**Next:** [Phase 3: Workflows](#phase-3-workflows)
+
+## Phase 3: Workflows {#phase-3-workflows}
+
+*Phase 3 of 5, about 15 minutes. Previous: [Work item types](#phase-2-types). Next: [Template](#phase-4-template).*
+
+<Steps>
+  <Step title="Create the workflow">
+    In **Workflows**, click **New Workflow**, name it and click **Open Editor**.
   </Step>
   <Step title="Add statuses">
-    Click **+ New Status** for each stage in your process. Give each status a name (e.g. "Open", "In Progress", "In Review", "Done"), a color, and a category.
-
-    | Category | Used for |
-    |---|---|
-    | **TODO** | Work not yet started. Appears in the backlog. |
-    | **IN_PROGRESS** | Work actively underway. Counted in sprint velocity. |
-    | **DONE** | Completed work. Excluded from SLA tracking. |
+    Click **Add Status** for each status, starting with the one new work items should start in. Set the **Category** of each.
   </Step>
-  <Step title="Set transition rules (optional)">
-    By default tasks can move to any status freely. To enforce a fixed path, open **Settings → Transitions** and define which statuses each status is allowed to move to. Any unlisted transition is blocked.
-  </Step>
-  <Step title="Reorder statuses">
-    Drag statuses into the order you want. The order here matches the left-to-right column order on the Kanban board.
+  <Step title="Draw transitions">
+    Connect the statuses and name each transition. Add validators or transition fields where the process needs them.
   </Step>
 </Steps>
 
-<Note>
-  Workflows created under **Admin → Workflows** are global and can be assigned to multiple project templates. A workflow created inside a specific project's settings only applies to that project.
-</Note>
+<Check title="Checkpoint">
+  The workflow card shows your statuses. If you plan a separate flow for one type, for example bugs, create that workflow too. Details: [Design workflows](/admin/workflows).
+</Check>
 
----
+**Next:** [Phase 4: Template](#phase-4-template)
 
-## Step 2 — Create task types
+## Phase 4: Template {#phase-4-template}
 
-Task types let you distinguish between different kinds of work and control which fields appear for each.
+*Phase 4 of 5, about 10 minutes. Previous: [Workflows](#phase-3-workflows). Next: [Project](#phase-5-project).*
 
 <Steps>
-  <Step title="Open Task Types">
-    Go to **Admin → Task Types** to create a type that is available in every project, or go to **Project → Settings → Task Types** to create one local to a specific project.
+  <Step title="Create the template">
+    In **Project Templates**, click **New Template**. Choose the views and features, add the workflows, map types to workflows, and select the work item types and field collections.
   </Step>
-  <Step title="Add a new type">
-    Click **+ New Task Type**. Set a name (e.g. "Bug", "Feature", "Epic"), an icon, and a color.
-  </Step>
-  <Step title="Configure field rules">
-    For each type, add field rules to control how standard and custom fields behave:
-
-    | Rule | Effect |
-    |---|---|
-    | **Required** | The field must be filled before the task can be saved. |
-    | **Hidden** | The field is not shown in the task form for this type. |
-    | **Ordered** | Sets the display position of the field in the task detail view. |
-
-    Example: a "Bug" type might require "Steps to Reproduce" (a custom text field) and hide "Story Points".
-  </Step>
-  <Step title="Save">
-    Click **Save**. The type is immediately available when creating tasks at the configured level.
+  <Step title="Publish it">
+    Switch on **Published** and click **Create Template**.
   </Step>
 </Steps>
 
-### Inheritance
+<Check title="Checkpoint">
+  The card under **Your templates** shows **Offered**. Details: [Project templates](/projects/templates).
+</Check>
 
-Task types follow a three-level hierarchy. Each level can add types but cannot remove types defined at a higher level.
+**Next:** [Phase 5: Project](#phase-5-project)
 
-| Level | Where to configure | Visible in |
+## Phase 5: Project {#phase-5-project}
+
+*Phase 5 of 5, about 5 minutes. Previous: [Template](#phase-4-template).*
+
+<Steps>
+  <Step title="Create the project">
+    In a Space, click **New Project**, choose your template under **Custom Templates** and click **Continue with** the template name.
+  </Step>
+  <Step title="Name it">
+    Enter the **Project Name** and the **Project key**, the prefix of work item numbers, and click **Create Project**.
+  </Step>
+  <Step title="Check the settings">
+    Collabase opens the project's **Settings** tab. **General** shows **Synced with template**. Under **Fields**, check that your collections are listed as assigned.
+  </Step>
+</Steps>
+
+<Check title="Checkpoint">
+  Create a work item of each type. The fields of your collections appear, and the status buttons follow your workflow. If fields are missing, see [Troubleshooting](#troubleshooting).
+</Check>
+
+## Keep it running
+
+| What | When | Where |
 |---|---|---|
-| **Global** | Admin → Task Types | Every project in the instance |
-| **Space** | Space Settings → Task Types | Every project in that Space |
-| **Project** | Project → Settings → Task Types | That project only |
+| Template changes | Each save reaches linked projects | [Propagation](/projects/templates#propagation) |
+| A team needs its own configuration | On request | [Detach a project](/projects/templates#detach) |
+| A status is no longer used | When the process changes | [Delete statuses](/admin/workflows#delete) |
 
----
+## Troubleshooting {#troubleshooting}
 
-## Step 3 — Create a field collection
+| Where | What you see | Cause | What to do |
+|---|---|---|---|
+| Work item | Custom fields are missing | **Work Items** is off on the collection, or the type is not linked | See [How fields reach a work item](/admin/custom-fields#how-fields-apply) |
+| Project settings | **Fields** shows no assigned collection after creating the project | The collections reach linked projects with the next template save | Open the template, click **Edit Template** and save it once |
+| New Project | The template is missing | It is not published | Switch on **Published** |
+| Work item | Any status can be selected | No workflow applies | Add a workflow to the template or the project |
 
-A field collection is a named group of custom fields. Instead of assigning individual custom fields to each project, you group them once and attach the collection.
-
-<Steps>
-  <Step title="Open Custom Fields">
-    Go to **Admin → Custom Fields**, then open the **Collections** tab.
-  </Step>
-  <Step title="Create a collection">
-    Click **+ New Collection**. Give it a name that describes the use case (e.g. "IT Service Desk Fields", "Bug Report Fields").
-  </Step>
-  <Step title="Add fields to the collection">
-    Click **+ Add Field** within the collection. For each field, choose a type:
-
-    | Field type | Use when you need |
-    |---|---|
-    | **Text** | A short single-line value |
-    | **Textarea** | A longer multi-line value |
-    | **Select** | One option from a fixed list |
-    | **Multi-select** | Multiple options from a fixed list |
-    | **User / Multi-user** | A person or team member picker |
-    | **Date** | A date value |
-    | **Checkbox** | A true/false toggle |
-    | **Number** | A numeric value |
-    | **Rating** | A star or numeric rating |
-    | **Progress** | A percentage or progress bar value |
-    | **URL / Email / Phone** | Formatted contact or link fields |
-    | **Currency** | A monetary amount |
-    | **Location** | A geographic address |
-    | **Registry Object** | Links to a record in the Registry |
-    | **Relation / Object Relation** | Links to another task or object |
-  </Step>
-  <Step title="Assign the collection to a project">
-    Open **Project → Settings → Fields**, click **+ Attach Collection**, and select the collection. All fields in the collection immediately become available on tasks in that project.
-  </Step>
-</Steps>
-
-<Note>
-  A collection can be attached to multiple projects. Changes to the collection (adding or removing fields) automatically apply to all projects it is assigned to.
-</Note>
-
----
-
-## Step 4 — Apply a project template (optional)
-
-If your admin has created project templates, you can skip steps 1–3 entirely by applying a template when you create the project.
-
-<Steps>
-  <Step title="Create a new project">
-    Inside a Space, click **+ New Project**.
-  </Step>
-  <Step title="Choose a template">
-    In the project creation dialog, select a template from the gallery. Each template shows the included workflow, task types, and field collections.
-  </Step>
-  <Step title="Confirm and create">
-    Click **Create Project**. The workflow, task types, and field collections from the template are applied automatically.
-  </Step>
-</Steps>
-
-### Linked vs. detached projects
-
-When a project is created from a template it stays **linked** to that template by default. This means:
-
-- If an admin updates the template (e.g. adds a new task type or changes a field collection), those changes can be propagated to all linked projects.
-- You can see the template link status in **Project → Settings → General**.
-
-If you need to customize the project independently, click **Detach from template** in General settings. After detaching, the project manages its own configuration and no longer receives template updates.
-
-<Warning>
-  Detaching from a template is permanent. The project keeps its current configuration but will no longer receive updates when the template changes.
-</Warning>
-
-## Next steps
+## Related pages
 
 <CardGroup cols={2}>
-  <Card title="Project Templates" icon="arrow-right" href="/projects/templates">
-    Create and manage reusable project configurations that bundle a workflow, task types, and field collections.
+  <Card title="Configuration model" icon="layers" href="/concepts/configuration-model">
+    How instance, Space and project settings relate.
   </Card>
-  <Card title="Projects" icon="layout-grid" href="/projects/overview">
-    Projects is Collabase's project management app.
+  <Card title="Project settings" icon="settings" href="/projects/project-settings">
+    What a project can change for itself.
   </Card>
 </CardGroup>

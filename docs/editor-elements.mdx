@@ -1,0 +1,140 @@
+---
+title: "Editor elements and macros"
+sidebarTitle: "Editor elements"
+description: "Every block, macro and inline element you can insert into a Collabase Docs page, with the slash command that finds it and what it does."
+keywords: ["macros", "slash commands", "insert menu", "table of contents", "children display", "subpages", "draw.io", "mermaid", "PlantUML", "jira issues macro", "work item table", "attachments macro", "status macro", "date", "columns", "expand", "toggle", "callout", "panel", "info panel", "code block", "equation", "LaTeX", "embed", "video", "import Word"]
+---
+
+Everything you add to a page beyond plain text is an editor element: a heading, a table, a diagram or a macro that shows live data from Collabase. This page lists every element the Collabase Docs editor offers and how to find it.
+
+## Three ways to insert an element {#insert}
+
+| Way | How |
+|---|---|
+| **Slash command** | Type `/` in an empty line or after a space, then type part of the element name, for example `/table`. Pick the element with the arrow keys and **Enter**. |
+| **Insert menu** | In the toolbar, click the arrow next to the **+** button. The menu groups every element as in the tables below. |
+| **Macro search** | Click the **+** button itself (tooltip **Insert Macro...**). A dialog opens where you type in **Search macros...**. |
+
+The editor toolbar is shown while you edit a page. Click **Edit** first, see [Pages](/docs/pages#edit-and-save).
+
+<Tip>
+  The slash menu matches more than the element name. `/note` finds **Callout**, `/diagram` finds **Draw.io** and **Code Drawing**, `/child` finds **Subpages**.
+</Tip>
+
+## Basic blocks {#basic-blocks}
+
+| Element | Slash command | What it does |
+|---|---|---|
+| **Text** | `/text` | A plain paragraph |
+| **Heading 1**, **Heading 2**, **Heading 3** | `/heading 1`, `/h2`, `/h3` | Section headings. They feed the **Table of contents**. |
+| **Bulleted list** | `/bulleted list` | A list with bullets |
+| **Numbered list** | `/numbered list` | A numbered list |
+| **To-do list** | `/to-do`, `/checklist` | A list with check boxes. A to-do item that mentions a person assigns a task to that person, see [Comments and mentions](/docs/comments#to-dos). |
+| **Toggle** | `/toggle` | A block that readers expand and collapse |
+| **Code Block** | `/code` | Code with syntax highlighting |
+| **Table** | `/table` | A table. Rows and columns are added and removed from the table itself. |
+| **Blockquote** | `/quote` | A quotation |
+| **Callout** | `/callout`, `/note` | A highlighted box for a note or a warning |
+
+The insert menu also offers **Divider**, a horizontal line between sections.
+
+## Media {#media}
+
+| Element | How to insert | What it does |
+|---|---|---|
+| **Image** | Insert menu, or the image button in the toolbar | Choose **Upload from computer** or **Insert via URL**. You can add a caption below the image. |
+| **Embed** | Insert menu | Paste the address of a video, for example from YouTube or Vimeo, or of a post on X. It plays inside the page. |
+
+Uploaded files can be up to 25 MB each. They are visible only to signed-in members who can open the page. A copied image address does not work outside Collabase.
+
+## Advanced blocks {#advanced-blocks}
+
+| Element | Slash command | What it does |
+|---|---|---|
+| **Table of contents** | `/toc` | Lists the headings of the page. Click an entry to jump to it. |
+| **3 columns** | `/columns` | Splits the content into three columns side by side |
+| **Equation** | `/equation` | A formula in LaTeX notation, as its own block |
+| **Draw.io** | `/drawio`, `/diagram` | A diagram drawn in the draw.io editor |
+| **Subpages** | `/subpages`, `/child` | Lists the pages below this one in the tree. The list updates when pages are added or moved. |
+| **Code Drawing** | `/mermaid`, `/plantuml`, `/graphviz`, `/flowchart` | A diagram written as text in Mermaid, PlantUML, Graphviz or Flowchart syntax |
+
+<Warning>
+  The **Draw.io** editor loads from `embed.diagrams.net`, a service outside your Collabase server. If your network blocks that address, the diagram editor does not open. Ask your administrator before you use it for confidential diagrams.
+</Warning>
+
+## Macros {#macros}
+
+Macros show live content from Collabase inside a page. They update when the data changes, not only when the page is edited.
+
+| Macro | Slash command | What it does |
+|---|---|---|
+| **Collabase Tasks** | `/tasks` | A table of work items from one project. In edit mode, click **Settings** (the gear icon) on the macro to open **Configure Work Item Table**: pick the **Project**, add **Filters**, choose the **Columns** and the number of **Work items per page**, and give the table a **Macro title**. Readers without access to the project see **Access denied**. |
+| **Attachments** | `/attachments` | Lists the files attached to the page. Readers can upload, preview and download files from it. See [Documents and attachments](/concepts/documents#the-attachments-macro). |
+
+## Inline elements {#inline}
+
+Inline elements sit inside a line of text.
+
+| Element | Slash command | What it does |
+|---|---|---|
+| **Date** | `/date` | A date chip |
+| **Status** | `/status` | A colored status badge with your own text, for example `DONE` or `BLOCKED` |
+| **Inline Equation** | `/inline equation` | A LaTeX formula inside a sentence |
+| **Link** | Insert menu | A link to a web address or another page |
+| **Mention** | Type `@` | Mentions a person. See [Comments and mentions](/docs/comments). |
+| **Emoji** | The emoji button in the toolbar | Inserts an emoji |
+
+## Text formatting {#formatting}
+
+Select text to open the floating toolbar, or use the toolbar at the top of the editor.
+
+| Format | Shortcut on macOS | Shortcut on Windows and Linux |
+|---|---|---|
+| **Bold** | `⌘ B` | `Ctrl B` |
+| **Italic** | `⌘ I` | `Ctrl I` |
+| **Underline** | `⌘ U` | `Ctrl U` |
+| **Strikethrough** | `⌘ ⇧ X` | `Ctrl Shift X` |
+| **Code** | `⌘ E` | `Ctrl E` |
+| **Highlight** | `⌘ ⇧ H` | `Ctrl Shift H` |
+| **Superscript** | `⌘ .` | `Ctrl .` |
+| **Subscript** | `⌘ ,` | `Ctrl ,` |
+
+The top toolbar also has **Text color**, **Background color**, font size, alignment, indent and outdent, and **Turn into**, which changes the type of the selected block. It also has undo and redo, and a find and replace for the page.
+
+The editor replaces some character sequences as you type: `->` becomes →, `=>` becomes ⇒, `(c)` becomes © and `1/2` becomes ½. Inside a code block nothing is replaced.
+
+## Import a Word document {#import-word}
+
+<Steps>
+  <Step title="Open the page in edit mode">
+    Click **Edit**. Put the cursor where the content should go.
+  </Step>
+  <Step title="Choose the file">
+    In the toolbar, click **Import**, then **Import from Word**, and pick a `.docx` file.
+  </Step>
+  <Step title="Check the result">
+    The content of the document is inserted at the cursor and the message **Word document imported successfully** appears.
+  </Step>
+</Steps>
+
+If **Word import failed. Is the document processor running?** appears, the service that converts documents is not reachable. Ask your administrator.
+
+The same menu has **Import Confluence Page**. Migrating content from Confluence is described in the administration guide.
+
+## Collabase AI in the editor {#ai}
+
+When your administrator has set up Collabase AI and you have access to it, the slash menu shows an **AI** entry and the toolbar shows **AI commands**. See [Collabase AI](/concepts/collabase-ai).
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Pages" icon="file-text" href="/docs/pages">
+    Create, edit and save pages.
+  </Card>
+  <Card title="Templates" icon="layout-template" href="/docs/templates">
+    Reuse a page structure.
+  </Card>
+  <Card title="Export a page" icon="download" href="/docs/export">
+    Save a page as PDF or Markdown.
+  </Card>
+</CardGroup>

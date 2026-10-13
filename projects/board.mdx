@@ -1,118 +1,96 @@
 ---
-title: "The Board View"
+title: "The Board view"
 sidebarTitle: "Board"
-description: "The Kanban board view — drag tasks between status columns, configure swimlanes, card fields, and color rules."
+description: "Move work items between status columns, filter the board, and set up columns, card colors, card fields and swimlanes for the whole project."
+keywords: ["Kanban", "organize your board", "highlight work items", "swimlanes", "card colors", "quick filters", "columns"]
 ---
 
-The Board is the default view for any project. It organizes tasks as cards arranged in columns, where each column represents a status in your project's workflow. Moving a card from one column to another updates the task's status immediately.
+The **Board** shows the work items of a project as cards in columns, one column per status. Drag a card to another column to change its status. Use it for daily work: what is in progress, what waits for review, what is done.
 
-The Board is best for day-to-day work management — seeing what is in progress, what is blocked, and what is ready for review at a glance.
+## Columns and cards {#columns}
 
-## Columns
+By default every status of the project's [workflow](/projects/workflows) is one column, in workflow order. A project admin can replace this with custom columns that group several statuses (see [Configure the board](#configure-the-board)).
 
-Each status in your project workflow appears as a column on the board, in the order set under **Project → Settings → Statuses**. Cards represent individual tasks.
+Each column header shows the name, the number of cards and an **Add** button. **Add work item** at the bottom of a column opens the create dialog.
 
-- **Drag a card** from one column to another to change its status.
-- **Click a card** to open the task's full detail view.
-- **Click the column header** to collapse that column and give more screen space to others.
+- **Drag a card within a column** to change its order.
+- **Drag a card to another column** to change its status. Columns the workflow does not allow are marked while you drag: **This item cannot be moved to this column due to the workflow configuration.**
+- **Click a card** to open the work item.
 
-The column order on the board matches the status order in your workflow settings. To change the column order, reorder the statuses in **Project → Settings → Statuses**.
+If the transition needs more information, such as a required field, a dialog asks for it before the status changes.
 
-## Swimlanes
+## Filter the board {#quick-filters}
 
-Swimlanes add a second grouping dimension within each column. When a swimlane field is configured, each column is divided into horizontal rows — one row per value of the chosen field.
+The filter pills above the board narrow what you see. They do not change the board for anyone else.
 
-You can group by any of the following fields:
-
-| Swimlane field | Groups tasks by |
+| Filter | Shows |
 |---|---|
-| **Task type** | Each task type gets its own row (Bug, Story, Task, etc.) |
-| **Assignee** | One row per team member plus an Unassigned row |
-| **Priority** | Critical, High, Medium, Low, None |
-| **Label** | One row per label value |
-| **Custom field** | Any configured select or user-type custom field |
+| **Status** | Work items in the selected statuses |
+| **Assignee** | Work items assigned to the selected members |
+| **Label** | Work items with the selected labels |
+| **Priority** | Work items with the selected priorities |
 
-Tasks that do not match any group value appear in the **Remaining** row at the bottom.
+Several values in one filter match any of them. Several filters match only items that pass all of them. **Clear** removes every filter. The same filters apply on **Work Items** and **Timeline**, and they reset when you reload the page.
 
-To enable swimlanes, open **Board Settings** (the gear icon at the top right of the board) and select a field under **Swimlane Field**. Select "None" to disable swimlanes.
+### Scope to a cycle {#scope}
 
-## Card fields
+When the project uses [cycles](/projects/sprints) and one is active, the **Scope** menu appears. It offers **All tasks** and each active cycle. The board opens on the most recently started cycle.
 
-By default, cards show the task title, priority, and assignee avatar. You can configure which additional fields appear on each card.
+## Configure the board {#configure-the-board}
 
-Available card fields:
-
-| Field | What it shows |
-|---|---|
-| **Assignee avatar** | Profile photo of the assigned team member |
-| **Priority** | Priority badge (Critical, High, Medium, Low) |
-| **Due date** | Due date, highlighted in red if overdue |
-| **Labels** | Label tags on the card |
-| **Story points** | Numeric story point estimate |
-| **Task type icon** | The icon for the task's type |
-| **Custom fields** | Any custom field configured for the project's task types |
-
-Configure card fields under **Board Settings → Card Fields**. Toggle each field on or off. Changes apply to all cards on the board.
-
-## Card color rules
-
-Card color rules let you apply a background color to cards based on their field values. Rules are evaluated in order — the first matching rule wins.
-
-Example rules you might configure:
-
-| Condition | Color |
-|---|---|
-| Priority = CRITICAL | Red |
-| Label = "Blocked" | Orange |
-| Assignee = (specific person) | Blue |
-| Due date is overdue | Dark red |
-
-Color rules are helpful for quickly identifying high-priority or blocked work without reading each card individually.
-
-## Quick filters
-
-The toolbar at the top of the board provides quick filters that apply instantly without changing the board configuration:
-
-| Filter | What it shows |
-|---|---|
-| **My Tasks** | Only tasks assigned to you |
-| **Unassigned** | Only tasks with no assignee |
-| **By Priority** | Filter to one or more priority levels |
-| **By Label** | Filter to tasks with a specific label |
-
-You can combine multiple quick filters — all active filters apply at the same time. Clear them with the **Clear Filters** button.
-
-## Configuring the board
+The configuration applies to everyone who opens the project's board. Members whose role has the **Configure board** permission see the **Board Config** button on the Board.
 
 <Steps>
-  <Step title="Open Board Settings">
-    Click the gear icon labeled **Board Settings** at the top right of the board view.
+  <Step title="Open the configuration">
+    On the **Board**, click **Board Config**. The **Board Configuration** dialog opens with the tabs **Columns**, **Card Colors**, **Card Fields**, **Swimlanes** and **Behavior**.
   </Step>
-  <Step title="Choose a Swimlane Field">
-    Under **Swimlane Field**, select the field to group tasks by within each column. Select "None" to show tasks without swimlane grouping.
-  </Step>
-  <Step title="Configure Card Fields">
-    Under **Card Fields**, toggle on the fields you want visible on task cards. Drag to reorder the fields.
-  </Step>
-  <Step title="Add Color Rules">
-    Under **Color Rules**, click **+ Add Rule**. Choose a field, an operator (equals, contains, is empty, etc.), and a value. Pick a color. Drag rules to set their evaluation priority.
+  <Step title="Make your changes">
+    Change one or more tabs, as described below.
   </Step>
   <Step title="Save">
-    Click **Save**. Changes take effect immediately for everyone viewing the board.
+    Click **Save Configuration**. Everyone sees the new board the next time it loads.
   </Step>
 </Steps>
 
+### Columns
+
+Switch on **Custom Columns** to replace the one-column-per-status layout. Drag statuses from **Available Statuses** into **Board Columns**, add a column with **Add Column**, rename it inline, and drag columns into order. A column can hold several statuses.
+
+### Card colors {#card-colors}
+
+Card colors highlight work items that need attention, such as blocked or high-priority items.
+
+| Setting | Options |
+|---|---|
+| **Card Colors** | On or off |
+| **Color Style** | Left Border, Top Border, Full Border, Gradient, Background, Corner |
+| **Color Rules** | Each rule has a color and one or more conditions, joined with AND or OR |
+
+A condition compares **Status**, **Priority**, **Assignee** or **Label** with **is** or **is not**. Rules run top to bottom and the first match wins, so put the most important rule first.
+
+### Card fields
+
+Choose up to three fields to show on each card: **Priority**, **Due Date**, **Labels**, **Work Item Type**, **Story Points**, **Estimate**, or a custom field of the project.
+
+### Swimlanes {#swimlanes}
+
+Swimlanes split the board into horizontal rows. Switch on **Swimlanes**, then click **Add swimlane** and define its conditions with **Add condition**, using the same fields and operators as card colors. A work item goes into the first lane it matches. Items that match no lane appear under **Remaining Work Items**. You can collapse a lane on the board.
+
+### Behavior
+
+**Auto-hide Completed Tasks** hides work items that have been done or closed for longer than **Hide after** a number of days. The default is 14 days, the range 1 to 365.
+
 <Note>
-  Board settings are saved per project and apply to all team members viewing that project's board. Individual members cannot override the shared board configuration.
+  The board has no column limits (WIP limits) and no flag on cards. To highlight blocked work, use a label and a [card color rule](#card-colors).
 </Note>
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Backlog" icon="arrow-right" href="/projects/backlog">
-    The holding area for all tasks not yet assigned to a sprint.
+  <Card title="Work Items table" icon="table-2" href="/projects/list-view">
+    The same work items in a sortable table.
   </Card>
-  <Card title="Projects" icon="layout-grid" href="/projects/overview">
-    Projects is Collabase's project management app.
+  <Card title="Backlog" icon="inbox" href="/projects/backlog">
+    Rank work and plan it into cycles.
   </Card>
 </CardGroup>

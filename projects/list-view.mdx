@@ -1,0 +1,78 @@
+---
+title: "Work Items table"
+sidebarTitle: "Work Items table"
+description: "Review many work items in one table: choose columns, sort, search, filter, expand sub-items and edit fields inline without opening each item."
+keywords: ["list view", "manage work in a list", "table view", "spreadsheet", "inline edit", "columns", "issue navigator"]
+---
+
+The **Work Items** tab shows the work items of a project as a table. Use it when you need to scan, sort or correct many items at once: a triage session, a review of due dates, or cleaning up assignees.
+
+## Columns {#columns}
+
+| Column | Content |
+|---|---|
+| **Key** | The work item key. Clicking it opens the item in a new browser tab |
+| **Type** | The icon of the work item type |
+| **Title** | The title |
+| **Status** | The current status |
+| **Assignee** | The assigned member |
+| **Due Date**, **Start Date** | The scheduled dates |
+| Custom fields | One column per custom field of the project, under the field's label |
+
+Click **Columns** to show or hide columns. **Search fields…** narrows the list when the project has many custom fields. Your choice is stored in your browser for this project, so it does not change the table for others.
+
+## Sort, page and group {#sort}
+
+- **Sort** by clicking the header of **Key**, **Title**, **Status**, **Assignee**, **Due Date** or **Start Date**. Click again to reverse the order. Custom field columns cannot be sorted.
+- **Page size** is 50 rows by default. Choose 25, 50 or 100 per page at the bottom of the table. Your browser remembers the choice per project.
+- **Groups** follow the project's work item groups. Collapse a group with its header. Work items without a group appear under **Uncategorized**.
+
+## Find work items {#find}
+
+Type in **Search work items…** to narrow the table. The filter pills **Status**, **Assignee**, **Label** and **Priority** work as on the [Board](/projects/board#quick-filters) and stay set when you switch between **Work Items**, **Board** and **Timeline**.
+
+While a search or filter is active, the table shows a flat list of matches, so a matching sub-item appears even when its parent does not match.
+
+<Tip>
+  For queries across projects, saved queries, or conditions such as "overdue and unassigned", use [filters and the query language](/concepts/filters).
+</Tip>
+
+## Sub-items {#sub-items}
+
+Sub-items start collapsed under their parent. Click the arrow at the start of a parent row (**Expand subtasks**) to show them, indented with tree lines.
+
+## Edit in the table {#inline-edit}
+
+Click a cell to change it without opening the work item:
+
+| Cell | How it edits |
+|---|---|
+| **Title** | Type, then `Enter` to save or `Escape` to cancel |
+| **Status** | Pick a status the workflow allows. Required transition fields open in a dialog |
+| **Assignee** | Pick a member |
+| **Due Date**, **Start Date** | Pick a date |
+| Custom fields | The editor of the field type |
+
+After a status change, Collabase may offer to change related work items too: **Update related work items too?** Choose **Update status** or **Not now**.
+
+Click anywhere else in a row to open the work item. **Add work item** at the end of the table opens the create dialog.
+
+## What the table does not do {#limits}
+
+| Need | Where to go instead |
+|---|---|
+| Select many rows and change them together | Not available. Edit each row inline |
+| Save the table setup as a shared view | Not available. Column and page size choices stay in your browser |
+| Export to CSV or Excel | Not available |
+| A query language in the table | [Search with filters](/concepts/filters) |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Work items" icon="circle-check" href="/projects/tasks">
+    Fields, the detail view, relations and moving.
+  </Card>
+  <Card title="Timeline" icon="calendar" href="/projects/roadmap">
+    The same work items on a calendar axis.
+  </Card>
+</CardGroup>
