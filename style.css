@@ -244,37 +244,19 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* App landing pages: the hero panel from snippets/app-hero.mdx. A white card with the double edge and a soft
-   lime light in the corner, the action surface of the page. */
+/* The announcement banner is dark with light text. Its text color is fixed by the theme, so the fill gives
+   the contrast, not the text. */
+html body #banner {
+  background: #0b0f0a;
+  border-bottom: 1px solid rgb(204 252 117 / 0.3);
+}
+
+
+
+/* App landing pages, snippets/app-hero.mdx: a two-tone headline with the app icon set into the sentence, one pair
+   of actions, a row of facts on sage chips, and three cards with the double edge. */
 .app-hero {
-  background: #fff;
-  background-image: radial-gradient(60% 90% at 100% 0%, rgb(204 252 117 / 0.35), transparent 70%);
-  border: 1px solid var(--card-hairline);
-  border-radius: 0.875rem;
-  margin: 6px 6px 3rem;
-  outline: 1px solid var(--card-line);
-  outline-offset: 5px;
-  padding: 1.75rem;
-}
-
-.dark .app-hero {
-  background-color: #171717;
-  background-image: radial-gradient(60% 90% at 100% 0%, rgb(204 252 117 / 0.12), transparent 70%);
-  border-color: rgb(255 255 255 / 0.08);
-  outline-color: rgb(255 255 255 / 0.12);
-}
-
-.app-hero-head {
-  align-items: center;
-  display: flex;
-  gap: 1.25rem;
-}
-
-.app-hero-icon img {
-  border-radius: 1.1rem;
-  height: 5rem;
-  margin: 0;
-  width: 5rem;
+  margin: 0.5rem 0 3rem;
 }
 
 .app-hero-pill {
@@ -295,61 +277,40 @@ body {
   color: #e5e5e5;
 }
 
-.app-hero-tagline {
-  color: #171717;
-  font-size: 1.5rem;
+.app-hero-headline {
+  font-size: 2.5rem;
   font-weight: 500;
-  letter-spacing: -0.025em;
-  line-height: 1.2;
-  margin: 0.5rem 0 0;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  margin: 1rem 0 0;
 }
 
-.dark .app-hero-tagline {
-  color: #fafafa;
-}
-
-.app-hero-points {
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-  list-style: none;
-  margin: 1.5rem 0 0;
-  padding: 0;
-}
-
-.app-hero-points li {
-  background: #fafafa;
-  border: 1px solid var(--card-hairline);
-  border-radius: 0.625rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin: 0;
-  padding: 0.875rem 1rem;
-}
-
-.dark .app-hero-points li {
-  background: rgb(255 255 255 / 0.04);
-  border-color: rgb(255 255 255 / 0.08);
-}
-
-.app-hero-point-title {
+.app-hero-lead {
   color: #171717;
-  font-weight: 600;
 }
 
-.dark .app-hero-point-title {
+.app-hero-rest {
+  color: #a3a3a3;
+}
+
+.dark .app-hero-lead {
   color: #fafafa;
 }
 
-.app-hero-point-text {
-  color: #525252;
-  font-size: 0.875rem;
-  line-height: 1.4;
+.dark .app-hero-rest {
+  color: #737373;
 }
 
-.dark .app-hero-point-text {
-  color: #a3a3a3;
+.app-hero-inline-icon {
+  display: inline-block;
+  vertical-align: -0.12em;
+}
+
+.app-hero-inline-icon img {
+  border-radius: 0.6rem;
+  height: 1.05em;
+  margin: 0;
+  width: 1.05em;
 }
 
 .app-hero-actions {
@@ -386,17 +347,231 @@ body {
   color: #fafafa !important;
 }
 
-/* The announcement banner is dark with light text. Its text color is fixed by the theme, so the fill gives
-   the contrast, not the text. */
-html body #banner {
-  background: #0b0f0a;
-  border-bottom: 1px solid rgb(204 252 117 / 0.3);
+/* Facts: a label, then values as chips in forest green on sage 1. */
+.app-hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
 }
 
-.app-hero-points li::before {
+.app-hero-facts li {
+  align-items: center;
+  background: var(--brand-sage-1);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px var(--brand-sage-3);
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.25rem 0.625rem;
+}
+
+.app-hero-facts li::before {
   display: none;
 }
 
-.app-hero-points li {
-  padding-inline-start: 1rem;
+.app-hero-fact-label {
+  color: var(--brand-wald);
+  font-size: 0.8125rem;
+}
+
+.app-hero-fact-value {
+  color: var(--brand-wald);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.dark .app-hero-facts li {
+  background: transparent;
+  box-shadow: 0 0 0 1px rgb(204 252 117 / 0.35);
+}
+
+.dark .app-hero-fact-label,
+.dark .app-hero-fact-value {
+  color: var(--brand-lime);
+}
+
+/* Three cards with the double edge: a small icon box, the title, one sentence. */
+.app-hero-points {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  margin-top: 1.75rem;
+  padding: 6px;
+}
+
+.app-hero-point {
+  background: #fff;
+  border: 1px solid var(--card-hairline);
+  border-radius: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  outline: 1px solid var(--card-line);
+  outline-offset: 5px;
+  padding: 1rem;
+}
+
+.dark .app-hero-point {
+  background: #171717;
+  border-color: rgb(255 255 255 / 0.08);
+  outline-color: rgb(255 255 255 / 0.12);
+}
+
+.app-hero-point-icon {
+  align-items: center;
+  background: var(--brand-sage-2);
+  border-radius: 0.375rem;
+  box-shadow: 0 0 0 1px var(--brand-sage-3);
+  color: var(--brand-wald);
+  display: inline-flex;
+  height: 1.75rem;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  width: 1.75rem;
+}
+
+.app-hero-point-icon svg {
+  background-color: var(--brand-wald) !important;
+}
+
+.dark .app-hero-point-icon {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgb(204 252 117 / 0.35);
+}
+
+.dark .app-hero-point-icon svg {
+  background-color: var(--brand-lime) !important;
+}
+
+.app-hero-point-title {
+  color: #171717;
+  font-weight: 600;
+}
+
+.dark .app-hero-point-title {
+  color: #fafafa;
+}
+
+.app-hero-point-text {
+  color: #525252;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.dark .app-hero-point-text {
+  color: #a3a3a3;
+}
+
+.app-hero-facts li {
+  padding-inline-start: 0.625rem;
+}
+
+/* Home background: a dot field that fades out downwards and the app icons floating at the edges. Decoration only,
+   it sits behind the text and never takes a click. */
+.home-bg {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.home-dots {
+  background-image: radial-gradient(rgb(15 77 56 / 0.18) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  inset: 0;
+  mask-image: radial-gradient(70% 90% at 50% 0%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(70% 90% at 50% 0%, #000 30%, transparent 100%);
+  position: absolute;
+}
+
+.dark .home-dots {
+  background-image: radial-gradient(rgb(204 252 117 / 0.16) 1px, transparent 1.5px);
+}
+
+.home-float {
+  --r: 0deg;
+  animation: home-float 9s ease-in-out infinite;
+  display: none;
+  position: absolute;
+  transform: rotate(var(--r));
+}
+
+.home-float img {
+  border-radius: 1.1rem;
+  height: 4.5rem;
+  margin: 0;
+  width: 4.5rem;
+}
+
+@media (min-width: 1100px) {
+  .home-float {
+    display: block;
+  }
+}
+
+.home-float:nth-child(2) { --r: -8deg; animation-delay: 0s; left: 6%; top: 3rem; }
+.home-float:nth-child(3) { --r: 6deg; animation-delay: -2s; left: 15%; top: 11rem; }
+.home-float:nth-child(4) { --r: -4deg; animation-delay: -4s; left: 4%; top: 18rem; }
+.home-float:nth-child(5) { --r: 8deg; animation-delay: -1s; right: 6%; top: 4rem; }
+.home-float:nth-child(6) { --r: -6deg; animation-delay: -3s; right: 15%; top: 12rem; }
+.home-float:nth-child(7) { --r: 5deg; animation-delay: -5s; right: 4%; top: 19rem; }
+.home-float:nth-child(8) { --r: -3deg; animation-delay: -6s; left: 14%; top: 24rem; }
+
+@keyframes home-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r));
+  }
+  50% {
+    transform: translateY(-10px) rotate(calc(var(--r) + 2deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-float {
+    animation: none;
+  }
+}
+
+/* App landing pages: our hero first, a divider, then the theme's own header (breadcrumb, title, description) and
+   the page content. The page content wrapper dissolves so its children sort with the header. */
+#content-area:has(.app-hero) {
+  display: flex;
+  flex-direction: column;
+}
+
+#content-area:has(.app-hero) > #content {
+  display: contents;
+}
+
+#content-area:has(.app-hero) .app-hero {
+  border-bottom: 1px solid var(--card-line);
+  margin: 0 0 2rem;
+  order: -1;
+  padding-bottom: 2.5rem;
+}
+
+.dark #content-area:has(.app-hero) .app-hero {
+  border-bottom-color: rgb(255 255 255 / 0.12);
+}
+
+#content-area:has(.app-hero) > #content > .home-cards {
+  margin-top: 2rem;
+  order: 1;
+}
+
+#content-area:has(.app-hero) > #pagination {
+  order: 2;
+}
+
+#content-area:has(.app-hero) > :last-child:not(#content):not(#header):not(#pagination) {
+  order: 3;
+}
+
+.app-hero-facts li {
+  padding-left: 0.625rem !important;
+  text-indent: 0;
 }

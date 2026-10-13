@@ -1,0 +1,140 @@
+{
+  "language": "de",
+  "navbar": {
+    "links": [
+      {
+        "label": "English",
+        "href": "https://collabase.ch/docs",
+        "icon": "languages"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Zur Website",
+      "href": "https://collabase.ch"
+    }
+  },
+  "tabs": [
+    {
+      "tab": "Leitfäden",
+      "menu": [
+        {
+          "item": "Willkommen",
+          "icon": "book-open",
+          "groups": [
+            {
+              "group": "Willkommen",
+              "pages": [
+                "de/index",
+                "de/about/story",
+                "de/glossary"
+              ]
+            }
+          ]
+        },
+        {
+          "item": "Erste Schritte",
+          "icon": "rocket",
+          "groups": [
+            {
+              "group": "Erste Schritte",
+              "pages": [
+                "de/getting-started/overview",
+                "de/getting-started/introduction",
+                "de/getting-started/sign-in",
+                "de/getting-started/spaces",
+                "de/getting-started/invite-members",
+                "de/getting-started/projects",
+                "de/getting-started/tasks",
+                "de/getting-started/boards",
+                "de/getting-started/docs-pages",
+                "de/getting-started/search",
+                "de/getting-started/profile"
+              ]
+            }
+          ]
+        },
+        {
+          "item": "HERMES",
+          "icon": "milestone",
+          "groups": [
+            {
+              "group": "HERMES Projektmanagement",
+              "pages": [
+                "de/hermes/overview",
+                "de/hermes/introduction",
+                "de/hermes/phases",
+                "de/hermes/initiation",
+                "de/hermes/concept",
+                "de/hermes/implementation",
+                "de/hermes/deployment",
+                "de/hermes/execution",
+                "de/hermes/closure",
+                "de/hermes/milestones",
+                "de/hermes/roles",
+                "de/hermes/scenarios-and-modules",
+                "de/hermes/outcomes",
+                "de/hermes/collabase-setup"
+              ]
+            }
+          ]
+        },
+        {
+          "item": "IAM mit Microsoft",
+          "icon": "key-round",
+          "groups": [
+            {
+              "group": "IAM mit Microsoft",
+              "pages": [
+                "de/admin/iam-microsoft-entra"
+              ],
+              "tag": "Enterprise"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tab": "Sicherheit und Datenschutz",
+      "groups": [
+        {
+          "group": "Sicherheit und Datenschutz",
+          "pages": [
+            "de/security/overview",
+            "de/security/statement",
+            "de/security/data-protection"
+          ]
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "links": [
+      {
+        "header": "Collabase",
+        "items": [
+          {
+            "label": "Website",
+            "href": "https://collabase.ch"
+          },
+          {
+            "label": "Download",
+            "href": "https://collabase.ch/download"
+          },
+          {
+            "label": "Trust Center",
+            "href": "https://collabase.ch/vertrauen"
+          },
+          {
+            "label": "Support",
+            "href": "https://infometis.atlassian.net/servicedesk/customer/portal/1/group/81"
+          }
+        ]
+      }
+    ]
+  },
+  "banner": {
+    "content": "Die Leitfäden gibt es auf Deutsch. Die App-Referenz und die Administration liegen nur auf Englisch vor.",
+    "dismissible": true
+  }
+}

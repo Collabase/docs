@@ -106,7 +106,8 @@ const navPages = new Set();
 })(docsJson.navigation);
 
 const slugs = new Set(pageFiles.map(slugOf));
-for (const slug of slugs) if (!navPages.has(slug)) report("error", `${slug}.mdx`, 1, "nav", "Page is not in the docs.json navigation");
+const hasGerman = (docsJson.navigation.languages ?? []).some((entry) => entry.language === "de");
+for (const slug of slugs) if (!navPages.has(slug) && (hasGerman || !slug.startsWith("de/"))) report("error", `${slug}.mdx`, 1, "nav", "Page is not in the docs.json navigation");
 for (const slug of navPages) if (!slugs.has(slug) && !/^https?:/.test(slug)) report("error", "docs.json", 1, "nav", `Navigation lists ${slug}, which has no file`);
 
 // ---- pages

@@ -1,26 +1,34 @@
-export const AppHero = ({ app, name, tagline, points, primary, secondary }) => (
+export const AppHero = ({ app, name, lead, rest, facts, points, primary, secondary }) => (
   <div className="app-hero">
-    <div className="app-hero-head">
-      <span className="app-hero-icon">
+    <p className="app-hero-pill">{name}</p>
+    <p className="app-hero-headline">
+      <span className="app-hero-lead">{lead}</span>{" "}
+      <span className="app-hero-inline-icon">
         <img src={`/images/apps/${app}-light.png`} alt={`${name} app icon`} noZoom className="block dark:hidden" />
         <img src={`/images/apps/${app}-dark.png`} alt={`${name} app icon`} noZoom className="hidden dark:block" />
-      </span>
-      <div>
-        <p className="app-hero-pill">Collabase app</p>
-        <p className="app-hero-tagline">{tagline}</p>
-      </div>
-    </div>
-    <ul className="app-hero-points">
-      {points.map((point) => (
-        <li key={point.title}>
-          <span className="app-hero-point-title">{point.title}</span>
-          <span className="app-hero-point-text">{point.text}</span>
-        </li>
-      ))}
-    </ul>
+      </span>{" "}
+      <span className="app-hero-rest">{rest}</span>
+    </p>
     <div className="app-hero-actions">
       <a href={primary.href} className="app-hero-primary">{primary.label}</a>
       <a href={secondary.href} className="app-hero-secondary">{secondary.label}</a>
+    </div>
+    <ul className="app-hero-facts" aria-label={`${name} at a glance`}>
+      {facts.map((fact) => (
+        <li key={fact.label}>
+          <span className="app-hero-fact-label">{fact.label}</span>
+          <span className="app-hero-fact-value">{fact.value}</span>
+        </li>
+      ))}
+    </ul>
+    <div className="app-hero-points">
+      {points.map((point) => (
+        <div key={point.title} className="app-hero-point">
+          <span className="app-hero-point-icon"><Icon icon={point.icon} size={16} /></span>
+          <span className="app-hero-point-title">{point.title}</span>
+          <span className="app-hero-point-text">{point.text}</span>
+        </div>
+      ))}
     </div>
   </div>
 );

@@ -145,8 +145,11 @@ description: "One sentence describing what this page covers and why it matters."
 ```
 [frontmatter]
 
-<img src="/images/apps/<app>-light.png" alt="<App name> app icon" width="60" className="block dark:hidden" />   ← overview pages only
-<img src="/images/apps/<app>-dark.png" alt="<App name> app icon" width="60" className="hidden dark:block" />
+import { AppHero } from "/snippets/app-hero.mdx";   ← app overview pages only
+
+<AppHero app="<app>" ... />   ← app overview pages only, see section 25
+
+<div className="home-cards brand-cards">   ← wraps the rest of an app overview page
 
 One short paragraph, no heading above it. What this is and why it matters.
 
@@ -157,6 +160,8 @@ Content.
 ## Next steps    ← app overview pages only
 
 <CardGroup> linking to subpages
+
+</div>   ← closes the wrapper of an app overview page
 ```
 
 ### Headings
@@ -286,7 +291,7 @@ A page with plain prose and one `<Steps>` block beats a page with five component
 ### App overview page pattern
 
 ```mdx
-<img src="/images/<app>.png" alt="<App Name>" width="60" />
+<AppHero app="<app>" ... />   (section 25)
 
 # App Name
 
@@ -778,6 +783,8 @@ These rules come from the move of the docs to `collabase.ch/docs` (September 202
 
 ### German pages
 
+The German version is paused: `docs.json` lists English only, so there is no language switcher and no link to `/de`. The German pages stay in `de/`, and the removed navigation entry is kept in `scripts/docs-de-navigation.json`. To switch German back on, add that entry to `navigation.languages`, restore the language link in the English `navbar` and on the home page.
+
 - Swiss spelling (ss, never ß), Du-Form, no dashes as a stylistic device.
 - UI and product terms stay English as in the product (Space, Member, Collabase Docs, Object
   Type). Links go to the German page if it exists, otherwise to the English reference.
@@ -1021,6 +1028,7 @@ name starts with a capital letter, and a nested snippet imports its own children
 | `EnterpriseNote` | One line that the feature is part of the Enterprise Edition | none |
 | `WhoCanDoThis` | The two-row **Role** and **Edition** table | `role`, `edition` |
 | `TokenShownOnce` | The warning that a token is shown only once | `days` |
+| `AppHero` | The top block of an app overview page (section 25) | `app`, `name`, `lead`, `rest`, `facts`, `points`, `primary`, `secondary` |
 
 Values from an imported expression do not appear to crawlers and AI tools, so write facts that
 matter as plain text and use snippets for text blocks only.
@@ -1227,8 +1235,40 @@ centered, except the home hero.
 
 ### Header and illustration
 
-The header is flat: white at 95 %, no shadow, no radius. Illustrations are drawn, not scattered: no decorative
-floating icons behind a headline. A picture that says nothing once the title is covered is dropped.
+The header is flat: white at 95 %, no shadow, no radius. Illustrations are drawn, not scattered. A picture that
+says nothing once the title is covered is dropped. The only decoration that floats is the home page background
+below.
+
+### Home background
+
+The home hero carries a dot field that fades out downwards (`home-dots`) and the seven app icons floating at the
+edges (`home-float`). Rules: decoration only (`aria-hidden`, no clicks, never behind text, kept clear of the search
+field), one float loop of 9 seconds with 10px and 2 degrees of travel, each icon with its own offset, hidden below
+1100px width, still with `prefers-reduced-motion`. Light and dark use the matching icon file. Both home pages carry
+the same markup. No other page gets floating icons.
+
+### App landing pages
+
+An app overview page opens with `AppHero` from `snippets/app-hero.mdx`, then the theme's own header (breadcrumb,
+title, description) and the page. `style.css` puts the hero first, draws a divider under it and keeps the theme
+header below. Parts of `AppHero`:
+
+| Part | Content | Source |
+|---|---|---|
+| Pill | The app name | `name` |
+| Headline | Two tones, the app icon set into the sentence: `lead` dark, `rest` grey | `lead`, `rest`, `app` |
+| Actions | A lime primary and a white secondary link to existing pages | `primary`, `secondary` |
+| Facts | Chips on sage 1 with forest text: a label and a number | `facts` |
+| Points | Three cards with the double edge: icon box, title, one sentence | `points` |
+
+Every number in `facts` is counted from the page it sits on or stated there (feature areas, views, roles,
+connectors), and every sentence in `points` restates what the page says. Nothing is invented for the hero. Wrap the
+rest of the page in `<div className="home-cards brand-cards">` so its cards get the same edge and icon box.
+
+### Announcement banner
+
+The theme fixes the banner text to white, so the banner is dark (`#0b0f0a`) with a thin lime line below. Never a
+lime banner: white on lime is unreadable.
 
 ### How the docs apply it
 
@@ -1245,6 +1285,9 @@ default and dark on request, so each rule has a light and a dark form.
 | Green `Badge` | Sage 1 | Lime fill | `<Badge color="green">`, the only badge color with the brand |
 | Buttons | Lime, dark text | Lime, dark text | `colors.dark` in `docs.json` and the text rule in `style.css` |
 | Text and links | Forest `#0f4d38` | Lime | `colors.primary` and `colors.light` in `docs.json` |
+| Home background | Dots in forest at 18 %, app icons light | Dots in lime at 16 %, app icons dark | `home-bg` block in `index.mdx` and `de/index.mdx` |
+| App landing hero | White pill, two-tone headline, lime and white buttons, sage chips, three cards | Dark cards, lime chip outline | `AppHero`, classes `app-hero-*` in `style.css` |
+| Announcement banner | Dark with light text | same | `#banner` in `style.css` |
 | Fonts | Outfit 500 headings, Outfit 400 body | same | `fonts` in `docs.json`, tracking in `style.css` |
 
 Logo and favicon: `images/logo-black.svg` (light mode), `images/logo-white.svg` (dark mode) are the files of the
