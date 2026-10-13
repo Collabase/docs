@@ -346,8 +346,8 @@ description: "..."
   `images/01_Collabase Logo/Collabase App Logos/collabase_appicon_*.png`). Every app overview page
   shows its icon at `width="60"` above the first paragraph; the home page uses the same files as
   `Card` icons. Never use the old full-size icons in `images/` root.
-- **Logos and favicon** in `docs.json` are `images/logo-black.png` (light), `images/logo-white.png` (dark),
-  `images/favicon-light.png` and `images/favicon-dark.png`, scaled copies from the brand
+- **Logos and favicon** in `docs.json` are `images/logo-black.svg` (light), `images/logo-white.svg` (dark)
+  and `images/favicon.png`, copies from the brand
   folder. Never reference `images/01_Collabase Logo/` directly: the folder is 174 MB, contains an
   archive of retired logos and is excluded in `.mintignore` and `.gitignore`.
 - Do not embed screenshots in subpages unless a UI state cannot be explained without one.
@@ -1215,9 +1215,9 @@ default and dark on request, so each rule has a light and a dark form.
 | Hero line icons | Sage 3 | Lime, low opacity | Tailwind `text-[#b5d2a0] dark:text-[#ccfc75]` on the svg |
 | Text and links | Dark green `#3f5a2e` | Lime | `colors.primary` and `colors.light` in `docs.json` |
 
-Logo and favicon: `images/logo-black.png`, `images/logo-white.png`, `images/favicon-light.png` and
-`images/favicon-dark.png` are the neutral variants from the brand folder, used until the brand files with
-the lime mark and the core gradient exist. Replace the four files and keep the names.
+Logo and favicon: `images/logo-black.svg` (light mode), `images/logo-white.svg` (dark mode) and
+`images/favicon.png` are the files of the brand set `Collabase_Logo_E`: the mark in mint and lime, with the
+wordmark in black or white. Replace a file and keep its name when the brand set changes.
 
 Not used: green in callouts, in code blocks, or gold anywhere. Screenshots of the product show the product's
 own colors and are not recolored.
