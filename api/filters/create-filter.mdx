@@ -1,0 +1,58 @@
+---
+title: "Create filter"
+description: "Save a CQL query as a private filter of the token owner, with the kind of object, the sort and the columns."
+api: "POST /api/v1/filters"
+---
+
+Creates a filter that belongs to the token owner. It is private until you [share it](/api/filters/replace-filter-shares).
+
+<Info>
+  Scope `filters:write`.
+</Info>
+
+## Body parameters
+
+<ParamField body="name" type="string" required>
+  1 to 100 characters. Two filters may have the same name.
+</ParamField>
+
+<ParamField body="description" type="string | null">
+  Up to 500 characters.
+</ParamField>
+
+<ParamField body="entity" type="string" required>
+  The kind of object the query runs on, as for [Search](/api/search/search).
+</ParamField>
+
+<ParamField body="cqlText" type="string" required>
+  The query. It must parse; a query with a syntax error answers `422`.
+</ParamField>
+
+<ParamField body="sort" type="object[]" default="[]">
+  Up to five keys, each `{ "field", "direction" }`.
+</ParamField>
+
+<ParamField body="columns" type="string[]" default="[]">
+  The columns to show; none means the kind's standard columns.
+</ParamField>
+
+## Response
+
+Status `201` with the filter, in the shape of [List filters](/api/filters/list-filters).
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/filters" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Open invoices",
+    "entity": "task",
+    "cqlText": "status != \"Done\" AND label IN (\"invoice\")",
+    "sort": [{ "field": "dueDate", "direction": "ASC" }],
+    "columns": ["key", "title", "dueDate"]
+  }'
+```
+
+</RequestExample>

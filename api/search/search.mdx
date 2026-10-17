@@ -1,0 +1,104 @@
+---
+title: "Search objects"
+sidebarTitle: "Search"
+description: "Search one kind of object with a CQL query, choose the fields and the sort, and page through the results with a cursor."
+api: "POST /api/v1/search"
+---
+
+Returns one page of the objects a query finds for the token owner.
+
+<Info>
+  Scope `search:read` and the scope of the kind of object, for example `tasks:read` for work items. See the [overview](/api/search/overview).
+</Info>
+
+## Body parameters
+
+<ParamField body="entity" type="string" required>
+  The kind of object: `task`, `page`, `project`, `portfolio`, `registryObject`, `registryType`, `testCase`, `testRun`, `testPlan`, `testSuite` or `rtmCase`.
+</ParamField>
+
+<ParamField body="cqlText" type="string" default="">
+  The query. Empty finds every object the token owner may see.
+</ParamField>
+
+<ParamField body="sort" type="object[]">
+  Up to five sort keys, each `{ "field": "dueDate", "direction": "ASC" }`. Do not combine it with an `ORDER BY` in `cqlText`.
+</ParamField>
+
+<ParamField body="columns" type="string[]">
+  The fields to return for each object. The kind's standard columns when left out. A custom field is `cf.<key>`.
+</ParamField>
+
+<ParamField body="limit" type="integer" default="50">
+  Objects per page, at most 100.
+</ParamField>
+
+<ParamField body="cursor" type="string">
+  The `nextCursor` of the previous answer, for the same query and sort. Leave it out for the first page.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="object[]" required>
+      Each object has `id`, `href` (where it opens in the app) and `cells`, one entry per requested column. A cell has a `kind` (`text`, `number`, `date`, `option`, `user`, `boolean`, `list`, `empty` and a few more) and the value for that kind. People are names, options are their labels and dates are ISO 8601; there is no raw ID in a cell.
+    </ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>
+      Pass it as `cursor` for the next page; `null` on the last page.
+    </ResponseField>
+    <ResponseField name="columns" type="string[]" required>
+      The columns of the cells, in order.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/search" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "entity": "task",
+    "cqlText": "priority = \"high\" AND status != \"Done\"",
+    "sort": [{ "field": "dueDate", "direction": "ASC" }],
+    "columns": ["key", "title", "dueDate"],
+    "limit": 2
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "items": [
+      {
+        "id": "cm2task0001abcd",
+        "href": "/finance/projects/invoices/tasks/INV-7",
+        "cells": {
+          "key": { "kind": "text", "text": "INV-7" },
+          "title": { "kind": "text", "text": "Send the invoice" },
+          "dueDate": { "kind": "date", "iso": "2026-10-20" }
+        }
+      }
+    ],
+    "nextCursor": "eyJoYXNoIjoi...",
+    "columns": ["key", "title", "dueDate"]
+  }
+}
+```
+
+</ResponseExample>
+
+## Errors
+
+| Status | Code | Meaning |
+|---|---|---|
+| 401 | `UNAUTHENTICATED` | No valid token, or it expired or was revoked |
+| 403 | `INSUFFICIENT_SCOPE` | The token lacks `search:read` or the scope of the kind |
+| 422 | `SYNTAX_ERROR`, `UNKNOWN_FIELD`, `UNKNOWN_VALUE`, `INVALID_CURSOR` and others | The query or the body is wrong. `details` names each problem with its place in the text |
+| 429 | `RATE_LIMITED` | The token made too many requests |

@@ -1,0 +1,88 @@
+---
+title: "Quick filters and columns"
+sidebarTitle: "Quick filters"
+description: "Narrow the board, the table and the timeline with one row of chips, share the selection as a link, and choose the columns you see in each list."
+keywords: ["quick filters", "chips", "only mine", "recently changed", "columns", "board filter", "table columns", "share a filter"]
+---
+
+Every list of work items has the same row of chips above it. A chip switches a condition on or off, and the list shows only the work items that pass all switched-on chips. The row is the same on the **Board**, **Work Items**, **Timeline** and the portfolio Gantt, so you learn it once.
+
+## The chips {#chips}
+
+| Chip | Shows |
+|---|---|
+| **Your project's quick filters** | The filters a project lead named, such as **Only bugs** |
+| **Only mine** | Work items assigned to you |
+| **Recently changed** | Work items changed in the last 7 days |
+| **Status**, **Assignee**, **Priority**, **Label** | Work items with the values you tick |
+| **Sprint** | Work items in the [cycles](/projects/sprints) you tick. Shown when the project uses cycles. |
+| **More fields** | Any other field of the project, including custom fields. The search finds a field among many. |
+
+A field chip opens a list of values to tick. For a person, **Me** stands for yourself. Several values in one chip match any of them. Several chips match only the work items that pass all of them.
+
+Type in the text field to narrow by words in the title, the description and comments. The **Work Items** table keeps its own search above the table instead.
+
+**Reset** switches every chip off. **Open as filter** opens the **Search** page with the same selection written as a [query](/concepts/filters), so you can refine it there.
+
+## Share a selection {#share}
+
+The address of the page holds your chips. Copy the link and send it: the person who opens it sees the same chips and the work items **they** may see. Your selection also stays when you switch between the views of a project.
+
+A chip that no longer fits is crossed out and explains why:
+
+| Reason | What happened |
+|---|---|
+| **This field does not exist in this view** | The field was deleted, or the link comes from another project |
+| **A selected value no longer exists** | An option you had ticked was deleted |
+| **You do not have access to this filter** | The filter belongs to someone else |
+| **This filter no longer works** | A field the filter uses was deleted |
+
+Such a chip does not narrow the list. Click it to remove it.
+
+## Define quick filters for a project {#define}
+
+A project lead gives the team their own chips.
+
+**Who can do this:** members who may edit the project settings. For a portfolio, its owner, an owner above it, and administrators.
+
+<Steps>
+  <Step title="Open the quick filters">
+    In the project, open **Settings** and choose **Quick filters** under **Workflow**. For a portfolio, open the **Gantt** view of the portfolio and click **Quick filters**.
+  </Step>
+  <Step title="Name the filter and write its query">
+    Enter a **Name** and the **Query**. The editor suggests the fields and values you may use. The query narrows the project's work items, so it needs no project clause.
+  </Step>
+  <Step title="Add it">
+    Click **Add quick filter**. The chip appears for everyone who opens the views.
+  </Step>
+</Steps>
+
+Drag a filter by its handle to change the order of the chips. A project or portfolio holds at most 10 quick filters. Projects you create from a [project template](/projects/templates) start with the quick filters the template carries.
+
+<Note>
+  A quick filter cannot contain a sort order. The view keeps its own order.
+</Note>
+
+## Choose your columns {#columns}
+
+**Columns** in a list opens the field picker. Search all fields of the project, add the ones you want, and move them up or down. **Reset to default** brings back the usual columns.
+
+| List | Where the choice applies |
+|---|---|
+| **Work Items** table | The columns of the table in this project |
+| **Timeline** | The label columns left of the calendar, in this project |
+| Portfolio Gantt | The label columns of the portfolio Gantt |
+| **Search** page | The columns of the results |
+
+Your choice is saved to your account, so it follows you to every browser and device and does not change the list for others. The timeline and the portfolio Gantt show fields other than the usual ones as read-only text. A value that links to something you may not see shows **No access**, never the data behind it.
+
+## Large lists {#large}
+
+A quick filter answers with at most 5,000 work items. If more match, the list shows the first ones and says so: narrow the filter to see the rest. A chart or list shows the extra columns for the first 1,000 rows.
+
+## Related pages {#related}
+
+- [Filters and query language](/concepts/filters)
+- [Search](/concepts/search)
+- [Board](/projects/board)
+- [Work Items table](/projects/list-view)

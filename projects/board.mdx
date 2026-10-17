@@ -21,20 +21,15 @@ If the transition needs more information, such as a required field, a dialog ask
 
 ## Filter the board {#quick-filters}
 
-The filter pills above the board narrow what you see. They do not change the board for anyone else.
+The chips above the board narrow what you see. They do not change the board for anyone else. The board loads only the work items that pass the chips: **Only mine**, **Recently changed**, **Status**, **Assignee**, **Priority**, **Label**, the quick filters your project lead defined, and any other field under **More fields**.
 
-| Filter | Shows |
-|---|---|
-| **Status** | Work items in the selected statuses |
-| **Assignee** | Work items assigned to the selected members |
-| **Label** | Work items with the selected labels |
-| **Priority** | Work items with the selected priorities |
+Several values in one chip match any of them. Several chips match only the items that pass all of them. **Reset** switches every chip off. The same chips apply on **Work Items** and **Timeline**, and the address of the page holds them, so a link shows the same selection. See [Quick filters and columns](/concepts/quick-filters).
 
-Several values in one filter match any of them. Several filters match only items that pass all of them. **Clear** removes every filter. The same filters apply on **Work Items** and **Timeline**, and they reset when you reload the page.
+### Show one cycle {#scope}
 
-### Scope to a cycle {#scope}
+When the project uses [cycles](/projects/sprints), the **Sprint** chip lists them. Tick the cycle you want to see, or several. The board opens on all work items.
 
-When the project uses [cycles](/projects/sprints) and one is active, the **Scope** menu appears. It offers **All tasks** and each active cycle. The board opens on the most recently started cycle.
+If more than 5,000 work items match, the board shows the first ones and tells you to narrow the filter.
 
 ## Configure the board {#configure-the-board}
 

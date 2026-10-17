@@ -18,7 +18,9 @@ All worklog attribute configuration is in **Admin → Time Tracking → Worklog 
 | **SELECT** | One value chosen from a predefined list of options. | Activity type (Consulting, Development, Support), service category, phase. |
 | **NUMBER** | A numeric value. | Travel distance, quantity, unit count. |
 | **BOOLEAN** | A yes/no checkbox. | Travel day indicator, on-call flag, internal flag. |
-| **URL** | A clickable web link. | Link to an external ticket, invoice, or reference document. |
+| **URL** | A clickable link of up to 8192 characters. Accepts `http`, `https`, `elodms` (ELO document links) and `mailto`. | Link to an external ticket, invoice, or reference document. |
+
+A new link must start with its scheme, for example `https://`. Collabase does not add one for you and rejects addresses such as `www.example.ch`. A link saved earlier stays as it is until you change it.
 
 ---
 

@@ -1,0 +1,82 @@
+---
+title: "List filters"
+description: "Page through the saved filters the token owner may read: their own, those shared with them, their favorites or all of them."
+api: "GET /api/v1/filters"
+---
+
+Returns one page of filters, newest change first.
+
+<Info>
+  Scope `filters:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="tab" type="string" default="mine">
+  `mine`, `shared` (shared with the token owner), `favorites` or `all`.
+</ParamField>
+
+<ParamField query="q" type="string">
+  Part of the name of the filter.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page. Leave it out for the first page.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="50">
+  Filters per page, at most 100.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="object[]" required>
+      Filters with `id`, `name`, `description`, `entity`, `cqlText`, `sort`, `columns`, `ownerId`, `ownerName`, `isOrphaned`, `isFavorite`, `level` (`OWNER`, `EDIT` or `VIEW`: what the token owner may do), `shareCount` (only for the owner), `createdAt` and `updatedAt`.
+    </ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>
+      Pass it as `cursor` for the next page; `null` on the last page.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/filters?tab=shared&limit=20" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "items": [
+      {
+        "id": "7d1c9a0e-5b0e-4a63-9a1f-0c3a5d2f9e11",
+        "name": "Open invoices",
+        "description": null,
+        "entity": "task",
+        "cqlText": "status != \"Done\" AND label IN (\"invoice\")",
+        "sort": [{ "field": "dueDate", "direction": "ASC" }],
+        "columns": ["key", "title", "dueDate"],
+        "ownerId": "u1",
+        "ownerName": "Paul Meier",
+        "isOrphaned": false,
+        "isFavorite": false,
+        "level": "VIEW",
+        "shareCount": 0,
+        "createdAt": "2026-10-12T08:00:00.000Z",
+        "updatedAt": "2026-10-14T09:30:00.000Z"
+      }
+    ],
+    "nextCursor": null
+  }
+}
+```
+
+</ResponseExample>

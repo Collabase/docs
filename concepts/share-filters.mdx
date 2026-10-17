@@ -1,0 +1,64 @@
+---
+title: "Share a filter"
+sidebarTitle: "Share a filter"
+description: "Let people, groups, a Space, a project or everyone use a saved filter, choose whether they may only run or also change it, and hand it over."
+keywords: ["share a filter", "saved filter", "filter permissions", "hand over a filter", "shared with me", "filter owner"]
+---
+
+A saved filter is yours until you share it. Sharing gives others the **query**, not your results: everyone who opens the filter sees the work items, pages and other objects **they** may see.
+
+## Share a filter {#share}
+
+<Steps>
+  <Step title="Open the filter">
+    Open the filter from **My Filters** and click **Share**.
+  </Step>
+  <Step title="Choose who">
+    Pick **Person**, **Group**, **Space** or **Project**, click **Add** and search by name. **Everyone signed in** adds all people with an account who are not guests.
+  </Step>
+  <Step title="Choose what they may do">
+    Each entry is **Can use** or **Can edit**. Click **Save**.
+  </Step>
+</Steps>
+
+| Access | What the person can do |
+|---|---|
+| **Can use** | Run the filter, star it for themselves, save a copy under their own name |
+| **Can edit** | Everything above, and change the query, the columns and the sort order of the shared filter |
+
+Only the owner shares a filter, hands it over or deletes it. Someone with **Can edit** cannot do these.
+
+If a person has several entries, for example directly and through a group, the higher access counts.
+
+## Who can be chosen {#targets}
+
+- **Space and project:** you can choose only the ones you see yourself. A Space or project shares the filter with everyone who may see it, including people who join later.
+- **Person and group:** any active person or group.
+- **Guests:** a guest can be named as a person and then opens the filter. A guest is not reached through a group, a Space or **Everyone signed in**, and cannot share a filter.
+
+When you share with a person or a group, the people it reaches get a notification. Sharing with a Space, a project or everyone sends none, so a large audience is not flooded. Raising **Can use** to **Can edit** sends none either.
+
+Removing an entry takes effect with the next request: the person no longer finds the filter.
+
+## Hand a filter over {#hand-over}
+
+The owner can hand a filter to a person who can already open it, for example before leaving a team. After the handover the previous owner keeps only the access the filter gives them through its entries.
+
+## When the owner is removed {#orphaned}
+
+When a person is deleted from Collabase, their **private** filters are deleted with them. Filters they **shared** stay, with **(deleted user)** as owner, and everyone they were shared with keeps using them. People with **Can edit** can still change the query, but nobody can share it further.
+
+Administrators open **Administration → Infrastructure → Search filters**. The list shows every filter with its owner and how it is shared, and **Only filters without an owner** narrows it to filters that need a new owner. An administrator hands a shared filter to a person who can open it, or deletes it. The query of a private filter stays hidden from administrators.
+
+Administrators with an account receive a notification each time a removed person leaves shared filters behind.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Filters and query language" icon="filter" href="/concepts/filters">
+    Build a query, save it and run it again.
+  </Card>
+  <Card title="Permissions" icon="shield" href="/concepts/permissions">
+    Why everyone sees only their own results.
+  </Card>
+</CardGroup>

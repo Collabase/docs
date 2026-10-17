@@ -52,6 +52,8 @@ For each area you choose a level: **Read**, **Read and write**, or **Administer*
 | Time reports | `reports:read` |
 | Meetings | `meetings:read`, `meetings:write` |
 | Notifications | `notifications:read`, `notifications:write` |
+| Search | `search:read` (and the scope of the kind of object searched) |
+| Saved filters | `filters:read`, `filters:write` |
 
 Each endpoint states the scope it needs. Automation connections hold stored credentials, so reading or changing them needs `automation:admin`.
 

@@ -5,21 +5,31 @@ description: "Write precise queries for work items and pages in the Collabase Qu
 keywords: ["JQL", "CQL", "advanced search", "save a search as a filter", "saved filter", "filter", "query", "ORDER BY", "currentUser"]
 ---
 
-A filter is a saved search. You build the search on the **Search** page, either with the visual builder or by writing a query in the <Tooltip tip="The query syntax of Collabase, for example dueDate < today() AND author = currentUser()." cta="Glossary" href="/glossary#cql">Collabase Query Language (CQL)</Tooltip>, and save it under a name. Run it again from **My Filters** whenever you need the current answer.
+A filter is a saved search. You build the search on the **Search** page, either with simple filters or by writing a query in the <Tooltip tip="The query syntax of Collabase, for example dueDate < today() AND author = currentUser()." cta="Glossary" href="/glossary#cql">Collabase Query Language (CQL)</Tooltip>, and save it under a name. Run it again from **My Filters** whenever you need the current answer.
 
 ## Build a query {#build}
 
-Open the [Search page](/concepts/search#search-page). The **Filters** area has two modes:
+<Steps>
+  <Step title="Open the Search page">
+    Open the [Search page](/concepts/search#search-page) and pick the kind of object to search, for example work items or pages.
+  </Step>
+  <Step title="Choose how to write the query">
+    The page has two modes:
 
-| Mode | How it works |
-|---|---|
-| **Basic** | Pick a **Type**, then **Add filter** to add conditions under **Where**. **Match** decides whether **ALL (AND)** or **ANY (OR)** conditions must hold. Click **Apply** |
-| **Advanced** | Type a CQL query. The field suggests fields, operators and values as you type |
+    | Mode | How it works |
+    |---|---|
+    | **Filters** | Click **Add filter**, pick a field, how to compare it and a value. Every filter must match |
+    | **Query** | Write the query as text. The editor suggests fields, comparisons and values as you type and underlines what is wrong |
+  </Step>
+  <Step title="Run it">
+    Click **Search**. The results appear in the table below.
+  </Step>
+</Steps>
 
-Switch with the button that shows the other mode. A query with `ORDER BY`, a function, nested parentheses or mixed `AND` and `OR` cannot go back to **Basic**; the button explains why.
+The two modes show the same filter. A query with `OR`, `NOT`, groups, `ORDER BY` or a function cannot be shown as simple filters, so it stays in **Query** mode.
 
 <Note>
-  Advanced queries search **work items** and **pages**. Without a type, a query searches work items.
+  A query searches the kind of object you picked: work items, pages, projects, portfolios, Registry objects and test management objects. The field tables below cover work items and pages. The fields of the other kinds are listed on the [Search page](/concepts/search#search-page).
 </Note>
 
 ## Query syntax {#syntax}
@@ -118,30 +128,48 @@ Work items sort by `title`, `priority`, `storyPoints`, `dueDate`, `startDate`, `
 
 <Steps>
   <Step title="Build the search">
-    On the Search page, add at least one condition, choose a type, or write an advanced query.
+    On the Search page, choose a kind of object and add filters, or switch to **Query** mode and write a query. A query that has an error cannot be saved.
   </Step>
   <Step title="Save it">
-    Click **Save as Filter**. In **Save search as filter**, enter a name and click **Save Filter**.
+    Click **Save filter**. Enter a name, and a description if you like, and click **Save**. The query, the type, the sort order and the columns are saved as they are on the page.
   </Step>
   <Step title="Find it again">
-    The filter appears on **My Filters** and in the **Filters** sidebar.
+    The filter opens from **My Filters**, and from the **Filters** sidebar when you star it.
   </Step>
 </Steps>
 
-Saving always creates a new filter. To change a filter, run it, adjust the query and save it under a new name, then delete the old one.
+An open filter shows its name. When you change the query, the filter shows **Unsaved changes**:
+
+| Button | What it does |
+|---|---|
+| **Save** | Overwrites the filter with what is on the page. Only the owner and people who may edit it see it |
+| **Save as…** | Saves what is on the page as a new filter and leaves the original as it was |
+
+If someone else saved the filter after you opened it, **Save** does not overwrite their work. You choose **Reload** to take their version, or **Save as a copy** to keep your changes.
+
+A filter you open from a link, and that is not shared with you, shows **This filter is not available**.
 
 ## Use your filters {#my-filters}
 
-Open **Filters** from the app drawer, then **View all filters** to reach **My Filters**.
+Open **Filters** from the app drawer. The sidebar lists your starred filters. **View all filters** opens **My Filters**.
+
+| Tab | Shows |
+|---|---|
+| **Mine** | The filters you own |
+| **Shared with me** | Filters others shared with you, directly, through a group, a Space, a project or with everyone |
+| **Favorites** | The filters you starred |
+| **All I can see** | All of the above |
+
+Each row shows the owner, how the filter is shared and when it changed. A filter whose owner was removed shows **(deleted user)** as its owner.
 
 | Action | How |
 |---|---|
-| Run a filter | **Run** opens the Search page with the saved query |
+| Run a filter | Click its name |
 | Find a filter | **Search filters by name...** |
-| Mark a favorite | The star icon (**Favorite**) |
-| Delete a filter | **Delete**, then confirm **Delete filter?** This cannot be undone |
+| Mark a favorite | The star icon (**Favorite**). The star is yours alone, also on a filter someone shared |
+| Delete a filter | **Delete**, then confirm. Only the owner deletes a filter. This cannot be undone |
 
-Filters are personal. Only you see your filters, and there is no way to share one. To give a team the same view, share the query text, for example in a page.
+To give others the same filter, [share it](/concepts/share-filters). To take the results into a spreadsheet, [export them as CSV](/concepts/export-results).
 
 ## Troubleshooting {#troubleshooting}
 
@@ -157,6 +185,12 @@ Filters are personal. Only you see your filters, and there is no way to share on
 <CardGroup cols={2}>
   <Card title="Search" icon="search" href="/concepts/search">
     Header search and the Search page.
+  </Card>
+  <Card title="Share a filter" icon="share" href="/concepts/share-filters">
+    Let people, groups, a Space or a project use your filter.
+  </Card>
+  <Card title="Subscribe to a filter" icon="bell" href="/concepts/subscribe-to-filters">
+    Get the results of a filter by email.
   </Card>
   <Card title="Work Items table" icon="table" href="/projects/list-view">
     Search, filter and edit many work items of one project.

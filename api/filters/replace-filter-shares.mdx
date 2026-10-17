@@ -1,0 +1,34 @@
+---
+title: "Replace filter shares"
+description: "Replace the whole list of who a saved filter is shared with, in one step, with up to 100 entries."
+api: "PUT /api/v1/filters/{id}/shares"
+---
+
+Replaces the list of shares as a whole: what you send is what the filter is shared with afterwards, and an entry you leave out is removed. Only the owner may.
+
+<Info>
+  Scope `filters:write`.
+</Info>
+
+## Body parameters
+
+<ParamField body="shares" type="object[]" required>
+  Up to 100 entries. Each has `kind` (`USER`, `GROUP`, `SPACE`, `PROJECT` or `ALL`), `level` (`VIEW` or `EDIT`) and `targetId`, which every kind but `ALL` needs and `ALL` must not have.
+</ParamField>
+
+A Space or a project can be named only if the token owner sees it. A guest cannot share. People and groups you name are notified; a Space, a project and `ALL` are not. See [Share a filter](/concepts/share-filters).
+
+## Response
+
+The new list, in the shape of [Get filter shares](/api/filters/get-filter-shares). `403` when the token owner is not the owner or names a Space or project they cannot see, `422` for a list that does not fit.
+
+<RequestExample>
+
+```bash cURL
+curl -X PUT "https://your-collabase.ch/api/v1/filters/7d1c9a0e-5b0e-4a63-9a1f-0c3a5d2f9e11/shares" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "shares": [{ "kind": "ALL", "level": "VIEW" }, { "kind": "USER", "targetId": "u7", "level": "EDIT" }] }'
+```
+
+</RequestExample>

@@ -1,0 +1,94 @@
+---
+title: "Aggregate"
+description: "Count, add up or average the objects a query finds, grouped by up to two fields, for dashboards and reports."
+api: "POST /api/v1/search/aggregate"
+---
+
+Returns the count, the sum or the average of a query, optionally grouped by one or two fields.
+
+<Info>
+  Scope `search:read` and the scope of the kind of object. See the [overview](/api/search/overview).
+</Info>
+
+## Body parameters
+
+<ParamField body="entity" type="string" required>
+  The kind of object, as for [Search](/api/search/search).
+</ParamField>
+
+<ParamField body="cqlText" type="string" default="">
+  The query that selects the objects.
+</ParamField>
+
+<ParamField body="measure" type="object" default='{ "kind": "count" }'>
+  What to compute: `{ "kind": "count" }`, or `{ "kind": "sum", "field": "estimate" }` or `{ "kind": "avg", "field": "storyPoints" }` over a number field. An average leaves objects without a value out.
+</ParamField>
+
+<ParamField body="groupBy" type="object[]">
+  Up to two axes, each `{ "field": "status" }`. A date field takes an `interval` of `day`, `week` (ISO week, starting Monday) or `month`, read in the time zone of the token owner.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="total" type="object" required>
+      `count` and `value` of the whole result. An object with several values on an axis, such as two labels, is in each of its groups and counts once here.
+    </ResponseField>
+    <ResponseField name="groups" type="object[]" required>
+      Each group has `values` (one per axis), `count` and `value`. A value is `{ "kind": "value", "key", "label" }`, `empty`, `inaccessible` (a related object the token owner may not open), `deletedUser` or `other`.
+    </ResponseField>
+    <ResponseField name="truncated" type="boolean" required>
+      True when the answer stopped at its bound of group rows.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+A result with more than 50 groups on an axis names the 50 largest and gathers the rest into one group of kind `other`, always last.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/search/aggregate" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "entity": "task",
+    "cqlText": "updated >= -30d",
+    "measure": { "kind": "sum", "field": "estimate" },
+    "groupBy": [{ "field": "status" }, { "field": "assignee" }]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "total": { "count": 14, "value": 62 },
+    "groups": [
+      {
+        "values": [
+          { "kind": "value", "key": "st1", "label": "In progress" },
+          { "kind": "value", "key": "u7", "label": "Mia Keller" }
+        ],
+        "count": 5,
+        "value": 21
+      }
+    ],
+    "truncated": false
+  }
+}
+```
+
+</ResponseExample>
+
+## Errors
+
+| Status | Code | Meaning |
+|---|---|---|
+| 401 | `UNAUTHENTICATED` | No valid token |
+| 403 | `INSUFFICIENT_SCOPE` | The token lacks `search:read` or the scope of the kind |
+| 422 | `FIELD_NOT_SUMMABLE`, `FIELD_NOT_GROUPABLE`, `TOO_MANY_AXES`, `UNKNOWN_FIELD` and others | The measure or an axis is wrong |

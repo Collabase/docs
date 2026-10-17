@@ -1,0 +1,73 @@
+---
+title: "List fields"
+description: "Read the fields the token owner can use in a query, as columns or for sorting on one kind of object, custom fields included."
+api: "GET /api/v1/search/fields"
+---
+
+Returns the fields of a kind of object that the token owner may use, system and custom, with the operators each one takes.
+
+<Info>
+  Scope `search:read` and the scope of the kind of object. See the [overview](/api/search/overview).
+</Info>
+
+## Query parameters
+
+<ParamField query="entity" type="string" required>
+  The kind of object, as for [Search](/api/search/search).
+</ParamField>
+
+<ParamField query="projectId" type="string">
+  Include the custom fields of this project.
+</ParamField>
+
+<ParamField query="spaceId" type="string">
+  Include the custom fields of this Space.
+</ParamField>
+
+## Response
+
+<ResponseField name="data.fields" type="object[]" required>
+  Each field has `key` (the name in a query, `cf.<key>` for a custom field), `origin` (`system` or `custom`), `label` (the display name of a custom field), `valueType`, `operators`, `sortable`, `columnable`, `groupable`, `summable` and, for a field with fixed values, `options`.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/search/fields?entity=task" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "fields": [
+      {
+        "key": "dueDate",
+        "origin": "system",
+        "label": null,
+        "valueType": "date",
+        "operators": ["eq", "gt", "gte", "lt", "lte", "is_empty", "is_not_empty"],
+        "sortable": true,
+        "columnable": true,
+        "groupable": true,
+        "summable": false,
+        "options": null
+      }
+    ]
+  }
+}
+```
+
+</ResponseExample>
+
+## Errors
+
+| Status | Code | Meaning |
+|---|---|---|
+| 401 | `UNAUTHENTICATED` | No valid token |
+| 403 | `INSUFFICIENT_SCOPE` | The token lacks `search:read` or the scope of the kind |
+| 422 | `VALIDATION_ERROR`, `UNKNOWN_ENTITY` | The kind is missing or unknown |

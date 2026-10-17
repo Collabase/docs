@@ -1,0 +1,66 @@
+---
+title: "Export results as CSV"
+sidebarTitle: "Export results"
+description: "Download the results of a search or a saved filter as a CSV file for a spreadsheet, with your columns and sort order, and see what happens with large results."
+keywords: ["export", "CSV", "download results", "spreadsheet", "Excel", "export filter", "export search"]
+---
+
+Every search and every saved filter can be downloaded as a **CSV file**. The file holds the results you see, with the columns and the sort order you chose, and opens in Excel, Numbers or any other spreadsheet.
+
+You get only what you may see yourself. A work item, page or registry object you have no access to is not in your file, even if the filter was shared with you by someone who sees more.
+
+## Export the results {#export}
+
+<Steps>
+  <Step title="Run the search or open the filter">
+    Open **Search** or a saved filter under **My Filters**. Choose the tab of the kind of object you want, for example **Work items**.
+  </Step>
+  <Step title="Choose columns and sort order">
+    Pick the columns with the column menu and click a column header to sort. The file follows what is on screen.
+  </Step>
+  <Step title="Click Export CSV">
+    Click the download icon (**Export CSV**) above the results. A result of up to 1,000 rows downloads at once.
+  </Step>
+</Steps>
+
+The export covers **all** results of the query, not only the page on screen. The **All** tab cannot be exported, because it mixes several kinds of objects. Open one kind first.
+
+## What the file contains {#content}
+
+- **Headers** in your language, as in the table.
+- **Readable values**: people by name, choices by their label, yes and no as words, never an internal ID.
+- **Dates** in the format `2026-10-16T08:00:00.000Z` (ISO 8601), which spreadsheets sort and calculate with.
+- **Several values in one cell**, such as labels, are separated by a semicolon and a space.
+
+The file is UTF-8 with a byte order mark, so Excel shows umlauts and accents correctly.
+
+| Your language | Cells are separated by |
+|---|---|
+| English | comma |
+| German, French, Italian | semicolon |
+
+A text cell that starts with `=`, `+`, `-` or `@` gets an apostrophe in front. Otherwise a spreadsheet could read the text as a formula and run it. Numbers are never changed.
+
+## Large results {#large}
+
+A result of more than 1,000 rows is not downloaded at once. Collabase prepares it in the background and shows **Your export is being prepared**. You can keep working. When the file is ready, you get a notification with a link that downloads it.
+
+- The file stays available for **24 hours**, then it is deleted.
+- Only **you** can download your export. Another person who opens the link sees **not found**.
+- A file holds at most **100,000 rows**. If your result is larger, the file ends after 100,000 rows with a note in the last line, and the notification says so too. Narrow the query to get the rest.
+- If an export fails, you get no notification. Run the export again.
+
+<Note>
+  Large exports need the background queue (Redis) of your installation. Without it, only results of up to 1,000 rows can be exported, and a larger result shows a message asking you to narrow the search.
+</Note>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Filters and query language" icon="filter" href="/concepts/filters">
+    Build a query, save it and run it again.
+  </Card>
+  <Card title="Share a filter" icon="share" href="/concepts/share-filters">
+    Give others the same query.
+  </Card>
+</CardGroup>

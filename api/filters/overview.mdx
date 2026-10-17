@@ -1,0 +1,24 @@
+---
+title: "Saved filters API"
+sidebarTitle: "Overview"
+description: "Read, create, change, share and run saved filters from another system through /api/v1/filters, as the person who issued the token."
+---
+
+The Saved filters API gives integrations the filters of the person who issued the token: the ones they own and the ones shared with them. Every call runs as that person, with their rights.
+
+## Scopes
+
+| Scope | Allows |
+|---|---|
+| `filters:read` | [List](/api/filters/list-filters), [get](/api/filters/get-filter) and [run](/api/filters/filter-results) filters, and [read who a filter is shared with](/api/filters/get-filter-shares) |
+| `filters:write` | [Create](/api/filters/create-filter), [change](/api/filters/update-filter), [delete](/api/filters/delete-filter) and [share](/api/filters/replace-filter-shares); includes `filters:read` |
+
+Running a filter also needs the scope of the kind of object the filter searches, for example `tasks:read` for a filter of work items. Without it the answer is `403 INSUFFICIENT_SCOPE`. Existing tokens do not get the new scopes automatically; issue a new token under **Profile → Security**.
+
+## Conventions
+
+- **A filter you may not read does not exist.** Its ID answers `404 NOT_FOUND`, exactly like an ID that does not exist.
+- **Who may do what.** The owner and people with the right to edit change a filter's query. Only the owner shares or hands over a filter, and only the owner deletes it; an administrator also deletes a shared one. See [Share a filter](/concepts/share-filters).
+- **Changes name their version.** `PATCH` carries the `updatedAt` you read as `baseUpdatedAt`. A filter changed since answers `409 CONFLICT` and nothing is overwritten.
+- **Pages.** Lists are paged with a cursor. `limit` defaults to 50 and is cut down to 100.
+- **Strict bodies.** Unknown fields are rejected with `422 VALIDATION_ERROR`.

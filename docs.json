@@ -87,6 +87,10 @@
                       "concepts/permissions",
                       "concepts/search",
                       "concepts/filters",
+                      "concepts/share-filters",
+                      "concepts/export-results",
+                      "concepts/subscribe-to-filters",
+                      "concepts/quick-filters",
                       "concepts/home-and-favorites",
                       "concepts/keyboard-shortcuts",
                       "concepts/documents",
@@ -134,6 +138,7 @@
                           "projects/reports",
                           "projects/approvals",
                           "projects/risks",
+                          "projects/project-costs",
                           "projects/workflows",
                           "projects/github",
                           "projects/guests"
@@ -466,6 +471,29 @@
                     "group": "Work Items",
                     "pages": [
                       "api/tasks/move-work-item"
+                    ]
+                  },
+                  {
+                    "group": "Search",
+                    "pages": [
+                      "api/search/overview",
+                      "api/search/search",
+                      "api/search/aggregate",
+                      "api/search/fields"
+                    ]
+                  },
+                  {
+                    "group": "Saved filters",
+                    "pages": [
+                      "api/filters/overview",
+                      "api/filters/list-filters",
+                      "api/filters/create-filter",
+                      "api/filters/get-filter",
+                      "api/filters/update-filter",
+                      "api/filters/delete-filter",
+                      "api/filters/filter-results",
+                      "api/filters/get-filter-shares",
+                      "api/filters/replace-filter-shares"
                     ]
                   },
                   {

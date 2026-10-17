@@ -1,0 +1,30 @@
+---
+title: "Get filter"
+description: "Read one saved filter the token owner may read, with what they may do with it."
+api: "GET /api/v1/filters/{id}"
+---
+
+Returns one filter. A filter the token owner may not read answers `404`.
+
+<Info>
+  Scope `filters:read`.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The ID of the filter.
+</ParamField>
+
+## Response
+
+The filter, in the shape of [List filters](/api/filters/list-filters). `level` says what the token owner may do: `OWNER`, `EDIT` or `VIEW`.
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/filters/7d1c9a0e-5b0e-4a63-9a1f-0c3a5d2f9e11" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

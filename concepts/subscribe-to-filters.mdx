@@ -1,0 +1,71 @@
+---
+title: "Subscribe to a filter"
+sidebarTitle: "Subscribe to a filter"
+description: "Get the current results of a saved filter by email, daily or on a weekday, for yourself or for a group, and stop the emails with one click."
+keywords: ["subscribe to a filter", "filter subscription", "email digest", "saved filter", "weekly report", "unsubscribe", "group subscription"]
+---
+
+A subscription sends you the current results of a [saved filter](/concepts/filters) by email, so you do not have to open the filter to see what changed. Each email shows the first 50 results and links to the filter.
+
+## Subscribe {#subscribe}
+
+<Steps>
+  <Step title="Open the filter">
+    Open the filter from **My Filters** and click the bell, **Subscribe by email**.
+  </Step>
+  <Step title="Choose when">
+    Pick **Daily** or **Weekly**, the weekday for a weekly one, and the time. The time zone is the one your browser uses.
+  </Step>
+  <Step title="Subscribe">
+    Click **Subscribe**. The list above the form shows the subscription, when it goes out and how the last run went.
+  </Step>
+</Steps>
+
+Everyone who can open a filter can subscribe to it for themselves. You can have one subscription per filter. To change the time, end the subscription with **End subscription** and subscribe again.
+
+<Note>
+  Guests cannot subscribe to filters.
+</Note>
+
+## What you receive {#digest}
+
+You get the results **you** may see, not the results of the person who set the subscription up. The email is in your language and shows a count, up to 50 rows with the filter's columns, and the button **Open filter**.
+
+- **No results, no email.** An email only goes out when there is something to show.
+- **No access, no email.** If the filter is no longer shared with you, or you left the group it was shared through, you get nothing from the next run on.
+- **Time changes.** A subscription at 02:30 on the day the clocks go forward runs at the first valid time after the gap. When the clocks go back, it runs once.
+
+Collabase checks for due subscriptions every 15 minutes, so an email can arrive up to 15 minutes after the time you chose.
+
+## Subscribe a group {#groups}
+
+People who own a filter or may edit it, and who belong to a group themselves, can subscribe the group. Click **For a group**, choose the group and click **Subscribe**. Every current member of the group gets an email with their own results. Members who join later are included.
+
+Every member can leave a group's subscription with the link at the end of the email. Leaving ends it for that member only; the others keep getting it. Administrators can see group subscriptions in the [audit log](/admin/audit-log): who subscribed which group, and when it ended.
+
+## Stop an email {#unsubscribe}
+
+Every email has **Stop this email** at its end. The link opens a page; click **Stop emails** to confirm. Opening the link alone changes nothing. If you subscribed yourself, the subscription ends. If a group did, you leave it and the others keep theirs.
+
+## When the filter stops working {#broken}
+
+When a filter cannot run any more, for example because a field it uses was deleted, nobody gets its email. Whoever set the subscription up gets one email saying so, with a link to correct the filter. If that person is gone, the owner of the filter is told, or the administrators when the filter has no owner. The subscription shows **the filter no longer runs** until the filter works again. Once corrected, the next run sends as usual.
+
+## When emails do not go out {#troubleshooting}
+
+| Symptom | Cause | What to do |
+|---|---|---|
+| The sheet says **Sending is inactive** | The background service is not configured on this instance | Ask your administrator; subscriptions are kept and go out once it runs |
+| Last run shows **some mails could not be sent** | The mail server refused an email | Ask your administrator to check the [email setup](/admin/email) |
+| No emails at all | The mail category **Searches and filters** is off for you or for everyone | Check your [notification settings](/getting-started/profile#notifications) |
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Filters and query language" icon="filter" href="/concepts/filters">
+    Build a query, save it and run it again.
+  </Card>
+  <Card title="Share a filter" icon="share" href="/concepts/share-filters">
+    Let people, groups, a Space or a project use your filter.
+  </Card>
+</CardGroup>

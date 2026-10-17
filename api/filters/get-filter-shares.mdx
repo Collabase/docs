@@ -1,0 +1,39 @@
+---
+title: "Get filter shares"
+description: "Read who a saved filter is shared with: people, groups, a Space, a project or everyone signed in, each with their access."
+api: "GET /api/v1/filters/{id}/shares"
+---
+
+Returns the list of shares. Only the owner may ask; anyone else who can read the filter gets `403`, anyone who cannot gets `404`.
+
+<Info>
+  Scope `filters:read`.
+</Info>
+
+## Response
+
+<ResponseField name="data" type="object[]" required>
+  Each share has `kind` (`USER`, `GROUP`, `SPACE`, `PROJECT` or `ALL`), `targetId` (empty for `ALL`), `level` (`VIEW` or `EDIT`) and `label`, the name of the target.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/filters/7d1c9a0e-5b0e-4a63-9a1f-0c3a5d2f9e11/shares" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": [
+    { "kind": "GROUP", "targetId": "g1", "level": "VIEW", "label": "Finance team" },
+    { "kind": "USER", "targetId": "u7", "level": "EDIT", "label": "Mia Keller" }
+  ]
+}
+```
+
+</ResponseExample>

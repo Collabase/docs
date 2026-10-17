@@ -1,0 +1,30 @@
+---
+title: "Delete filter"
+description: "Delete a saved filter with its shares, favorites and subscriptions; only its owner or an administrator may."
+api: "DELETE /api/v1/filters/{id}"
+---
+
+Deletes a filter for good. Its shares, favorites and email subscriptions go with it. A quick filter that used it shows as not accessible.
+
+<Info>
+  Scope `filters:write`. The owner deletes their filter; an administrator also deletes a shared one.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The ID of the filter.
+</ParamField>
+
+## Response
+
+`200` with `{ "data": { "success": true } }`. `403` for someone who may only read or edit it, `404` for a filter the token owner may not read.
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/filters/7d1c9a0e-5b0e-4a63-9a1f-0c3a5d2f9e11" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

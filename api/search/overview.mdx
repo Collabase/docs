@@ -1,0 +1,39 @@
+---
+title: "Search API"
+sidebarTitle: "Overview"
+description: "Search work items, pages, projects, registry objects and test objects with CQL from another system, page through the results and count or group them."
+---
+
+The Search API runs the same searches as the Search page, for the person who issued the token. Every call runs as that person: it finds only what they may open and counts only that.
+
+## Scopes
+
+A search needs two things: `search:read`, and the scope of the **kind of object** it searches.
+
+| Kind (`entity`) | Also needs |
+|---|---|
+| `task` (work items) | `tasks:read` |
+| `page` | `docs:read` |
+| `project`, `portfolio` | `projects:read` |
+| `registryObject`, `registryType` | `registry:read` |
+| `testCase`, `testRun`, `testPlan`, `testSuite`, `rtmCase` | `tests:read` |
+
+A token without the scope of the kind receives `403 INSUFFICIENT_SCOPE` and no data. The scope only opens the door: what you find is still limited by what the token owner may see, so a work item of a private project is never in the answer.
+
+Existing tokens do not get the new scopes automatically. Issue a new token under **Profile → Security**.
+
+## Endpoints
+
+| Endpoint | Does |
+|---|---|
+| [Search](/api/search/search) | A page of results for a query |
+| [Aggregate](/api/search/aggregate) | The count, sum or average of a query, grouped by up to two fields |
+| [List fields](/api/search/fields) | The fields you may use on a kind of object, with your custom fields |
+
+## Conventions
+
+- **CQL.** The query text is the one of the [Search page](/concepts/filters#syntax). A query that does not parse, uses an unknown field or an operator the field does not support answers `422` with a code and the place in the text for each problem. Nothing is left out silently.
+- **Cursor.** A search is paged with a cursor, not with page numbers. Pass the `nextCursor` of an answer as `cursor` of the next call. A cursor holds only for the same query and the same sort; with any other it answers `422 INVALID_CURSOR`.
+- **Page size.** `limit` defaults to 50 and is cut down to 100.
+- **Rate limit.** Every token has its own limit. Over it, the answer is `429 RATE_LIMITED` with a `Retry-After` header.
+- **Strict bodies.** Unknown fields are rejected with `422 VALIDATION_ERROR`.

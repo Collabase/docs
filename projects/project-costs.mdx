@@ -1,0 +1,60 @@
+---
+title: "Project costs"
+sidebarTitle: "Project costs"
+description: "Record costs that belong to a project as a whole, such as licences or external services, and see them in the project total, the breakdown and the portfolio."
+keywords: ["project costs", "budget", "licence", "expenses", "cost type", "breakdown"]
+---
+
+The **Costs** tab of a project shows budget, booked spend and forecast. Besides the costs recorded on work items, you can record costs that belong to the project itself, for example a licence invoice or an external service. These costs have no work item.
+
+## Record costs on the project {#record}
+
+<Steps>
+  <Step title="Open the Costs tab">
+    In the project, open **Costs**. The section **Project costs** lists what is already recorded, 25 entries per page.
+  </Step>
+  <Step title="Choose Record costs">
+    Select **Record costs**. A panel opens on the right.
+  </Step>
+  <Step title="Fill in the cost">
+    Enter a description, the unit price, the quantity, the currency and the date. Optionally choose a cost type. Set **Kind** to **Incurred** for money that was spent, or **Planned** for money you expect to spend.
+  </Step>
+  <Step title="Save">
+    Select **Add cost**. The panel closes and the totals update. If saving fails, the panel stays open so you do not lose your entries.
+  </Step>
+</Steps>
+
+<Note>
+**Record costs** only appears if you have the permission to manage the project budget. Without it you still see the list, but you cannot add or delete entries. You need the permission to view project costs to see the tab at all.
+</Note>
+
+## What happens to the totals {#totals}
+
+Project costs count towards the budget, the budget warning, the forecast and the portfolio totals like any other cost. In the breakdown **Costs per work item**, they appear in a row called **Booked without a work item**.
+
+Planned costs show in the list and in the forecast, but they do not count as spent.
+
+## Delete a cost {#delete}
+
+Select the bin icon on an entry. The totals update right away. The entry is removed for good.
+
+## Moving a work item {#move}
+
+Costs recorded on a work item stay with it when you move it to another project. They then count towards the new project. Costs recorded on the project itself stay in the project.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Project settings" icon="settings" href="/projects/project-settings">
+    Switch the Costs tab on or off for a project.
+  </Card>
+  <Card title="Project reports" icon="chart-bar" href="/projects/reports">
+    Cost tiles and breakdowns next to the other reports.
+  </Card>
+  <Card title="Portfolios" icon="layers" href="/planning/portfolios">
+    See project costs added up across projects.
+  </Card>
+  <Card title="Permissions" icon="shield" href="/concepts/permissions">
+    Who may view and manage project costs.
+  </Card>
+</CardGroup>

@@ -1,0 +1,62 @@
+---
+title: "Update filter"
+description: "Change the name, the query, the sort or the columns of a saved filter on the version you read."
+api: "PATCH /api/v1/filters/{id}"
+---
+
+Changes a filter. Only the owner and people with the right to edit may. Send only what changes.
+
+<Info>
+  Scope `filters:write`.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The ID of the filter.
+</ParamField>
+
+## Body parameters
+
+<ParamField body="baseUpdatedAt" type="string" required>
+  The `updatedAt` of the filter as you read it. If someone saved the filter since, nothing is changed and the answer is `409 CONFLICT`: read it again and decide.
+</ParamField>
+
+<ParamField body="name" type="string">
+  1 to 100 characters.
+</ParamField>
+
+<ParamField body="description" type="string | null">
+  Up to 500 characters.
+</ParamField>
+
+<ParamField body="entity" type="string">
+  The kind of object.
+</ParamField>
+
+<ParamField body="cqlText" type="string">
+  The query. It must parse.
+</ParamField>
+
+<ParamField body="sort" type="object[]">
+  Up to five keys.
+</ParamField>
+
+<ParamField body="columns" type="string[]">
+  The columns.
+</ParamField>
+
+## Response
+
+The changed filter. `403` when the token owner may only read it, `404` when they may not read it.
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/filters/7d1c9a0e-5b0e-4a63-9a1f-0c3a5d2f9e11" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "baseUpdatedAt": "2026-10-14T09:30:00.000Z", "name": "Open invoices, this week" }'
+```
+
+</RequestExample>

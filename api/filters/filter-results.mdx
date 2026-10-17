@@ -1,0 +1,38 @@
+---
+title: "Filter results"
+description: "Run a saved filter and page through what it finds for the token owner, with the sort and columns it was saved with."
+api: "GET /api/v1/filters/{id}/results"
+---
+
+Runs the filter as the token owner. Someone who opens a filter you shared sees their own results, not yours.
+
+<Info>
+  Scope `filters:read` and the scope of the kind of object the filter searches, for example `tasks:read`. Without it the answer is `403 INSUFFICIENT_SCOPE` and no data.
+</Info>
+
+## Path and query parameters
+
+<ParamField path="id" type="string" required>
+  The ID of the filter.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="50">
+  Objects per page, at most 100.
+</ParamField>
+
+## Response
+
+The page, in the shape of [Search](/api/search/search): `items`, `nextCursor` and `columns`. If the filter's query no longer runs, for example because a field was deleted, the answer is `422` with the problems named.
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/filters/7d1c9a0e-5b0e-4a63-9a1f-0c3a5d2f9e11/results?limit=25" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

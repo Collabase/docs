@@ -19,6 +19,7 @@ A project's settings decide which views its members see, who can open it, and wh
 | **Workflow** | **Status** | Workflows and their mapping to work item types |
 | | **Work Item Types** | The types the project offers |
 | | **Fields** | Field collections for work items |
+| | **Quick filters** | The named chips the team sees above the board, table and timeline |
 | **Planning** | **Time** | Budget hours, and the portfolio and cost budget |
 | | **Cycles** | Defaults for cycles. Shown when **Cycles** is on. |
 | | **Estimation** | **Story Points**, **T-Shirt Sizes** or **Time (Hours)**. Shown when **Story Points** is on. |
@@ -51,7 +52,7 @@ Switch views and features on and off. Each switch saves at once for all members.
 | **Planning & tracking** | **Cycles** | Time-boxed cycles and the **Cycles** settings section |
 | | **Story Points** | Estimation and the **Estimation** settings section |
 | | **Time Tracking** | Time entries per work item |
-| | **Costs** | Budget, booked spend and forecast |
+| | **Costs** | Budget, booked spend and forecast, see [Project costs](/projects/project-costs) |
 | | **Phases and gates** | A **Phases** tab with phases and gate decisions, see [Phases and gate approvals](/projects/approvals) |
 | | **Risks** | A tab with the project's risks from the Space's risk register |
 | | **Attachments** | Files on work items. On by default. |
@@ -97,6 +98,10 @@ Under **Guests**, invite external people who see this project and nothing else. 
 ### Fields {#fields}
 
 **Fields** lists every field collection of the instance. Tick the collections the project needs and click **Save Changes**. You see **Field collections saved.** The fields appear on work items as described in [How fields reach a work item](/admin/custom-fields#how-fields-apply).
+
+## Quick filters {#quick-filters}
+
+**Quick filters** lists the named chips of the project. Add one with a **Name** and a **Query**, drag one by its handle to change the order, or remove one. A project holds at most 10. Projects created from a [template](/projects/templates) start with the template's quick filters. The chips are for the whole team: each person sees the ones their own access allows. See [Quick filters and columns](/concepts/quick-filters#define).
 
 ## Planning {#planning}
 

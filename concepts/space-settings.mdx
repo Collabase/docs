@@ -83,6 +83,23 @@ Under **Active scheme**, pick a scheme and click **Save**. **No scheme (default 
 
 **Custom Fields** turns field collections on or off for the pages of this Space. The collections themselves are created by an administrator, see [Custom fields](/admin/custom-fields#create-collection).
 
+### Default values {#default-values}
+
+Below the collections, **Default values** sets what a new work item in this Space starts with: priority, work item type, assignee, labels and the custom fields that apply to the work item type. Save the section with **Save**; **Discard changes** returns to the saved values.
+
+A new work item takes its values in this order:
+
+- First, what you set yourself while creating it. A field you clear in the create form stays empty.
+- Then the default value of the Space.
+- Then the default value of the custom field itself, set by an administrator.
+- Last, the standard value (priority Medium).
+
+The defaults apply wherever work items are created: the create form, quick add, subtasks, the API, mail, meetings, automations, the service portal and plugins. They do not apply when you copy or restore a work item, or when you change the type of an existing one.
+
+A default that no longer fits is skipped and the work item is still created: an assignee who cannot reach the project, a deleted label or a removed option. Dates need a fixed day such as `2026-12-31`; a relative value such as `+7d` is not accepted. A service portal request goes to the default assignee when the Space has one, and to the person who filed it otherwise.
+
+Only people who can manage the custom fields of the Space may change the defaults; everyone else sees the saved values. Every change is recorded in the audit log.
+
 ## Archived pages {#archived-pages}
 
 **Archived pages** lists the pages archived in this Space. Restore a page, or delete it for good. See [Restore an archived page](/docs/organize-pages#archived-pages).

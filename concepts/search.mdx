@@ -1,61 +1,176 @@
 ---
 title: "Search"
 sidebarTitle: "Search"
-description: "Find spaces, pages, projects, work items and Registry objects from the header search or the full search page, and narrow results by type."
+description: "Find spaces, pages, projects, work items and Registry objects from the header search, and filter work items on the Search page with simple filters or a query."
 keywords: ["search", "find work items", "quick search", "advanced search", "search results", "Cmd K"]
 ---
 
-Collabase has two ways to search. The header search answers "where is that page or work item?" in a few keystrokes. The **Search** page lists every match with sorting and paging, and it is where you build [filters with the query language](/concepts/filters). Both only show content you have access to.
+Collabase has two ways to search. The header search answers "where is that page or work item?" in a few keystrokes. The **Search** page lists the work items or pages that match a filter, with the columns you choose, sorting and paging, and it is where you build [filters with the query language](/concepts/filters). Both only show content you have access to.
 
 ## Header search {#header-search}
 
-Click **Search...** in the header, or press `Cmd + K` (Mac) or `Ctrl + K` (Windows and Linux). Results appear as you type, grouped by kind:
+Click **Search...** in the header, or press `Cmd + K` (Mac) or `Ctrl + K` (Windows and Linux). After a short pause the popup lists what matches, grouped by kind, with at most five hits per group. Each hit shows its icon, key, title, the space or project it is in and its status.
 
 | Group | Contains |
 |---|---|
-| **Spaces** | Spaces by name or mission |
-| **Projects** | Projects, work items and Registry objects |
-| Pages | Pages of Collabase Docs |
+| **Spaces** | Spaces by name |
+| **Work items**, **Pages**, **Projects**, **Portfolios** | Objects of those kinds you may open |
+| **Registry objects**, **Object types** | Registry content, if you have access to the Registry |
+| **Test cases**, **Test runs**, **Test plans**, **Test suites** | Test Management content in spaces you may read |
+| **RTM test cases** | Test cases of RTMs, while the RTM app is installed |
 
-Use the arrow keys to move through results and `Enter` to open one. To see every match, click **View all results** at the bottom of the panel.
+A single character matches only keys and titles. From two characters on, the text of pages, descriptions and comments is searched too, ignoring capital letters and accents.
 
-### Narrow the header search
+Use the arrow keys to move through the hits and `Enter` to open one. `Esc` closes the popup. If nothing matches, the popup says so and links to the **Advanced search**. If the request fails, **Try again** repeats it. To see more, click **View all results**: the Search page opens on its **All** tab with your text, listing a few objects of every kind and a **Show all** link to the tab of each kind.
 
-Click **Filter** to limit results to an **Author**, a **Label** or a **Space**. **Reset** removes the filter.
+Guests find only the work items of the projects they are invited to and the pages shared with them.
 
 ### Before you type
 
-With an empty search field, the panel shows **Recently viewed**: the last six items you opened from this search panel, stored in your browser. **Quick actions** links to the full search and to **Settings**.
+With an empty search field, the popup shows **Recently viewed**: the last six items you opened from it, stored in your browser. **Quick actions** links to the full search and to **Settings**.
 
 ## The Search page {#search-page}
 
-The Search page searches across spaces, pages, projects, work items, Registry objects and the other content types listed under **Type**. Enter at least two characters.
+The Search page lists work items or pages that match a filter, with the columns you choose. Pick a kind of object above the filters, or **All** to search every kind at once. It only shows what you can open.
 
 <Steps>
   <Step title="Open the Search page">
-    In the header search, click **View all results**.
+    In the header search, click **View all results**, or open **Search** from the quick actions.
   </Step>
-  <Step title="Enter your terms">
-    Type in **Search across all entities…** and click **Search**.
+  <Step title="Build a filter">
+    In **Filters**, click **Add filter**, pick a field, how to compare it and a value. Add as many filters as you need. Every filter must match. For a person, **Me** stands for yourself.
   </Step>
-  <Step title="Narrow by type">
-    Under **Filters**, pick a **Type** to search only one kind of content, for example projects, test runs or automation rules.
-  </Step>
-  <Step title="Sort the results">
-    Choose **Relevance**, **Recently updated**, **Oldest update**, **Newest first** or **Oldest first**. Results come 20 per page.
+  <Step title="Run it">
+    Click **Search**. The address of the page now holds your filter, so you can bookmark it or send the link.
   </Step>
 </Steps>
 
-If nothing matches, the page shows **No results for "…"**. Try other words or a different type.
+If nothing matches, the page shows **Nothing found**. Change the filters and search again.
+
+### Write the query as text {#query-mode}
+
+Switch from **Filters** to **Query** to write the filter as text. The text editor colours what you type, suggests fields, comparisons and values you may use, and underlines what is wrong where it is. The two views show the same filter. A query with OR, NOT, groups or functions cannot be shown as simple filters, so it stays in **Query**. See [Filters and query language](/concepts/filters).
+
+### Choose the columns {#columns}
+
+Click **Columns** to pick which fields the table shows and in which order. Custom fields are there too. Your choice is saved for you and applies the next time you open the page. **Reset to default** brings back the standard columns.
+
+### Sort and page through results {#sorting}
+
+Click a column heading to sort by it, and again to reverse the order. Results come 50 per page, with the total above the table. The key or title of a work item opens it.
+
+### Summarize the results {#summary}
+
+Above the table, **Group by** shows how the results divide up. Pick a field such as the status, the assignee or the priority, and the groups appear with their number of work items. A date field groups by month. A second list, **Measure**, switches the numbers from a count to the sum of a number field, for example **Sum of Estimate**.
+
+- A group shows only what **you** may see. A group that would hold nothing you can open does not appear.
+- Work items without a value on the field form their own group, **Empty**.
+- A field with several values, such as labels, puts a work item into each of its groups. The total counts it once.
+- A related object you may not open is not named. All of them together form **Not accessible**.
+- A result with more than 50 groups shows the 50 largest and gathers the rest under **Other**.
+
+### Search pages {#search-pages}
+
+Open the **Pages** tab to search pages and blog posts. The same filters, query text, columns and sorting work there, with these fields:
+
+| Field | What it holds |
+|---|---|
+| Title | The page title |
+| Space | The space the page is in |
+| Author | The person who created the page |
+| Status | Draft, In progress, In review, Published or Verified. **Archived** is a status too |
+| Type | The kind of page, for example standard page, folder or blog post |
+| Label | The labels on the page |
+| Created, Updated, Published | The day the page was created, last changed or published |
+| Text | The title and the published text of the page, and its comments |
+| Comment | Only the comments on the page |
+
+Custom fields that apply to pages in your spaces are listed too.
+
+- **Published text only.** A search reads the text readers see. Text that is still a draft is not found until you publish it, and a word found in a published page is gone from the results once you change it and publish again.
+- **Archived pages** only appear when the filter asks for them, for example **Status** is **Archived**. Pages in the trash never appear.
+- **Locked pages** and their subpages appear only for people who may open them. Everybody else gets no result and no count for them.
+- **Spaces without docs.** A space where an administrator switched off docs is left out, and blog posts need the blog turned on.
+- **Guests** find only the pages shared with them and their open subpages. Internal comments are never found by a guest.
+
+### Search the Registry {#search-registry}
+
+If you have access to the Registry, the **Registry objects** and **Object types** tabs appear next to **Work items** and **Pages**. They list only objects and types in schemas you may open.
+
+| Field | What it holds |
+|---|---|
+| Name | The name of the object, or of the object type |
+| Key | The key of the object, for example `SUP-12`, or the key prefix of a type |
+| Type | The object type |
+| Schema | The schema the object or type belongs to |
+| Created by | The person who created the object |
+| Created, Updated | The day the object was created or last changed |
+| Text | The name and the key |
+
+The attributes of an object type are fields too, once the filter names that type. In the Registry itself, open a schema, pick an object type and use the filter bar above the table. **Columns** chooses the columns for each schema and type and keeps your choice on every device.
+
+### Search test management {#search-test-management}
+
+If a space you can read has Test Management switched on, the tabs **Test cases**, **Test runs**, **Test plans** and **Test suites** appear. They list objects of the test projects in those spaces.
+
+| Field | On | What it holds |
+|---|---|---|
+| Title or Name | all | The title of a case, the name of a run, plan or suite |
+| Status | cases, runs, plans | A case is Draft, Ready or Deprecated. A run is Pending, In progress, Completed or Aborted |
+| Priority | cases | Low, Medium, High or Critical. You can compare by order, for example `priority >= "HIGH"` |
+| Type, Design, Automation potential | cases | How the case is run, designed and how well it suits automation |
+| Suite | cases | The test suite of the case |
+| Project | all | The test project |
+| Author | cases | The person who wrote the case |
+| Assignee, Started, Completed | runs | Who runs it, and when it started and ended |
+| Estimate, Reference | cases | The estimated minutes and an outside reference such as an RTM key |
+| Created, Updated | all | The day the object was created or last changed |
+| Text | all | The title or name, the description and, for cases, the preconditions and expected result |
+
+### Search projects and portfolios {#search-projects}
+
+The **Projects** tab lists the projects you may open: those in spaces where you read work items and the Projects app is on. A private project appears only for its members, the space owner and administrators, and its name never shows in a suggestion for anyone else. The **Portfolios** tab lists portfolios and programmes for everyone except guests.
+
+| Field | On | What it holds |
+|---|---|---|
+| Name, Key | projects | The name and the short key of the project |
+| Space | projects | The space of the project |
+| Status | projects | Draft, Active, On hold, Completed or Cancelled |
+| Health | projects | On track, At risk or Off track |
+| Priority, Lead, Portfolio | projects | The priority, the lead and the portfolio |
+| Start date, Due date | projects | The planned dates |
+| Name, Parent, Owner | portfolios | The name, the portfolio above it and its owner |
+| Start date, End date | portfolios | The planned dates |
+| Created, Updated | both | The day it was created or last changed |
+| Text | both | The name, the description and, for projects, the key |
+
+Budgets and other money figures are not searchable, because they have their own permission.
+
+### Search RTM test cases {#search-rtm}
+
+While the RTM app is installed, the **RTM test cases** tab lists the test cases of every RTM in the spaces where you may view test results. Inside an RTM, the **Test cases** tab uses the same filter bar and a **Columns** choice that is saved for you.
+
+| Field | What it holds |
+|---|---|
+| Code, Title | The code and the title of the test case |
+| Requirement | The code of the requirement the case belongs to |
+| Design, Priority, Automation potential | The design technique, the priority and how well it suits automation. Priority and automation compare by order |
+| Basis | Whether the source states the case or it is derived |
+| Review status | Proposed, Accepted or Rejected |
+| Transferred | Whether the case was already created in Test Management. Ask with **is empty** or **is not empty** |
+| Estimate | The estimated minutes |
+| Created, Updated | The day the case was created or last changed |
+| Text | The code, the title and the description |
 
 ### How words are matched {#matching}
 
-| Content | Matching |
+| You search | It finds |
 |---|---|
-| Pages | Every word must appear. Each word also matches longer words that start with it, so "onboard" finds "onboarding" |
-| Spaces, projects, work items | The text appears anywhere in the name or title |
+| A word in text | Work items whose title, description or comments contain a word that starts with it, or pages whose title, published text or comments do. Capital letters and accents do not matter, so "geraet" finds "Gerät" |
+| A work item key | `FIN-1` finds `FIN-1` and `FIN-12`, not `XFIN-1` |
+| A custom field | The value of that field, compared the way its type works: numbers by size, dates by day in your time zone, choices by name |
 
-For precise conditions, such as "assigned to me and overdue", switch the filter to **Advanced** and write a query. See [Filters and query language](/concepts/filters).
+Dates are whole days in your time zone. A search for "due after 12 October" starts after the end of that day.
 
 ## Search and permissions
 
