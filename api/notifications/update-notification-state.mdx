@@ -1,0 +1,60 @@
+---
+title: "Change notification state"
+description: "Mark entries of your token owner as read or unread, archive them or restore them."
+api: "POST /api/v1/notifications/state"
+---
+
+Changes the state of entries by ID, or of everything a tab and its filters show. Repeating a call
+changes nothing more.
+
+<Info>
+  Scope `notifications:write`.
+</Info>
+
+## Body
+
+<ParamField body="action" type="string" required>
+  `read`, `unread`, `archive` or `unarchive`.
+</ParamField>
+
+<ParamField body="ids" type="string[]">
+  One to 500 entry IDs. If one of them is not an entry of the token owner, the call answers
+  `404 NOT_FOUND` and changes none of them. Send `ids` or `scope`, not both.
+</ParamField>
+
+<ParamField body="scope" type="object">
+  Instead of `ids`: `tab` (`all`, `unread`, `mentions` or `archive`) with optional `category` and
+  `spaceId`. The change applies to every entry that tab and filter show.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="updated" type="integer" required>
+      How many entries changed.
+    </ResponseField>
+    <ResponseField name="unread" type="integer" required>
+      The unread count after the change.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/notifications/state" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "action": "read", "ids": ["cm2note0001abcd"] }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "updated": 1, "unread": 2 } }
+```
+
+</ResponseExample>

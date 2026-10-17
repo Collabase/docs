@@ -179,7 +179,7 @@ for (const file of pageFiles) {
 }
 
 for (const [value, files] of titles) if (files.length > 1) report("error", files[1], 1, "title", `Title "${value}" is used by ${files.join(", ")}`);
-for (const [value, files] of descriptions) if (files.length > 1) report("error", files[1], 1, "description", `Same description as ${files[0]}`);
+for (const [, files] of descriptions) if (files.length > 1) report("error", files[1], 1, "description", `Same description as ${files[0]}`);
 
 for (const slug of slugs) {
   if (slug === "index" || slug === "de/index" || NO_LINK_NEEDED.test(slug) || slug.startsWith("de/")) continue;
@@ -210,6 +210,6 @@ function walk2(dir) {
 // ---- output
 const errors = findings.filter((f) => f.level === "error");
 const warnings = findings.filter((f) => f.level === "warn");
-for (const f of [...errors, ...warnings]) console.log(`${f.level === "error" ? "error" : "warn "}  ${f.file}:${f.line}  [${f.rule}]  ${f.message}`);
-console.log(`\ncheck-docs: ${pageFiles.length} pages, ${errors.length} errors, ${warnings.length} warnings (base ${BASE.slice(0, 8)})`);
+for (const f of [...errors, ...warnings]) process.stdout.write(`${f.level === "error" ? "error" : "warn "}  ${f.file}:${f.line}  [${f.rule}]  ${f.message}\n`);
+process.stdout.write(`\ncheck-docs: ${pageFiles.length} pages, ${errors.length} errors, ${warnings.length} warnings (base ${BASE.slice(0, 8)})\n`);
 process.exit(errors.length > 0 ? 1 : 0);

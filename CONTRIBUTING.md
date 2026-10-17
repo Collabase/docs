@@ -38,23 +38,18 @@ Also off-limits in a content PR: theme, colors, and logos in `docs.json`.
 
 ## Workflow
 
-1. **Open an issue first.** Every contribution to Collabase starts as an issue — see the
-   [contribution guide](https://github.com/Collabase/collabase/blob/main/CONTRIBUTING.md). For an
-   obvious factual fix (a wrong menu path, a stale setting name), say so in the issue and go ahead.
-2. **Branch:** `docs/<short-description>`.
-3. **Write**, following `.agents/rules/documentation-rules.md`.
-4. **Preview and run the checks:**
+1. **Branch:** `docs/<short-description>`.
+2. **Write**, following `.agents/rules/documentation-rules.md`.
+3. **Preview and run the checks:**
    ```bash
    npm i -g mint            # once
    mint dev                 # http://localhost:3000, run from the folder containing docs.json
    npm run docs:check       # in the product repo: build, links and anchors, accessibility, structure, prose
    ```
    The same check runs on every pull request that changes `docs/docs/`.
-5. **Commit** using Conventional Commits — `docs: correct the backup schedule path`.
-6. **Open the PR.** The title follows `<type>(<scope>): <Summary>`. You must sign the CLA (once,
-   automated via a PR comment) and disclose any AI tool use in the PR template.
-
-**Typo-only PRs are rejected** — bundle small fixes into one meaningful PR, or file an issue.
+4. **Commit** using Conventional Commits — `docs: correct the backup schedule path`.
+5. **Open the PR.** The title follows `<type>(<scope>): <Summary>`. Fill in the PR template;
+   `CI OK` must be green.
 
 ---
 

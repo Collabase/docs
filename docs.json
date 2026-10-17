@@ -354,6 +354,18 @@
                     "tag": "Enterprise"
                   }
                 ]
+              },
+              {
+                "item": "Air-gapped install",
+                "icon": "server-off",
+                "groups": [
+                  {
+                    "group": "Air-gapped installation",
+                    "pages": [
+                      "admin/airgapped-installation"
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -388,6 +400,7 @@
                   "admin/system-settings",
                   "admin/branding",
                   "admin/email",
+                  "admin/chat-notifications",
                   "admin/inbound-mail",
                   "admin/templates-and-exports",
                   "admin/audit-log",
@@ -453,6 +466,15 @@
                     "group": "Work Items",
                     "pages": [
                       "api/tasks/move-work-item"
+                    ]
+                  },
+                  {
+                    "group": "Notifications",
+                    "pages": [
+                      "api/notifications/overview",
+                      "api/notifications/list-notifications",
+                      "api/notifications/unread-count",
+                      "api/notifications/update-notification-state"
                     ]
                   },
                   {

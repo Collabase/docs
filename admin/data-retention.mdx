@@ -21,6 +21,7 @@ None of the periods on this page can be changed on a screen, except the one for 
 | Deleted projects and work items in the trash | 30 days after deletion | Deleted for good. Until the job reaches an item, you can still restore it. | [Trash](/admin/backup#trash) |
 | Sign-in, failed sign-in and sign-out entries in the audit log | 180 days | Deleted. All other audit entries stay. | [Audit log](/admin/audit-log#retention) |
 | Saved CollabaseAI chats | 30 days | Deleted for good | [CollabaseAI](/concepts/collabase-ai) |
+| Notifications, read, unread or archived, and their mail summaries | 90 days after they were created | Deleted. Newer entries are never touched. | [Notification data](#notification-data) |
 | The list of recent mails of the inbound mailbox | 90 days | Deleted. It holds no mail addresses. | [Inbound mailbox](/admin/inbound-mail) |
 | Locked accounts | 30 days by default, 1 to 3,650 days | Anonymized: name, mail address and sign-in methods are removed, content stays | [Locked accounts](/admin/security-policies#locked-accounts) |
 | The log of the search index | The last 50 lines | Older lines are dropped | [Search index](/admin/system-settings#search-index) |
@@ -33,6 +34,20 @@ None of the periods on this page can be changed on a screen, except the one for 
 | All other audit log entries | Never removed by Collabase |
 | PDF export history | By hand, with **Clear >30 Days** under **Administration → Export History**. See [Export history](/admin/templates-and-exports#export-history). |
 | Content of anonymized accounts | Pages, work items and comments stay and show the name followed by `(deleted)` |
+
+---
+
+## Notification data {#notification-data}
+
+A nightly job deletes notifications 90 days after they were created, whether they were read or not. On the first run after an update it works through a large backlog in portions and picks up the rest the next night.
+
+When an account is deleted, its inbox, its notification settings and its pending summary mails are removed. In the inboxes of other people, the person still shows as the name followed by `(deleted)`.
+
+### Export a person's notifications {#notification-export}
+
+For a data-access request, a system administrator can download the notifications and settings of one person as a JSON file. The file shows the entries as the person would see them: in their language, and an entry about something they can no longer open appears without its content. This is the only way an administrator sees data from someone else's inbox. Every export is written to the [audit log](/admin/audit-log) as **Notifications exported for a data-access request**, with the number of entries and no content. If that entry cannot be written, nothing is exported.
+
+Request the file with `GET /api/admin/users/{id}/notifications/export` while signed in as a system administrator, where `{id}` is the ID of the person.
 
 ---
 

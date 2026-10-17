@@ -1,7 +1,7 @@
 ---
 title: "Set up your profile and notifications"
 sidebarTitle: "Profile and notifications"
-description: "How to set your name, avatar and language in Collabase, choose which notifications you receive, get an email digest and change your password."
+description: "How to set your name, avatar and language in Collabase, choose which notifications reach you in the app and by email, and change your password."
 ---
 
 Your profile controls how others see you in Collabase and which notifications you receive. These settings only affect your own account.
@@ -20,18 +20,55 @@ Choose English, German, French or Italian on the **Preferences** tab. The interf
 
 ## Notifications
 
-In-app notifications appear under the **bell icon** in the top navigation bar. On the **Notifications** tab you can turn each type on or off:
+New notifications show up under the **bell icon** in the top navigation bar. The number on the bell counts what you have not read yet and updates on its own. Open the bell to read, mark as read or unread, and archive. Entries about the same item are grouped, and **Mark all as read** clears the tab you are looking at.
 
-| Notification | When you get it |
+You only get notifications about things you are allowed to open. If you lose access to a page or a project later, its older notifications stay in the list but show **No longer accessible** without their content.
+
+### The inbox page
+
+Select **Show all** at the bottom of the bell to open the inbox as a page. It has the tabs **All**, **Unread**, **Mentions** and **Archive**, and two filters: a category and a space. The space list holds only the spaces you can open. Your filters are remembered for you in this browser, and **Reset filters** clears them.
+
+Tick entries to mark them as read or to archive them together. Archiving an entry that is part of a group archives the whole group. In the **Archive** tab, **Restore** brings an entry back to the inbox. Older entries load as you scroll.
+
+With the keyboard, the arrow keys move between entries, **Enter** opens one, **E** archives it (in the archive, **E** restores it) and **U** marks it as read or unread.
+
+### Choose what reaches you
+
+Open your profile and select the **Notifications** tab. Each category has two switches: **In the app** and **Email**.
+
+| Category | Examples |
 |---|---|
-| **Task assigned to you** | Someone assigns a task to you |
-| **Task mentioned you** | Someone @mentions you in a task |
-| **Page commented** | Someone comments on a page you follow |
-| **Page mentioned you** | Someone @mentions you on a page |
-| **Test run completed** | A test run you watch finishes |
-| **Automation notification** | An automation sends you a message |
+| **Mentions and comments** | Someone @mentions you, comments on your work item, suggests a change on your page |
+| **Assignments and work items** | A work item is assigned to you or changes |
+| **Pages and shares** | A page is shared with you or a page you follow changes |
+| **Projects** | Status reports, phase gates, budget warnings |
+| **Time tracking** | Timesheets to review, your timesheet was reviewed |
+| **Meetings** | Invitations, changes, cancellations, decisions on your topics |
+| **Spaces and access** | You were added to a space, a guest accepted your invitation |
+| **Automation and apps** | Messages from automations and apps |
+| **Security** | Password changes, new devices, sign-in methods |
 
-If email is set up on your instance, you can also get a **Daily** or **Weekly** email digest of unread notifications.
+**Security** is always on, because those messages concern your account. Your administrator sets the defaults for everyone; a switch you change yourself overrides that default.
+
+### Email frequency
+
+Under **Email frequency**, choose **Right away** or **Once a day**. With **Once a day** you get one summary email at the time you pick, in your own time zone, with everything you have not read yet. Security emails always arrive right away.
+
+If Collabase AI is available to you, **AI summary in the daily digest** starts the summary email with up to three sentences written by Collabase AI, marked as AI-generated. It is off until you switch it on. The titles of your notifications are then sent to the AI provider of your instance, and you can switch it off at any time. If the AI does not answer in ten seconds, the email goes out without the summary.
+
+### Chat, browser and urgent items
+
+If your administrator connected Slack or Microsoft Teams, **Chat** appears as a column. Link your account under **Chat** (Collabase finds it by your email address) and switch the categories you want as direct messages. Chat replaces email for those events, and security notices never go to chat. If the link stops working, you get email instead and see **Check the chat connection** here.
+
+**Browser notifications** work per device. Turn them on for this device and allow them when your browser asks; **Browser** then appears as a column. Each device can be removed again.
+
+**Remind me about urgent items** is on by default. If an urgent notification is still unread after 30 minutes, you get it once more by chat or email, even if you chose a daily summary. Details for administrators: [Chat, channels and browser notifications](/admin/chat-notifications).
+
+### Decide in the inbox
+
+Some entries can be decided without opening the object: a requested approval (**Approve** or **Reject**), a submitted timesheet if you review timesheets (**Approve**, or **Reject** with a reason), and a mention on a work item nobody is assigned to (**Take over**). Only the buttons you may use appear. Once the matter is decided, the entry shows how it ended, such as **Approved by you** or **Assigned to someone else**, and counts as read. Decisions exist only in the app, never in email or chat.
+
+Every notification email has an **Unsubscribe from these emails** link at the bottom. It turns off email for that one category, and the summary email's link turns off all notification emails except security. You can switch them back on here at any time. Emails that were already sent cannot be recalled.
 
 ## Change your password
 

@@ -1,0 +1,30 @@
+---
+title: "Notifications API"
+sidebarTitle: "Overview"
+description: "Read the inbox of a token owner and mark entries as read or archived from another system through /api/v1/notifications."
+---
+
+The Notifications API gives integrations the inbox of the person who issued the token: the list, the
+unread count, and the switches that mark an entry as read, unread or archived. Every call runs as that
+person. There is no endpoint that sends a notification, and none that changes preferences.
+
+## Scopes
+
+| Scope | Allows |
+|---|---|
+| `notifications:read` | [List notifications](/api/notifications/list-notifications) and [Unread count](/api/notifications/unread-count) |
+| `notifications:write` | [Change notification state](/api/notifications/update-notification-state); includes `notifications:read` |
+
+A token without the scope receives `403 INSUFFICIENT_SCOPE`. Existing tokens do not get the new scope
+automatically; issue a new token under **Profile → Security**.
+
+## Conventions
+
+- **Same check as the app.** An entry shows its text only while the token owner may open the object it
+  is about. For an entry whose object they can no longer see, the answer carries `status` `hidden`,
+  `deleted` or `legacy` and no text, no link and no actor.
+- **Own entries only.** Every call touches the token owner's entries and nothing else. An ID that is not
+  the owner's answers `404 NOT_FOUND`, exactly like an ID that does not exist, and nothing is changed.
+- **Pages.** The list is paged with a cursor. `limit` is at most 200 and defaults to 50.
+- **Strict bodies.** Unknown fields are rejected with `422 VALIDATION_ERROR`.
+- **Language.** Texts come in the language of the token owner's profile.

@@ -1,0 +1,39 @@
+---
+title: "Unread count"
+description: "The number of unread notifications of your token owner, with an ETag so an unchanged count costs no body."
+api: "GET /api/v1/notifications/count"
+---
+
+Returns the number the bell shows. Send the last `ETag` as `If-None-Match`; an unchanged count answers
+`304 Not Modified` without a body.
+
+<Info>
+  Scope `notifications:read`.
+</Info>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="unread" type="integer" required>
+      Unread entries that are not archived.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/notifications/count" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "unread": 3 } }
+```
+
+</ResponseExample>

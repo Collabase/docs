@@ -1,13 +1,13 @@
 ---
 title: "Outgoing mail and mail templates"
 sidebarTitle: "Outgoing mail"
-description: "Connect Collabase to an SMTP server, Gmail or Microsoft 365 to send mail, set the sender, send a test mail, and switch individual mail events off."
+description: "Connect Collabase to an SMTP server, Gmail or Microsoft 365, set the sender, send a test mail, and set which notification mails members get by default."
 keywords: ["configure email", "outgoing mail", "SMTP server", "mail server", "email notifications", "email templates", "notification emails", "Gmail", "Office 365", "Microsoft 365", "Microsoft Graph", "OAuth", "from address", "test email"]
 ---
 
 import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
 
-Collabase sends mail for invitations, password resets, security notices, mentions, assignments, meetings and more. All of it goes through one sender that you configure under **Administration → Mail Server**. **Administration → Mail Templates** lists every mail Collabase can send and lets you switch individual ones off.
+Collabase sends mail for invitations, password resets, security notices, mentions, assignments, meetings and more. All of it goes through one sender that you configure under **Administration → Mail Server**. **Administration → Notifications** decides which kinds of mail members get by default, and **Administration → Mail Templates** shows every mail for review.
 
 <WhoCanDoThis role="System administrator" edition="All editions" />
 
@@ -133,51 +133,50 @@ To switch from Gmail or Office 365 back to SMTP, click **Disconnect** on the con
 
 ---
 
-## Switch individual mails off {#mail-templates}
+## Notification defaults {#notification-defaults}
 
-**Administration → Mail Templates** lists every mail Collabase can send, one row per event.
+**Administration → Notifications** sets what every member gets until they choose for themselves. Each category has two switches, **In the app** and **Email**:
 
-| Column | Details |
+| Category | Examples |
 |---|---|
-| **Event Name** | The technical name of the event, for example `task-assigned` |
-| **Languages** | The languages the mail exists in. Every mail exists in English, German, French and Italian. |
-| **Status** | A switch. Off means Collabase does not send this mail any more. |
-| **Preview Template** | Opens the mail in a side panel, with one tab per language |
+| **Mentions and comments** | @mentions, comments on a member's work item, suggestions on their page |
+| **Assignments and work items** | A work item is assigned or changes |
+| **Pages and shares** | A page is shared or a followed page changes |
+| **Projects** | Status reports, phase gates, budget warnings |
+| **Time tracking** | Timesheets submitted and reviewed |
+| **Meetings** | Invitations, changes, cancellations, meeting notes |
+| **Spaces and access** | Added to a space, a guest accepted an invitation |
+| **Automation and apps** | Messages from automations and apps. Email is off by default. |
+| **Security** | Account notices. Always on, the switches are locked. |
 
-Switching a mail off takes effect at once, for every recipient. **Event notification status updated** confirms it.
+Below the categories, set the **Email frequency** members start with: **Right away**, or **Once a day** as one summary email at the hour you choose. Click **Save**. **Notification defaults saved** confirms it, and the audit log records which values changed.
 
-The diagram shows the checks Collabase makes before a mail leaves.
+A default applies at once to every member who has not changed that switch in their own [notification settings](/getting-started/profile#notifications). A member's own choice always wins. Nobody is mailed about something they are not allowed to open.
 
 ```mermaid
 flowchart LR
   A[Something happens] --> B{Security or<br/>sign-in mail?}
   B -- Yes --> E[Mail is sent]
-  B -- No --> C{Switched off under<br/>Mail Templates?}
-  C -- Yes --> D[No mail]
-  C -- No --> E
+  B -- No --> C{Member may<br/>open the item?}
+  C -- No --> D[No mail]
+  C -- Yes --> F{Email on for the category,<br/>own choice or default?}
+  F -- No --> D
+  F -- Yes --> E
 ```
 
-### Mails you can switch off
-
-| Area | Events |
-|---|---|
-| Work items and mentions | `task-assigned`, `work-item-mention`, `mention` |
-| Pages and Spaces | `page-shared`, `page-updated`, `space-joined` |
-| Projects | `budget-warning`, `phase-gate-decided`, `status-report-submitted`, `status-report-reviewed`, `status-report-attention` |
-| Meetings | `meeting-invitation`, `meeting-update`, `meeting-cancelled`, `meeting-note-published` |
-| Time tracking | `timesheet-submitted`, `timesheet-reviewed` |
-| Inbound mailbox | `inbound-mail-confirmation` |
-| Apps | `rtm-ready`, `rtm-failed` |
+<Note>
+  Before this screen, mails were switched off one by one under **Mail Templates**. On update, a category starts with email off only if every mail of it was switched off there. A category with only some of its mails switched off starts with email on; check those categories after the update.
+</Note>
 
 ### Mails that always go out
 
-The switch of these mails is greyed out. They tell a person that their own account changed, or they are the only way into Collabase, so switching them off would hide exactly what someone must see.
+These tell a person that their own account changed, or they are the only way into Collabase, so turning them off would hide exactly what someone must see: account security (`new-device`, `password-changed`, `account-locked`, `mfa-changed`, `mfa-reset`, `passkey-added`, `sso-linked`, `api-token-issued`, `agent-connected`), getting in (`welcome`, `welcome-credentials`, `password-reset`) and guests (`guest-invitation`, `guest-sign-in`, `guest-removed`).
 
-| Kind | Events |
-|---|---|
-| Account security | `new-device`, `password-changed`, `account-locked`, `mfa-changed`, `mfa-reset`, `passkey-added`, `sso-linked`, `api-token-issued`, `agent-connected` |
-| Getting in | `welcome`, `welcome-credentials`, `password-reset` |
-| Guests | `guest-invitation`, `guest-sign-in`, `guest-removed` |
+## Preview the mails {#mail-templates}
+
+**Administration → Mail Templates** lists every mail Collabase can send, one row per event, with the languages it exists in. **Preview Template** opens the mail in a side panel, with one tab per language. Values such as names and links are samples.
+
+Every mail carries your logo at the top, your accent color on its button and a small Collabase logo at the bottom. It arrives in the language of the person who gets it. See [Name and logos](/admin/branding#name-and-logos) for where these come from. Every notification mail has a link at the bottom that turns off that category of mail for the person who got it.
 
 <Note>
   The wording of the mails is fixed. The screen shows them for review, it does not edit them.
@@ -195,7 +194,7 @@ The switch of these mails is greyed out. They tell a person that their own accou
 | **Test failed:** followed by a message about a self-signed certificate | The SMTP server uses a certificate that is not issued by a public authority. | Install a certificate from a public authority on the mail server, or use another relay. |
 | After **Connect Gmail** or **Connect Office 365**, Google or Microsoft shows an error about the redirect address | The **Redirect URI** stored in Collabase and the one in Google or Microsoft differ. | Copy the address again with **Copy URI**, save, and enter exactly the same address at the provider. |
 | After clicking **Connect Gmail** or **Connect Office 365**, a page says **Gmail is not configured** or **Office365 is not configured** | **Client ID** or **Redirect URI** was not saved. | Fill in both, click **Save Settings**, then connect. |
-| The test works, but members get no mail of one kind | That event is switched off under **Mail Templates**. | Check the **Status** switch of the event. |
+| The test works, but members get no mail of one kind | Email is off for that category, as a default under **Administration → Notifications** or in the member's own settings. | Check the category in both places. |
 | Mails land in spam | The sender domain does not authorize your mail server. | Ask your mail administrator to add the server to the SPF record of the domain and to sign the mails with DKIM. |
 
 For more causes, see [Email not sending](/admin/troubleshooting#email-not-sending).

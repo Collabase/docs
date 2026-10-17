@@ -69,4 +69,5 @@ misbehaves, `mint update` pulls the latest CLI.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the docs-specific workflow, and the
 [Collabase contribution guide](https://github.com/Collabase/collabase/blob/main/CONTRIBUTING.md) for
-the process that applies to every PR — issue first, CLA, and AI-tool disclosure.
+the process that applies to every PR: branch naming, Conventional Commits, PR title conventions and
+the `CI OK` check.

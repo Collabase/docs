@@ -1,0 +1,88 @@
+---
+title: "List notifications"
+description: "Page through the inbox of your token owner, newest first, by tab, category and Space."
+api: "GET /api/v1/notifications"
+---
+
+Returns one page of the token owner's notifications, newest first, in their language.
+
+<Info>
+  Scope `notifications:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="tab" type="string" default="all">
+  `all`, `unread`, `mentions` or `archive`. Every tab except `archive` leaves out archived entries.
+</ParamField>
+
+<ParamField query="category" type="string">
+  One of `MENTIONS`, `WORK_ITEMS`, `PAGES`, `PROJECTS`, `TIME`, `MEETINGS`, `SPACES`, `AUTOMATION`, `SECURITY`.
+</ParamField>
+
+<ParamField query="spaceId" type="string">
+  Only entries from this Space.
+</ParamField>
+
+<ParamField query="ids" type="string">
+  Up to 50 entry IDs, separated by commas, to load specific entries.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page. Leave it out for the first page.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="50">
+  Entries per page, at most 200.
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="object[]" required>
+      Entries with `id`, `status`, `category`, `createdAt`, `isRead`, `isArchived` and `groupKey`. An
+      entry with `status` `visible` also carries `title`, `body`, `href`, `entity` and `actor`.
+    </ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>
+      Pass it as `cursor` for the next page; `null` on the last page.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://your-collabase.ch/api/v1/notifications?tab=unread&limit=20" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "items": [
+      {
+        "id": "cm2note0001abcd",
+        "status": "visible",
+        "category": "MENTIONS",
+        "createdAt": "2026-10-15T08:05:12.000Z",
+        "isRead": false,
+        "isArchived": false,
+        "groupKey": "cm2note0001abcd",
+        "title": "Olga mentioned you in PROJ-12",
+        "body": "Can you look at this?",
+        "href": "/eng/projects/proj/tasks/PROJ-12",
+        "entity": { "type": "TASK", "title": "Fix the import", "key": "PROJ-12", "location": "Engineering" },
+        "actor": { "kind": "USER", "name": "Olga", "userId": "cm2user0001abcd", "image": null }
+      }
+    ],
+    "nextCursor": null
+  }
+}
+```
+
+</ResponseExample>

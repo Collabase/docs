@@ -1,0 +1,257 @@
+---
+title: "Air-gapped installation and upgrade"
+sidebarTitle: "Air-gapped install"
+description: "Install and update Collabase on a server without internet access. Build an image bundle on a connected machine, carry it over and load it with the scripts."
+---
+
+A server that cannot reach a container registry can still run Collabase. You build a bundle with all required images on a machine that has internet access, copy it to the server and let the install or update script load it. This guide covers the first installation and every later upgrade. Follow the phases in order. Every phase ends with a checkpoint.
+
+## At a glance
+
+| | |
+|---|---|
+| **Result** | Collabase runs on a server with no route to the internet, and you can update it the same way. |
+| **Time** | Depends on how fast you can transfer about 1 GB. The scripts themselves take a few minutes. |
+| **You need** | Shell access on the target server and on one machine with Docker and internet access. |
+| **Edition** | All editions. The licence is a signed token that Collabase verifies locally. |
+
+Two paths lead through this guide:
+
+- **First installation:** phases 1, 2, 3 and 5.
+- **Upgrade:** phases 1, 2, 4 and 5.
+
+## Requirements
+
+### On the connected machine
+
+- **Docker 27 or later.** Older versions cannot restrict the export to one architecture and fail on the multi-architecture PostgreSQL image.
+- **Internet access** to `ghcr.io` and Docker Hub.
+- **About 6 GB of free disk space** for intermediate layers. The finished bundle is about 1 GB.
+- A **sign-in to the GitHub container registry** if the download asks for it: `docker login ghcr.io`.
+
+An Apple Silicon Mac works as the connected machine. The bundle always contains `linux/amd64` images, which is what the server runs.
+
+### On the target server
+
+- The [requirements of the standard installation](/installation#before-you-start): operating system, CPU, RAM, disk space and free ports 80 and 443.
+- **Docker 24 or later** with Docker Compose version 2.
+- The **deployment package** from Collabase, unzipped. It holds `install.sh`, `update.sh` and `bundle.sh`.
+
+### Network
+
+The server needs no connection to the internet to install, start or update Collabase. Features that talk to external services still need a route to them:
+
+| Feature | What it needs |
+|---|---|
+| **HTTPS with a public domain** | Automatic certificates come from Let's Encrypt and need internet access. On an air-gapped server, [bring your own certificate](#https-without-internet). |
+| **AI features** | An AI provider that the server can reach, for example your own Ollama server in the internal network. |
+| **Email, single sign-on** | Your internal mail server or identity provider, reachable from the server. |
+
+## Overview
+
+| Phase | What you do | Where |
+|---|---|---|
+| [1. Build the bundle](#phase-1-build-the-bundle) | Download all images and pack them into one file. | Connected machine |
+| [2. Transfer and check](#phase-2-transfer-and-check) | Copy the bundle and the deployment package to the server. | Both |
+| [3. Install](#phase-3-install) | Load the images and start Collabase for the first time. | Target server |
+| [4. Upgrade](#phase-4-upgrade) | Load a newer bundle and switch to the new version. | Target server |
+| [5. Verify and keep it running](#phase-5-verify-and-keep-it-running) | Confirm the version and plan the next update. | Target server |
+
+## Phase 1: Build the bundle {#phase-1-build-the-bundle}
+
+*Phase 1 of 5. Next: [Transfer and check](#phase-2-transfer-and-check).*
+
+Run `bundle.sh` on the connected machine. It does not have to be the target server, and it normally is not. The script is self-contained, so you can copy this one file to any machine that has Docker.
+
+<Steps>
+  <Step title="Choose the release">
+    Name the release you want, without a leading `v`, for example `0.12.3-rc` or `0.12.0`. Without `--version` the script asks for it.
+  </Step>
+  <Step title="Run the bundler">
+    ```bash
+    bash bundle.sh --version 0.12.3-rc
+    ```
+    The script downloads the images and exports them. This takes a few minutes. Use `--output <folder>` to write the files somewhere other than `./offline/`.
+  </Step>
+  <Step title="Note what the bundle contains">
+    The bundle holds the Collabase application, the document processor, the web server, PostgreSQL and Redis. It also holds the collaboration relay when the release has one. PostgreSQL and Redis are included on purpose, because an air-gapped server cannot reach Docker Hub either.
+  </Step>
+</Steps>
+
+The script writes two files into `./offline/`:
+
+| File | Purpose |
+|---|---|
+| **`collabase-offline-<version>.tar.gz`** | All images, about 1 GB. |
+| **`collabase-offline-<version>.tar.gz.sha256`** | Checksum. The install and update scripts verify it before loading. |
+
+<Check>
+  **Checkpoint.** The script ends with **Offline bundle ready** and lists the images it packed. Both files exist. If the download failed, see [Troubleshooting](#troubleshooting).
+</Check>
+
+**Next:** [Transfer and check](#phase-2-transfer-and-check).
+
+## Phase 2: Transfer and check {#phase-2-transfer-and-check}
+
+*Phase 2 of 5. Previous: [Build the bundle](#phase-1-build-the-bundle). Next: [Install](#phase-3-install) or [Upgrade](#phase-4-upgrade).*
+
+<Steps>
+  <Step title="Copy both files">
+    Copy the `.tar.gz` and the `.sha256` file to the target server, for example with a USB drive or through your approved transfer route. Keep them in the same folder.
+  </Step>
+  <Step title="Copy the deployment package">
+    A first installation needs the unzipped deployment package on the server. For an upgrade, the package that is already installed stays in place. Replace it only when the release notes say so.
+  </Step>
+</Steps>
+
+You do not need to verify the checksum yourself. The scripts compare it before they load anything. Without the `.sha256` file they warn and continue, which is acceptable only if your transfer route already guarantees integrity.
+
+<Check>
+  **Checkpoint.** The bundle and its checksum file are on the server, next to the deployment package.
+</Check>
+
+**Next:** [Install](#phase-3-install) for a new server, or [Upgrade](#phase-4-upgrade) for an existing one.
+
+## Phase 3: Install {#phase-3-install}
+
+*Phase 3 of 5. Previous: [Transfer and check](#phase-2-transfer-and-check). Next: [Verify and keep it running](#phase-5-verify-and-keep-it-running).*
+
+<Steps>
+  <Step title="Start the installer with the bundle">
+    ```bash
+    cd deployment/docker
+    bash install.sh --offline collabase-offline-0.12.3-rc.tar.gz
+    ```
+  </Step>
+  <Step title="Answer the questions">
+    The installer asks the same questions as an online install. See [Installation](/installation#installation) for the list.
+  </Step>
+  <Step title="Wait for the start">
+    The installer verifies the checksum, loads the images and starts Collabase. It sets `COLLABASE_VERSION` in `.env` to the version the bundle contained, so no service tries to download anything.
+  </Step>
+</Steps>
+
+<Warning>
+  `--offline` works with `install.sh` for a first installation only. For an existing installation use `update.sh --offline`, see [Phase 4](#phase-4-upgrade).
+</Warning>
+
+### HTTPS without internet {#https-without-internet}
+
+The installer picks a certificate mode from your URL. Check that it suits an air-gapped server before you rely on it.
+
+| Your URL | Result | What to do |
+|---|---|---|
+| `localhost` or an IP address | A self-signed certificate. Browsers show a warning. | Fine for tests. Use your own certificate for production. |
+| A domain name | Collabase asks Let's Encrypt for a certificate, which fails without internet. | Bring your own certificate. |
+
+To use your own certificate, put the certificate and key into the `certs` folder of the deployment package. Then set this line in `.env` and restart:
+
+```bash
+COLLABASE_TLS="tls /etc/caddy/certs/cert.pem /etc/caddy/certs/key.pem"
+```
+
+```bash
+bash install.sh restart
+```
+
+<Check>
+  **Checkpoint.** `bash install.sh status` shows every service as running and healthy. Open your Collabase address in a browser and sign in with the admin account you created. If it does not start, see [Troubleshooting](#troubleshooting).
+</Check>
+
+**Next:** [Verify and keep it running](#phase-5-verify-and-keep-it-running).
+
+## Phase 4: Upgrade {#phase-4-upgrade}
+
+*Phase 4 of 5. Previous: [Transfer and check](#phase-2-transfer-and-check). Next: [Verify and keep it running](#phase-5-verify-and-keep-it-running).*
+
+An offline upgrade works like an online one. The script creates a database backup, checks your database with the new version, switches over and waits until Collabase is healthy. See [Updates](/admin/updates) for the details. Only the source of the images differs.
+
+<Steps>
+  <Step title="Read the release notes">
+    Some releases include manual steps. Read the [release notes](/changelog/overview) for the target version first.
+  </Step>
+  <Step title="Preview the update">
+    Optional. A dry run shows what would happen and changes nothing.
+    ```bash
+    bash update.sh --dry-run
+    ```
+  </Step>
+  <Step title="Run the update with the bundle">
+    ```bash
+    cd deployment/docker
+    bash update.sh --offline collabase-offline-0.12.4.tar.gz
+    ```
+    The bundle decides the version. `--offline` and `--version` cannot be combined.
+  </Step>
+</Steps>
+
+<Warning>
+  The **Update** button in the administration area runs the update without a bundle and fails on an air-gapped server. Update from the shell.
+</Warning>
+
+### Roll back {#roll-back}
+
+`bash update.sh rollback` returns to the previous version. On an air-gapped server this works only while the previous images are still on the server. If they were removed, load the older bundle first:
+
+```bash
+docker load -i collabase-offline-0.12.3-rc.tar.gz
+```
+
+Database changes only move forward. If a release changed the database and the application misbehaves after a rollback, restore the backup that the update created. See [Backup and restore](/admin/backup).
+
+<Check>
+  **Checkpoint.** The script ends with a healthy status and Collabase loads in the browser. If the update stopped early, your previous version keeps running. See [Troubleshooting](#troubleshooting).
+</Check>
+
+**Next:** [Verify and keep it running](#phase-5-verify-and-keep-it-running).
+
+## Phase 5: Verify and keep it running {#phase-5-verify-and-keep-it-running}
+
+*Phase 5 of 5. Previous: [Install](#phase-3-install) or [Upgrade](#phase-4-upgrade).*
+
+<Steps>
+  <Step title="Check the version">
+    Open **Admin → Settings → About** and compare the version with the bundle you loaded.
+  </Step>
+  <Step title="Keep the bundle">
+    Store the bundle of the running version in a safe place. You need it for a rollback after the images have been removed.
+  </Step>
+</Steps>
+
+| What | When |
+|---|---|
+| **New release** | Build a new bundle in phase 1 and repeat phases 2 and 4. |
+| **Certificate** | Renew it before it expires. A certificate that you supplied is not renewed automatically. |
+| **Pre-update backups** | The update script keeps the last 7 days. Copy the ones you need off the server. |
+
+<Check>
+  **Checkpoint.** The version under **About** matches the bundle, and you know where the bundle of this version is stored.
+</Check>
+
+## Troubleshooting
+
+| What you see | Cause | What to do |
+|---|---|---|
+| `Could not pull <image>` while building | The machine is not signed in to the registry, or the release tag does not exist. | Run `docker login ghcr.io`. Check the release tag. It carries no leading `v`. |
+| An error with `content digest … not found` during the export | The Docker version is older than 27. | Upgrade Docker and run `bundle.sh` again. |
+| `Checksum mismatch` | The copy is incomplete or damaged. | Copy both files again from the connected machine. |
+| `The bundle contains no ghcr.io/collabase/collabase image` | The file is truncated or does not come from `bundle.sh`. | Build the bundle again. |
+| `docker load failed` | The file is damaged or not a bundle. | Copy it again. Check the free disk space on the server. |
+| `--offline applies to install only` | You ran `install.sh --offline` on an existing installation. | Use `update.sh --offline` instead. |
+| `--offline and --version are mutually exclusive` | You passed both flags to `update.sh`. | Remove `--version`. The bundle decides the version. |
+| A warning that the previous image is not in the local image store | You run a rollback after the old images were removed. | Load the older bundle with `docker load -i`, then run the rollback again. |
+| Browser warns about the certificate | The server uses a self-signed or an unfinished certificate. | [Bring your own certificate](#https-without-internet). |
+
+## Related pages
+
+<CardGroup cols={3}>
+  <Card title="Installation" icon="server" href="/installation">
+    Requirements and the standard installation with internet access.
+  </Card>
+  <Card title="Updates" icon="refresh-cw" href="/admin/updates">
+    What the update script does and what to check afterwards.
+  </Card>
+  <Card title="Backup and restore" icon="database-backup" href="/admin/backup">
+    Where backups are kept and how to restore one.
+  </Card>
+</CardGroup>
