@@ -1,27 +1,84 @@
 ---
 title: "Your Home page and favorites"
 sidebarTitle: "Home and favorites"
-description: "What the Home page shows you after sign-in: your open work items, due dates, recent pages, team activity and the pages you marked as favorites."
-keywords: ["for you", "your work", "dashboard", "assigned to me", "recent", "favorites", "starred", "home"]
+description: "What the Home page shows you after sign-in, how to arrange it with columns and drag and drop, how to reset it, and how to mark pages as favorites."
+keywords: ["for you", "your work", "dashboard", "assigned to me", "recent", "favorites", "starred", "home", "customise", "layout", "columns", "gadget", "reset", "catalog", "add gadget"]
 ---
 
-**Home** is the first page after you sign in. It answers two questions: what is waiting for you, and what changed in your Spaces. The layout is the same for everyone and cannot be configured.
+**Home** is the first page after you sign in. It answers two questions: what is waiting for you, and what changed in your Spaces. Below the greeting and the quick create tiles it shows your own dashboard, built from gadgets that you can arrange yourself.
 
 ## What Home shows {#sections}
 
 | Section | Content |
 |---|---|
-| Greeting | Your number of active work items, with tiles for **Work Items** (open and assigned to you), **Overdue**, **Due This Week** (the next seven days) and **Projects** (projects you are a member of) |
+| Greeting | Your number of active work items, with tiles for **Work Items** (open and assigned to you), **Overdue**, **Due This Week** (the next seven days) and **Projects** (active projects you are a member of or lead) |
 | Quick create | **New Page**, **Templates**, and tiles to open your Spaces |
 | **Active Spaces** | The Spaces you work in |
 | **My Recent Work** | The last five pages you opened |
-| **Your Favorites** | The pages you starred. Hidden while you have none |
-| **Team Activity** | The pages in your Spaces most recently updated, written by someone else. Hidden when there are none |
+| **Your Favorites** | The pages you starred. Shows a short hint while you have none |
+| **Team Activity** | The pages in your Spaces most recently updated, written by someone else. Only pages you can open are listed. Shows a short hint when there are none |
 | **My Tasks** | Your open work items in all projects, the earliest due date first |
 
 <Tip>
   **My Tasks** is the fastest way to see your work across every project. Click a row to open the work item.
 </Tip>
+
+## Arrange your Home {#customise}
+
+Everyone starts with the same standard Home, which a system administrator maintains. Your own arrangement is private: nobody else sees it, and it cannot be shared.
+
+<Steps>
+  <Step title="Start customising">
+    Click **Customise** above the gadgets. The Home switches to editing: every gadget shows a grip, and thin drop areas appear between the gadgets.
+  </Step>
+  <Step title="Choose columns">
+    Pick one of five layouts: one column, two equal columns, two columns with the wider one on the left or on the right, or three columns. The layout applies to every group of columns on the page. When you choose fewer columns, the gadgets of the columns that fall away move to the end of the last column.
+  </Step>
+  <Step title="Add gadgets">
+    Click **Add gadget** to open the catalog. It groups ready gadgets by area, such as Projects, Docs and Meetings, and shows a sketch of each in your instance's colours. Search by name or description in your language. Click a gadget to place it at the top of the first column. Gadgets that need data you have no access to are not listed. A dashboard holds up to 30 gadgets; at that point **Add gadget** is disabled and says why.
+  </Step>
+  <Step title="Move gadgets">
+    Drag a gadget by its grip and drop it on a drop area. With the keyboard, focus the grip, press Space to lift the gadget, move it with the arrow keys and press Space to drop it. Escape cancels. Dropping outside a drop area changes nothing.
+  </Step>
+  <Step title="Finish">
+    Click **Done**. Every move is saved as you make it.
+  </Step>
+</Steps>
+
+Your first change creates your own copy of the standard Home. From then on, later changes to the standard Home do not reach you. Folding a gadget in or out does not create a copy: it is remembered for you only, and you keep receiving changes to the standard.
+
+On a narrow screen the gadgets stack in reading order, group by group, column by column from the left.
+
+If somebody else changed the same Home between your last view and your move, your move is applied to their version. If it no longer fits, their version is shown and you are told.
+
+### Fold, refresh and update time {#gadgets}
+
+- Click the arrow in a gadget's header to fold it. Folded gadgets are not loaded. The choice is yours alone and survives reloads.
+- With a mouse, hover over a gadget to show its actions: **Refresh**, and in the menu **Copy link**. On a touch screen they are always visible. **Copy link** opens the page at that gadget: it scrolls there and unfolds the gadget if it is folded.
+- Hover over a gadget's title to see how old its numbers are. Numbers, charts and tables may be up to five minutes old; **Refresh now** above the gadgets recalculates all visible gadgets.
+- A gadget that cannot be shown says why: no access, a saved filter that no longer exists, a query that no longer works, or a calculation that took too long. **Try again** reloads it.
+
+### Configure a gadget {#configure}
+
+While customising, open a gadget's menu (**…**) for **Configure**, **Duplicate**, **Reset to preset** (for gadgets from the catalog), **Full width** and **Remove**. Removing asks first.
+
+**Configure** opens a panel beside the dashboard with three tabs:
+
+- **General**: emoji, title and whether the gadget starts folded. Leave the title empty to show the standard title in each reader's language.
+- **Data**: where the work items come from: a saved filter you can read, a query, or criteria you put together. A chart has one source per series. Each number can be a count, or the sum or average of a number field.
+- **Display**: columns and rows per page for a list; chart type, grouping, stacking, legend and values for a chart; rows, columns, order and colour for a statistics table.
+
+Every change shows on the gadget right away. **Save** keeps it, **Cancel** brings back what was saved. A query with an error is marked where the error is, and **Save** stays off until it is fixed. If somebody saved the same gadget in the meantime, you are told and see their version.
+
+A gadget whose saved filter is gone or whose query no longer works offers **Configure** to people who may change it.
+
+### Go back to the standard {#reset}
+
+While customising, click **Reset to standard** and confirm. The button appears once you have your own Home, that is after your first change. Your own Home is deleted and you see the standard Home again, as it is now.
+
+<Note>
+  Gadgets that show your own data, such as **My Tasks**, always show yours, also when they are part of the standard Home.
+</Note>
 
 ## Mark a page as a favorite {#favorites}
 
@@ -42,6 +99,9 @@ Only pages can be starred. To keep a set of work items at hand, save a search as
 ## Related
 
 <CardGroup cols={2}>
+  <Card title="Dashboards" icon="layout-dashboard" href="/concepts/dashboards">
+    Dashboards of your own, shared and starred.
+  </Card>
   <Card title="Filters" icon="filter" href="/concepts/filters">
     Saved searches for work items and pages.
   </Card>

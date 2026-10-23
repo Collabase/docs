@@ -18,22 +18,24 @@ Outcomes and decisions are recorded while the meeting is **Running**. Organizers
 
 Add an outcome in the **Outcomes** block of an agenda item with **Add outcome**. In the live view, the block sits right below the current topic.
 
-### Create a work item from a task
+### Create a work item from an outcome
 
 <Steps>
   <Step title="Open the dialog">
-    On a task outcome, click **Create work item**.
+    On an outcome that has no work item yet, click **Create work item**. An information outcome becomes a task by it.
   </Step>
   <Step title="Choose where it goes">
     Choose the **Space** and **Project**. You can only pick projects in which you may create work items.
   </Step>
   <Step title="Check responsible and due date">
-    They are taken from the outcome. If the responsible person cannot open the chosen project, the dialog says so; pick someone else or nobody.
+    They are taken from the outcome, and can stay empty. If the responsible person cannot open the chosen project, the dialog says so; pick someone else or nobody.
   </Step>
   <Step title="Create">
     Click **Create work item**. The work item is created and linked to the outcome. Members who cannot open the project see **Not accessible** instead of the link.
   </Step>
 </Steps>
+
+If the work item cannot be created, the dialog stays open and says why in the dialog itself, for example that the chosen project has no workflow with statuses. Pick another project or have the workflow set up.
 
 ## Link work items and pages
 
@@ -54,14 +56,14 @@ When the meeting ends, Collabase records how each linked work item and page stoo
 
 ### Where the meeting shows up
 
-- A work item has a **Meetings** panel in its side bar. It lists the meetings it was discussed in and the agenda items it was linked to.
-- A page shows **Discussed in** with the meetings it was linked to.
+- A work item has a **Meetings** panel in its side bar. It lists the meetings it was discussed in, the agenda items it was linked to and the decisions taken on those items, each with its status.
+- A page shows **Discussed in** with the meetings it was linked to, and the decisions taken on those items.
 
 Both list only meetings the reader is allowed to see.
 
 ## Decisions
 
-Record a decision in the **Decisions of this meeting** panel with **Record decision**.
+Record a decision in the **Decisions of this meeting** panel with **Record decision**, or right where it is discussed: every agenda item has a **Decisions on this item** block with **Record decision**, which preselects that item.
 
 | Field | Description |
 |---|---|

@@ -17,14 +17,14 @@ A project's settings decide which views its members see, who can open it, and wh
 | | **Integrations** | Linked GitHub repositories |
 | **Team** | **Members** | Access mode, project members and their roles, guests |
 | **Workflow** | **Status** | Workflows and their mapping to work item types |
-| | **Work Item Types** | The types the project offers |
+| | **Work Item Types** | The types the project offers, their order and the default |
 | | **Fields** | Field collections for work items |
 | | **Quick filters** | The named chips the team sees above the board, table and timeline |
 | **Planning** | **Time** | Budget hours, and the portfolio and cost budget |
 | | **Cycles** | Defaults for cycles. Shown when **Cycles** is on. |
 | | **Estimation** | **Story Points**, **T-Shirt Sizes** or **Time (Hours)**. Shown when **Story Points** is on. |
 
-If the project is linked to a [project template](/projects/templates), **Project features**, **Status**, **Work Item Types** and **Fields** are read-only. **General** shows **Synced with template** and a **Detach** button.
+Every section shows the same notice when the project has a [project template](/projects/templates). While the project follows the template, the notice names it and the parts the template sets are read-only: **Project features**, **Status**, **Work Item Types** and **Fields**, and the phases, milestones, quick filters and home page. **General** adds a **Detach** button. After detaching, the notice reads **Detached from the template** with its name, and every part can be changed. A project that never had a template shows no notice.
 
 ## General {#general}
 
@@ -119,7 +119,7 @@ Under **Guests**, invite external people who see this project and nothing else. 
 | What you see | Cause | What to do |
 |---|---|---|
 | The **Settings** tab is missing | Your Space role may not edit project settings | Ask a Space Admin |
-| A section says it is managed by the linked template | The project is linked to a project template | Change the template, or click **Detach** in **General** |
+| A section says the project follows a template | The project is linked to a project template | Change the template, or click **Detach** in **General** |
 | **Add Member** is disabled | **All space members already have access to this project** | Add the person to the Space first |
 | A colleague cannot find a private project | They are not a project member | Add them under **Members** |
 

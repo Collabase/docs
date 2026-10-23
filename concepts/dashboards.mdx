@@ -1,0 +1,114 @@
+---
+title: "Dashboards"
+sidebarTitle: "Dashboards"
+description: "Collect figures, charts and lists on a dashboard of your own, find the dashboards you may read, star them, copy them and delete them."
+keywords: ["dashboard", "gadget", "favorites", "duplicate", "copy", "delete", "rename", "command palette", "kpi", "chart"]
+---
+
+A dashboard gathers gadgets on one page: lists of work items, big numbers, charts and statistics tables, each from a saved filter or a query of your own. Your [Home](/concepts/home-and-favorites) is a dashboard too; the **Dashboards** app holds the others.
+
+## Find dashboards {#find}
+
+Open **Dashboards** in the app rail. The list has four tabs:
+
+| Tab | Shows |
+|---|---|
+| **Mine** | Dashboards you own |
+| **Shared with me** | Dashboards others shared with you |
+| **Favorites** | Dashboards you starred |
+| **All I can see** | Everything above together |
+
+Search by name above the list. Each row shows the owner, how the dashboard is shared and when it last changed. Dashboards you may not read never appear, not even in the count.
+
+Star a dashboard to keep it in the sidebar of the app. A star on a dashboard that is no longer shared with you stays, but the dashboard is hidden until it is shared again.
+
+You can also open a dashboard from the command palette: press <kbd>.</kbd> and type part of its name.
+
+## Create a dashboard {#create}
+
+<Steps>
+  <Step title="Start">
+    Click **New dashboard**, enter a name (up to 120 characters) and, if you like, a description.
+  </Step>
+  <Step title="Add gadgets">
+    The new dashboard is private and empty, in two equal columns. Click **Add gadget** and pick one from the catalog. Under **Build your own** you find a blank list, big number, chart and statistics table to set up yourself.
+  </Step>
+  <Step title="Arrange and configure">
+    Click **Customise** to change the columns and drag gadgets. Open a gadget's menu for **Configure** to choose its source, measure and display. See [Configure a gadget](/concepts/home-and-favorites#configure).
+  </Step>
+</Steps>
+
+Guests cannot create dashboards.
+
+## Gadgets for portfolios, costs and risks {#ppm}
+
+The catalog has templates for project portfolio work. Each reads with your rights, so two people can see different figures on the same dashboard.
+
+| Gadget | Shows | Set in the settings |
+|---|---|---|
+| **Portfolio projects** | Projects with traffic light, management attention, next milestone, risks and budget | A portfolio, or all; only projects that need attention |
+| **Status sheet** | How many projects stand at each traffic light of their latest approved report, and which need attention | A portfolio, or all |
+| **Portfolio Gantt** | Projects and their work over time | A portfolio, or all |
+| **Costs** | Budget, forecast and actual per currency, with the spend over time | A portfolio, or all |
+| **Costs by cost type** | Booked and planned costs per cost type | A portfolio, or all |
+| **Risk matrix** | The risks of a space by probability and impact | The space |
+| **Top risks** | The ten highest-rated risks of a space | The space |
+
+Cost figures appear only for projects in which you may view project costs. These templates are offered while portfolios, costs or risks are switched on for your installation.
+
+## Comment on a gadget {#comments}
+
+Hover a gadget and click the speech bubble to open its comments. The number on the bubble counts every comment and answer. Everyone who may read the dashboard can write, answer and mention others, on the home and the project home too.
+
+- **Mention**: type `@` and pick a person. The list offers only people who can read this dashboard, so nobody is told about something they cannot open. The person gets a notification that opens the dashboard at the gadget. If you add a mention later by editing, only the newly mentioned person is told.
+- **Edit**: only the author edits a comment.
+- **Delete**: the author deletes their own comment. People who may edit the dashboard also delete the comments of others.
+- **Guests**: a guest who sees a dashboard can comment on it. On a project home they need the comment right of their guest access.
+
+Comments belong to the gadget. If someone removes the gadget, or resets a home to the standard, its comments go with it. A person who loses access to the dashboard no longer sees its comments, and their notifications about it stop opening it. Their own comments stay.
+
+## Embed a dashboard or a gadget in a page {#embed}
+
+In the page editor, type `/` and choose **Dashboard** or **Gadget** under **Macros**, or use the **Insert** menu. Pick one of the dashboards you may read; for a gadget pick it in a second step. **Change** in the editor chooses another one.
+
+The page shows the live figures with the rights of whoever reads it. Two readers of the same page can see different numbers, and a reader who may not open the dashboard sees a note instead of data. The same note appears when the dashboard or the gadget has been deleted, and for people who are not signed in on a public page. The embedded view is read-only for everyone; open the dashboard itself to change it. Comments on a gadget and the AI reading stay available inside the page.
+
+## Rename, copy and delete {#manage}
+
+- **Rename**: click the name at the top of the dashboard. Only people who may edit the dashboard can rename it.
+- **Duplicate**: makes a private copy named "Copy of …" with all gadgets. Shares, stars and comments are not copied. You can duplicate every dashboard you may read.
+- **Share**: see [Share a dashboard](/concepts/share-dashboards).
+- **Delete**: only the owner deletes a dashboard. The confirmation names it and says with how many it is shared. It disappears for everyone, with its gadgets, shares and stars. There is no trash.
+
+If two people change the same dashboard at the same time, the second save is told and sees the newer version; nothing is overwritten silently.
+
+## Hand over a dashboard {#hand-over}
+
+Every dashboard has one owner. The owner can hand it to a person who may already edit it: open the dashboard, choose **Hand over**, pick the person and confirm. The new owner is told, and you keep edit rights through a share.
+
+When an account is deleted, its dashboards stay. They become orphaned: nobody owns them, but everyone they were shared with keeps access. Administrators are told and can hand them to someone.
+
+## Administer dashboards {#admin}
+
+Administrators find **Dashboards** in the administration area. It has three tabs:
+
+- **Default home**: the home every person starts with until they change their own. Changes are recorded in the audit log. **Reset to the shipped home** brings back the one Collabase ships; people with their own home keep it.
+- **Without owner**: orphaned dashboards. **Hand over** gives one to any internal person.
+- **Shared**: every dashboard shared with someone, with its owner and how many it is shared with. Private dashboards of others are not shown.
+
+## Related {#related}
+
+<CardGroup cols={2}>
+  <Card title="Home and favorites" icon="house" href="/concepts/home-and-favorites">
+    Your own home, built from the same gadgets.
+  </Card>
+  <Card title="Filters" icon="filter" href="/concepts/filters">
+    Saved searches a gadget can use as its source.
+  </Card>
+  <Card title="Dashboard controller" icon="sliders-horizontal" href="/concepts/dashboard-controller">
+    Let viewers narrow all gadgets by space, status, person or period at once.
+  </Card>
+  <Card title="Dashboard gadgets" icon="layout-grid" href="/concepts/dashboard-gadgets">
+    Every gadget, what it shows and who sees which data.
+  </Card>
+</CardGroup>

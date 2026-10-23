@@ -1,0 +1,34 @@
+---
+title: "Order a project's work item types"
+description: "Set the order and the default of the types a project offers."
+api: "PATCH /api/v1/projects/{projectId}/task-types"
+---
+
+<Info>
+  Scope `projects:write`. Same rights and the same `409` for a template-linked project as when [offering a type](/api/projects/offer-task-type).
+</Info>
+
+## Body parameters {#body}
+
+<ParamField body="order" type="string[]" required>
+  The ids of every offered type that is not phasing out, in the new order. The list must match what the project offers; otherwise the answer is `422`.
+</ParamField>
+
+<ParamField body="defaultTaskTypeId" type="string" required>
+  The default type. It must be one of the listed types.
+</ParamField>
+
+## Response {#response}
+
+Status `200` with the entries in their new order.
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/projects/clx0proj01/task-types" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "order": ["clx0type02", "clx0type01"], "defaultTaskTypeId": "clx0type02" }'
+```
+
+</RequestExample>

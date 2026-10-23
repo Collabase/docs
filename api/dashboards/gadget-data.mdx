@@ -1,0 +1,32 @@
+---
+title: "Gadget data"
+description: "What one gadget shows the token owner, optionally narrowed by a controller selection."
+api: "GET /api/v1/dashboards/{id}/gadgets/{gadgetId}/data"
+---
+
+<Info>
+  Scope `dashboards:read` and the scope of what the gadget shows, for example `tasks:read` for work items.
+</Info>
+
+## Query parameters {#query}
+
+<ParamField query="controller" type="string">
+  A controller selection as JSON: `{ "values": { "status": ["Open"] }, "periods": {}, "granularity": null }`. A selection that does not parse answers `422`.
+</ParamField>
+
+<ParamField query="page" type="integer">
+  The page of a result list, from 1.
+</ParamField>
+
+## Response {#response}
+
+`{ "data": { "status", "data", "computedAt" } }`. `status` is `ok` or `empty` with data, or the reason there is none: `inaccessible`, `sourceMissing`, `noSource`, `invalidQuery`, `unconfigured` or `error`. Module gadgets load their content in the app and answer `unconfigured` here.
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/dashboards/clx0dash01/gadgets/clx0gadg01/data" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

@@ -14,7 +14,7 @@ A task represents a single unit of work — a feature request, bug report, suppo
 | **Key** | Auto-generated identifier (e.g., `PROJ-42`). Unique within the project and permanent. |
 | **Title** | Required. Short description of the work. |
 | **Status** | Current workflow state (e.g., Todo, In Progress, In Review, Done). Configured per project. |
-| **Type** | Task type — Task, Bug, Story, Epic, or custom types defined by your admin. |
+| **Type** | Task type: Task, Bug, Story, Epic, or custom types defined by your admin. Change it in the detail view; see [Change the type](#change-the-type). |
 | **Priority** | **Blocker**, **Highest**, **High**, **Medium** or **Low**. |
 | **Assignee** | The team member responsible for the task. |
 | **Reporter** | Who created or submitted the task. Set automatically on creation. |
@@ -28,6 +28,8 @@ A task represents a single unit of work — a feature request, bug report, suppo
 | **Due Date** | Deadline. Overdue tasks are flagged in all views. |
 | **Labels** | Free-form tags for filtering and grouping. |
 | **Description** | Full rich-text body — supports headings, code blocks, images, tables, callouts, and mentions. |
+
+Every date field takes a typed date as well as a pick from the calendar. Type the day first, for example `14.7.2026`, `14.07.26` or `14.7.` for the current year, and press **Enter**. In the calendar, click the month to choose another month, and then the year to choose another year.
 | **Custom Fields** | Additional fields configured by your admin for specific task types. |
 
 ## Creating a task
@@ -40,7 +42,7 @@ A task represents a single unit of work — a feature request, bug report, suppo
     Click **Add work item** on the **Board**, in **Work Items** or in the **Backlog**. From anywhere in Collabase, you can also use **Create → Create Work Item**.
   </Step>
   <Step title="Fill in the required fields">
-    Title is required. Type defaults to the project's default task type. All other fields are optional and can be updated later. If the project uses estimation, an estimate field (story points, T-shirt size, or hours, depending on the project's method) is available here so you can size the task as you create it.
+    Title is required. Type defaults to the project's default task type. All other fields are optional and can be updated later. Below the description, the status, assignee, **Start date**, **Due date**, labels, priority and estimate are chips you click to set. If the project uses cycles, a **Cycle** chip puts the work item into a cycle, and **Parent** makes it a subtask of another work item from the start. If the project uses estimation, an estimate field (story points, T-shirt size, or hours, depending on the project's method) is available here so you can size the task as you create it.
   </Step>
   <Step title="Save">
     Press **Enter** or click **Create**. The task is created and appears in the first status column on the board.
@@ -62,9 +64,17 @@ Click any task to open its full detail view. The detail view is organized into s
 | **Custom fields** | Task type-specific fields shown in the right sidebar. |
 | **Time log** | Time entries logged against this task (if time tracking is enabled). |
 
+You can open a work item in a new tab from the **Board**, the **Work Items** table, the **Backlog** and the sub-item list: click its title with the middle mouse button or hold **Ctrl** (**Cmd** on a Mac), or open the context menu of the title. In the **Work Items** table, hold **Ctrl** or **Cmd** while you click a row, or click it with the middle mouse button.
+
 <Note>
   Whether sub-items move together with their parent between the backlog and a cycle depends on the project's cycle settings. See [Subtasks and cycles](/projects/sprints#subtasks-and-sprints).
 </Note>
+
+## Change the type {#change-the-type}
+
+Click the **Type** field in the detail view and choose another type. The menu lists every type of the project.
+
+If the new type works with the same workflow, the work item keeps its status. If it works with another workflow, the current status does not exist there. Collabase then asks for the status the work item lands in, and proposes the status with the same meaning as the current one. Choose a status and click **Change type**. The work item moves into that status and continues from there; it does not have to be the first status of the workflow.
 
 ## Comments: Internal vs. External
 
@@ -81,7 +91,7 @@ Default visibility is Internal. Switch before posting if the comment is intended
 
 Subtasks are tasks nested under a parent task. They have all the same fields as a regular task.
 
-To add a subtask, open a task's detail view and click **+ Add Subtask**. The new subtask is linked to the parent and inherits the same project and sprint.
+To add a subtask, open a task's detail view and type a title into the field below **Subtasks**, then press **Enter**. The icon before the field shows the type the new subtask gets, which is the type of the parent until you change it. Click the icon to choose any other type of the project. The new subtask is linked to the parent and inherits the same project and sprint.
 
 Where subtasks show up depends on the view:
 

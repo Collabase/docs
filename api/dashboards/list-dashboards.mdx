@@ -1,0 +1,40 @@
+---
+title: "List dashboards"
+description: "A page of the free dashboards the token owner may read, by tab and name, continued with a cursor."
+api: "GET /api/v1/dashboards"
+---
+
+<Info>
+  Scope `dashboards:read`.
+</Info>
+
+## Query parameters {#query}
+
+<ParamField query="tab" type="string" default="mine">
+  `mine`, `shared`, `favorites` or `all`.
+</ParamField>
+
+<ParamField query="q" type="string">
+  Part of the name.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="50">
+  Cut down to 100.
+</ParamField>
+
+## Response {#response}
+
+`{ "data": { "items": [...], "nextCursor": "..." } }`. Each item carries `id`, `name`, the owner, whether it is shared and when it was changed.
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/dashboards?tab=shared" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

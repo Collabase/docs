@@ -15,6 +15,17 @@ Projects is the app for planning and tracking work in every Collabase Space. A p
 
 A Space can hold many projects. Each project has its own workflows, work item types, fields and members, and either all members of the Space can open it or only the people you add.
 
+## Find your projects
+
+The sidebar of Projects lists the projects of the Space. A switch at its bottom chooses how:
+
+| View | What you see |
+|---|---|
+| **Standard** | All projects in your own order. Drag a project by the grip in front of its name to place it where you want it. The order is yours alone; nobody else sees it. A new project joins at the end of your order. |
+| **By portfolio** | A tree with the portfolios as folders, nested as the portfolio structure is, and the projects below them. Projects without a portfolio, or in a portfolio you cannot see, are listed in **No portfolio**. You cannot drag in this view: where a project sits follows from its portfolio. |
+
+Click the arrow of a project to show its tabs. The sidebar remembers the view you chose in this browser.
+
 ## Work in a project
 
 <CardGroup cols={3}>
@@ -68,6 +79,26 @@ Each view is a tab in the project. A project admin switches tabs on and off unde
 | **Mindmap** | The project's work items as a map |
 
 **Cycles**, **Phases and gates**, **Risks** and **Costs** are features with their own switches in the same place. See [Project features](/projects/project-settings#features).
+
+## Design the project Home {#home}
+
+The **Home** tab is a dashboard that everyone who can open the project sees (guests keep the built-in Home for now). It starts with the usual parts: banner, budget, web links, profile, key figures, the active cycle, status and type distribution, workload and activity.
+
+If you have the right to change the project's settings in its Space, **Customise** appears. You can move, resize, remove and add gadgets, choose the column layout, and fold gadgets. **Add gadget** offers the project's own gadgets (including the sprint gadgets) next to the general ones. **Reset to standard** brings back the usual parts; comments on the gadgets you replace go with them.
+
+Every gadget shows this project only, whatever its query says, and every person sees the numbers their own rights allow. Changes to the Home are recorded in the audit log, at most one entry every ten minutes.
+
+### Sprint gadgets {#sprint-gadgets}
+
+| Gadget | Shows |
+|---|---|
+| **Sprint burndown** | Remaining work of a cycle against the ideal line, by points or by work items |
+| **Sprint burnup** | Finished work against the scope of the cycle |
+| **Sprint health** | Done, in progress and open work, scope changes, days left and whether the cycle keeps its pace |
+| **Days left in sprint** | The days a cycle has left, counted in your calendar |
+| **Velocity** | What the last finished cycles committed to and completed |
+
+Choose a cycle in the gadget's settings, or leave **The running cycle**. Without a running cycle the gadget says so and leads to the cycle planning.
 
 ## Roles and access
 

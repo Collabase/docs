@@ -1,0 +1,28 @@
+---
+title: "Remove a work item type from a project"
+description: "Stop offering a work item type in a project."
+api: "DELETE /api/v1/projects/{projectId}/task-types/{taskTypeId}"
+---
+
+<Info>
+  Scope `projects:write`. Same rights and the same `409` for a template-linked project as when [offering a type](/api/projects/offer-task-type).
+</Info>
+
+## Response {#response}
+
+Status `200` with `{ "removed": true }`. The type stays in the catalog; only the project stops offering it.
+
+| Status | Code | When |
+|---|---|---|
+| `404` | `NOT_FOUND` | The project does not offer this type |
+| `409` | `TASK_TYPE_IN_USE` | Work items of the project still carry the type; `error.details[0].params.count` says how many. Move them to another type first. |
+| `409` | `LAST_TASK_TYPE` | A project keeps at least one type |
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/projects/clx0proj01/task-types/clx0type01" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

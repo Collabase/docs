@@ -12,14 +12,9 @@ A work item type names a kind of work, such as **Bug**, **Feature** or **Change 
 
 ## Where types come from {#where-types-come-from}
 
-You define types once for the instance. A project then offers them in one of two ways:
+You define types once for the instance, or once for a space. A project **offers** a type when a project manager adds it in the project settings. Every project offers its own list, with its own order and its own default type. A type is never copied into a project: when you rename it or change its fields or workflow, every project that offers it shows the change.
 
-| Project | Types offered when creating a work item |
-|---|---|
-| **Linked to a project template** | The types selected in the template |
-| **Detached or created without a template** | Every instance type, plus types that belong to the project itself |
-
-When a project type and an instance type have the same name, members see the project type only. A project cannot hide an instance type. If a team must not use a type, give it a project from a template that leaves the type out.
+A project that is created from a [project template](/projects/templates) starts with the types of the template. A project created without a template starts with the types of its kind, with **Task** as the default.
 
 ## Create a work item type {#create}
 
@@ -30,7 +25,7 @@ When a project type and an instance type have the same name, members see the pro
   <Step title="Fill in the panel">
     | Setting | Details |
     |---|---|
-    | **Name** | Required. Shown on work item cards and in lists. |
+    | **Name** | Required, up to 60 characters. Shown on work item cards and in lists. A name is unique across the instance and all spaces, ignoring case and surrounding spaces. |
     | **Icon** | Pick one of the icons in the grid. |
     | **Description** | Optional. Explains when to use the type. |
     | **Set as default** | Used when no type is explicitly chosen. |
@@ -41,6 +36,12 @@ When a project type and an instance type have the same name, members see the pro
 </Steps>
 
 The list shows each type's **Name**, **Description**, linked **Collections** and whether it is the **Default**. To make an existing type the default, hover over its row and click **Set as default**.
+
+## Delete a work item type {#delete}
+
+You can delete a type only while nothing uses it. If projects offer it, project templates list it or work items carry it, the deletion is refused and the message says how many projects, templates and work items depend on the type. Remove it from those projects and templates, or change the work items to another type, and try again. System types cannot be deleted. Deleting a type cannot be undone.
+
+To stop a single project from offering a type, use **Remove** in the project's settings instead. See [Types in project settings](#project-types).
 
 ## Give a type its own fields {#fields-per-type}
 
@@ -63,22 +64,19 @@ Each project, or each project template, maps work item types to workflows. A typ
 
 ## Types in project settings {#project-types}
 
-A project's **Settings → Work Item Types** lists the types the project offers. Types from the instance carry the badge **Global**. Types without the badge belong to the project, for example the copies a project keeps when it is detached from its template. You can delete only types that belong to the project.
+A project's **Settings → Work Item Types** lists the types the project offers, in the order members see them. The default type is marked **Default**, a type that is being phased out **Phasing out**, and types of the instance carry the badge **Global**.
 
-If the project is linked to a template, the section is read-only and says **Work item types are managed by the linked template.**
+With **Manage project settings** you can:
 
-## Delete a type {#delete}
+- **Add** a type of the instance or of the space with **Add Work Item Type**. It appears at the end of the list.
+- **Move** a type up or down, and **make it the default**, from the menu of its row. The default is the type a new work item gets when nobody picks one, for example from mail or an automation.
+- **Remove** a type from the project. The type stays in the catalog. It cannot be removed while a work item of the project still has it (the message names how many), and a project keeps at least one type.
 
-| Where | Result |
-|---|---|
-| **Delete** on the **Work Item Types** page | The type is deleted. Work items of this type keep their data and become untyped. Links to templates and collections are removed. |
-| Delete a project type in project settings | **This work item type will be permanently removed. Work items using this type will become untyped.** |
+While the project is linked to a template, the section is read-only and says that the project follows the template. Detach the project first to change the list.
 
-Types that come with Collabase as system types cannot be deleted.
-
-<Warning>
-  Deleting a type cannot be undone. Check the work items of that type before you delete it.
-</Warning>
+<Note>
+  Changing the types of a project needs **Manage project settings**. Before this change the right **Manage custom fields** was enough. Give the right to the people who should keep changing the list.
+</Note>
 
 ## Related pages
 

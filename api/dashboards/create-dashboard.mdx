@@ -1,0 +1,34 @@
+---
+title: "Create dashboard"
+description: "Create a private, empty dashboard of the token owner."
+api: "POST /api/v1/dashboards"
+---
+
+<Info>
+  Scope `dashboards:write`. Guests cannot create dashboards.
+</Info>
+
+## Body parameters {#body}
+
+<ParamField body="name" type="string" required>
+  1 to 120 characters.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Optional.
+</ParamField>
+
+## Response {#response}
+
+Status `201` with the dashboard in the shape of [Get dashboard](/api/dashboards/get-dashboard). Two calls create two dashboards.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/dashboards" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Steering committee" }'
+```
+
+</RequestExample>

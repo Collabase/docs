@@ -32,6 +32,10 @@ Creates a filter that belongs to the token owner. It is private until you [share
   Up to five keys, each `{ "field", "direction" }`.
 </ParamField>
 
+<ParamField body="groupBy" type="string | null" default="null">
+  The field the list groups by when the filter is opened; none means no grouping.
+</ParamField>
+
 <ParamField body="columns" type="string[]" default="[]">
   The columns to show; none means the kind's standard columns.
 </ParamField>

@@ -1,0 +1,119 @@
+---
+title: "Gadgets for dashboards"
+sidebarTitle: "Dashboard gadgets"
+description: "Every gadget you can add to a dashboard, what it shows, how to set it up and who sees which data."
+keywords: ["gadget", "gauge", "funnel", "treemap", "calendar", "activity stream", "text", "quick links", "preset", "catalog", "test run", "meeting decisions"]
+---
+
+A gadget is one tile of a dashboard. The catalog offers ready-made ones, called presets, grouped by app. A preset is only a starting point: once it is on the dashboard it is an ordinary gadget that you change in its settings.
+
+Every gadget calculates with the rights of the person looking. Two people who open the same dashboard can see different numbers, and nobody sees a work item, a page or a name they may not read. Someone without access to a module does not find its presets in the catalog.
+
+## Add a gadget {#add}
+
+<Steps>
+  <Step title="Open the catalog">
+    Click **Customise**, then **Add gadget**. Search by name or description, or narrow to one app or topic.
+  </Step>
+  <Step title="Pick a preset">
+    The preview shows the shape of the gadget. Click it to add it below the last one.
+  </Step>
+  <Step title="Choose the data">
+    Open the gadget's settings. Presets under **Core gadgets** wait for a source: a saved filter, a query or the query builder.
+  </Step>
+</Steps>
+
+## Create a gadget with AI {#ai-create}
+
+If your administrator has switched on Collabase AI for you, the catalog has **Create with AI**. Describe what you want to see, for example "open bugs per team of the last 8 weeks as a line", and click **Create draft**.
+
+The draft shows the title and the search the gadget would run. Nothing is added yet: **Insert gadget** adds it as an ordinary gadget and opens its settings, **Discard** throws the draft away. The model sees your description and the names of the fields you may use, never a value or a work item. The query goes through the same search as one you type yourself, so the gadget counts only what you may see. Only counters, charts, statistics tables and result lists can be drafted. Without AI access the entry is missing and everything else works as before.
+
+## Ask AI about a gadget {#ai-ask}
+
+Counters, gauges, charts, statistics tables and flow gadgets have **Ask AI** in their menu. It writes a few sentences about the figures the gadget shows you, with the filters you have chosen on screen, and says that AI wrote it. The model reads the counts, values and group names you can see; a group you may not read stays "not accessible". The reading is not saved. Lists, activity streams, calendars and text gadgets have no reading.
+
+## Charts {#charts}
+
+A chart groups the objects of a query by one field, or by two for stacked columns. Besides columns, bars, lines, areas, pies and donuts it can draw:
+
+- **Funnel**: the groups from the widest to the narrowest, for stages such as a status flow.
+- **Treemap**: one tile per group, sized by its count or sum.
+
+Funnel, treemap, pie and donut take one grouping and one series. Adding a second grouping turns the chart into stacked columns. Every chart offers its data as a table, and a click on a segment offers **Show objects** or, with a controller, **Filter dashboard by this**.
+
+## Gauge {#gauge}
+
+A gauge shows a share or the reach of a target as a dial.
+
+| Mode | What it divides |
+|---|---|
+| **Share** | The number A by the number B, for example done work items by all work items. |
+| **Target** | The number A by a value you set by hand. |
+
+Each of the two numbers has its own measure and an extra condition. Under **Colour bands** you set ranges in percent, for example red below 50, amber from 50, green from 80. Bands may touch but not overlap. The dial shows the figure and the name of its band, so colour is never the only signal.
+
+A **smart gauge** adds up to six conditions under **Smart gauge**. Each one becomes its own dial with the condition added to both numbers. If there is nothing to divide by, the dial shows a dash. A value above 100 percent keeps the pointer at the limit and shows the real figure.
+
+## Calendar {#calendar}
+
+A calendar places objects on the day of a date field such as the due date. Choose a month or a week. With an end date field an object appears on every day between the two dates. A day shows three entries and then **+n**, which opens the rest. A click on an entry opens the object.
+
+The calendar reads the month before, the running month and the next one, at most 500 objects. Days are counted in your own time zone, except for date fields without a time, which are the same day for everyone.
+
+## Text {#text}
+
+A text gadget holds formatted text with emojis, links and images, up to 50,000 characters. Write it in the editor in the settings; on the dashboard it is read-only. Addresses that could run a script are removed when you save. An image from a Space you may not read does not load for you.
+
+## Links {#links}
+
+A list of up to 50 links. A web address must start with `http` or `https` and opens in a new tab. A link to a page, work item, project, meeting, Space, saved filter or dashboard is added with the identifier from its address. People who may not see the target do not see the link, and a deleted target disappears from the list.
+
+## Activity stream {#activity}
+
+The newest changes and comments of the work items a query matches: created, status changed, commented, assigned and edited, each with the person, the work item and how long ago. Tick the kinds you want and the number of entries, up to 50. A comment's first lines appear only if you may read that comment, and a guest sees external comments only. A person who has left shows as **(deleted)**.
+
+## Flow gadgets {#flow}
+
+Flow gadgets show how long work items stay open and in each status, and where they pile up. Pick the metric in the settings:
+
+| Metric | What it shows |
+|---|---|
+| **Age of open work items** | Average and median age of the work items still open at the end of each period. |
+| **Resolution time** and **Lead time** | Days from creation to the last closing, average and median per period. A work item that was reopened counts with its last closing. |
+| **Cycle time** | Days from first entering an active status to closing. Work items that were never active are not counted. |
+| **Time in status** | How long work items stay in each status, grouped by status, work item or assignee, as average and median. |
+| **Status changes** | How many times work items changed status per period, optionally from one status to another. |
+| **Transition time** | Days from first entering one status to first entering another. |
+| **Entering a status** | Work items that entered a status, per period. |
+| **Cumulative flow** | How many work items were in each status at the end of each period. |
+
+Periods are days, weeks, months, quarters or years in your time zone, up to 104 back from the running one. Age, resolution, cycle and lead time take an optional target in days; the gadget then shows how far the latest value is from it in percent.
+
+Status names are the ones the status had at the moment of each change, so a renamed or deleted status keeps its old name in the history. A work item that moves to another project takes its whole history along.
+
+From the update on, every status change is recorded. Older changes are restored from the audit log, which an administrator starts once after the update. Work items whose history does not begin with their creation are marked **history incomplete** in the gadget and count from their first known change.
+
+Only work items you may read take part, so two people can see different numbers.
+
+## Module gadgets {#modules}
+
+| Gadget | Shows |
+|---|---|
+| **Upcoming meetings** | The next meetings you are invited to. |
+| **Meeting decisions** | The newest valid decisions of meetings you may read. |
+| **Latest test run** | Passed, failed and blocked of the newest run of each test project you may see results of. |
+| **Recently viewed** | The pages you opened last. |
+| **Favourite pages** | The pages you starred. |
+| **Booked hours** | The hours booked on the work items of a query. It needs access to time reports. |
+
+## Related {#related}
+
+<CardGroup cols={2}>
+  <Card title="Dashboards" icon="layout-dashboard" href="/concepts/dashboards">
+    Create, find, copy and delete dashboards.
+  </Card>
+  <Card title="Dashboard controller" icon="sliders-horizontal" href="/concepts/dashboard-controller">
+    Narrow every gadget by space, status, person or period at once.
+  </Card>
+</CardGroup>

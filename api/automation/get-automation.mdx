@@ -16,7 +16,7 @@ api: "GET /api/v1/automation/{automationId}"
 <ResponseField name="isEnabled" type="boolean">Whether active.</ResponseField>
 <ResponseField name="triggerType" type="string">Trigger type.</ResponseField>
 <ResponseField name="triggerConfig" type="object">Trigger configuration.</ResponseField>
-<ResponseField name="flowGraph" type="object">Node graph definition.</ResponseField>
+<ResponseField name="flowGraph" type="object">Node graph definition: `schemaVersion` (currently `1`), `nodes` and `edges`.</ResponseField>
 <ResponseField name="spaceId" type="string">Owning space ID.</ResponseField>
 
 <RequestExample>
@@ -34,7 +34,7 @@ curl "https://your-collabase.ch/api/v1/automation/auto-abc123" \
   "isEnabled": true,
   "triggerType": "COLLABASE_EVENT",
   "triggerConfig": { "event": "collabase.test.caseResult.failed" },
-  "flowGraph": {},
+  "flowGraph": { "schemaVersion": 1, "nodes": [], "edges": [] },
   "spaceId": "space-001"
 }
 ```

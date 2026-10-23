@@ -1,0 +1,30 @@
+---
+title: "Offer a work item type in a project"
+description: "Add a catalog work item type to the types a project offers."
+api: "POST /api/v1/projects/{projectId}/task-types"
+---
+
+<Info>
+  Scope `projects:write`. The person who issued the key needs the right to manage the project settings. A project that follows a template answers `409 PROJECT_LOCKED_BY_TEMPLATE`: detach it first.
+</Info>
+
+## Body parameters {#body}
+
+<ParamField body="taskTypeId" type="string" required>
+  The id of a work item type of the instance or of the project's space. No other field is accepted.
+</ParamField>
+
+## Response {#response}
+
+Status `201` with the new entry in the shape of [List project work item types](/api/projects/list-task-types), added at the end of the list. A type the project already offers answers `200` and changes nothing. An unknown type answers `404`.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/projects/clx0proj01/task-types" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "taskTypeId": "clx0type01" }'
+```
+
+</RequestExample>

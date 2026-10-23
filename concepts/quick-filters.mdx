@@ -5,13 +5,14 @@ description: "Narrow the board, the table and the timeline with one row of chips
 keywords: ["quick filters", "chips", "only mine", "recently changed", "columns", "board filter", "table columns", "share a filter"]
 ---
 
-Every list of work items has the same row of chips above it. A chip switches a condition on or off, and the list shows only the work items that pass all switched-on chips. The row is the same on the **Board**, **Work Items**, **Timeline** and the portfolio Gantt, so you learn it once.
+Above every list of work items sits a row of **view tabs** and, below it, a row of chips. A view is a saved state of the list: an optional filter, the sorting, the grouping and the columns. One click on a tab switches all of them together. **All** shows the list without a view.
+
+The chips below the tabs switch single conditions on or off. A chip switches a condition on or off, and the list shows only the work items that pass all switched-on chips. The row is the same on the **Board**, **Work Items**, **Timeline** and the portfolio Gantt, so you learn it once.
 
 ## The chips {#chips}
 
 | Chip | Shows |
 |---|---|
-| **Your project's quick filters** | The filters a project lead named, such as **Only bugs** |
 | **Only mine** | Work items assigned to you |
 | **Recently changed** | Work items changed in the last 7 days |
 | **Status**, **Assignee**, **Priority**, **Label** | Work items with the values you tick |
@@ -39,9 +40,9 @@ A chip that no longer fits is crossed out and explains why:
 
 Such a chip does not narrow the list. Click it to remove it.
 
-## Define quick filters for a project {#define}
+## Views for a project {#define}
 
-A project lead gives the team their own chips.
+A project lead gives the team their own views. A view that only carries a filter and a view that only carries columns and grouping are the same thing: both are saved and chosen as a tab.
 
 **Who can do this:** members who may edit the project settings. For a portfolio, its owner, an owner above it, and administrators.
 
@@ -50,14 +51,14 @@ A project lead gives the team their own chips.
     In the project, open **Settings** and choose **Quick filters** under **Workflow**. For a portfolio, open the **Gantt** view of the portfolio and click **Quick filters**.
   </Step>
   <Step title="Name the filter and write its query">
-    Enter a **Name** and the **Query**. The editor suggests the fields and values you may use. The query narrows the project's work items, so it needs no project clause.
+    Enter a **Name** and the **Query**. Grouping and columns come with a view you copy from a saved filter. The editor suggests the fields and values you may use. The query narrows the project's work items, so it needs no project clause.
   </Step>
   <Step title="Add it">
-    Click **Add quick filter**. The chip appears for everyone who opens the views.
+    Click **Add quick filter**. The tab appears for everyone who opens the lists of the project.
   </Step>
 </Steps>
 
-Drag a filter by its handle to change the order of the chips. A project or portfolio holds at most 10 quick filters. Projects you create from a [project template](/projects/templates) start with the quick filters the template carries.
+Drag a filter by its handle to change the order of the tabs. A project or portfolio holds at most 30 views. Projects you create from a [project template](/projects/templates) start with the quick filters the template carries.
 
 <Note>
   A quick filter cannot contain a sort order. The view keeps its own order.

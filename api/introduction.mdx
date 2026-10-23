@@ -87,7 +87,7 @@ All responses return JSON.
 
 ## Rate limiting
 
-Requests are limited per client address. If you exceed the limit, the API returns `429 Too Many Requests`; wait a few seconds and retry.
+Requests are limited per signed-in person, so colleagues behind the same office address do not share one budget. Requests without a session are limited per client address. If you exceed the limit, the API returns `429 Too Many Requests` with a `Retry-After` header that says how many seconds to wait; wait that long and retry.
 
 ---
 

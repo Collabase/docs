@@ -12,7 +12,7 @@ Creates a new automation owned by the authenticated user.
 <ParamField body="description" type="string">Optional description.</ParamField>
 <ParamField body="triggerType" type="string" required>`COLLABASE_EVENT` | `WEBHOOK` | `SCHEDULE` | `MANUAL`</ParamField>
 <ParamField body="triggerConfig" type="object">Trigger-specific configuration. Defaults to `{}`.</ParamField>
-<ParamField body="flowGraph" type="object">Initial node graph. Defaults to `{}`.</ParamField>
+<ParamField body="flowGraph" type="object">Initial node graph with `schemaVersion` (must be `1`), `nodes` and `edges`. Defaults to an empty graph. An unknown or missing `schemaVersion` is rejected with `422`.</ParamField>
 <ParamField body="spaceId" type="string">Associate with a space ID.</ParamField>
 
 ## Response

@@ -1,0 +1,26 @@
+---
+title: "Dashboards API"
+sidebarTitle: "Overview"
+description: "Read, create, change, share and delete dashboards and read their gadgets' data through /api/v1/dashboards, as the person who issued the token."
+---
+
+The Dashboards API gives integrations the free dashboards of the person who issued the token: the ones they own and the ones shared with them. Every call runs as that person, with their rights, and every gadget computes with those rights.
+
+## Scopes {#scopes}
+
+| Scope | Allows |
+|---|---|
+| `dashboards:read` | [List](/api/dashboards/list-dashboards) and [get](/api/dashboards/get-dashboard) dashboards and read [the data of a gadget](/api/dashboards/gadget-data) |
+| `dashboards:write` | [Create](/api/dashboards/create-dashboard), [change](/api/dashboards/update-dashboard), [delete](/api/dashboards/delete-dashboard) and [share](/api/dashboards/replace-dashboard-shares); includes `dashboards:read` |
+
+The data of a gadget also needs the scope of what the gadget shows, for example `tasks:read` for a chart of work items, `finance:read` for a cost gadget or `meetings:read` for upcoming meetings. Without it the answer is `403 INSUFFICIENT_SCOPE` and names the scope. Existing tokens do not get the new scopes automatically; issue a new token under **Profile → Security**.
+
+## Conventions {#conventions}
+
+- **Only free dashboards.** Homes (your own included), the default home, project homes and public links are not part of the API. Their IDs answer `404 NOT_FOUND`.
+- **A dashboard you may not read does not exist.** Its ID answers `404 NOT_FOUND`, exactly like an ID that does not exist.
+- **Who may do what.** The owner and people with the right to edit change a dashboard. Only the owner shares and deletes it. A guest can only be given the right to view. See [Share a dashboard](/concepts/share-dashboards).
+- **Changes name their version.** `PATCH` carries the `updatedAt` you read as `baseUpdatedAt`. A dashboard changed since answers `409 CONFLICT`.
+- **Creating is not idempotent.** Two `POST` calls create two dashboards.
+- **Pages.** Lists are paged with a cursor. `limit` defaults to 50 and is cut down to 100.
+- **Strict bodies.** Unknown fields are rejected with `422 VALIDATION_ERROR`.

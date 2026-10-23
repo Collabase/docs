@@ -1,0 +1,22 @@
+---
+title: "Get dashboard"
+description: "A free dashboard with its layout, its gadgets and the token owner's level on it."
+api: "GET /api/v1/dashboards/{id}"
+---
+
+<Info>
+  Scope `dashboards:read`.
+</Info>
+
+## Response {#response}
+
+`{ "data": { "id", "name", "description", "layout", "gadgets": [...], "level", "updatedAt" } }`. `level` is `OWNER`, `EDIT` or `VIEW`. A gadget carries its `id`, `type`, `title` and `config`; read what it shows with [Gadget data](/api/dashboards/gadget-data). A home, the default home or a project home answers `404`.
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/dashboards/clx0dash01" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

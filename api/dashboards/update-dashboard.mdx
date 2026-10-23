@@ -1,0 +1,42 @@
+---
+title: "Update dashboard"
+description: "Change the name, description, layout or refresh interval of a dashboard against the version you read."
+api: "PATCH /api/v1/dashboards/{id}"
+---
+
+<Info>
+  Scope `dashboards:write`. The owner and people who may edit.
+</Info>
+
+## Body parameters {#body}
+
+<ParamField body="baseUpdatedAt" type="string" required>
+  The `updatedAt` you read. A dashboard changed since answers `409 CONFLICT`.
+</ParamField>
+
+<ParamField body="name" type="string">
+  1 to 120 characters.
+</ParamField>
+
+<ParamField body="description" type="string | null">
+  Optional.
+</ParamField>
+
+<ParamField body="layout" type="object">
+  The layout in the shape [Get dashboard](/api/dashboards/get-dashboard) answers. It must name every gadget once.
+</ParamField>
+
+<ParamField body="refreshMinutes" type="integer | null">
+  How often the page reloads its gadgets.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/dashboards/clx0dash01" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Steering committee Q4", "baseUpdatedAt": "2026-10-19T08:00:00.000Z" }'
+```
+
+</RequestExample>

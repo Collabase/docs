@@ -1,0 +1,30 @@
+---
+title: "Replace dashboard shares"
+description: "Replace the whole list of who a dashboard is shared with; only its owner may."
+api: "PUT /api/v1/dashboards/{id}/shares"
+---
+
+<Info>
+  Scope `dashboards:write`. The owner only.
+</Info>
+
+## Body parameters {#body}
+
+<ParamField body="shares" type="object[]" required>
+  Up to 100 entries `{ "kind", "targetId", "level" }`. `kind` is `USER`, `GROUP`, `SPACE`, `PROJECT` or `ALL`; `level` is `VIEW` or `EDIT`. A guest may only be given `VIEW`; `EDIT` answers `422 GUEST_VIEW_ONLY`.
+</ParamField>
+
+## Response {#response}
+
+The new list. People and members of groups newly named get a notification.
+
+<RequestExample>
+
+```bash cURL
+curl -X PUT "https://your-collabase.ch/api/v1/dashboards/clx0dash01/shares" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "shares": [{ "kind": "GROUP", "targetId": "clx0grp001", "level": "VIEW" }] }'
+```
+
+</RequestExample>

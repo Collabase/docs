@@ -1,0 +1,74 @@
+---
+title: "Filter a dashboard with a controller"
+sidebarTitle: "Dashboard controller"
+description: "Add one controller to a dashboard so viewers narrow every connected gadget by space, status, person or period at once, and share the choice as a link."
+keywords: ["controller", "dashboard filter", "facet", "time granularity", "date zoom", "base filter", "share selection", "gadget link"]
+---
+
+A controller is a bar of filters at the top of a dashboard. Whoever opens the dashboard picks a space, a status, a person or a period, and every gadget that follows the controller recalculates. The choice belongs to the viewer: it changes nothing for anyone else and nothing is saved on the dashboard.
+
+## Add a controller {#add}
+
+<Steps>
+  <Step title="Open the catalog">
+    Click **Customise**, then **Add gadget**. Under **Core gadgets** pick **Controller**. It is placed across the full width at the top.
+  </Step>
+  <Step title="Choose the facets">
+    Open its settings. Under **Facets** tick the fields viewers can filter by, up to eight. A date field becomes a period, for example created in the last 30 days. Fields without values to pick from, such as free text, are not offered.
+  </Step>
+  <Step title="Set a base filter">
+    Optionally write a query under **Base filter**. It always applies to the gadgets that follow the controller, and viewers cannot change it. Use it for the part of the data a dashboard is about, for example one team.
+  </Step>
+</Steps>
+
+A dashboard has one controller. The catalog shows **Controller** as taken once it exists, and a second one is refused.
+
+## What viewers can do {#viewers}
+
+Each facet is a chip. Open it to see the values you may see, search them and tick several. Values of one facet combine with **or**, different facets combine with **and**. A period offers the last 7, 30, 90 days or 12 months, or a range of two days; days are counted in your own time zone.
+
+If the controller offers the time granularity, choose day, week, month, quarter or year, and every connected time series reads its dates in that step. A series that would have more than 366 points moves to the next coarser step and says so.
+
+**Back to defaults** returns to what the editor saved as the starting values.
+
+## Click a value to filter {#drill}
+
+A click on a bar, a slice, a point or a figure of a statistics table names a group, for example the work items in progress or those created in one week. A bar below the chart, or the menu of the figure, offers two ways on:
+
+- **Filter dashboard by this** sets the matching facet of the controller, so every connected gadget follows. It appears when the controller has a facet for that field and the gadget follows it. A week, month, quarter or year sets the period to exactly its days.
+- **Show objects** opens the search with the query of the gadget, your current selection and the group.
+
+Without a controller, or for a field that is not a facet, only **Show objects** is offered. A group of everything else offers **Show objects** only, and a group you may not see offers nothing. The title of a gadget leads to the search with the query it ran, your selection included.
+
+## Share your selection {#link}
+
+Your selection is part of the address of the page. Copy the link and others open the dashboard with the same selection. Only the choices travel in the link: the base filter and the list of facets cannot be changed through it. A value you may not see is ignored when you open someone else's link, and the rest still applies.
+
+## Choose which gadgets follow {#follow}
+
+Every gadget follows the controller unless you say otherwise. Open a gadget's settings and go to **Controller**. For each facet choose:
+
+| Choice | Effect |
+|---|---|
+| **Follows the field of the same name** | The viewer's choice narrows this gadget. A gadget whose objects do not have the field is left alone. |
+| **Not connected** | The gadget ignores this facet. If every facet is off, the gadget keeps its own data and does not recalculate. |
+| **Through another field** | The choice is applied to a different field of the gadget, for example the period on **Resolved** instead of **Created**. |
+
+When the viewer's choice meets a condition of the gadget on the same field, the choice replaces it. A gadget with `status = Open` and a controller choice of **In progress** shows the work in progress. Conditions inside an **or** group stay, and the choice is added next to them. The base filter and extra conditions of a counter are never replaced.
+
+While the controller narrows a gadget, a filter icon appears in its toolbar. Hover it to see which facets act.
+
+## Rights {#rights}
+
+Gadgets always calculate with the rights of the person looking. A viewer only sees values of their own spaces and projects in the facets, and the numbers never include work items they may not read, whatever they pick.
+
+## Related {#related}
+
+<CardGroup cols={2}>
+  <Card title="Dashboards" icon="layout-dashboard" href="/concepts/dashboards">
+    Create, find, copy and delete dashboards.
+  </Card>
+  <Card title="Share a dashboard" icon="share-2" href="/concepts/share-dashboards">
+    Give people, groups or a Space access.
+  </Card>
+</CardGroup>

@@ -14,7 +14,7 @@ All fields are optional. Send only the fields you want to change.
 
 <ParamField body="name" type="string">New name. 1–200 characters.</ParamField>
 <ParamField body="description" type="string">New description.</ParamField>
-<ParamField body="flowGraph" type="object">Replace the entire node graph.</ParamField>
+<ParamField body="flowGraph" type="object">Replace the entire node graph. Must contain `schemaVersion` (`1`), `nodes` and `edges`; an unknown or missing `schemaVersion` is rejected with `422`.</ParamField>
 <ParamField body="triggerConfig" type="object">Replace the trigger configuration.</ParamField>
 
 <RequestExample>

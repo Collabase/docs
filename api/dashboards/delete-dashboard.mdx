@@ -1,0 +1,20 @@
+---
+title: "Delete dashboard"
+description: "Delete a dashboard for everyone; only its owner may."
+api: "DELETE /api/v1/dashboards/{id}"
+---
+
+<Info>
+  Scope `dashboards:write`. The owner only; anyone else gets `403`.
+</Info>
+
+The dashboard goes with its gadgets, shares, favorites and public link. The deletion is recorded in the audit log.
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/dashboards/clx0dash01" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

@@ -92,6 +92,10 @@
                       "concepts/subscribe-to-filters",
                       "concepts/quick-filters",
                       "concepts/home-and-favorites",
+                      "concepts/dashboards",
+                      "concepts/share-dashboards",
+                      "concepts/dashboard-controller",
+                      "concepts/dashboard-gadgets",
                       "concepts/keyboard-shortcuts",
                       "concepts/documents",
                       "concepts/notifications",
@@ -497,6 +501,28 @@
                     ]
                   },
                   {
+                    "group": "Projects",
+                    "pages": [
+                      "api/projects/list-task-types",
+                      "api/projects/offer-task-type",
+                      "api/projects/order-task-types",
+                      "api/projects/remove-task-type"
+                    ]
+                  },
+                  {
+                    "group": "Dashboards",
+                    "pages": [
+                      "api/dashboards/overview",
+                      "api/dashboards/list-dashboards",
+                      "api/dashboards/create-dashboard",
+                      "api/dashboards/get-dashboard",
+                      "api/dashboards/update-dashboard",
+                      "api/dashboards/delete-dashboard",
+                      "api/dashboards/gadget-data",
+                      "api/dashboards/replace-dashboard-shares"
+                    ]
+                  },
+                  {
                     "group": "Notifications",
                     "pages": [
                       "api/notifications/overview",
@@ -594,7 +620,8 @@
                       "api/test-management/list-projects",
                       "api/test-management/create-project",
                       "api/test-management/create-test-case",
-                      "api/test-management/create-test-run"
+                      "api/test-management/create-test-run",
+                      "api/test-management/latest-run-summary"
                     ]
                   },
                   {

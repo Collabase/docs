@@ -56,24 +56,27 @@ Create the parts first: [workflows](/admin/workflows), [work item types](/admin/
   </Step>
 </Steps>
 
+A new project gets everything the template carries in one step: its work item types, field collections, default workflow, views and features, and then its phases, quick filters and project home. If copying the phases, quick filters or home fails, the project is still created and you see a warning; add the missing part in the project settings.
+
 Members choose the template in the first step of **New Project**, under **System Templates** or **Custom Templates**, then enter **Project Name** and **Project key** in **Project Details**.
 
 ## Linked projects and propagation {#propagation}
 
 A project created from a template is linked to it. Its **Settings → General** shows **Synced with template**, and the sections **Project features**, **Status**, **Work Item Types** and **Fields** are read-only.
 
-Every time you save a template, Collabase updates the linked projects in the background:
+Every time you save a template, Collabase aligns the linked projects in the background. The template page shows the state under **Propagation to linked projects**: **Running**, **Up to date**, **Failed** or **Interrupted**, how many projects follow the template and how many were aligned.
 
 | Part of the template | What linked projects get |
 |---|---|
-| **Views & Apps** | Replaced by the template's list |
-| **Default workflow** | Replaced by the template's default |
-| **Features** | Added where the project has no own value. A project's own setting wins. |
-| **Field Collections** | Added when missing. Collections are never removed. |
-| **Work Item Types** | Read from the template |
-| **Project fields** and **Phase model** | Not propagated |
+| **Views & Apps** | Exactly the template's list |
+| **Default workflow** | The template's default. Work items whose status the new workflow does not have move to the first status of the same category. Work items of a type with its own workflow keep their status. |
+| **Features** | The template's values. What a project remembers for itself, such as its board settings and cycle settings, stays. |
+| **Field Collections** | Exactly the template's collections |
+| **Work Item Types** | Exactly the template's types, in its order and with its default. A type the template drops is removed from a project when no work item has it, and phases out otherwise: the project keeps it for existing work items and no longer offers it for new ones. |
+| **Project fields** | Read live from the template |
+| **Phase model** | Not propagated |
 
-Propagation never removes anything from a project. To take a collection away from linked projects, remove it in each project after detaching it, or create a new template.
+Only one run per template is active at a time. If you save again while a run is going, the run continues with the new version. If a run is **Interrupted** or **Failed**, click **Propagate again**; projects that are already aligned are skipped. A project you detach during a run is left as it is.
 
 ## Detach a project {#detach}
 
@@ -89,12 +92,12 @@ Detach a project when its team needs its own configuration.
 </Steps>
 
 <Warning>
-  Detaching cannot be undone. The project keeps its current configuration, gets its own copies of the template's work item types, and no longer receives template changes.
+  Detaching cannot be undone. The project keeps its current configuration, including its work item types and the project fields the template asked for, and no longer receives template changes. The audit log records who detached the project.
 </Warning>
 
 ## Delete a template {#delete}
 
-Click **Delete Template** on a card and confirm. Projects linked to the template are not affected, but no new project can use it. This cannot be undone.
+Click **Delete Template** on a card and confirm. The dialog names how many projects still follow the template. Those projects are detached: they keep their work item types, field collections, features, workflow and the project fields the template asked for, and no longer receive template changes. No new project can use the template. This cannot be undone. System templates cannot be deleted.
 
 ## Troubleshooting
 

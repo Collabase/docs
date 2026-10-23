@@ -1,0 +1,79 @@
+---
+title: "Share a dashboard"
+sidebarTitle: "Share a dashboard"
+description: "Let people, groups, a Space, a project or everyone open a dashboard, choose whether they may only view or also edit it, and see what each person gets."
+keywords: ["public link", "dashboard snapshot", "share a dashboard", "dashboard permissions", "shared with me", "dashboard editor", "view dashboard", "guest dashboard"]
+---
+
+A dashboard is private until you share it. Sharing gives others the **dashboard**, not your figures: every gadget computes with the rights of the person who looks at it, so two people can see different numbers on the same dashboard.
+
+## Share a dashboard {#share}
+
+<Steps>
+  <Step title="Open the dashboard">
+    Open the dashboard from **Dashboards** and click the share icon next to its name. Only the owner sees it.
+  </Step>
+  <Step title="Choose who">
+    Pick **Person**, **Group**, **Space** or **Project**, search by name and add the entry. **Everyone signed in** adds all people with an account who are not guests. You can name a Space or a project only if you belong to it yourself.
+  </Step>
+  <Step title="Choose what they may do">
+    Each entry is **Can view** or **Can edit**. Click **Save**.
+  </Step>
+</Steps>
+
+People you name and members of groups you name get a notification **Dashboard shared with you**. Shares with a Space, a project or everyone send no notification.
+
+## What each level allows {#levels}
+
+| | Can view | Can edit | Owner |
+|---|---|---|---|
+| Open the dashboard, fold gadgets, refresh | ✓ | ✓ | ✓ |
+| Add, configure, move and remove gadgets, change the layout, rename | | ✓ | ✓ |
+| Share, delete | | | ✓ |
+
+## Share with a guest {#guests}
+
+Under **Person** you also find the guests of the projects you belong to. A guest can only **view**: the dashboard opens in their **Dashboards** app and every gadget counts only the work of the projects they are invited to. A guest never gets a dashboard shared with a group, a Space, a project or everyone, so name them as a person.
+
+A guest does not see gadgets about time, costs, portfolios, risks, tests or the team's figures; they are left out of the dashboard for them. Guests cannot create, change, copy or share dashboards, and have no home dashboard. On a project they are invited to, a guest sees the project's home dashboard the same way.
+
+Every change of the shares is recorded in the audit log. The audit log names who changed what, never the content of a gadget.
+
+## Share a public link {#public-link}
+
+A public link shows a **snapshot** of a dashboard to anyone who has the address, without signing in. Your administrator decides whether public links are allowed; they are off until then.
+
+<Steps>
+  <Step title="Open the public link">
+    Open the dashboard and click the globe icon next to its name. Only the owner sees it.
+  </Step>
+  <Step title="Confirm and choose the lifetime">
+    Confirm that anyone with the link sees the data the way you see it, pick how long the link works (1, 7, 14, 30 or 90 days) and click **Create link**.
+  </Step>
+  <Step title="Copy the address">
+    Copy the address right away. It is shown only this once; later you can only replace the link with a new one.
+  </Step>
+</Steps>
+
+What the link shows:
+
+- Every gadget as it was when the snapshot was taken, computed with your rights. The page never shows live data and has no controller, comments, assistant or links into Collabase.
+- Result lists show their first 50 rows. Personal gadgets such as **My work** or **New for me** and images in text gadgets are left out.
+- Labels appear in the language of the visitor's browser; values stay as they were taken.
+
+**Take a new snapshot** keeps the address and the expiry; the old snapshot stays visible until the new one is ready, and you get a notification when it is. You can ask for a new snapshot every five minutes. **Revoke link** stops it at once. A link also stops when you hand the dashboard over, when your account is deleted, and when the dashboard is deleted. An expired, revoked or switched-off link shows only "This link is no longer available".
+
+### Administer public links {#public-links-admin}
+
+Under **Administration → Dashboards → Settings** a system administrator allows or forbids public links for the whole instance. Switching them off stops every link at once; switching them on again brings back the links that have not expired. The **Public links** tab lists every dashboard with a working link by name, owner and expiry, without its content, and lets you revoke any of them. Every link that is created, refreshed or revoked and every change of the setting is recorded in the audit log, without the address.
+
+## Related {#related}
+
+<CardGroup cols={2}>
+  <Card title="Dashboards" icon="layout-dashboard" href="/concepts/dashboards">
+    Create, find, copy and delete dashboards.
+  </Card>
+  <Card title="Share a filter" icon="share-2" href="/concepts/share-filters">
+    The same way of sharing, for saved filters.
+  </Card>
+</CardGroup>
