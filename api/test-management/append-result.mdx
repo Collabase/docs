@@ -1,0 +1,58 @@
+---
+title: "Append result"
+description: "Record a result for an execution."
+api: "POST /api/v1/test-management/executions/{id}/results"
+---
+
+Appends a result to an execution. A result is never changed afterwards. To correct one, use `POST /api/v1/test-management/results/{id}/correct` with a reason.
+
+<Info>
+  The token needs the `tests:write` scope, and its owner needs to be allowed to execute tests in the project. The cycle must be open.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The ID of the execution.
+</ParamField>
+
+## Request body
+
+<ParamField body="category" type="string" required>
+  `PASSED`, `FAILED`, `BLOCKED`, `SKIPPED`, `IN_PROGRESS` or `NOT_RUN`.
+</ParamField>
+
+<ParamField body="stepOrder" type="number">
+  The step the result is for. Omit it for the verdict of the whole test.
+</ParamField>
+
+<ParamField body="comment" type="string">
+  A note from the tester.
+</ParamField>
+
+<ParamField body="actualResult" type="string">
+  What happened instead of the expected result.
+</ParamField>
+
+<ParamField body="clientResultId" type="string">
+  An ID you choose, 8 to 100 characters. Sending the same ID again answers `200` with the stored result instead of recording a second one.
+</ParamField>
+
+<ParamField body="durationMs" type="number">
+  How long the test took, in milliseconds.
+</ParamField>
+
+## Response
+
+Returns the stored result with status `201`, or `200` when `clientResultId` was already used.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/test-management/executions/exe_123/results" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "category": "FAILED", "comment": "Payment page returns 500", "clientResultId": "build-4711-exe-123" }'
+```
+
+</RequestExample>

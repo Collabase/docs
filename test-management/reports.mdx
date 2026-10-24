@@ -1,0 +1,34 @@
+---
+title: "Reports"
+description: "See which requirements have a passing test, whether a release can ship and how results develop over time."
+---
+
+The **Reports** tab answers one question: what is still not tested?
+
+## Coverage
+
+Coverage lists requirements, or work items, with the test cases that cover them. How strict it is depends on the project rule:
+
+| Rule | A requirement counts as covered when |
+|---|---|
+| **Linked** | A case is linked to it. |
+| **Executed** | A linked case has been run. |
+| **Passed** | A linked case has a passing result. |
+
+Pick a release to narrow the list to what that release contains.
+
+## Release gate
+
+For a release, the gate shows **ready**, **blocked** or **no data**. It is blocked when a requirement of the release is not covered or a test of the release failed. The managers of the project get a message when it turns blocked.
+
+## Results over time
+
+The chart shows the results of the open cycles day by day. Collabase records one row per day when someone opens the report, so the history starts with the first visit.
+
+## Links that need a look
+
+When a linked requirement or work item changes after the case was reviewed, the link becomes suspect. Open the list, check the case against the change and choose **Still valid** to confirm it.
+
+## From the API
+
+The same figures are available as `GET /api/v1/test-management/projects/{projectId}/coverage`, `/gate` and `/stats`. See the [API reference](/api/test-management/list-projects).

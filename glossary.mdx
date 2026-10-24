@@ -256,10 +256,6 @@ MCP (Model Context Protocol) is an open standard for connecting AI applications 
 
 A member is a person with a Collabase account. Inside a Space, each member has a space role that decides what they can do there. [Read more about Space members](/concepts/space-settings#members).
 
-### Milestone
-
-A milestone in Test Management is a named marker, such as a release or a quality gate, that you link test runs to. Collabase aggregates the results of all linked runs, so you can see at a glance whether a release is ready. [Read more about milestones](/test-management/milestones).
-
 ## O {#o}
 
 ### Object
@@ -442,19 +438,19 @@ A template in Collabase Docs is a reusable page structure. It can contain placeh
 
 ### Test case
 
-A test case describes one thing to verify, with ordered steps and the expected result for each. Only test cases with the status READY are included in test runs. [Read more about test cases](/test-management/test-cases).
+A test case describes one thing to verify, with ordered steps and the expected result for each. Every change is a new version, and only an approved version can be run. [Read more about test cases](/test-management/test-cases).
+
+### Test cycle
+
+A test cycle is one round of testing, for example the regression test before a release. It holds one execution per planned case, and every result recorded for an execution is kept. [Read more about test cycles](/test-management/cycles).
+
+### Test folder
+
+A test folder groups test cases inside a test project. Folders nest to any depth and have no effect on execution. [Read more about test cases](/test-management/test-cases#folders).
 
 ### Test Management
 
-Test Management is the quality app in every Space. You organize test cases in suites, execute manual test runs, record results and track quality across releases with milestones. [Read more about Test Management](/test-management/overview).
-
-### Test run
-
-A test run is an execution session. Testers work through the selected cases and record a result for each: Passed, Failed, Blocked or Skipped. A completed run is a fixed quality snapshot for that point in time. [Read more about test runs](/test-management/test-runs).
-
-### Test suite
-
-A test suite is a folder for test cases inside a test project. Suites nest to any depth and have no effect on execution; they keep a large set of cases navigable. [Read more about test suites](/test-management/suites).
+Test Management is the quality app in every Space. You keep versioned test cases, run them in cycles, import CI results and see which requirements are covered. [Read more about Test Management](/test-management/overview).
 
 ### Time account
 

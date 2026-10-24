@@ -1,199 +1,54 @@
 ---
-title: "Test Cases"
-sidebarTitle: "Test Cases"
-description: "Test cases define what to verify — each has a name, priority, type, status, and a set of ordered steps with expected results."
+title: "Test cases"
+description: "A test case describes one thing to verify. Every change is a new version, and only an approved version can be run."
 ---
 
-A test case describes one thing to verify. It defines the steps a tester must follow and what they should observe at each step. Test cases belong to a Test Project and optionally to a Test Suite within that project.
+A test case describes one thing to verify, with ordered steps and the expected result for each. You keep cases in folders and find them by title or key.
 
-Only test cases with a status of **READY** are included in test runs. Cases in DRAFT or DEPRECATED status are excluded.
-
-## Filter the case list {#filter}
-
-Above the list, the filter bar narrows the cases by status, priority and type, by the person who wrote them, or by any other field you add under **More**. Type in the text field to find words in the name, description, preconditions and expected result. The filter works as on the [Search page](/concepts/search#search-test-management) and runs on the server, so it also finds cases in long lists. A link with the filter in its address shows the same selection to someone else.
-
-## Test case fields
-
-| Field | Required | Description |
-|---|---|---|
-| **Name** | Yes | A short, action-oriented description. For example: "User can log in with valid credentials" or "Order confirmation email is sent after checkout." |
-| **Description** | No | Additional context, preconditions, or background information for the tester. |
-| **Priority** | Yes | Indicates how critical this case is. See priority levels below. |
-| **Type** | Yes | Whether this case is MANUAL or AUTOMATED. See type descriptions below. |
-| **Status** | — | DRAFT, READY, or DEPRECATED. Set automatically to DRAFT on creation. |
-| **Linked Page** | No | A link to one page in Collabase Docs — typically a requirement, specification, or design document that this test case verifies. |
-| **Linked Tasks** | No | One or more tasks in Collabase Projects that this test case covers. Use this to connect quality coverage to the work that implements the feature. |
-
-## Priority levels
-
-| Priority | Meaning |
-|---|---|
-| **Low** | Nice to have. Failure is acceptable in most releases. |
-| **Medium** | Standard coverage. Should pass before release. |
-| **High** | Important functionality. Failures block the release unless justified. |
-| **Critical** | Core functionality or compliance requirement. Must pass before any release. |
-
-## Test case types
-
-| Type | Meaning |
-|---|---|
-| **Manual** | A tester must perform the steps by hand and observe the results. These cases are executed through Collabase's test run interface. |
-| **Automated** | This case has automated test coverage in a CI/CD pipeline or test framework. The type is informational — it tells the team this case is covered externally. Automated cases still appear in test runs so their coverage is visible alongside manual cases, but execution results are typically recorded programmatically via the API rather than by a person. |
-
-## Status lifecycle
-
-| Status | Meaning |
-|---|---|
-| **Draft** | The case is being written or has not yet been reviewed. Excluded from test runs. |
-| **Ready** | The case has been reviewed and is approved for execution. Included in test runs. |
-| **Deprecated** | The case is retired. Excluded from new test runs but preserved for history. |
-
-```text
-Draft → Ready → Deprecated
-```
-
-Move a case from Draft to Ready once you are confident the steps are accurate and complete. Only Members and Owners can change a case's status.
-
-## Test steps
-
-Each test case contains an ordered list of steps. A step has two fields:
-
-| Field | Description |
-|---|---|
-| **Action** | What the tester must do. Be specific and unambiguous. For example: "Click the Checkout button." |
-| **Expected result** | What the tester should observe after performing the action. For example: "The payment form opens and the item summary is shown." |
-
-Steps are numbered and executed in order during a test run.
-
-## Creating a test case
+## Create a case
 
 <Steps>
-  <Step title="Open the test project">
-    Navigate to the Space → **Test Management** → click the test project.
+  <Step title="Open the Cases tab">
+    Choose **New test case**. The folder you have open is preselected.
   </Step>
-  <Step title="Click + New Case">
-    Click **+ New Case** in the top bar. A creation form opens.
+  <Step title="Fill in the case">
+    Give it a title, a priority (low, medium, high or critical) and a type (manual, automated or exploratory). Add preconditions, test data and an estimate if they help the tester.
   </Step>
-  <Step title="Fill in the required fields">
-    Enter the case name, select a priority, and select a type (Manual or Automated). Optionally assign it to a suite.
-  </Step>
-  <Step title="Add a description (optional)">
-    Add preconditions or context in the description field. This is shown to testers during the run.
-  </Step>
-  <Step title="Save the case">
-    Click **Save**. The case is created with a status of DRAFT.
-  </Step>
-</Steps>
-
-## Adding test steps
-
-<Steps>
-  <Step title="Open the test case">
-    Click the case name in the project case list to open its detail view.
-  </Step>
-  <Step title="Go to the Steps tab">
-    Click the **Steps** tab in the case detail view.
-  </Step>
-  <Step title="Add a step">
-    Click **+ Add Step**. Enter the action and expected result for the first step.
-  </Step>
-  <Step title="Add more steps">
-    Click **+ Add Step** again for each subsequent step. Steps are numbered automatically in the order they are added.
-  </Step>
-  <Step title="Reorder steps">
-    Drag steps to reorder them using the handle on the left side of each step row.
+  <Step title="Add steps">
+    Each step has an action and an expected result. You can reorder steps with the arrows.
   </Step>
   <Step title="Save">
-    Steps are saved automatically as you add them.
+    The case gets a key such as `QA-T12` and starts as a draft.
   </Step>
 </Steps>
 
-## Linking tasks to a test case
+## Versions and review
 
-Each test case can be linked to one or more tasks in Collabase Projects. This makes it easy to see which work items a test case covers — and from the task side, which test cases validate that work.
+Every change to a case is a new version. A version is in one of these states:
 
-<Steps>
-  <Step title="Open the test case detail view">
-    Click the case in the project list.
-  </Step>
-  <Step title="Click the Linked Tasks field">
-    In the case sidebar, click **Linked Tasks**. A search box opens.
-  </Step>
-  <Step title="Search for tasks">
-    Type part of the task title or task key (for example, PROJ-42). Results appear as you type. Tasks from any project in the same space are included.
-  </Step>
-  <Step title="Select a task">
-    Click the task in the results list. It is added to the case immediately. Repeat for each additional task.
-  </Step>
-  <Step title="Remove a link">
-    Click the × next to a linked task's name to remove it.
-  </Step>
-</Steps>
+| State | Meaning |
+|---|---|
+| **Draft** | Being edited. Not yet runnable. |
+| **In review** | Submitted and waiting for a reviewer. |
+| **Approved** | The current version. Cycles run this one. |
+| **Superseded** | An older approved version. Results recorded on it stay attached to it. |
 
-Once tasks are linked, they appear in the **Test Management** panel in the task detail view. Any team member with access to the task can see which test cases cover it without leaving the task context.
+You submit a draft for review, and a reviewer approves it or rejects it with a reason. The person who submitted the version gets a message when it is rejected. If the project does not require approval, a saved version is approved at once.
 
-## Linking to a requirement page
+<Note>
+  With the four-eyes rule on, the person who last edited a version cannot approve it.
+</Note>
 
-Each test case can be linked to one page in Collabase Docs — typically a specification or requirement document that this case validates.
+Results belong to the version they were recorded on. Editing a case later never changes what an earlier run proved. The **Versions** panel shows what differs between two versions, field by field and step by step.
 
-<Steps>
-  <Step title="Open the test case detail view">
-    Click the case in the project list.
-  </Step>
-  <Step title="Click the Linked Page field">
-    In the case sidebar, click **Linked Page**.
-  </Step>
-  <Step title="Search for a page">
-    A page picker opens. Search by page title and select the page you want to link.
-  </Step>
-  <Step title="Save">
-    The link is saved immediately. Click the linked page name at any time to open it in Docs.
-  </Step>
-</Steps>
+## Folders
 
-## Marking a case as Ready
+Folders nest to any depth and have no effect on execution. Drag a case or a folder to move it. A folder that still holds subfolders cannot be deleted.
 
-Once you have written and reviewed a case, change its status to READY so it is included in test runs.
+## Links to requirements and work items
 
-<Steps>
-  <Step title="Open the case">
-    Open the case detail view.
-  </Step>
-  <Step title="Open the Status field">
-    Click the **Status** field in the sidebar.
-  </Step>
-  <Step title="Select Ready">
-    Select **Ready**.
-  </Step>
-</Steps>
+Link a case to the work items or requirements it covers. When the linked item changes after the case was last reviewed, the link is marked **suspect** until someone confirms it is still valid. Suspect links show up in the [reports](/test-management/reports).
 
-The case now appears with a READY badge and will be included in the next test run that covers this case or suite.
+## Archive and delete
 
-## Deprecating a case
-
-When a test case no longer applies — because the feature was removed or the test was superseded — mark it as DEPRECATED rather than deleting it. This preserves its history in past runs while excluding it from future runs.
-
-<Steps>
-  <Step title="Open the case">
-    Open the case detail view.
-  </Step>
-  <Step title="Open the Status field">
-    Click the **Status** field.
-  </Step>
-  <Step title="Select Deprecated">
-    Select **Deprecated**.
-  </Step>
-</Steps>
-
-Deprecated cases remain visible in the case list with a DEPRECATED badge and can be filtered out by choosing a status in the filter bar.
-
-## Next steps
-
-<CardGroup cols={2}>
-  <Card title="Test Runs" icon="arrow-right" href="/test-management/test-runs">
-    A test run is an execution session.
-  </Card>
-  <Card title="Test Management" icon="layout-grid" href="/test-management/overview">
-    Test Management is the built-in quality tool: define test cases, run manual tests, record results and track quality across releases with milestones.
-  </Card>
-</CardGroup>
+A case that was never executed can be deleted. A case with executions can only be archived, so its history stays complete. Archived cases can be restored.

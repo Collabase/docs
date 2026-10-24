@@ -1,0 +1,54 @@
+---
+title: "Create test cycle"
+description: "Create a test cycle and plan cases into it."
+api: "POST /api/v1/test-management/projects/{projectId}/cycles"
+---
+
+Creates a cycle. Plan cases into it afterwards with `POST /api/v1/test-management/cycles/{ref}/plan`.
+
+<Info>
+  The token needs the `tests:write` scope, and its owner needs the right to plan cycles in the project.
+</Info>
+
+## Path parameters
+
+<ParamField path="projectId" type="string" required>
+  The ID of the test project.
+</ParamField>
+
+## Request body
+
+<ParamField body="name" type="string" required>
+  Name of the cycle.
+</ParamField>
+
+<ParamField body="releaseId" type="string">
+  The release the cycle tests.
+</ParamField>
+
+<ParamField body="startsAt" type="string">
+  Start date as an ISO 8601 date and time.
+</ParamField>
+
+<ParamField body="endsAt" type="string">
+  End date as an ISO 8601 date and time.
+</ParamField>
+
+<ParamField body="ownerId" type="string">
+  The person who owns the cycle. They get a message when it is closed.
+</ParamField>
+
+## Plan cases
+
+`POST /api/v1/test-management/cycles/{ref}/plan` takes `caseIds`, `folderIds` or `allActive: true`, and an optional `assigneeId`. Cases without an approved version are skipped. `ref` is the cycle ID or its key, such as `QA-C3`.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/test-management/projects/tpr_abc123/cycles" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Release 4.2 regression" }'
+```
+
+</RequestExample>

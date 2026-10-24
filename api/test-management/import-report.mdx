@@ -1,0 +1,62 @@
+---
+title: "Import report"
+description: "Send a JUnit XML or Playwright JSON report from your pipeline."
+api: "POST /api/v1/test-management/projects/{projectId}/imports"
+---
+
+Sends one report, or one shard of a report, of a CI build. See [CI imports](/test-management/imports) for how tests are matched to cases.
+
+<Info>
+  The token needs the `tests:write` scope. The body can be gzipped when you send `Content-Encoding: gzip`. It can be up to 20 MB.
+</Info>
+
+## Path parameters
+
+<ParamField path="projectId" type="string" required>
+  The ID of the test project.
+</ParamField>
+
+## Query parameters
+
+<ParamField query="buildId" type="string" required>
+  Names the build. All shards of one build use the same value.
+</ParamField>
+
+<ParamField query="shard" type="number" default="1">
+  The number of this shard.
+</ParamField>
+
+<ParamField query="shardCount" type="number" default="1">
+  How many shards the build has.
+</ParamField>
+
+<ParamField query="format" type="string">
+  `JUNIT` or `PLAYWRIGHT_JSON`. Detected from the content when omitted.
+</ParamField>
+
+<ParamField query="cycleId" type="string">
+  The cycle that receives the results. Without it a cycle is created for the build.
+</ParamField>
+
+<ParamField query="releaseId" type="string">
+  The release the cycle belongs to.
+</ParamField>
+
+<ParamField query="commit" type="string">
+  The commit the build tested.
+</ParamField>
+
+## Response
+
+Returns the import with its state and counts. A new shard answers `201`. The same shard with the same content answers `200` with the stored import, so a retry is safe.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/test-management/projects/tpr_abc123/imports?buildId=4711&shard=1&shardCount=2" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/xml" \
+  --data-binary @results.xml
+```
+
+</RequestExample>

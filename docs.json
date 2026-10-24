@@ -176,9 +176,11 @@
                         "pages": [
                           "test-management/overview",
                           "test-management/test-cases",
-                          "test-management/test-runs",
-                          "test-management/milestones",
-                          "test-management/suites"
+                          "test-management/cycles",
+                          "test-management/imports",
+                          "test-management/requirements",
+                          "test-management/reports",
+                          "test-management/settings"
                         ]
                       },
                       {
@@ -620,8 +622,9 @@
                       "api/test-management/list-projects",
                       "api/test-management/create-project",
                       "api/test-management/create-test-case",
-                      "api/test-management/create-test-run",
-                      "api/test-management/latest-run-summary"
+                      "api/test-management/create-test-cycle",
+                      "api/test-management/append-result",
+                      "api/test-management/import-report"
                     ]
                   },
                   {

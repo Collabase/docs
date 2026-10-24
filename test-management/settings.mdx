@@ -1,0 +1,43 @@
+---
+title: "Test project settings"
+description: "Set the review rules, the roles, the key prefix and how a project is archived."
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+<WhoCanDoThis role="Space administrator" edition="Community" />
+
+## Rules
+
+| Rule | Effect |
+|---|---|
+| **Require approval** | New versions are reviewed before they can be run. |
+| **Four-eyes principle** | The person who last edited a version cannot approve it. |
+| **Status of an execution** | The latest result counts, or the worst one. Changing it recomputes every execution. |
+| **Counts as covered when** | Linked, executed or passed. |
+| **Create cases for unknown tests** | CI imports add a case for each new test. Otherwise they wait for your decision. |
+
+## Key prefix
+
+The prefix gives cases and cycles their keys, for example `QA-T12`. It has 2 to 10 capital letters or digits and is unique in the space. Once a case exists the prefix is fixed.
+
+## Roles
+
+Add people or groups as test manager, tester or reviewer. A space administrator always has access.
+
+<Warning>
+  Removing the last role opens the project to every member of the space again. You confirm this when you do it.
+</Warning>
+
+## Archive and delete
+
+An archived project is read-only and keeps all its history. A project that was never executed can be deleted. Once a test was executed, archive it instead.
+
+## Export for the archive
+
+Under **Export** you download the test cases or the executions of the project as a CSV file (up to 50,000 rows). You need the right to configure the project. Through the API the same file is `GET /api/v1/test-management/projects/{projectId}/export?kind=cases` or `kind=executions`.
+
+## Next steps
+
+- [Test cases](/test-management/test-cases) explains versions and review.
+- [Reports](/test-management/reports) uses the coverage rule you set here.

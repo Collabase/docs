@@ -1,98 +1,88 @@
 ---
 title: "Test Management"
 sidebarTitle: "Overview"
-description: "Test Management is the built-in quality tool: define test cases, run manual tests, record results and track quality across releases with milestones."
+description: "Test Management is the built-in quality tool: keep versioned test cases, run them in cycles, import CI results and see which requirements are covered."
 ---
 
 import { AppHero } from "/snippets/app-hero.mdx";
 
-<AppHero app="test-management" name="Test Management" lead="Test cases, runs and quality" rest="across releases." facts={[{ label: "Feature areas", value: "5" }]} points={[{ icon: "clipboard-list", title: "Test cases", text: "Write down what has to work." }, { icon: "play-circle", title: "Test runs", text: "Run manual tests and record every result." }, { icon: "flag", title: "Milestones", text: "Track quality from release to release." }]} primary={{ label: "Write test cases", href: "/test-management/test-cases" }} secondary={{ label: "Start a test run", href: "/test-management/test-runs" }} />
+<AppHero app="test-management" name="Test Management" lead="Test cases, cycles and coverage" rest="in one place." facts={[{ label: "Feature areas", value: "6" }]} points={[{ icon: "clipboard-list", title: "Test cases", text: "Versioned, reviewed and approved." }, { icon: "play-circle", title: "Cycles", text: "Plan, assign and run tests." }, { icon: "shield-check", title: "Coverage", text: "See what no test covers yet." }]} primary={{ label: "Write test cases", href: "/test-management/test-cases" }} secondary={{ label: "Run a cycle", href: "/test-management/cycles" }} />
 
 <div className="home-cards brand-cards">
 
-Test Management is the built-in quality tool for every Collabase Space. Use it to organize test cases, execute manual test runs, track pass and fail results, and measure quality across releases — all without leaving Collabase.
+Test Management keeps what you test and what came out of it. Manual testers work through cases in Collabase. Your CI pipeline sends its results in, and both end up in the same cycle.
 
-Collabase stores your test specifications and results. Actual automated test execution happens in your CI/CD pipeline. For manual testing, testers work through cases directly in Collabase and record each result.
-
-## How it's organized
+## How it is organized
 
 <CardGroup cols={3}>
-  <Card title="Test Cases" icon="clipboard-list" href="/test-management/test-cases">
-    The building blocks of testing. Each case has a name, priority, type, status, and a set of ordered steps with expected results.
+  <Card title="Test cases" icon="clipboard-list" href="/test-management/test-cases">
+    A case has steps, a priority and a type. Every change is a new version, and only an approved version can be run.
   </Card>
-  <Card title="Test Suites" icon="folder-open" href="/test-management/suites">
-    Hierarchical folders for organizing test cases by feature, component, or priority. Unlimited nesting depth.
+  <Card title="Cycles" icon="play-circle" href="/test-management/cycles">
+    A cycle plans a set of cases for a release or a sprint, assigns them and collects the results.
   </Card>
-  <Card title="Test Runs" icon="play-circle" href="/test-management/test-runs">
-    An execution session. Select cases to run, go through each one, and record a result: Passed, Failed, Blocked, or Skipped.
-  </Card>
-</CardGroup>
-
-<CardGroup cols={2}>
-  <Card title="Milestones" icon="flag" href="/test-management/milestones">
-    Group test runs under a release or quality gate. See aggregate pass rates across all runs in a milestone.
-  </Card>
-  <Card title="Reports" icon="bar-chart-2">
-    Metrics computed from run results: pass rate, failure count, blocked count, and last run status per test project.
+  <Card title="CI imports" icon="upload" href="/test-management/imports">
+    Send JUnit XML or Playwright JSON from your pipeline. Tests that match no case wait for your decision.
   </Card>
 </CardGroup>
 
-## Hierarchy
+<CardGroup cols={3}>
+  <Card title="Requirements analysis" icon="list-checks" href="/test-management/requirements">
+    Collabase AI turns specifications into requirements and test case proposals you review and create here.
+  </Card>
+  <Card title="Reports" icon="bar-chart-2" href="/test-management/reports">
+    Coverage of requirements and work items, the release gate and the results over time.
+  </Card>
+  <Card title="Settings" icon="settings" href="/test-management/settings">
+    Review rules, roles, the key prefix and how a project is archived.
+  </Card>
+</CardGroup>
+
+## Structure
 
 ```text
-Test Project
-└── Test Suites (tree, unlimited depth)
-    └── Test Cases
-        └── Test Case Steps
-Test Runs → Test Results (one per case per run)
-Milestones (group one or more Test Runs)
+Test project (key prefix, for example QA)
+├── Folders (any depth)
+│   └── Test cases (QA-T12)
+│       └── Versions (draft, in review, approved, superseded)
+│           └── Steps
+└── Cycles (QA-C3)
+    └── Executions (one per case in the cycle)
+        └── Results (every entry is kept, a correction is a new entry)
 ```
 
-## Quality metrics
+Keys are stable. `QA-T12` is the twelfth case of the project with the prefix `QA`, and it stays `QA-T12` when you move or rename it. Addresses use the key too, for example `/my-space/test-management/QA/cases/QA-T12`.
 
-The following metrics are computed from test run results. They are not pre-stored — they are calculated on demand whenever you view a run or milestone.
-
-| Metric | Description |
-|---|---|
-| **Pass rate** | Percentage of PASSED results out of all executed results in a run or milestone |
-| **Failed count** | Number of cases that received a FAILED result |
-| **Blocked count** | Number of cases that could not be executed due to a prerequisite failure |
-| **Skipped count** | Number of cases deliberately excluded during the run |
-| **Pending count** | Number of cases not yet recorded in the current run |
-| **Last run status** | The final status (Planned, In Progress, or Completed) of the most recent run in a project |
-
-## Typical workflow
+## A typical flow
 
 <Steps>
-  <Step title="Create test cases">
-    Define what needs to be verified with steps and expected results. Set status to DRAFT while writing.
+  <Step title="Write a case">
+    Create it in a folder with steps and expected results. It starts as a draft.
   </Step>
-  <Step title="Mark cases READY">
-    Once reviewed, change each case's status to READY. Only READY cases are eligible for test runs.
+  <Step title="Get it approved">
+    Submit the version for review. A reviewer approves it, or sends it back with a reason.
   </Step>
-  <Step title="Organize into suites">
-    Group cases by feature or priority to keep the project navigable.
+  <Step title="Plan a cycle">
+    Pick cases, folders or all approved cases, and assign them to testers.
   </Step>
-  <Step title="Create a test run">
-    Select which cases or suites to include. Optionally assign a milestone.
+  <Step title="Run and import">
+    Testers record results step by step. CI results arrive through the import.
   </Step>
-  <Step title="Execute the run">
-    Go through each case, perform the test, and record the result with a note.
-  </Step>
-  <Step title="Complete the run">
-    Mark the run as Completed. Results are locked and contribute to milestone metrics.
-  </Step>
-  <Step title="Review the milestone">
-    Check the aggregate pass rate before a release.
+  <Step title="Check coverage">
+    Open the reports to see which requirements have no passing test, and close the cycle when the release is done.
   </Step>
 </Steps>
 
-## Roles
+## Who can do what
 
 | Role | What they can do |
 |---|---|
-| **Space Owner / Admin** | Create and delete test projects, manage access, view all results |
-| **Member** | Create and edit test cases, create and execute test runs, record results |
-| **Viewer** | View test cases, runs, and results — read only |
+| **Space administrator** | Create projects, configure rules and roles, archive and delete |
+| **Test manager** | Write and organize cases, plan cycles, assign tests |
+| **Tester** | Run assigned tests, add files and raise work items |
+| **Reviewer** | Approve or reject case versions |
+| **Reader** | See cases, cycles and results |
+
+A project is open to everyone in the space until you name people or groups in its roles. From then on only those people and space administrators can open it.
 
 </div>

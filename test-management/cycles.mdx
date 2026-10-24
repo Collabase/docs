@@ -1,0 +1,55 @@
+---
+title: "Test cycles"
+description: "A cycle plans a set of approved cases for a release or a sprint, assigns them to testers and collects the results."
+---
+
+A cycle is one round of testing, for example the regression test before a release. It holds one execution per planned case, and an execution holds every result recorded for that case.
+
+## Create and plan a cycle
+
+<Steps>
+  <Step title="Create the cycle">
+    Open the **Cycles** tab and choose **New cycle**. Give it a name, and optionally a release, dates and an owner.
+  </Step>
+  <Step title="Plan the cases">
+    Choose cases, whole folders or all approved cases. Only cases with an approved version can be planned. Cases already in the cycle are skipped.
+  </Step>
+  <Step title="Assign">
+    Give executions to a tester when you plan, or later from the list. The tester gets a message with the number of tests.
+  </Step>
+</Steps>
+
+A cycle that is planned for a large set shows its planning state until the executions exist.
+
+## Run a test
+
+Testers find their work on the **To do** board, with the columns to do, in progress, QA and done. Opening a card starts the runner:
+
+- Set each step to passed, failed, blocked or skipped. The keys are P, F, B and S, and the arrow keys move between steps.
+- Finish the test with an overall result and a comment.
+- Pause a test and continue later at the same step.
+- Add a screenshot or a PDF as evidence, up to 25 MB.
+- Raise a work item from a failed test. It is linked to the execution.
+
+Entries are saved at once. If the connection drops, they wait in your browser and are sent when it is back.
+
+<Note>
+  A result is never overwritten. To correct one, record a new result with a reason. The earlier entry stays visible.
+</Note>
+
+## Status of an execution
+
+The status of an execution comes from its results. By default the latest result counts. You can change the project rule so that the worst result counts. The runner also shows how many iterations passed and marks a test **flaky** when its results flip between passed and failed.
+
+## Move to the newest version
+
+When a case gets a new approved version while the cycle is open, executions without results can move to it. Executions that already have results stay on the version they were run on.
+
+## Close a cycle
+
+Closing stops results, imports and planning. The owner gets a message with the totals. A closed cycle can be reopened.
+
+## Next steps
+
+- [CI imports](/test-management/imports) add automated results to a cycle.
+- [Reports](/test-management/reports) show coverage and the release gate.

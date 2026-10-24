@@ -1,0 +1,45 @@
+---
+title: "CI imports"
+description: "Send test results from your pipeline. Collabase matches them to test cases and records them in a cycle."
+---
+
+Your CI pipeline runs automated tests and sends the report to Collabase. The results land in a cycle next to the manual ones.
+
+<Info>
+  You need an API token with the `tests:write` scope. Create it in your profile under **Security**.
+</Info>
+
+## Supported formats
+
+| Format | Content type |
+|---|---|
+| JUnit XML | `application/xml` |
+| Playwright JSON | `application/json` |
+
+A report can be up to 20 MB and hold up to 20,000 tests.
+
+## Send a report
+
+```bash
+curl -X POST "$COLLABASE_URL/api/v1/test-management/projects/$PROJECT_ID/imports?buildId=$CI_BUILD_ID&shard=1&shardCount=1" \
+  -H "Authorization: Bearer $COLLABASE_TOKEN" \
+  -H "Content-Type: application/xml" \
+  --data-binary @results.xml
+```
+
+Use `buildId` to name the run. A build that is sent in several parts uses `shard` and `shardCount`, and sending the same shard again is safe.
+
+## How tests are matched
+
+For every reported test, Collabase looks for a case in this order. A case key in the test name, such as `QA-T12 checkout works`, wins. Next comes a name that was matched to a case before. If neither is found, the project rule decides: either a new case is created in an **Imported** folder, or the test waits in the list of tests without a case.
+
+Tests without a case appear on the **Imports** tab. For each one you can create a case, link it to the most likely case or ignore it.
+
+## When an import fails
+
+The people who manage the project and the person who owns the token get a message with the format and a reason code. The import shows as failed on the Imports tab.
+
+## Next steps
+
+- [Test cycles](/test-management/cycles) show where the imported results land.
+- [Import report](/api/test-management/import-report) lists every parameter of the call.

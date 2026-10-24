@@ -1,0 +1,82 @@
+---
+title: "Requirements analysis"
+description: "Turn specifications and concepts into requirements and test case proposals with Collabase AI, review them and create them in Test Management."
+---
+
+import WhoCanDoThis from "/snippets/who-can-do-this.mdx";
+
+The requirements analysis reads your specifications, requirement documents and concepts and turns them into a structured test basis: functional modules, testable requirements and test case proposals. You review every proposal, and only what you accept is created in Test Management and in your projects.
+
+It is a part of [Test Management](/test-management/overview), not a separate app. Open it from the **Requirements** entry of a test project, or at `/{space}/test-management/requirements`.
+
+<WhoCanDoThis role="Member of a Space where you may view test results" edition="Needs Collabase AI" />
+
+## What it does
+
+<CardGroup cols={2}>
+  <Card title="Structure" icon="sitemap">
+    Collabase AI groups the content into functional modules and writes testable requirements for each one.
+  </Card>
+  <Card title="Test case proposals" icon="clipboard-list">
+    For every requirement it designs positive, variant, negative and non-functional cases, with preconditions, test data, steps and expected results.
+  </Card>
+  <Card title="Traceable" icon="route">
+    Every requirement and case shows the source and section it comes from, and whether the source states it or it was derived.
+  </Card>
+  <Card title="Honest about gaps" icon="triangle-alert">
+    Where a document does not define an expected result, the analysis marks an open point instead of inventing one.
+  </Card>
+</CardGroup>
+
+## Create an analysis {#create}
+
+<Steps>
+  <Step title="Choose the sources">
+    Pick one or more Docs pages, or upload a PDF or Word document. The text of uploaded files is read and then dropped.
+  </Step>
+  <Step title="Add context">
+    Name the roles, the focus and the level of detail you need, and the language of the result.
+  </Step>
+  <Step title="Start">
+    Generation runs in the background. You can leave the page: the analysis shows its progress, and you get a message when it is done or has failed.
+  </Step>
+</Steps>
+
+If generation fails, open the analysis and choose **Retry**. It continues from what was finished.
+
+## Review {#review}
+
+Open the analysis to see its modules, requirements and test case proposals as lists you can filter.
+
+- **Edit** a requirement, a case or its steps. A row you edited by hand is never overwritten when you regenerate.
+- **Accept or reject** proposals. Rejected ones are not created.
+- **Complement or regenerate** one requirement, or ask for the steps of a case.
+- **Review** asks Collabase AI to look for gaps, such as a missing negative case. Every finding can be applied, or dismissed with a reason.
+- **Coverage** per requirement shows whether it is covered fully, partly or not at all.
+
+## Create in Test Management {#transfer}
+
+Select the proposals you want and choose **Transfer to Test Management**:
+
+- **Test cases** are created in a test project of the space, one folder per module below a folder named after the analysis. Each case carries its steps, is linked to the work item of its requirement and shows where it came from.
+- **Requirements** become work items of a type and project you choose. The work item links back to the analysis.
+
+A proposal that was already created is skipped, so you can run a transfer again for what is missing. In a project that requires approval, created cases start as drafts that a reviewer approves.
+
+## Settings {#settings}
+
+System administrators set how analyses are generated and transferred under **Settings → AI → Requirements analysis**:
+
+| Tab | Details |
+|---|---|
+| **Overview** | Analyses on this instance, failed ones, and the Collabase AI use this month |
+| **Generation** | Defaults for new analyses and your **house rules**: your organisation's testing standards, applied to every analysis |
+| **Transfer** | The **label prefix** of created work items and the **status of created test cases** |
+| **Activity** | Who created, retried or deleted an analysis, and when one finished or failed |
+
+The analysis uses the AI provider you set up in [AI configuration](/admin/ai-configuration) and no other. With a local model, your content never leaves the instance.
+
+## Next steps
+
+- [Test cases](/test-management/test-cases) explains versions and review of the cases you create.
+- [Reports](/test-management/reports) shows which requirements are covered by tests.

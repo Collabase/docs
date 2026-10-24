@@ -84,7 +84,7 @@ CQL ist die Abfragesprache des Modus **Abfrage** auf der Suchseite und der gespe
 
 ### CollabaseAI
 
-CollabaseAI ist der in Collabase eingebaute Assistent. Er beantwortet Fragen zu deinen Work Items, Seiten, Registry-Objects und Test Runs und kann Inhalte für dich anlegen und ändern. Er sieht nur, was du sehen darfst, und jede Änderung wartet auf deine Freigabe. [Mehr zu CollabaseAI](/concepts/collabase-ai).
+CollabaseAI ist der in Collabase eingebaute Assistent. Er beantwortet Fragen zu deinen Work Items, Seiten, Registry-Objects und Testzyklen und kann Inhalte für dich anlegen und ändern. Er sieht nur, was du sehen darfst, und jede Änderung wartet auf deine Freigabe. [Mehr zu CollabaseAI](/concepts/collabase-ai).
 
 ### Condition (Bedingung)
 
@@ -184,10 +184,6 @@ MCP (Model Context Protocol) ist ein offener Standard, um KI-Anwendungen mit ext
 
 Ein Member ist eine Person mit einem Collabase-Konto. In einem Space hat jedes Member eine Space Role, die festlegt, was es dort tun darf. [Mehr zu Space-Mitgliedern](/concepts/space-settings).
 
-### Milestone (Meilenstein)
-
-Ein Milestone in Test Management ist eine benannte Marke, etwa ein Release oder ein Qualitätstor, an die du Test Runs hängst. Collabase fasst die Ergebnisse aller verknüpften Läufe zusammen, damit du auf einen Blick siehst, ob ein Release bereit ist. [Mehr zu Milestones](/test-management/milestones).
-
 ## O {#o}
 
 ### Object (Objekt)
@@ -260,7 +256,7 @@ SCIM 2.0 ist ein Standard für die automatische Benutzerverwaltung. Verbunden mi
 
 ### Search (Suche)
 
-Collabase hat eine einzige Suche über alle Inhalte, auf die du Zugriff hast: Tasks, Seiten, Registry-Objects, Testfälle, Test Runs und Automationen. Du öffnest sie mit `Cmd + K` auf dem Mac oder `Ctrl + K` unter Windows und Linux. [Mehr zur Suche](/concepts/search).
+Collabase hat eine einzige Suche über alle Inhalte, auf die du Zugriff hast: Tasks, Seiten, Registry-Objects, Testfälle, Testzyklen und Automationen. Du öffnest sie mit `Cmd + K` auf dem Mac oder `Ctrl + K` unter Windows und Linux. [Mehr zur Suche](/concepts/search).
 
 ### Security policies (Sicherheitsrichtlinien)
 
@@ -318,19 +314,19 @@ Ein Template in Collabase Docs ist eine wiederverwendbare Seitenstruktur. Es kan
 
 ### Test case (Testfall)
 
-Ein Testfall beschreibt eine Sache, die geprüft wird, mit geordneten Schritten und dem erwarteten Ergebnis für jeden Schritt. Nur Testfälle mit dem Status READY kommen in Test Runs. [Mehr zu Testfällen](/test-management/test-cases).
+Ein Testfall beschreibt eine Sache, die geprüft wird, mit geordneten Schritten und dem erwarteten Ergebnis für jeden Schritt. Jede Änderung ist eine neue Version, und nur eine freigegebene Version kann ausgeführt werden. [Mehr zu Testfällen](/test-management/test-cases).
+
+### Test cycle (Testzyklus)
+
+Ein Testzyklus ist eine Testrunde, zum Beispiel der Regressionstest vor einem Release. Er enthält pro geplantem Testfall eine Ausführung, und jedes erfasste Ergebnis bleibt erhalten. [Mehr zu Testzyklen](/test-management/cycles).
 
 ### Test Management
 
-Test Management ist die Qualitäts-App in jedem Space. Du ordnest Testfälle in Suites, führst manuelle Test Runs durch, erfasst die Ergebnisse und verfolgst die Qualität über Releases hinweg mit Milestones. [Mehr zu Test Management](/test-management/overview).
+Test Management ist die Qualitäts-App in jedem Space. Du pflegst versionierte Testfälle, führst sie in Zyklen aus, importierst CI-Ergebnisse und siehst, welche Anforderungen abgedeckt sind. [Mehr zu Test Management](/test-management/overview).
 
-### Test run (Testlauf)
+### Test folder (Testordner)
 
-Ein Test Run ist eine Durchführung. Testerinnen und Tester arbeiten die ausgewählten Fälle ab und erfassen für jeden ein Ergebnis: Passed, Failed, Blocked oder Skipped. Ein abgeschlossener Lauf ist eine feste Momentaufnahme der Qualität. [Mehr zu Test Runs](/test-management/test-runs).
-
-### Test suite (Testsammlung)
-
-Eine Test Suite ist ein Ordner für Testfälle in einem Testprojekt. Suites lassen sich beliebig tief verschachteln und haben keinen Einfluss auf die Durchführung; sie halten eine grosse Zahl von Testfällen übersichtlich. [Mehr zu Test Suites](/test-management/suites).
+Ein Testordner gruppiert Testfälle in einem Testprojekt. Ordner lassen sich beliebig tief verschachteln und haben keinen Einfluss auf die Durchführung. [Mehr zu Testfällen](/test-management/test-cases#folders).
 
 ### Time account (Zeitkonto)
 

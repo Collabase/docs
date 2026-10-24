@@ -1,23 +1,19 @@
 ---
 title: "Create test case"
-description: "Create a new test case inside a test project."
-api: "POST /api/v1/test-management/{spaceSlug}/{projectId}/cases"
+description: "Create a test case with its first version."
+api: "POST /api/v1/test-management/projects/{projectId}/cases"
 ---
 
-Creates a new test case in the given test project. New cases start with status `DRAFT` and are not enrolled in test runs until their status is changed to `READY`.
+Creates a test case with its first version as a draft. In a project that does not require approval the version is approved at once.
 
 <Info>
-  You must hold write access to the target space to create a test case.
+  The token needs the `tests:write` scope. Creating a case twice creates two cases.
 </Info>
 
 ## Path parameters
 
-<ParamField path="spaceSlug" type="string" required>
-  The slug of the space the project belongs to.
-</ParamField>
-
 <ParamField path="projectId" type="string" required>
-  The ID of the test project to add the case to.
+  The ID of the test project.
 </ParamField>
 
 ## Request body
@@ -26,98 +22,48 @@ Creates a new test case in the given test project. New cases start with status `
   Title of the test case.
 </ParamField>
 
-<ParamField body="description" type="string">
-  Optional description or steps for the test case.
-</ParamField>
-
 <ParamField body="priority" type="string" default="MEDIUM">
-  Priority level. Must be one of: `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`. Defaults to `MEDIUM`.
+  `LOW`, `MEDIUM`, `HIGH` or `CRITICAL`.
 </ParamField>
 
 <ParamField body="type" type="string" default="MANUAL">
-  Test case type. Must be one of: `MANUAL`, `AUTOMATED`, `EXPLORATORY`. Defaults to `MANUAL`.
+  `MANUAL`, `AUTOMATED` or `EXPLORATORY`.
 </ParamField>
 
-<ParamField body="suiteId" type="string">
-  ID of the test suite to assign this case to. Omit to leave the case unassigned.
+<ParamField body="precondition" type="string">
+  What has to be true before the test starts.
+</ParamField>
+
+<ParamField body="testData" type="string">
+  Data the tester needs.
+</ParamField>
+
+<ParamField body="folderId" type="string">
+  The folder to put the case in. Omit it for the top level.
+</ParamField>
+
+<ParamField body="steps" type="array">
+  The steps, in order. Each has an `action` and optionally an `expectedResult` and `testData`.
 </ParamField>
 
 ## Response
 
-<ResponseField name="id" type="string" required>
-  Unique identifier of the newly created test case.
-</ResponseField>
-
-<ResponseField name="title" type="string" required>
-  Title of the test case.
-</ResponseField>
-
-<ResponseField name="priority" type="string" required>
-  Priority level: `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`.
-</ResponseField>
-
-<ResponseField name="type" type="string" required>
-  Test case type: `MANUAL`, `AUTOMATED`, or `EXPLORATORY`.
-</ResponseField>
-
-<ResponseField name="status" type="string" required>
-  Initial status of the case. Always `DRAFT` on creation.
-</ResponseField>
-
-<ResponseField name="testProjectId" type="string" required>
-  ID of the test project this case belongs to.
-</ResponseField>
+Returns the case with its current and draft version, status `201`. The `key` is the stable name of the case, for example `QA-T12`.
 
 <RequestExample>
 
 ```bash cURL
-curl -X POST "https://your-collabase.ch/api/v1/test-management/my-space/proj-abc123/cases" \
+curl -X POST "https://your-collabase.ch/api/v1/test-management/projects/tpr_abc123/cases" \
   -H "Authorization: Bearer cb_xYz123ABCD..." \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "Verify login with valid credentials",
+    "title": "Checkout with a saved card",
     "priority": "HIGH",
-    "type": "MANUAL"
+    "steps": [
+      { "action": "Open the cart", "expectedResult": "The items are listed" },
+      { "action": "Pay with the saved card", "expectedResult": "The order is confirmed" }
+    ]
   }'
 ```
 
 </RequestExample>
-
-<ResponseExample>
-
-```json 201
-{
-  "id": "tc-001",
-  "title": "Verify login with valid credentials",
-  "priority": "HIGH",
-  "type": "MANUAL",
-  "status": "DRAFT",
-  "testProjectId": "proj-abc123"
-}
-```
-
-```json 400
-{
-  "error": "Missing required field or invalid enum value"
-}
-```
-
-```json 401
-{
-  "error": "Unauthorized"
-}
-```
-
-```json 403
-{
-  "error": "Forbidden"
-}
-```
-
-```json 404
-{
-  "error": "Space or project not found"
-}
-```
-
-</ResponseExample>
