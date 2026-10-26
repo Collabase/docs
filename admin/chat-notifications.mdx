@@ -13,20 +13,18 @@ Besides the inbox and email, Collabase can send notifications as a direct messag
 
 ## Connect Slack or Teams {#workspace}
 
-Collabase uses the same connections as the automation steps **Send Message** and **Send Direct Message**.
-
 <Steps>
-  <Step title="Create the connection">
-    Create a Slack connection (a bot token) or a Teams connection (tenant, client ID and client secret) under **Automation → Connections**. For Slack the bot needs the scopes to read a user by email address and to send direct messages.
+  <Step title="Get the credentials">
+    For Slack you need a bot token; for Teams the tenant, the client ID and the client secret of an app. For Slack the bot needs the scopes to read a user by email address and to send direct messages.
   </Step>
-  <Step title="Choose it for notifications">
-    Go to **Administration → Notifications**. Under **Chat workspaces**, choose the connection for **Slack** or **Teams**. Collabase checks that the credentials work before it saves.
+  <Step title="Enter them for notifications">
+    Go to **Administration → Notifications**. Under **Chat workspaces**, choose **Connect** for **Slack** or **Teams** and type the credentials. Collabase checks that they work before it saves them. They are stored encrypted and are never shown again.
   </Step>
 </Steps>
 
-Choose **Not connected** to disconnect. Both changes are written to the [audit log](/admin/audit-log) as **Notification channel connected** or **disconnected**; the entry names the provider and never a token.
+Choose **Replace credentials** to enter new ones and **Disconnect** to remove the connection. Both changes are written to the [audit log](/admin/audit-log) as **Notification channel connected** or **disconnected**; the entry names the provider and never a token.
 
-If the provider later refuses the credentials, Collabase marks the connection as lost, tells every administrator once by notification (and by email if they have email on for Automation and apps), and sends everyone's chat messages by email instead until you choose a working connection.
+If the provider later refuses the credentials, Collabase marks the connection as lost, tells every administrator once by notification (and by email if they have email on for Automation and apps), and sends everyone's chat messages by email instead until you enter working credentials.
 
 ## What people get {#direct-messages}
 

@@ -124,17 +124,8 @@ On top of the [general errors](/api/introduction#response-format):
 
 ## Reacting to changes
 
-There is no separate webhook subscription for meetings. Build an
-[automation](/automation/triggers#collabase-events) on one of the meeting events (created, updated,
-cancelled, closed, decision recorded, note published) and add an **HTTP** action that calls your
-system. An event reaches only automations whose owner may see the meeting. It carries identifiers,
-dates and a decision's title, never agenda text or notes; read the details through this API with a
-token of your own.
-
-The other direction works too: the Collabase connector has the automation actions **Create
-Meeting**, **Add Agenda Item** (also to the next occurrence of a series) and **Invite to Meeting**,
-which act with the automation owner's rights. See the
-[Collabase connector](/automation/connectors/collabase).
+There is no webhook subscription for meetings. Poll the list and detail endpoints with a token of
+your own to follow changes.
 
 <CardGroup cols={2}>
   <Card title="Meetings" icon="calendar" href="/api/meetings/list-meetings">

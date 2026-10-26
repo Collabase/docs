@@ -1,0 +1,82 @@
+---
+title: "Step inputs"
+sidebarTitle: "Step inputs"
+icon: "text-cursor-input"
+description: "Every kind of input a step can show, from pickers for people and work items to filters, lists and rich text, and what each one stores."
+---
+
+Each step draws its inputs from what the plug action asks for. A picker offers what you may use, a date offers a calendar, and a list offers rows. This page lists every kind of input and how it behaves. In all of them, a value can come from an earlier step: see [Passing data](/automation/passing-data).
+
+## Text and numbers
+
+| Input | What you see | Notes |
+|---|---|---|
+| **Short text** | One line | Accepts typed text and data from earlier steps. |
+| **Long text** | Several lines | The same, for longer text. |
+| **Rich text** | The page editor with a toolbar | Used for the text of a page, the description of a work item and comments. The step stores what the editor stores. The switch next to the label changes it into one expression field. |
+| **Number** | A number field | The switch next to the label takes a value from an earlier step instead. |
+| **Checkbox** | A box | Stores yes or no. |
+| **Code** and **JSON** | A monospace field | Stored as typed. JSON must be valid when the step runs. |
+
+## Dates and time
+
+| Input | What you see | Stores |
+|---|---|---|
+| **Date** | A calendar | A day, as `2026-10-26`. |
+| **Date and time** | A calendar and a time | A point in time. |
+| **Time** | A time of day | `HH:MM`, such as `14:30`. |
+| **Date range** | Two calendars | A start day and an end day. |
+| **Interval** | An amount and a unit | A span such as 2 hours. The schedule trigger uses it, from 1 minute to 1 week. |
+
+Date, date and time, and number inputs have a switch next to the label. Use it to insert a date or a number from an earlier step.
+
+## Choose from a list
+
+| Input | What you see | Notes |
+|---|---|---|
+| **Dropdown** | A list of fixed values | One choice. |
+| **Dynamic dropdown** | A list the plug loads while you fill in the step | The list can depend on other inputs, for example a project that depends on an account. If the list cannot be loaded, the field becomes a text field and says why. |
+| **Multiple choice** | A list of boxes | Several choices. |
+
+## Pickers for objects and people
+
+A picker lists what you may use and stores the id. It has three modes: pick from the list, enter the id, or insert data from an earlier step.
+
+| Picker | Lists |
+|---|---|
+| **Space**, **Project**, **Work item**, **Page** | What you may open. A page picker narrows to the space chosen in the same step. |
+| **Status** | The statuses of the workflow of the project, or of the project of the work item chosen in the same step. |
+| **Registry schema**, **Object type**, **Object** | What you may see in the Registry. An object type picker narrows to the schema chosen in the same step. |
+| **Meeting** and **Series** | Your meetings and the series you organise or take part in. |
+| **Person** | People who sign in and are not switched off. |
+
+### People and groups
+
+Steps that notify or ask people take a list of **people and groups**. Search by name, choose a person or a group and repeat. A group stands for all its members who are not guests and not switched off. Each person is reached once, even if they are in several groups or named twice. A notification takes up to 50 people, an approval up to 50 and an agent step up to 20 approvers.
+
+## Filters
+
+The **Search** action asks for a **kind of object** and **filters**. Build the filters with the filter builder, or switch to **Query** to write the search query with completion. Both write the same query, and the list of fields depends on the kind of object. An empty query finds everything the service account may see. Values may contain data from earlier steps.
+
+## Lists and rows
+
+| Input | What you see | Stores |
+|---|---|---|
+| **List of values** | One field per entry, with **Add entry** | A list of short values. |
+| **Rows** | A group of fields per row, with **Add entry** | A list of objects. |
+| **Names and values** | Two fields per row, with **Add entry** | An object, for example HTTP headers or the field values of a registry object. |
+| **Tools** | One row per tool of an AI agent | See [Agent tools](/automation/agent-tools). |
+
+## Files
+
+A file input takes the address of a file or data from an earlier step that holds a file.
+
+## What a failed input looks like
+
+A step cannot be published while a required input is empty. The flow shows the number of open issues, and the step is marked **Incomplete**. If an input holds something the action cannot read, the step fails when it runs and the message names the input, never its value.
+
+## Related
+
+- [Building flows](/automation/building-flows)
+- [Passing data](/automation/passing-data)
+- [Plug reference](/automation/plug-reference)

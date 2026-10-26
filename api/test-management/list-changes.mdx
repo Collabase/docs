@@ -1,0 +1,72 @@
+---
+title: "Pull changes"
+description: "Read the cases, folders or removals that changed since a point in time, page by page."
+api: "GET /api/v1/test-management/projects/{projectId}/changes"
+---
+
+Returns what changed in a test project, so a client can keep a local copy up to date. Ask for one kind of entry at a time.
+
+<Info>
+  The token needs the `tests:read` scope. The person behind it needs to see the project; otherwise the answer is `404`.
+</Info>
+
+## Path parameters
+
+<ParamField path="projectId" type="string" required>
+  The ID of the test project.
+</ParamField>
+
+## Query parameters
+
+<ParamField query="entity" type="string" required>
+  `cases`, `folders` or `deleted`.
+</ParamField>
+
+<ParamField query="since" type="string">
+  An ISO 8601 time. Only entries changed at or after it are returned. Use the `serverTime` of your last pull. Omit it for a first, complete read.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page. It replaces `since`.
+</ParamField>
+
+<ParamField query="limit" type="number" default="100">
+  Entries per page, 1 to 500.
+</ParamField>
+
+## Response
+
+```json
+{
+  "data": {
+    "items": [],
+    "nextCursor": null,
+    "serverTime": "2026-10-24T10:20:00.000Z",
+    "truncated": false
+  }
+}
+```
+
+| Field | Meaning |
+|---|---|
+| **items** | The entries, oldest change first. |
+| **nextCursor** | Present while there are more pages. Send it as `cursor`. `null` on the last page. |
+| **serverTime** | The time of this call. Use it as `since` in your next pull. |
+| **truncated** | Only for `deleted`. `true` when `since` is older than 90 days, the time removals are kept. Read everything again. |
+
+### Cases
+
+Each case has `id`, `key`, `externalId`, `status` (`ACTIVE` or `ARCHIVED`), `folderId`, `folderExternalId`, `updatedAt`, a `revision` and the newest `version` with its steps. The `revision` is the one you send as `baseRevision` when you push a change. An archived case still appears, with its status.
+
+### Removals
+
+Each entry has the `entity` (`case` or `folder`), the `entityId`, the `externalId` when there was one, the `key` of a case and the `deletedAt` time. A case that was moved to another project is reported as removed from the old one.
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/test-management/projects/tpr_abc123/changes?entity=cases&since=2026-10-24T09:00:00Z&limit=200" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>

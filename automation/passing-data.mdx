@@ -1,0 +1,80 @@
+---
+title: "Passing data"
+sidebarTitle: "Passing data"
+icon: "arrow-right-left"
+description: "Use the result of the trigger and of earlier steps in later steps: how data flows, how the data picker works and how to read a value by its path."
+---
+
+Data flows from a step to the steps after it. The trigger comes first and hands its data to step 1. Step 1 hands its result to step 2, and so on. A step can use the results of every step before it, not only the one directly before.
+
+## An example
+
+<Steps>
+  <Step title="Trigger: Work item created">
+    The trigger hands over the key, the title and the project of the new work item.
+  </Step>
+  <Step title="Step 1: Send notification">
+    Its message uses the key and the title from the trigger. It returns whether the notification was sent.
+  </Step>
+  <Step title="Step 2: Add comment">
+    Its text uses the key from the trigger and the result of step 1. Because it is the last step, nothing can use its result.
+  </Step>
+</Steps>
+
+## Insert data from an earlier step
+
+Select an input and the **data picker** opens next to it.
+
+- Each earlier step is a group. Open it to see the fields of its result.
+- A small arrow shows that a field has fields of its own.
+- Select a field to insert it at the cursor. You can mix typed text and data in one input, for example `New: {{trigger.title}}`.
+- A reference reads `{{step_1.field}}`. Collabase replaces it with the value when the step runs.
+
+<Note>
+  The picker lists the fields of the **saved test result** of each step. Test every step before the one you are filling in. A step that has not been tested shows no fields.
+</Note>
+
+## Test each step
+
+Select a step, open its **Test** tab and run it. Collabase runs the step once with the saved data of the steps before it and shows the result. The result is saved, so later steps can offer its fields in the picker.
+
+<Warning>
+  A step test runs the step for real. It can create a work item, send a notification or call another system.
+</Warning>
+
+## Use a value that is not listed
+
+If the field you need is not in the picker, type its path:
+
+```text
+{{step_1.customer.email}}
+```
+
+Start from a field the picker offers and add the names of the fields inside it, separated by dots. The data of a webhook call sits under `body`, for example `{{trigger.body.order}}`. A reference that points to nothing fails the step with a message that names the reference.
+
+## Dropdowns and expressions
+
+An input with a fixed set of values is a dropdown, and a dropdown cannot take a reference by itself. Dates, numbers and many other inputs have a switch next to their label that changes the field into an expression field, where you can insert data. Pickers for spaces, projects, work items, pages and people have an input mode for a reference too.
+
+## Data inside a loop
+
+A **Loop** step repeats the steps inside it once for each item of a list. Inside the loop, the loop step's name followed by `item` is the current item, for example `{{loop_1.item}}`, and `index` is its position in the list, starting at 1. The loop's own result is the last item, the count and the number of iterations.
+
+## Data that is not part of a flow
+
+Two more kinds of reference exist, and both read from the automation workspace and not from steps:
+
+| Reference | Reads |
+|---|---|
+| `{{variables['NAME']}}` | A [variable](/automation/variables) of the workspace |
+| `{{connections['name']}}` | A [connection](/automation/connections). The step input chooses it for you. |
+
+## Large results
+
+A step result that is too large to keep in the run's record is stored as a file next to it. The run page shows a download instead of the content, and later steps still read the full result.
+
+## Related
+
+- [Step inputs](/automation/step-inputs)
+- [Workspace variables](/automation/variables)
+- [Debugging runs](/automation/debugging-runs)

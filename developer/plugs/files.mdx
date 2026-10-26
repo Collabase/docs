@@ -1,0 +1,36 @@
+---
+title: "Files"
+sidebarTitle: "Files"
+icon: "file"
+description: "Hand a file to later steps: write it with the files service, pass the reference on and respect the size limit."
+---
+
+An action that produces a file, such as a PDF, an export or a picture, writes it with `context.files`. Later steps get a reference to the file instead of a copy of its content.
+
+```ts
+run: async (context) => {
+  const pdf = await renderInvoice(context.auth, context.propsValue.invoiceId);
+  const file = await context.files.write({ fileName: "invoice.pdf", data: pdf });
+  return { file };
+},
+```
+
+`write` takes a name and a `Buffer` or a `Readable`, and returns a string. Return that string in the result, and a later step that has a file input can use it.
+
+## Where files live
+
+Files are stored in the storage of the automation workspace. A file belongs to the workspace that wrote it: the id of a file is useless in another workspace.
+
+## Limits
+
+| Limit | Value |
+|---|---|
+| Size of one file | 25 MB |
+
+A larger file is refused with an error. Compress it, or send it to the other system from inside the action instead of passing it on.
+
+## Related
+
+- [Actions](/developer/plugs/actions)
+- [Step inputs](/automation/step-inputs)
+- [Limits](/automation/limits)

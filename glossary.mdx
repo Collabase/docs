@@ -16,7 +16,7 @@ The accent color is one color for the whole installation. It colors primary butt
 
 ### Action
 
-An action is the node in an automation that does something: it creates a task, updates a page, sends a Slack message or calls an external service. Native actions work on Collabase content without any setup. Actions from external connectors need a saved [Connection](#connection). Each action receives data from the nodes before it and passes its own output on. [Read more about actions](/automation/actions).
+An action is the node in an automation that does something: it creates a task, updates a page, sends a Slack message or calls an external service. Native actions work on Collabase content without any setup. Actions from external connectors need a saved [Connection](#connection). Each action receives data from the nodes before it and passes its own output on.
 
 ### Active Directory
 
@@ -36,7 +36,7 @@ The App Store adds apps to a Collabase installation. Every app ships with Collab
 
 ### Approval node
 
-The Approval node is a flow control node in Automation. It is not ready for production use yet and should not be used: the approver is not notified, the timeout is not applied and the automation does not continue after a decision. For approvals in projects, use [gates](#gate). [Read more about flow control nodes](/automation/nodes#approval).
+The Approval node is a flow control node in Automation. It is not ready for production use yet and should not be used: the approver is not notified, the timeout is not applied and the automation does not continue after a decision. For approvals in projects, use [gates](#gate).
 
 ### Archived page {#archived-page}
 
@@ -56,7 +56,7 @@ The audit log records changes and security events across the whole installation:
 
 ### Automation
 
-Automation is the workflow app built into Collabase. You connect a trigger, conditions and actions in a visual drag-and-drop builder, without writing code. Every run is logged with the input, output and status of each node. [Read more about Automation](/automation/overview).
+Automation is the workflow app built into Collabase. You connect a trigger, conditions and actions in a visual drag-and-drop builder, without writing code. Every run is logged with the input, output and status of each node.
 
 ## B {#b}
 
@@ -112,15 +112,15 @@ The command palette jumps to places; it does not search content. Press `.` when 
 
 ### Condition
 
-A condition is a node in an automation that checks a value against a rule. A **Filter** node stops the branch when the rule is not met; an **IfElse** node continues on a true or a false path. [Read more about conditions](/automation/conditions).
+A condition is a node in an automation that checks a value against a rule. A **Filter** node stops the branch when the rule is not met; an **IfElse** node continues on a true or a false path.
 
 ### Connection {#connection}
 
-A connection is a named, encrypted set of credentials for an external connector. You create it once in the Automation app and reuse it in every automation. Credentials never appear in execution logs. [Read more about connections](/automation/actions).
+A connection is a named, encrypted set of credentials for an external connector. You create it once in the Automation app and reuse it in every automation. Credentials never appear in execution logs.
 
 ### Connector
 
-A connector is a pre-built integration between Automation and an external service, such as Slack, Microsoft Teams, GitHub or bexio. Each connector brings its own triggers and actions. [Read more about connectors](/automation/connectors/overview).
+A connector is a pre-built integration between Automation and an external service, such as Slack, Microsoft Teams, GitHub or bexio. Each connector brings its own triggers and actions.
 
 ### Cycle {#cycle}
 
@@ -250,7 +250,7 @@ A mail event is one kind of mail Collabase can send, such as `task-assigned`. **
 
 ### MCP
 
-MCP (Model Context Protocol) is an open standard for connecting AI applications to external systems. In Automation, the MCP node calls a tool registered on an external MCP server. [Read more about AI nodes](/automation/nodes).
+MCP (Model Context Protocol) is an open standard for connecting AI applications to external systems. In Automation, the MCP node calls a tool registered on an external MCP server.
 
 ### Member {#member}
 
@@ -482,7 +482,7 @@ The trash holds deleted Spaces, projects, pages and work items. Projects and wor
 
 ### Trigger
 
-A trigger starts an automation. It can be a Collabase event, a schedule, a webhook, a manual run or an event from a connected service. Every automation has exactly one trigger. [Read more about triggers](/automation/triggers).
+A trigger starts an automation. It can be a Collabase event, a schedule, a webhook, a manual run or an event from a connected service. Every automation has exactly one trigger.
 
 ## U {#u}
 
@@ -509,10 +509,6 @@ The version history of a page lists every [version](#version), newest first. You
 A Space's visibility decides who can read it without being a member. By default only members can. With **Make space public** switched on, every signed-in user can read its pages. [Read more about Space visibility](/concepts/spaces#visibility).
 
 ## W {#w}
-
-### WASM plugin
-
-A WASM plugin extends the Collabase backend with logic compiled to WebAssembly. It runs headless on your server inside a sandbox with limits for memory and execution time. [Read more about WASM plugins](/developer/wasm).
 
 ### Whiteboard {#whiteboard}
 

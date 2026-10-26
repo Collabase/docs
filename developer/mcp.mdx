@@ -1,0 +1,47 @@
+---
+title: "Collabase MCP"
+sidebarTitle: "MCP"
+icon: "plug"
+description: "Connect Claude, ChatGPT, Cursor or any MCP client to Collabase: what agents can do, how they sign in and what administrators control."
+---
+
+The Collabase MCP server connects AI agents, such as Claude, ChatGPT or Cursor, or any client that speaks the Model Context Protocol, to Collabase. It is **available now**.
+
+## How it works
+
+An agent signs in with OAuth and acts with the rights of the person who connects it. It sees what that person sees and can do what that person can do, no more. Agents have the same tools as Collabase AI, limited to the permissions that were granted when they connected. The tools cover spaces and projects, work items, cycles, pages, comments, registry objects, time tracking, meetings, test management and blog subscriptions.
+
+## Connect a client
+
+<Steps>
+  <Step title="Get the endpoint">
+    Ask your administrator for the address of the MCP endpoint. It ends in `/api/mcp`.
+  </Step>
+  <Step title="Add it to the client">
+    Add the address as a remote MCP server in the settings of your client.
+  </Step>
+  <Step title="Approve">
+    The client opens a consent page in the browser. Check what the agent may do and approve.
+  </Step>
+</Steps>
+
+Guests cannot connect agents. See [Connect an AI agent](/concepts/connect-ai-agents) for the steps for a person.
+
+## What administrators control
+
+- Whether agents may connect at all, and who. See [Apps and agents](/admin/apps-and-agents).
+- Each connection sends an email notification to the person.
+- A person can withdraw an agent under **Profile, Security, Connected apps**.
+- The history of a work item names the agent that changed it.
+- An agent reads text in pages and comments as data, not as instructions.
+
+## Flows as tools
+
+Each automation workspace has its own MCP endpoint, so an agent can list the flows of a workspace, start them and follow their runs. See [MCP server of Automation](/automation/mcp-server).
+
+## Related
+
+- [Developers](/developer/overview)
+- [Connect an AI agent](/concepts/connect-ai-agents)
+- [AgentKit](/developer/agentkit)
+- [The page on the website](https://collabase.ch/platform/developers/mcp)

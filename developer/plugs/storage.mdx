@@ -1,0 +1,42 @@
+---
+title: "Persistent storage"
+sidebarTitle: "Persistent storage"
+icon: "database"
+description: "Keep small values between runs and polls with the store: put, get and delete by key, per flow or for the whole workspace."
+---
+
+The store keeps small pieces of JSON that outlive a run. Triggers use it to remember where they stopped. Actions use it for counters, cursors and ids.
+
+```ts
+await context.store.put("lastId", 4711);
+const lastId = await context.store.get<number>("lastId");
+await context.store.delete("lastId");
+```
+
+## Scopes
+
+| Scope | Visible to |
+|---|---|
+| **Flow** (the default) | Only the flow that wrote the value. |
+| **Workspace** | Every flow of the same automation workspace. Pass `StoreScope.PROJECT`. |
+
+```ts
+await context.store.put("tokenCache", { token }, StoreScope.PROJECT);
+```
+
+The scopes are separate: a key written in one scope is not found in the other. A value is never visible in another workspace.
+
+## Limits
+
+| Limit | Value |
+|---|---|
+| Size of one value | 512 KB |
+| Length of a key | 256 characters |
+
+Keep values small. A store is not a database. Keep records in [Tables](/automation/tables) when people need to see or edit them.
+
+## Related
+
+- [Polling trigger](/developer/plugs/polling-trigger)
+- [Webhook trigger](/developer/plugs/webhook-trigger)
+- [Tables](/automation/tables)

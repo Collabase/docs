@@ -1,0 +1,80 @@
+---
+title: "Properties"
+sidebarTitle: "Properties"
+icon: "sliders-horizontal"
+description: "Describe the inputs of an action or trigger with Property: every type, its common options and how the step form of the editor draws it."
+---
+
+Properties describe the inputs of an action or trigger. Collabase draws the form of a step from them, so a person never writes JSON to fill in a step.
+
+```ts
+props: {
+  name: Property.ShortText({ displayName: "Name", required: true }),
+  priority: Property.StaticDropdown({
+    displayName: "Priority",
+    required: false,
+    options: { options: [{ label: "Low", value: "low" }, { label: "High", value: "high" }] },
+  }),
+},
+```
+
+Inside `run`, `context.propsValue` holds the values with the right JavaScript type: a number as a number, a checkbox as a boolean.
+
+## Types
+
+| Type | Use it for | How the editor draws it |
+|---|---|---|
+| `Property.ShortText` | One line of text | A text field |
+| `Property.LongText` | Several lines | A text area |
+| `Property.RichText`, `Property.MarkDown` | Formatted text | A text area |
+| `Property.Number` | A number | A number field with a switch for data from earlier steps |
+| `Property.Checkbox` | Yes or no | A checkbox |
+| `Property.DateTime` | A point in time | A calendar and time with an expression switch |
+| `Property.StaticDropdown` | One of fixed choices | A dropdown |
+| `Property.StaticMultiSelectDropdown` | Several of fixed choices | A list of boxes |
+| `Property.Dropdown` | One choice that the plug loads | A dropdown whose options load while the person fills in the step. If loading fails, a text field replaces it. |
+| `Property.MultiSelectDropdown` | Several choices that the plug loads | A list of boxes with loaded options |
+| `Property.Json` | Any JSON | A code field |
+| `Property.Object` | Names and values | Rows of two fields |
+| `Property.Array` | A list of values, or of objects when `properties` names the fields | A list with **Add entry**, or rows of fields |
+| `Property.File` | A file | A text field for an address or data |
+
+Other types, such as `DateRange`, `Color`, `DynamicProperties` and `Custom`, are accepted in the code, but the step form shows them as a plain text field.
+
+## Common options
+
+| Option | Effect |
+|---|---|
+| `displayName`, `description` | The label and the help text under it. |
+| `required` | A required input must be filled before the flow can be published. |
+| `defaultValue` | The value a new step starts with. |
+| `refreshers` | For a dynamic dropdown: the names of other inputs whose change reloads the options. Use `['auth']` when the options depend on the connection. |
+
+## Dynamic dropdowns
+
+A dynamic dropdown loads its options from the other system while the person fills in the step.
+
+```ts
+project: Property.Dropdown({
+  displayName: "Project",
+  required: true,
+  refreshers: ["auth"],
+  options: async ({ auth }) => {
+    if (!auth) return { disabled: true, options: [], placeholder: "Choose a connection first" };
+    const projects = await listProjects(auth);
+    return { options: projects.map((project) => ({ label: project.name, value: project.id })) };
+  },
+}),
+```
+
+The editor waits up to 15 seconds for the options. A plug that answers with an error shows the reason in the field. Keep a loader fast and return at most a few hundred options.
+
+## Inputs and data from earlier steps
+
+A person can put a reference such as `{{step_1.title}}` into most inputs. Collabase replaces it before `run` is called, so your code sees the real value. A dropdown cannot take a reference by itself.
+
+## Related
+
+- [Props validation](/developer/plugs/validation)
+- [Actions](/developer/plugs/actions)
+- [Step inputs](/automation/step-inputs)

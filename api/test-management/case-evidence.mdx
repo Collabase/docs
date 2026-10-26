@@ -1,0 +1,67 @@
+---
+title: "Attach files to a case"
+description: "Add an image or PDF to a test case and list the files attached to it."
+api: "POST /api/v1/test-management/cases/{ref}/evidence"
+---
+
+Attaches one file to a test case itself, apart from the files added while a case is run. A case holds up to 10 files.
+
+<Info>
+  Adding a file needs the `tests:write` scope and the right to edit the case. `GET` on the same address lists the files and needs `tests:read`. Download and removal use the evidence addresses below.
+</Info>
+
+## Path parameters
+
+<ParamField path="ref" type="string" required>
+  The ID of the case, or its key such as `QA-T12`. A key needs the query parameter `spaceSlug`.
+</ParamField>
+
+## Request body
+
+Send `multipart/form-data` with one field.
+
+<ParamField body="file" type="file" required>
+  A PNG, JPEG, GIF or WebP image or a PDF file, up to 25 MB. The type is read from the content, not from the file name.
+</ParamField>
+
+## Response
+
+Returns the file with status `201`.
+
+```json
+{
+  "data": {
+    "id": "cm1ev",
+    "resultId": null,
+    "fileName": "login-error.png",
+    "mimeType": "image/png",
+    "sizeBytes": 48211,
+    "createdAt": "2026-10-24T10:25:00.000Z"
+  }
+}
+```
+
+## Download and remove
+
+| Request | Needs |
+|---|---|
+| `GET /api/v1/test-management/evidence/{evidenceId}` | `tests:read`. The file is always sent as a download. |
+| `DELETE /api/v1/test-management/evidence/{evidenceId}` | `tests:write` and the right to edit the case. |
+
+## Errors
+
+| Status | Meaning |
+|---|---|
+| `400` | The file is empty, over 25 MB or not an image or PDF, or the case already holds 10 files. |
+| `403` | The person may not edit the case. |
+| `404` | The case does not exist or the person may not see its project. |
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/test-management/cases/QA-T12/evidence?spaceSlug=engineering" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -F "file=@login-error.png"
+```
+
+</RequestExample>

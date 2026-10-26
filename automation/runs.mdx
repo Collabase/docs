@@ -1,0 +1,43 @@
+---
+title: "Runs and approvals"
+description: "Follow every run of a flow, retry or cancel it, ask a person to approve a step, and understand when Collabase switches a failing flow off."
+icon: "activity"
+---
+
+Every execution of a flow is a run. Open the **Runs** tab of a workspace to see them newest first, filter by flow, status or date, and open one to see each step with its result.
+
+## Run statuses
+
+| Status | Meaning |
+|---|---|
+| **Waiting** | The run is queued. |
+| **Running** | A step is being carried out. |
+| **Paused** | The run waits for a delay, a call or an approval. It holds no resources while it waits. |
+| **Succeeded** | All steps finished. |
+| **Failed** | A step failed. The run shows which. |
+| **Cancelled** | An editor cancelled it. |
+| **Timed out** | A wait or an approval ran out, or the run took too long. |
+
+A step output that is too large to show can be downloaded. A log that has been removed by retention says so, and the state of the run stays correct.
+
+## Retry and cancel
+
+Select **Retry** on a run, or on several, and choose where to start (at the failed step with the outputs of the earlier steps, or at the start with the same trigger data) and which version to use. The original run stays as it is. **Cancel run** stops a run at its next step.
+
+## Ask for approval
+
+Add **Ask for approval** from the flow control plug. Name the people who may decide and write the text they see. Each named person gets an inbox entry with a link. They see the names of the flow and the step, your text and the deadline, and nothing else of the run, whether or not they are members of the workspace. The first decision counts. If nobody decides in time, the run ends as timed out.
+
+## Waiting
+
+**Wait** pauses a flow for a time or until a point in time. **Wait for a call** pauses until another system calls the resume address that the step shows.
+
+## Failing flows
+
+A flow that fails 10 times in a row is switched off, and the workspace's editors and admins are told. Switching it on again clears the count.
+
+## Related
+
+- [Automation overview](/automation/overview)
+- [The flow editor](/automation/editor)
+- [AI and agents](/automation/agents-and-ai)

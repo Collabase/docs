@@ -1,0 +1,21 @@
+---
+title: "Retry a run"
+description: "Start a new run from a finished one, at the failed step or at the start, with the original or the published version."
+api: "POST /api/v1/automation/runs/{runId}/retry"
+---
+
+Starts a new run. The original stays as it is. Answers `202`.
+
+<Info>
+  Scope `automation:write`.
+</Info>
+
+## Body
+
+<ParamField body="from" type="string" default="failed-step">
+  `failed-step` or `start`.
+</ParamField>
+
+<ParamField body="version" type="string" default="original">
+  `original` or `published`.
+</ParamField>

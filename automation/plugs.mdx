@@ -1,0 +1,34 @@
+---
+title: "Plugs"
+description: "Understand where plugs come from, how they run in an isolated sandbox, and how licences decide which plugs you can install."
+icon: "blocks"
+---
+
+A plug adds triggers and actions to Automation. It also says what credentials it needs. Plug versions are installed per instance, and a flow keeps using the version it was published with until you publish again.
+
+## Where plugs come from
+
+| Origin | Description |
+|---|---|
+| **Collabase** | Plugs for the apps in your instance, such as work items, pages, meetings, comments, search, notifications and flow control. They run inside Collabase with the rights of the workspace's service account. |
+| **Core** | Plugs for common tools and helpers that come with the catalog. |
+| **Community** | A large catalog of plugs for other services. An administrator installs the ones you need. |
+| **Own** | Plugs your own developers build and upload. See [Build a plug](/automation/build-a-plug). |
+
+The [plug reference](/automation/plug-reference) lists them.
+
+## How plugs run
+
+Collabase plugs run in the application. Every other plug runs in an isolated sandbox service. The sandbox runs the plug in a locked-down process, with no route to your database or other internal services, and gives it only the connection of the step that is running. A plug cannot see another workspace's connections or any application secret.
+
+## Licences
+
+Collabase ships only software with licences it may redistribute. Each plug version is checked when it is installed or uploaded. A plug with a licence that is not allowed is shown as blocked and cannot be installed.
+
+## Install a plug
+
+An administrator installs plugs. Anyone building a flow sees which plugs are missing: the step picker lists them, and a system administrator can install one from there. See [Plugs administration](/admin/automation-plugs).
+
+## Related
+
+- [Automation overview](/automation/overview)

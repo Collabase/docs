@@ -1,0 +1,39 @@
+---
+title: "Flow version history"
+sidebarTitle: "Version history"
+icon: "history"
+description: "Every publish creates a version that can no longer change. Read earlier versions, restore one into the draft and see how editing a live flow works."
+---
+
+Collabase keeps every version of a flow that was published.
+
+- A **draft** can be edited as often as you like.
+- **Publishing** locks the draft as a version. A version never changes after that.
+- Editing a published flow opens a new draft that copies the published version, if no draft exists.
+- Because versions are locked, you can go back to an earlier one, edit it as a draft and leave the live version alone.
+
+## Open the history
+
+Select **Versions** in the editor. The list shows the published versions, newest first, with the time and the person who published each one.
+
+## Restore a version
+
+Select **Restore** on a version. Its content is copied into the draft and replaces what is there. The published version does not change until you publish the draft. Restoring needs the editor lock, so another person's open draft is not overwritten without notice.
+
+## One draft at a time
+
+Only one person edits a draft. The editor shows who holds it. Another editor can **take over** after the holder's lock has expired, which happens 10 minutes after the last change. If the flow changed while you had it open, the editor asks you to **Reload** so you do not overwrite a change you did not see.
+
+## Runs and versions
+
+A run keeps the version it started with. When you [retry a run](/automation/debugging-runs#retry-a-run), you choose between the version the run used and the published version.
+
+## Releases and Git
+
+If the workspace is connected to Git, a release records the state of the flows of the workspace at one point, and a rollback applies an earlier state. See [Git sync and releases](/automation/git-sync).
+
+## Related
+
+- [Publishing flows](/automation/publishing-flows)
+- [The flow editor](/automation/editor)
+- [Git sync and releases](/automation/git-sync)

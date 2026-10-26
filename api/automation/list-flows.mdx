@@ -1,0 +1,33 @@
+---
+title: "List flows"
+description: "Page through the flows of one automation workspace, filtered by status or name."
+api: "GET /api/v1/automation/flows"
+---
+
+Returns one page of the flows of a workspace.
+
+<Info>
+  Scope `automation:read`. The token owner needs any role in the workspace.
+</Info>
+
+## Query parameters
+
+<ParamField query="workspaceId" type="string" required>
+  The workspace.
+</ParamField>
+
+<ParamField query="status" type="string">
+  `ENABLED` or `DISABLED`.
+</ParamField>
+
+<ParamField query="q" type="string">
+  Part of the flow name.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="50">
+  Flows per page, at most 100.
+</ParamField>

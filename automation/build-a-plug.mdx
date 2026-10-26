@@ -1,0 +1,38 @@
+---
+title: "Build a plug"
+description: "Create, check, pack and upload your own plug with the Collabase plug command line tool and an API token."
+icon: "terminal"
+---
+
+Your developers can build plugs for systems that the catalog does not cover. A plug is a small Node.js package. The command line tool `collabase-plug` creates, checks and uploads it.
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| `collabase-plug init [folder] --name <package name>` | Creates a plug in a folder. |
+| `collabase-plug build [folder]` | Bundles the plug, checks the licences of what it bundles and packs it into `dist/`. |
+| `collabase-plug licenses [folder]` | Checks only the licences of the bundled dependencies. |
+| `collabase-plug publish <archive> --url <instance>` | Uploads the package. The token comes from `--token` or `COLLABASE_API_TOKEN`. |
+
+## Publish
+
+<Steps>
+  <Step title="Build">
+    Run `collabase-plug build`. A dependency with a licence that Collabase may not redistribute stops the build.
+  </Step>
+  <Step title="Get a token">
+    A system administrator creates an API token with the write level for **Automation** under **Profile, Security**. The token acts as that person.
+  </Step>
+  <Step title="Upload">
+    Run `collabase-plug publish dist/<archive> --url https://your-instance`. The instance checks the package again and installs it. It appears in the step picker once the check is done.
+  </Step>
+</Steps>
+
+Uploading needs a system administrator. The plug then runs in the sandbox like any plug that Collabase did not write.
+
+## Related
+
+- [Plugs](/automation/plugs)
+- [Automation plugs](/admin/automation-plugs)
+- [Automation API](/api/automation/overview)

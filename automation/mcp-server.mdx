@@ -1,0 +1,57 @@
+---
+title: "MCP server"
+sidebarTitle: "MCP server"
+icon: "plug"
+description: "Connect Claude, Cursor or your own agent to the flows of a workspace: the endpoint, the four tools, who may do what and how to release a flow for clients."
+---
+
+Every automation workspace has an MCP endpoint. An AI client that speaks MCP can list the workspace's flows, start them, follow their runs and create drafts. It acts as the person who connected it.
+
+## The endpoint
+
+```text
+https://your-instance/api/automation/workspaces/<workspace id>/mcp
+```
+
+The endpoint uses the same sign-in as the main MCP endpoint of Collabase. On first use, the client opens a browser window and asks you to sign in. After that it works with your rights, and nothing more.
+
+## Connect a client
+
+<Steps>
+  <Step title="Copy the address">
+    Take the workspace id from the address of the workspace in Collabase and put it into the endpoint above.
+  </Step>
+  <Step title="Add it to the client">
+    Add the address as an MCP server in the client's settings, such as `.cursor/mcp.json` for Cursor or the connector settings of Claude.
+  </Step>
+  <Step title="Sign in">
+    Open the client and sign in to Collabase when it asks.
+  </Step>
+</Steps>
+
+## Tools
+
+| Tool | What it does | Role needed |
+|---|---|---|
+| `list_flows` | Lists the flows of the workspace with their status. | Viewer |
+| `get_run` | Shows the status of one run and what its failed step reported. A run that is still going shows as running. | Viewer |
+| `start_flow` | Starts a published flow once. It returns the run id at once, and the run goes on after the call. | Editor |
+| `create_flow_draft` | Creates an unpublished draft from installed plug actions. | Editor |
+
+A viewer can read only. The tools never return connection values or variable values.
+
+## Release a flow for clients
+
+A client may start only the flows you have released. Open a flow and switch on **MCP clients may start** in the toolbar. A flow that is not released answers a start with a refusal, even for an editor. Releasing and withdrawing a flow is recorded in the audit trail.
+
+## What a client cannot do
+
+- It cannot publish a flow or switch one on.
+- It cannot read the content of a connection or a variable.
+- It cannot reach another workspace than the one in the address.
+
+## Related
+
+- [Build with AI](/automation/build-with-ai)
+- [Agent tools](/automation/agent-tools)
+- [Workspaces](/automation/workspaces)

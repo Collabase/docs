@@ -1,0 +1,67 @@
+---
+title: "Developers"
+sidebarTitle: "Overview"
+icon: "code-xml"
+description: "The ways to extend and connect Collabase as a developer: MCP today, and the App SDK, Plug SDK, Collakit and AgentKit from Q4 2026."
+---
+
+Collabase can be extended and connected in several ways. This page lists them, says what you can use today and points to where each one is described.
+
+## What is available and what is coming
+
+| Product | What it is for | Status |
+|---|---|---|
+| **MCP** | Connect an AI agent such as Claude, ChatGPT or Cursor to Collabase. | Available now |
+| **App SDK** | Build apps in TypeScript and React that run inside Collabase. | Q4 2026 |
+| **Plug SDK** | Write plugs that add triggers and actions to Automation. | Q4 2026 |
+| **Collakit** | The Collabase design system for apps: foundations, components, icons and tokens. | Q4 2026 |
+| **AgentKit** | Rules, skills and MCP access that help coding agents build apps and plugs the same way every time. | Q4 2026 |
+
+The App SDK, the Plug SDK, Collakit and AgentKit are open source under the MIT licence. Their repositories on GitHub are public, and the npm packages are published from Q4 2026. The built-in plugs and the automation engine are not open source.
+
+<CardGroup cols={2}>
+  <Card title="MCP" icon="plug" href="/developer/mcp">
+    Connect an AI agent to Collabase. Available now.
+  </Card>
+  <Card title="App SDK" icon="app-window" href="/developer/app-sdk">
+    Apps inside Collabase. Q4 2026.
+  </Card>
+  <Card title="Plug SDK" icon="blocks" href="/developer/plug-sdk">
+    Plugs for Automation. Q4 2026.
+  </Card>
+  <Card title="Collakit" icon="package" href="/developer/collakit">
+    The design system. Q4 2026.
+  </Card>
+  <Card title="AgentKit" icon="bot" href="/developer/agentkit">
+    Coding agents build with Collabase rules. Q4 2026.
+  </Card>
+</CardGroup>
+
+## MCP
+
+The MCP server connects AI agents to Collabase data. An agent signs in with OAuth and acts with the rights of the person who connected it. It has the same tools as Collabase AI, limited to the permissions granted at connection, and an administrator decides who may connect an agent. Guests cannot. You get the endpoint from your administrator. It ends in `/api/mcp`. Each automation workspace also has its own endpoint for flows. See [Connect an AI agent](/concepts/connect-ai-agents), the [MCP server of Automation](/automation/mcp-server) and the [page on the website](https://collabase.ch/platform/developers/mcp).
+
+## App SDK
+
+The App SDK is a TypeScript and React toolkit for apps that run inside Collabase, in the cloud and on your own server. An app can add a window in the app drawer with its own sidebar, a panel on work items, gadgets for dashboards, settings at the level of the instance, a space or a project, and its own triggers and actions for Automation. Its backend code runs in isolated environments with limits for time and memory, and an app never has more rights than the person using it. Administrators confirm the permissions and activate an app per space. It is announced for Q4 2026. See the [page on the website](https://collabase.ch/platform/developers/app-sdk).
+
+## Plug SDK
+
+A plug adds triggers and actions to Automation for a system that the catalog does not cover. Plugs are written in TypeScript and run in an isolated sandbox with no route to your internal systems. They come with the Plug SDK in Q4 2026. The guide for building them is already in this documentation. See [Plug SDK](/developer/plug-sdk) and the [page on the website](https://collabase.ch/platform/developers/plug-sdk).
+
+## Collakit
+
+Collakit is the design system of Collabase: colours, icons, typography, components and design tokens, with dark mode, themes, languages and accessibility built in. The core of Collabase uses the same tokens, so an app built with Collakit looks and behaves like Collabase. The repository is public, and the npm package `@getcollabase/collakit` follows in Q4 2026. See the [page on the website](https://collabase.ch/platform/developers/collakit).
+
+## AgentKit
+
+AgentKit is a package of rules, skills and MCP access for coding agents. It contains a plugin for Claude Code, an `AGENTS.md` file for any agent that reads it and adapters for Codex, Cursor and ChatGPT, so that agents build apps and plugs by the same rules every time. It launches in Q4 2026 together with the App SDK. See the [page on the website](https://collabase.ch/platform/developers/agentkit).
+
+## Related
+
+- [App SDK](/developer/app-sdk)
+- [Plug SDK](/developer/plug-sdk)
+- [Collakit](/developer/collakit)
+- [AgentKit](/developer/agentkit)
+- [Automation API](/api/automation/overview)
+- [Apps and agents](/admin/apps-and-agents)

@@ -1,0 +1,61 @@
+---
+title: "Automation workspaces"
+sidebarTitle: "Workspaces"
+description: "Create an automation workspace, give a team a role in it, switch on four-eyes publishing, and read its audit trail and analytics."
+icon: "folder"
+---
+
+An automation workspace holds the flows of one team. It has its own members, connections, runs, audit trail, analytics, AI provider and Git connection. A service account named after the workspace carries out what its flows do, so every change a flow makes in Collabase is recorded as made by that account.
+
+## Roles
+
+Each member or group has one role in a workspace. A person gets the highest role of their own and of their groups. System administrators are administrators of every workspace.
+
+| Role | Can do |
+|---|---|
+| **Viewer** | Read flows, runs and the version history, and export a flow. |
+| **Editor** | Build, test and publish flows, switch them on and off, start runs, retry runs and manage connections. |
+| **Admin** | Everything an editor can, plus members, settings, the audit trail, analytics, the AI provider, Git sync and deleting the workspace. |
+
+<Steps>
+  <Step title="Create the workspace">
+    In **Automation**, select **New workspace** and give it a name and an emoji.
+  </Step>
+  <Step title="Add members">
+    Open the **Members** tab, add people or groups and choose a role for each.
+  </Step>
+</Steps>
+
+## Sensitive workspaces
+
+Switch on **Sensitive** under **Settings** when a flow in the workspace can do harm if it is wrong. Publishing a flow or switching it on then needs a second person.
+
+<Steps>
+  <Step title="Ask for approval">
+    The editor selects **Ask for approval** instead of **Publish**. The other admins of the workspace get a notification.
+  </Step>
+  <Step title="Decide">
+    An admin opens the request and approves or rejects it. The decision must come from an admin who did not ask and did not make the last change to the draft.
+  </Step>
+  <Step title="Result">
+    An approval publishes the flow or switches it on. A rejection changes nothing. The editor is told either way.
+  </Step>
+</Steps>
+
+If anyone changes the draft after the request, the request is withdrawn, so nobody approves something they did not see. The editor can also withdraw a request.
+
+## Run retention
+
+Finished runs and their logs are kept for 1 to 365 days, 30 by default. Set it under **Settings**. Runs that are still going are never removed.
+
+## Audit trail
+
+Admins see the **Audit** tab: who created, changed, published or deleted what in the workspace, and who decided an approval, changed a connection or connected Git. An entry never contains a secret or the content of a flow.
+
+## Analytics
+
+Admins see the **Analytics** tab, and system administrators see all workspaces under **Administration, Automation analytics**. The page shows active flows, successful and failed runs per day, average duration, the most used plugs, who builds, agent steps and AI tokens. The figures are up to an hour old. The same figures are available as the **Automation analytics** dashboard gadget.
+
+## AI provider
+
+By default flows use the AI model of your instance. Admins can set a provider for the workspace instead under **Settings**, with an optional monthly token budget. See [AI and agents](/automation/agents-and-ai).

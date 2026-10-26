@@ -1,0 +1,30 @@
+---
+title: "Import, export and templates"
+description: "Export a flow as a file, import a flow from this product or another tool, and start from bundled templates or ones your administrator saved."
+icon: "file-up"
+---
+
+## Export
+
+Select **Export** in the editor. You get the draft as a JSON file. Anyone who can see the workspace can export. The file contains no connection values. It lists the steps that used a connection so that you know where to choose one again.
+
+## Import
+
+In the **Flows** tab select **From template or file** and choose a file. Collabase also reads flow files exported by other automation tools. The result is a draft:
+
+- A plug that is not installed shows as an open issue on its step.
+- Connections come back empty.
+- A file that is not a flow creates nothing and shows an error.
+
+Files up to 2 MB are accepted.
+
+## Templates
+
+The same dialog lists templates. The bundled ones cover common Collabase tasks, such as notifying people about a new work item. System administrators can save the draft of a flow as an instance template with **Save as template** in the editor. A template holds no connections. Starting from a template whose plug is missing creates the draft with the gap marked.
+
+## Related
+
+- [Template library](/automation/template-library)
+- [The flow editor](/automation/editor)
+- [Git sync and releases](/automation/git-sync)
+- [Connections](/automation/connections)

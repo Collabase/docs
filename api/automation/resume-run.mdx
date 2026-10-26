@@ -1,0 +1,31 @@
+---
+title: "Resume a waiting run"
+description: "Resume a run that waits for a call: the address a Wait for a call step shows, what the body does and when the answer is 404 or 410."
+api: "POST /api/v1/automation/waitpoints/{token}"
+authMethod: "none"
+---
+
+Resumes a run that is paused at **Wait for a call**. The step shows this address as its output while it waits. The body and the query become the output of the waiting step.
+
+<Warning>
+  No token is needed. The token in the address is the credential. Give the address only to the system that should resume the run.
+</Warning>
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/waitpoints/<token>?ref=7" \
+  -H "Content-Type: application/json" \
+  -d '{"approved": true}'
+```
+
+The body may be up to 512 KB.
+
+```json
+{ "data": { "resumed": true } }
+```
+
+| Status | Meaning |
+|---|---|
+| `200` | The run was resumed. |
+| `404` | The token is unknown. |
+| `410` | The wait has expired or the address was used already. |
+| `413` | The body is larger than 512 KB. |

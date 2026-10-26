@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "almond",
+  "theme": "mint",
   "name": "Collabase",
   "colors": {
     "primary": "#0f4d38",
@@ -36,345 +36,216 @@
         "tabs": [
           {
             "tab": "Guides",
-            "menu": [
+            "icon": "book-open",
+            "groups": [
               {
-                "item": "Welcome",
-                "icon": "book-open",
-                "groups": [
-                  {
-                    "group": "Welcome",
-                    "pages": [
-                      "index",
-                      "introduction",
-                      "about/story",
-                      "glossary"
-                    ]
-                  }
+                "group": "Welcome",
+                "pages": [
+                  "index",
+                  "introduction",
+                  "about/story",
+                  "glossary"
                 ]
               },
               {
-                "item": "Getting started",
-                "icon": "rocket",
-                "groups": [
-                  {
-                    "group": "Getting started guide",
-                    "pages": [
-                      "getting-started/overview",
-                      "getting-started/introduction",
-                      "getting-started/sign-in",
-                      "getting-started/spaces",
-                      "getting-started/invite-members",
-                      "getting-started/projects",
-                      "getting-started/tasks",
-                      "getting-started/boards",
-                      "getting-started/docs-pages",
-                      "getting-started/search",
-                      "getting-started/profile"
-                    ]
-                  }
+                "group": "Getting started guide",
+                "pages": [
+                  "getting-started/overview",
+                  "getting-started/introduction",
+                  "getting-started/sign-in",
+                  "getting-started/spaces",
+                  "getting-started/invite-members",
+                  "getting-started/projects",
+                  "getting-started/tasks",
+                  "getting-started/boards",
+                  "getting-started/docs-pages",
+                  "getting-started/search",
+                  "getting-started/profile"
                 ]
               },
               {
-                "item": "User guide",
-                "icon": "layers",
-                "groups": [
+                "group": "Core concepts",
+                "pages": [
+                  "concepts/spaces",
+                  "concepts/space-settings",
+                  "concepts/configuration-model",
+                  "concepts/permissions",
+                  "concepts/search",
+                  "concepts/filters",
+                  "concepts/share-filters",
+                  "concepts/export-results",
+                  "concepts/subscribe-to-filters",
+                  "concepts/quick-filters",
+                  "concepts/home-and-favorites",
+                  "concepts/dashboards",
+                  "concepts/share-dashboards",
+                  "concepts/dashboard-controller",
+                  "concepts/dashboard-gadgets",
+                  "concepts/keyboard-shortcuts",
+                  "concepts/documents",
+                  "concepts/notifications",
+                  "concepts/ai",
+                  "concepts/collabase-ai",
+                  "concepts/collabase-ai-skills",
+                  "concepts/profile",
+                  "concepts/connect-ai-agents"
+                ]
+              },
+              {
+                "group": "HERMES project management",
+                "pages": [
+                  "hermes/overview",
+                  "hermes/introduction",
+                  "hermes/phases",
+                  "hermes/initiation",
+                  "hermes/concept",
+                  "hermes/implementation",
+                  "hermes/deployment",
+                  "hermes/execution",
+                  "hermes/closure",
+                  "hermes/milestones",
+                  "hermes/roles",
+                  "hermes/scenarios-and-modules",
+                  "hermes/outcomes",
+                  "hermes/collabase-setup"
+                ]
+              },
+              {
+                "group": "IAM with Microsoft",
+                "pages": [
+                  "admin/iam-microsoft-entra"
+                ]
+              },
+              {
+                "group": "Air-gapped installation",
+                "pages": [
+                  "admin/airgapped-installation"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Apps",
+            "icon": "layout-grid",
+            "groups": [
+              {
+                "group": "Apps",
+                "pages": [
                   {
-                    "group": "Core concepts",
+                    "group": "Docs",
                     "pages": [
-                      "concepts/spaces",
-                      "concepts/space-settings",
-                      "concepts/configuration-model",
-                      "concepts/permissions",
-                      "concepts/search",
-                      "concepts/filters",
-                      "concepts/share-filters",
-                      "concepts/export-results",
-                      "concepts/subscribe-to-filters",
-                      "concepts/quick-filters",
-                      "concepts/home-and-favorites",
-                      "concepts/dashboards",
-                      "concepts/share-dashboards",
-                      "concepts/dashboard-controller",
-                      "concepts/dashboard-gadgets",
-                      "concepts/keyboard-shortcuts",
-                      "concepts/documents",
-                      "concepts/notifications",
-                      "concepts/ai",
-                      "concepts/collabase-ai",
-                      "concepts/collabase-ai-skills",
-                      "concepts/profile",
-                      "concepts/connect-ai-agents"
-                    ]
+                      "docs/overview",
+                      "docs/pages",
+                      "docs/editor-elements",
+                      "docs/organize-pages",
+                      "docs/version-history",
+                      "docs/comments",
+                      "docs/collaboration",
+                      "docs/suggestions",
+                      "docs/templates",
+                      "docs/page-restrictions",
+                      "docs/translation",
+                      "docs/export"
+                    ],
+                    "icon": "/images/apps/docs-dark.png"
                   },
                   {
-                    "group": "Apps",
+                    "group": "Projects",
                     "pages": [
-                      {
-                        "group": "Docs",
-                        "pages": [
-                          "docs/overview",
-                          "docs/pages",
-                          "docs/editor-elements",
-                          "docs/organize-pages",
-                          "docs/version-history",
-                          "docs/comments",
-                          "docs/collaboration",
-                          "docs/suggestions",
-                          "docs/templates",
-                          "docs/page-restrictions",
-                          "docs/translation",
-                          "docs/export"
-                        ]
-                      },
-                      {
-                        "group": "Projects",
-                        "pages": [
-                          "projects/overview",
-                          "projects/project-setup",
-                          "projects/project-settings",
-                          "projects/templates",
-                          "projects/tasks",
-                          "projects/list-view",
-                          "projects/board",
-                          "projects/backlog",
-                          "projects/sprints",
-                          "projects/roadmap",
-                          "projects/reports",
-                          "projects/approvals",
-                          "projects/risks",
-                          "projects/project-costs",
-                          "projects/workflows",
-                          "projects/github",
-                          "projects/guests"
-                        ]
-                      },
-                      {
-                        "group": "Planning",
-                        "pages": [
-                          "planning/overview",
-                          "planning/portfolios",
-                          "planning/planner-capacity",
-                          "planning/dependencies"
-                        ]
-                      },
-                      {
-                        "group": "Meetings",
-                        "pages": [
-                          "meetings/overview",
-                          "meetings/planning",
-                          "meetings/invitations",
-                          "meetings/moderation",
-                          "meetings/decisions",
-                          "meetings/polls",
-                          "meetings/time-booking",
-                          "meetings/meeting-note",
-                          "meetings/ai-and-privacy"
-                        ]
-                      },
-                      {
-                        "group": "Test Management",
-                        "pages": [
-                          "test-management/overview",
-                          "test-management/test-cases",
-                          "test-management/cycles",
-                          "test-management/imports",
-                          "test-management/requirements",
-                          "test-management/reports",
-                          "test-management/settings"
-                        ]
-                      },
-                      {
-                        "group": "Automation",
-                        "pages": [
-                          "automation/overview",
-                          "automation/triggers",
-                          "automation/conditions",
-                          "automation/actions",
-                          "automation/nodes",
-                          {
-                            "group": "Connectors",
-                            "pages": [
-                              "automation/connectors/overview",
-                              {
-                                "group": "Communication",
-                                "pages": [
-                                  "automation/connectors/slack",
-                                  "automation/connectors/teams",
-                                  "automation/connectors/discord",
-                                  "automation/connectors/whatsapp",
-                                  "automation/connectors/telegram",
-                                  "automation/connectors/sendgrid",
-                                  "automation/connectors/twilio",
-                                  "automation/connectors/email"
-                                ]
-                              },
-                              {
-                                "group": "Calendar",
-                                "pages": [
-                                  "automation/connectors/google-calendar",
-                                  "automation/connectors/outlook-calendar",
-                                  "automation/connectors/calendly"
-                                ]
-                              },
-                              {
-                                "group": "Storage & Data",
-                                "pages": [
-                                  "automation/connectors/google-drive",
-                                  "automation/connectors/google-sheets",
-                                  "automation/connectors/dropbox",
-                                  "automation/connectors/airtable",
-                                  "automation/connectors/notion"
-                                ]
-                              },
-                              {
-                                "group": "CRM & Finance",
-                                "pages": [
-                                  "automation/connectors/hubspot",
-                                  "automation/connectors/pipedrive",
-                                  "automation/connectors/stripe"
-                                ]
-                              },
-                              {
-                                "group": "Developer Tools",
-                                "pages": [
-                                  "automation/connectors/github",
-                                  "automation/connectors/gitlab",
-                                  "automation/connectors/jira",
-                                  "automation/connectors/linear",
-                                  "automation/connectors/sentry",
-                                  "automation/connectors/datadog",
-                                  "automation/connectors/pagerduty"
-                                ]
-                              },
-                              {
-                                "group": "Project Management",
-                                "pages": [
-                                  "automation/connectors/asana",
-                                  "automation/connectors/trello",
-                                  "automation/connectors/monday"
-                                ]
-                              },
-                              {
-                                "group": "Swiss ERP & HR",
-                                "pages": [
-                                  "automation/connectors/bexio",
-                                  "automation/connectors/abacus",
-                                  "automation/connectors/personio"
-                                ]
-                              },
-                              {
-                                "group": "AI & Utilities",
-                                "pages": [
-                                  "automation/connectors/collabase",
-                                  "automation/connectors/openai",
-                                  "automation/connectors/ai",
-                                  "automation/connectors/http",
-                                  "automation/connectors/transform",
-                                  "automation/connectors/code"
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "group": "Time Tracking",
-                        "pages": [
-                          "time-tracking/overview",
-                          "time-tracking/logging-time",
-                          "time-tracking/timesheets",
-                          "time-tracking/reports",
-                          "time-tracking/teams",
-                          "time-tracking/billing-rules",
-                          "time-tracking/accounts",
-                          "time-tracking/holiday-workload-schemes",
-                          "time-tracking/worklog-attributes"
-                        ]
-                      },
-                      {
-                        "group": "Intranet",
-                        "pages": [
-                          "intranet/overview",
-                          "intranet/blog-posts",
-                          "intranet/events",
-                          "intranet/quick-links",
-                          "intranet/birthdays"
-                        ]
-                      },
-                      {
-                        "group": "Registry",
-                        "pages": [
-                          "registry/overview",
-                          "registry/schema-designer",
-                          "registry/object-browser",
-                          "registry/settings",
-                          "registry/csv-import"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "item": "HERMES",
-                "icon": "milestone",
-                "groups": [
-                  {
-                    "group": "HERMES project management",
-                    "pages": [
-                      "hermes/overview",
-                      "hermes/introduction",
-                      "hermes/phases",
-                      "hermes/initiation",
-                      "hermes/concept",
-                      "hermes/implementation",
-                      "hermes/deployment",
-                      "hermes/execution",
-                      "hermes/closure",
-                      "hermes/milestones",
-                      "hermes/roles",
-                      "hermes/scenarios-and-modules",
-                      "hermes/outcomes",
-                      "hermes/collabase-setup"
-                    ]
-                  }
-                ]
-              },
-              {
-                "item": "Move to Collabase",
-                "icon": "arrow-right-left",
-                "groups": [
-                  {
-                    "group": "Move to Collabase",
-                    "pages": [
-                      "admin/migrate-from-jira",
-                      "admin/migrate-from-confluence"
-                    ]
-                  }
-                ]
-              },
-              {
-                "item": "IAM with Microsoft",
-                "icon": "key-round",
-                "groups": [
-                  {
-                    "group": "IAM with Microsoft",
-                    "pages": [
-                      "admin/iam-microsoft-entra"
+                      "projects/overview",
+                      "projects/project-setup",
+                      "projects/project-settings",
+                      "projects/templates",
+                      "projects/tasks",
+                      "projects/list-view",
+                      "projects/board",
+                      "projects/backlog",
+                      "projects/sprints",
+                      "projects/roadmap",
+                      "projects/reports",
+                      "projects/approvals",
+                      "projects/risks",
+                      "projects/project-costs",
+                      "projects/workflows",
+                      "projects/github",
+                      "projects/guests"
                     ],
-                    "tag": "Enterprise"
-                  }
-                ]
-              },
-              {
-                "item": "Air-gapped install",
-                "icon": "server-off",
-                "groups": [
+                    "icon": "/images/apps/projects-dark.png"
+                  },
                   {
-                    "group": "Air-gapped installation",
+                    "group": "Planning",
                     "pages": [
-                      "admin/airgapped-installation"
-                    ]
+                      "planning/overview",
+                      "planning/portfolios",
+                      "planning/planner-capacity",
+                      "planning/dependencies"
+                    ],
+                    "icon": "/images/apps/planning-dark.png"
+                  },
+                  {
+                    "group": "Meetings",
+                    "pages": [
+                      "meetings/overview",
+                      "meetings/planning",
+                      "meetings/invitations",
+                      "meetings/moderation",
+                      "meetings/decisions",
+                      "meetings/polls",
+                      "meetings/time-booking",
+                      "meetings/meeting-note",
+                      "meetings/ai-and-privacy"
+                    ],
+                    "icon": "/images/apps/meetings-dark.png"
+                  },
+                  {
+                    "group": "Test Management",
+                    "pages": [
+                      "test-management/overview",
+                      "test-management/test-cases",
+                      "test-management/cycles",
+                      "test-management/imports",
+                      "test-management/requirements",
+                      "test-management/reports",
+                      "test-management/settings"
+                    ],
+                    "icon": "/images/apps/test-management-dark.png"
+                  },
+                  {
+                    "group": "Time Tracking",
+                    "pages": [
+                      "time-tracking/overview",
+                      "time-tracking/logging-time",
+                      "time-tracking/timesheets",
+                      "time-tracking/reports",
+                      "time-tracking/teams",
+                      "time-tracking/billing-rules",
+                      "time-tracking/accounts",
+                      "time-tracking/holiday-workload-schemes",
+                      "time-tracking/worklog-attributes"
+                    ],
+                    "icon": "/images/apps/time-tracking-dark.png"
+                  },
+                  {
+                    "group": "Intranet",
+                    "pages": [
+                      "intranet/overview",
+                      "intranet/blog-posts",
+                      "intranet/events",
+                      "intranet/quick-links",
+                      "intranet/birthdays"
+                    ],
+                    "icon": "/images/apps/intranet-dark.png"
+                  },
+                  {
+                    "group": "Registry",
+                    "pages": [
+                      "registry/overview",
+                      "registry/schema-designer",
+                      "registry/object-browser",
+                      "registry/settings",
+                      "registry/csv-import"
+                    ],
+                    "icon": "/images/apps/registry-dark.png"
                   }
                 ]
               }
@@ -435,6 +306,17 @@
                 ]
               },
               {
+                "group": "Automation",
+                "pages": [
+                  "admin/automation-plugs",
+                  "admin/automation-oauth-apps",
+                  "admin/automation-secret-stores",
+                  "admin/automation-sandbox",
+                  "admin/automation-operations",
+                  "admin/automation-analytics"
+                ]
+              },
+              {
                 "group": "Time tracking",
                 "pages": [
                   "admin/time-tracking"
@@ -452,268 +334,366 @@
                   "admin/troubleshooting"
                 ]
               }
-            ]
+            ],
+            "icon": "settings"
           },
           {
-            "tab": "Reference",
-            "menu": [
+            "tab": "Automation",
+            "icon": "workflow",
+            "groups": [
               {
-                "item": "API reference",
-                "icon": "code",
-                "groups": [
-                  {
-                    "group": "Overview",
-                    "pages": [
-                      "api/introduction"
-                    ]
-                  },
-                  {
-                    "group": "Pages",
-                    "pages": [
-                      "api/pages/create-page"
-                    ]
-                  },
-                  {
-                    "group": "Work Items",
-                    "pages": [
-                      "api/tasks/move-work-item"
-                    ]
-                  },
-                  {
-                    "group": "Search",
-                    "pages": [
-                      "api/search/overview",
-                      "api/search/search",
-                      "api/search/aggregate",
-                      "api/search/fields"
-                    ]
-                  },
-                  {
-                    "group": "Saved filters",
-                    "pages": [
-                      "api/filters/overview",
-                      "api/filters/list-filters",
-                      "api/filters/create-filter",
-                      "api/filters/get-filter",
-                      "api/filters/update-filter",
-                      "api/filters/delete-filter",
-                      "api/filters/filter-results",
-                      "api/filters/get-filter-shares",
-                      "api/filters/replace-filter-shares"
-                    ]
-                  },
-                  {
-                    "group": "Projects",
-                    "pages": [
-                      "api/projects/list-task-types",
-                      "api/projects/offer-task-type",
-                      "api/projects/order-task-types",
-                      "api/projects/remove-task-type"
-                    ]
-                  },
-                  {
-                    "group": "Dashboards",
-                    "pages": [
-                      "api/dashboards/overview",
-                      "api/dashboards/list-dashboards",
-                      "api/dashboards/create-dashboard",
-                      "api/dashboards/get-dashboard",
-                      "api/dashboards/update-dashboard",
-                      "api/dashboards/delete-dashboard",
-                      "api/dashboards/gadget-data",
-                      "api/dashboards/replace-dashboard-shares"
-                    ]
-                  },
-                  {
-                    "group": "Notifications",
-                    "pages": [
-                      "api/notifications/overview",
-                      "api/notifications/list-notifications",
-                      "api/notifications/unread-count",
-                      "api/notifications/update-notification-state"
-                    ]
-                  },
-                  {
-                    "group": "Meetings",
-                    "pages": [
-                      "api/meetings/overview",
-                      "api/meetings/list-meetings",
-                      "api/meetings/create-meeting",
-                      "api/meetings/get-meeting",
-                      "api/meetings/update-meeting",
-                      "api/meetings/delete-meeting",
-                      {
-                        "group": "Lifecycle",
-                        "pages": [
-                          "api/meetings/lifecycle/plan-meeting",
-                          "api/meetings/lifecycle/start-meeting",
-                          "api/meetings/lifecycle/close-meeting",
-                          "api/meetings/lifecycle/reopen-meeting",
-                          "api/meetings/lifecycle/cancel-meeting"
-                        ]
-                      },
-                      {
-                        "group": "Participants",
-                        "pages": [
-                          "api/meetings/participants/list-participants",
-                          "api/meetings/participants/invite-participant",
-                          "api/meetings/participants/update-participant",
-                          "api/meetings/participants/remove-participant",
-                          "api/meetings/participants/respond-to-invitation"
-                        ]
-                      },
-                      {
-                        "group": "Agenda",
-                        "pages": [
-                          "api/meetings/agenda/get-agenda",
-                          "api/meetings/agenda/create-section",
-                          "api/meetings/agenda/update-section",
-                          "api/meetings/agenda/delete-section",
-                          "api/meetings/agenda/move-section",
-                          "api/meetings/agenda/create-item",
-                          "api/meetings/agenda/update-item",
-                          "api/meetings/agenda/delete-item",
-                          "api/meetings/agenda/move-item"
-                        ]
-                      },
-                      {
-                        "group": "Outcomes",
-                        "pages": [
-                          "api/meetings/outcomes/list-outcomes",
-                          "api/meetings/outcomes/create-outcome",
-                          "api/meetings/outcomes/update-outcome",
-                          "api/meetings/outcomes/delete-outcome"
-                        ]
-                      },
-                      {
-                        "group": "Decisions",
-                        "pages": [
-                          "api/meetings/decisions/list-decisions",
-                          "api/meetings/decisions/record-decision",
-                          "api/meetings/decisions/update-decision",
-                          "api/meetings/decisions/supersede-decision",
-                          "api/meetings/decisions/revoke-decision",
-                          "api/meetings/decisions/decision-register"
-                        ]
-                      },
-                      {
-                        "group": "Polls",
-                        "pages": [
-                          "api/meetings/polls/list-polls",
-                          "api/meetings/polls/create-poll",
-                          "api/meetings/polls/update-poll",
-                          "api/meetings/polls/open-poll",
-                          "api/meetings/polls/close-poll"
-                        ]
-                      },
-                      {
-                        "group": "Series",
-                        "pages": [
-                          "api/meetings/series/create-series",
-                          "api/meetings/series/change-series-rule",
-                          "api/meetings/series/get-series"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Test Management",
-                    "pages": [
-                      "api/test-management/list-projects",
-                      "api/test-management/create-project",
-                      "api/test-management/create-test-case",
-                      "api/test-management/create-test-cycle",
-                      "api/test-management/append-result",
-                      "api/test-management/import-report"
-                    ]
-                  },
-                  {
-                    "group": "Automation",
-                    "pages": [
-                      "api/automation/list-automations",
-                      "api/automation/create-automation",
-                      "api/automation/get-automation",
-                      "api/automation/update-automation",
-                      "api/automation/delete-automation",
-                      "api/automation/toggle-automation",
-                      "api/automation/trigger-automation",
-                      "api/automation/webhook-trigger",
-                      "api/automation/list-connectors",
-                      "api/automation/list-templates",
-                      "api/automation/approval",
-                      {
-                        "group": "Executions",
-                        "pages": [
-                          "api/automation/executions/list-executions"
-                        ]
-                      },
-                      {
-                        "group": "Connections",
-                        "pages": [
-                          "api/automation/connections/list-connections",
-                          "api/automation/connections/create-connection",
-                          "api/automation/connections/test-connection"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "SCIM 2.0",
-                    "pages": [
-                      "api/scim/overview",
-                      "api/scim/users",
-                      "api/scim/groups"
-                    ]
-                  },
-                  {
-                    "group": "Health",
-                    "pages": [
-                      "api/health"
-                    ]
-                  }
+                "group": "Overview",
+                "icon": "hand",
+                "pages": [
+                  "automation/overview"
                 ]
               },
               {
-                "item": "Developer",
-                "icon": "puzzle",
-                "groups": [
-                  {
-                    "group": "Building Extensions",
-                    "pages": [
-                      "developer/wasm"
-                    ]
-                  }
+                "group": "Build flows",
+                "icon": "hammer",
+                "pages": [
+                  "automation/building-flows",
+                  "automation/editor",
+                  "automation/triggers",
+                  "automation/webhooks",
+                  "automation/passing-data",
+                  "automation/step-inputs",
+                  "automation/variables",
+                  "automation/tables"
+                ]
+              },
+              {
+                "group": "Run and publish",
+                "icon": "rocket",
+                "pages": [
+                  "automation/publishing-flows",
+                  "automation/flow-approvals",
+                  "automation/runs",
+                  "automation/debugging-runs",
+                  "automation/version-history"
+                ]
+              },
+              {
+                "group": "Agents and AI",
+                "icon": "bot",
+                "pages": [
+                  "automation/agents-and-ai",
+                  "automation/agent-step",
+                  "automation/agent-tools",
+                  "automation/ai-provider",
+                  "automation/build-with-ai",
+                  "automation/mcp-server",
+                  "automation/chat-page"
+                ]
+              },
+              {
+                "group": "Share and reuse",
+                "icon": "layout-template",
+                "pages": [
+                  "automation/template-library",
+                  "automation/import-export-templates",
+                  "automation/git-sync"
+                ]
+              },
+              {
+                "group": "Workspaces and plugs",
+                "icon": "folder-kanban",
+                "pages": [
+                  "automation/workspaces",
+                  "automation/connections",
+                  "automation/plugs",
+                  "automation/plug-reference"
+                ]
+              },
+              {
+                "group": "Reference",
+                "icon": "book-a",
+                "pages": [
+                  "automation/limits",
+                  "automation/audit-events"
+                ]
+              },
+              {
+                "group": "Build a plug",
+                "icon": "hammer",
+                "pages": [
+                  "developer/plugs/overview",
+                  "developer/plugs/get-started",
+                  "developer/plugs/definition",
+                  "developer/plugs/authentication",
+                  "developer/plugs/actions",
+                  "developer/plugs/properties",
+                  "developer/plugs/validation"
+                ]
+              },
+              {
+                "group": "Plug triggers",
+                "icon": "zap",
+                "pages": [
+                  "developer/plugs/triggers",
+                  "developer/plugs/polling-trigger",
+                  "developer/plugs/webhook-trigger"
+                ]
+              },
+              {
+                "group": "Plug runtime",
+                "icon": "cpu",
+                "pages": [
+                  "developer/plugs/flow-control",
+                  "developer/plugs/storage",
+                  "developer/plugs/files",
+                  "developer/plugs/sandbox"
+                ]
+              },
+              {
+                "group": "Ship a plug",
+                "icon": "upload",
+                "pages": [
+                  "developer/plugs/testing",
+                  "developer/plugs/publish",
+                  "automation/build-a-plug"
                 ]
               }
             ]
           },
           {
-            "tab": "Resources",
-            "menu": [
+            "tab": "Developers",
+            "icon": "code-xml",
+            "groups": [
               {
-                "item": "Security and privacy",
-                "icon": "shield-check",
-                "groups": [
+                "group": "Developers",
+                "icon": "code-xml",
+                "pages": [
+                  "developer/overview",
+                  "developer/app-sdk",
+                  "developer/collakit",
+                  "developer/mcp",
+                  "developer/plug-sdk",
+                  "developer/agentkit"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API reference",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "api/introduction",
+                  "api/native-clients"
+                ]
+              },
+              {
+                "group": "Pages",
+                "pages": [
+                  "api/pages/create-page"
+                ]
+              },
+              {
+                "group": "Work Items",
+                "pages": [
+                  "api/tasks/move-work-item"
+                ]
+              },
+              {
+                "group": "Search",
+                "pages": [
+                  "api/search/overview",
+                  "api/search/search",
+                  "api/search/aggregate",
+                  "api/search/fields"
+                ]
+              },
+              {
+                "group": "Saved filters",
+                "pages": [
+                  "api/filters/overview",
+                  "api/filters/list-filters",
+                  "api/filters/create-filter",
+                  "api/filters/get-filter",
+                  "api/filters/update-filter",
+                  "api/filters/delete-filter",
+                  "api/filters/filter-results",
+                  "api/filters/get-filter-shares",
+                  "api/filters/replace-filter-shares"
+                ]
+              },
+              {
+                "group": "Projects",
+                "pages": [
+                  "api/projects/list-task-types",
+                  "api/projects/offer-task-type",
+                  "api/projects/order-task-types",
+                  "api/projects/remove-task-type"
+                ]
+              },
+              {
+                "group": "Dashboards",
+                "pages": [
+                  "api/dashboards/overview",
+                  "api/dashboards/list-dashboards",
+                  "api/dashboards/create-dashboard",
+                  "api/dashboards/get-dashboard",
+                  "api/dashboards/update-dashboard",
+                  "api/dashboards/delete-dashboard",
+                  "api/dashboards/gadget-data",
+                  "api/dashboards/replace-dashboard-shares"
+                ]
+              },
+              {
+                "group": "Notifications",
+                "pages": [
+                  "api/notifications/overview",
+                  "api/notifications/list-notifications",
+                  "api/notifications/unread-count",
+                  "api/notifications/update-notification-state"
+                ]
+              },
+              {
+                "group": "Meetings",
+                "pages": [
+                  "api/meetings/overview",
+                  "api/meetings/list-meetings",
+                  "api/meetings/create-meeting",
+                  "api/meetings/get-meeting",
+                  "api/meetings/update-meeting",
+                  "api/meetings/delete-meeting",
                   {
-                    "group": "Security and privacy",
+                    "group": "Lifecycle",
                     "pages": [
-                      "security/overview",
-                      "security/statement",
-                      "security/data-protection"
+                      "api/meetings/lifecycle/plan-meeting",
+                      "api/meetings/lifecycle/start-meeting",
+                      "api/meetings/lifecycle/close-meeting",
+                      "api/meetings/lifecycle/reopen-meeting",
+                      "api/meetings/lifecycle/cancel-meeting"
+                    ]
+                  },
+                  {
+                    "group": "Participants",
+                    "pages": [
+                      "api/meetings/participants/list-participants",
+                      "api/meetings/participants/invite-participant",
+                      "api/meetings/participants/update-participant",
+                      "api/meetings/participants/remove-participant",
+                      "api/meetings/participants/respond-to-invitation"
+                    ]
+                  },
+                  {
+                    "group": "Agenda",
+                    "pages": [
+                      "api/meetings/agenda/get-agenda",
+                      "api/meetings/agenda/create-section",
+                      "api/meetings/agenda/update-section",
+                      "api/meetings/agenda/delete-section",
+                      "api/meetings/agenda/move-section",
+                      "api/meetings/agenda/create-item",
+                      "api/meetings/agenda/update-item",
+                      "api/meetings/agenda/delete-item",
+                      "api/meetings/agenda/move-item"
+                    ]
+                  },
+                  {
+                    "group": "Outcomes",
+                    "pages": [
+                      "api/meetings/outcomes/list-outcomes",
+                      "api/meetings/outcomes/create-outcome",
+                      "api/meetings/outcomes/update-outcome",
+                      "api/meetings/outcomes/delete-outcome"
+                    ]
+                  },
+                  {
+                    "group": "Decisions",
+                    "pages": [
+                      "api/meetings/decisions/list-decisions",
+                      "api/meetings/decisions/record-decision",
+                      "api/meetings/decisions/update-decision",
+                      "api/meetings/decisions/supersede-decision",
+                      "api/meetings/decisions/revoke-decision",
+                      "api/meetings/decisions/decision-register"
+                    ]
+                  },
+                  {
+                    "group": "Polls",
+                    "pages": [
+                      "api/meetings/polls/list-polls",
+                      "api/meetings/polls/create-poll",
+                      "api/meetings/polls/update-poll",
+                      "api/meetings/polls/open-poll",
+                      "api/meetings/polls/close-poll"
+                    ]
+                  },
+                  {
+                    "group": "Series",
+                    "pages": [
+                      "api/meetings/series/create-series",
+                      "api/meetings/series/change-series-rule",
+                      "api/meetings/series/get-series"
                     ]
                   }
                 ]
               },
               {
-                "item": "Release notes",
-                "icon": "list",
-                "groups": [
-                  {
-                    "group": "Releases",
-                    "pages": [
-                      "changelog/overview"
-                    ]
-                  }
+                "group": "Test Management",
+                "pages": [
+                  "api/test-management/list-projects",
+                  "api/test-management/create-project",
+                  "api/test-management/create-test-case",
+                  "api/test-management/create-test-cycle",
+                  "api/test-management/append-result",
+                  "api/test-management/import-report",
+                  "api/test-management/sync-cases",
+                  "api/test-management/list-changes",
+                  "api/test-management/case-evidence"
+                ]
+              },
+              {
+                "group": "Automation",
+                "pages": [
+                  "api/automation/overview",
+                  "api/automation/list-workspaces",
+                  "api/automation/list-flows",
+                  "api/automation/create-flow",
+                  "api/automation/get-flow",
+                  "api/automation/update-flow",
+                  "api/automation/publish-flow",
+                  "api/automation/set-flow-status",
+                  "api/automation/start-run",
+                  "api/automation/list-runs",
+                  "api/automation/get-run",
+                  "api/automation/retry-run",
+                  "api/automation/delete-flow",
+                  "api/automation/call-webhook",
+                  "api/automation/call-webhook-sync",
+                  "api/automation/resume-run",
+                  "api/automation/upload-plug"
+                ]
+              },
+              {
+                "group": "SCIM 2.0",
+                "pages": [
+                  "api/scim/overview",
+                  "api/scim/users",
+                  "api/scim/groups"
+                ]
+              },
+              {
+                "group": "Health",
+                "pages": [
+                  "api/health"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Release notes",
+            "icon": "list",
+            "groups": [
+              {
+                "group": "Releases",
+                "pages": [
+                  "changelog/overview"
                 ]
               }
             ]
@@ -887,8 +867,40 @@
       "destination": "/changelog/overview"
     },
     {
-      "source": "/automation/integrations",
-      "destination": "/automation/connectors/overview"
+      "source": "/admin/migrate-from-jira",
+      "destination": "/admin/system-settings"
+    },
+    {
+      "source": "/admin/migrate-from-confluence",
+      "destination": "/admin/system-settings"
+    },
+    {
+      "source": "/security/overview",
+      "destination": "/"
+    },
+    {
+      "source": "/security/statement",
+      "destination": "/"
+    },
+    {
+      "source": "/security/data-protection",
+      "destination": "/"
+    },
+    {
+      "source": "/de/security/overview",
+      "destination": "/de"
+    },
+    {
+      "source": "/de/security/statement",
+      "destination": "/de"
+    },
+    {
+      "source": "/de/security/data-protection",
+      "destination": "/de"
+    },
+    {
+      "source": "/developer/wasm",
+      "destination": "/developer/overview"
     }
   ],
   "description": "Guides, administration and reference for Collabase, the collaboration platform from Switzerland: Docs, Projects, Test Management, Automation, Meetings and more.",

@@ -1,0 +1,42 @@
+---
+title: "Build with AI"
+sidebarTitle: "Build with AI"
+icon: "sparkles"
+description: "Let a model help you build and run flows: add a step from a sentence, ask Collabase AI about runs, and use flows from an MCP client such as Claude or Cursor."
+---
+
+You can describe what you want and let Collabase turn it into a step or a draft. Nothing the assistants build goes live without you: an assistant never publishes a flow.
+
+## Step by language
+
+In the editor, select **Step by language** and describe a step in one sentence, for example "Tell the project lead when a work item is created". The assistant picks one action from the plugs that are installed and fills in what it can read from your sentence. If no installed plug fits, it says what is missing and adds nothing. This needs an AI model on your instance or in the workspace.
+
+You then check the step like any other: fill in what is open, test it and publish when you are ready.
+
+## Collabase AI
+
+Collabase AI can work with your flows from the assistant panel:
+
+- list your flows and runs,
+- explain why a run failed, using only what the failed step reported,
+- start a flow, after asking you,
+- create a draft flow, after asking you.
+
+A draft is never published by the assistant.
+
+## From your own AI client
+
+Each automation workspace has an MCP endpoint, so Claude Desktop, Cursor or your own agent can use its flows. See [MCP server](/automation/mcp-server).
+
+## What you need
+
+| Need | Why |
+|---|---|
+| An AI model | Step by language and Collabase AI use the instance model. See [AI configuration](/admin/ai-configuration). |
+| The editor role in the workspace | To add a step, start a flow or create a draft. Viewers can read only. |
+
+## Related
+
+- [Agent step](/automation/agent-step)
+- [MCP server](/automation/mcp-server)
+- [The flow editor](/automation/editor)

@@ -1,0 +1,60 @@
+---
+title: "Authentication"
+sidebarTitle: "Authentication"
+icon: "key-round"
+description: "Say what credentials a plug needs: a secret text, a login, several values or OAuth, and read them from the connection of the running step."
+---
+
+A plug that signs in to another system declares what it needs in its `auth` field. Collabase draws the matching form when someone creates a [connection](/automation/connections), stores the values encrypted and hands the connection of the running step to the action or trigger as `context.auth`.
+
+## The types
+
+| Declaration | The connection holds | `context.auth` |
+|---|---|---|
+| `PieceAuth.None()` | Nothing. The plug needs no connection. | `undefined` |
+| `PieceAuth.SecretText({ displayName, required })` | One secret, such as an API key. | `{ secret_text }` |
+| `PieceAuth.BasicAuth({ username, password })` | A user name and a password. | `{ username, password }` |
+| `PieceAuth.CustomAuth({ props })` | Several values that you describe, such as a host and a key. | `{ props: { ... } }` |
+| `PieceAuth.OAuth2({ authUrl, tokenUrl, scope, ... })` | A token pair obtained by signing in with the provider. | `{ access_token, ... }` |
+
+```ts
+auth: PieceAuth.CustomAuth({
+  required: true,
+  props: {
+    host: Property.ShortText({ displayName: "Host", required: true }),
+    apiKey: PieceAuth.SecretText({ displayName: "API key", required: true }),
+  },
+}),
+```
+
+## Use the credentials
+
+```ts
+run: async (context) => {
+  const response = await httpClient.sendRequest({
+    method: HttpMethod.GET,
+    url: `https://${context.auth.props.host}/v1/orders`,
+    headers: { Authorization: `Bearer ${context.auth.props.apiKey}` },
+  });
+  return response.body;
+},
+```
+
+`httpClient` and `HttpMethod` come from `@collabase/plug-framework/common`. The helpers retry the request and parse the answer.
+
+## OAuth
+
+An OAuth plug needs an **OAuth app** for its provider, which an administrator registers once under **Administration, Automation, OAuth apps**. A person then selects **Connect with the provider** in the connection form. Collabase renews the token shortly before a step if it expires within five minutes. See [OAuth apps](/admin/automation-oauth-apps).
+
+## Rules
+
+- A connection is the credential of the step that runs. A plug never sees the connections of another step or another workspace.
+- Credentials never appear in a run log: Collabase hides every value of the connection in the log of the step, even when the plug echoes it.
+- Do not put a credential into an error message. Error messages reach the run log.
+- A connection that stops working is marked **Invalid** and the admins of the workspace are told. Throw an error with a clear message when the other system refuses the credentials.
+
+## Related
+
+- [Connections](/automation/connections)
+- [OAuth apps](/admin/automation-oauth-apps)
+- [Actions](/developer/plugs/actions)

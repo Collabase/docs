@@ -1,0 +1,101 @@
+---
+title: "Push cases and folders"
+description: "Upload folders and test cases under your own identifiers, repeatably, with conflict detection."
+api: "POST /api/v1/test-management/projects/{projectId}/sync"
+---
+
+Sends folders and test cases from an external client. Every entry carries an `externalId`, your own identifier, so sending the same push twice changes nothing. Everything is saved together or not at all.
+
+<Info>
+  The token needs the `tests:write` scope. The person behind it needs the right to create and edit test cases in the project. Cases pushed this way are marked as imported and show the name of the application that sent them.
+</Info>
+
+## Path parameters
+
+<ParamField path="projectId" type="string" required>
+  The ID of the test project.
+</ParamField>
+
+## Request body
+
+<ParamField body="folders" type="array">
+  Up to 200 folders. Each has an `externalId`, a `name` and optionally a `parentExternalId` (the `externalId` of a folder in this push or one pushed earlier). Parents can come in any order.
+</ParamField>
+
+<ParamField body="cases" type="array">
+  Up to 500 cases. Each has an `externalId` and a `title`, and can carry `precondition`, `testData`, `priority`, `type`, `designTechnique`, `automationPotential`, `estimateMinutes`, `steps`, a `folderExternalId` and a `baseRevision`.
+</ParamField>
+
+<ParamField body="cases[].baseRevision" type="string">
+  The `revision` you received for this case the last time. Send it with every change to a case that already exists.
+</ParamField>
+
+The whole body can be up to 10 MB. A push without folders and cases is refused.
+
+## How a case is compared
+
+Each case has a `revision`, a fingerprint of its content and its folder.
+
+| Your push | Result |
+|---|---|
+| The case does not exist yet | `create` |
+| The same revision as the stored case | `unchanged`, with or without a `baseRevision` |
+| Different content and `baseRevision` is the current revision | `update` |
+| Different content and `baseRevision` is missing or old | Conflict, nothing is saved |
+
+A change of the folder alone is also an update. In a project that requires approval, new and changed cases are saved as drafts and stay drafts until someone approves them. In other projects they are approved at once.
+
+## Response
+
+Returns `200` with one item per case and one per folder.
+
+```json
+{
+  "data": {
+    "items": [
+      {
+        "externalId": "login-01",
+        "id": "cm1abc",
+        "key": "QA-T41",
+        "result": "create",
+        "revision": "9f2c...",
+        "updatedAt": "2026-10-24T10:15:00.000Z"
+      }
+    ],
+    "folders": [{ "externalId": "auth", "id": "cm1fol", "result": "create" }]
+  }
+}
+```
+
+Keep the `revision` of each case and send it as `baseRevision` with your next change.
+
+## Errors
+
+| Status | Code | Meaning |
+|---|---|---|
+| `409` | `SYNC_CONFLICT` | Cases changed since the revision you sent. The body lists them as `conflicts`, each with the current `revision`. Pull the changes, merge, and push again. |
+| `409` | `CASE_ARCHIVED` | A case you changed is archived. |
+| `409` | `VERSION_NOT_EDITABLE` | A case you changed is in review. |
+| `422` | `VALIDATION_ERROR` | The push is invalid. `issues` names each entry and the reason, for example an unknown folder, a folder cycle, a duplicate `externalId`, a shared step or a dataset. |
+| `403` | `FORBIDDEN` | The person may not create and edit cases in this project. |
+
+A push never deletes a case or a folder that it does not mention. A folder can be renamed, but not moved to another parent.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/test-management/projects/tpr_abc123/sync" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "folders": [{ "externalId": "auth", "name": "Authentication" }],
+    "cases": [{
+      "externalId": "login-01",
+      "folderExternalId": "auth",
+      "title": "Sign in with a valid password",
+      "steps": [{ "action": "Open the sign-in page" }, { "action": "Submit the form", "expectedResult": "The dashboard opens" }]
+    }]
+  }'
+```
+
+</RequestExample>

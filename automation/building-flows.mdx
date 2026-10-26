@@ -1,0 +1,70 @@
+---
+title: "Building flows"
+sidebarTitle: "Building flows"
+icon: "hammer"
+description: "A flow is a trigger and the steps after it. Learn the step types, how the draft and the published version differ, and how a run moves through the steps."
+---
+
+A flow has two parts: a **trigger** that decides when it starts, and **steps** that decide what happens. The trigger is the first step. Every step after it runs once the one before it has finished.
+
+## Trigger
+
+The trigger is the starting point of a flow. It sets how often the flow runs and what data the first step gets. Collabase offers these triggers, and [Triggers](/automation/triggers) describes each one:
+
+- an event in a Collabase app, such as a new work item or an updated page,
+- a call to the flow's webhook address,
+- a schedule,
+- a chat message from the flow's chat page,
+- another flow that calls it, or the failure of another flow,
+- an event or a poll of a plug that was installed by an administrator.
+
+## Steps
+
+A step does one thing. You pick it from the step list, which is sorted by plug.
+
+| Step | What it does |
+|---|---|
+| **Plug action** | Runs one action of a plug: create a work item, send a notification, call another system, search, ask a person for approval or ask an AI agent. The [plug reference](/automation/plug-reference) lists them. |
+| **Loop** | Runs the steps inside it once for each item of a list. A loop takes up to 10,000 items. |
+| **Code** | Runs a short function in the sandbox. The function receives the inputs you give it and returns a value. It cannot read files, the environment or the network. |
+
+Select **Add step** or the `+` between two steps, search the list and choose an action. A step whose plug is not installed is marked **Not installed**. A system administrator can install the plug from the step list.
+
+## What a step needs
+
+Every step shows its inputs in the **Inputs** tab. Fill each input with a typed value, or with data from an earlier step. [Step inputs](/automation/step-inputs) explains the field types, and [Passing data](/automation/passing-data) explains how to use earlier results.
+
+A step of a plug that signs in to another system also needs a [connection](/automation/connections).
+
+## What happens when a step fails
+
+By default a failed step ends the run. Open the **Errors** tab of a step to change that:
+
+| Setting | Effect |
+|---|---|
+| **Try again on failure** | Runs the step again up to four times, with growing pauses. |
+| **Continue on failure** | The run goes on with the next step even if this one fails. |
+
+## Draft and published version
+
+You always change the **draft**. Runs use the **published version**, so editing never affects a flow that is running. Select **Publish** when the draft is complete. See [Publishing flows](/automation/publishing-flows) and [Version history](/automation/version-history).
+
+Only one person edits a draft at a time. The editor shows who holds it, and another editor can take over after the lock has expired.
+
+## How a run works
+
+Each time the trigger fires, Collabase starts a run of the published version. The run walks through the steps in order, writes the result of every step to the run's log and finishes as **Succeeded**, **Failed**, **Cancelled** or **Timed out**. A run that waits for a delay, a call or an approval is **Paused** and holds no resources. See [Runs and approvals](/automation/runs).
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Triggers" icon="zap" href="/automation/triggers">
+    Choose what starts the flow.
+  </Card>
+  <Card title="Passing data" icon="arrow-right-left" href="/automation/passing-data">
+    Use the result of one step in the next.
+  </Card>
+  <Card title="Publishing flows" icon="rocket" href="/automation/publishing-flows">
+    Make your changes live.
+  </Card>
+</CardGroup>

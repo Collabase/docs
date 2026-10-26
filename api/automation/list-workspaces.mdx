@@ -1,0 +1,23 @@
+---
+title: "List automation workspaces"
+description: "Page through the automation workspaces the token owner may see, newest first."
+api: "GET /api/v1/automation/workspaces"
+---
+
+Returns one page of the workspaces the token owner may see.
+
+<Info>
+  Scope `automation:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page. Leave it out for the first page.
+</ParamField>
+
+## Response
+
+```json
+{ "data": { "items": [{ "id": "w1", "name": "Operations", "role": "ADMIN" }], "nextCursor": null } }
+```

@@ -1,0 +1,35 @@
+---
+title: "Create a flow"
+description: "Create an empty flow, one from a template or one from an imported definition in an automation workspace."
+api: "POST /api/v1/automation/flows"
+---
+
+Creates a flow with a draft. The token owner needs the editor role in the workspace.
+
+<Info>
+  Scope `automation:write`.
+</Info>
+
+## Body
+
+<ParamField body="workspaceId" type="string" required>
+  The workspace.
+</ParamField>
+
+<ParamField body="source" type="string" required>
+  `EMPTY`, `TEMPLATE` or `IMPORT`.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  The name of the flow.
+</ParamField>
+
+<ParamField body="templateId" type="string">
+  For `TEMPLATE`: the id of a bundled or instance template.
+</ParamField>
+
+<ParamField body="flow" type="object">
+  For `IMPORT`: the definition. A definition that cannot be read answers `422 INVALID_IMPORT` and creates nothing.
+</ParamField>
+
+Answers `201` with the flow.

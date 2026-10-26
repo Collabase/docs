@@ -1,0 +1,61 @@
+---
+title: "Publish and versions"
+sidebarTitle: "Publish and versions"
+icon: "upload"
+description: "Check the licences, upload the package, understand what the instance verifies and how a new version of a plug reaches your flows."
+---
+
+The command line tool `collabase-plug` builds the package and uploads it. This page covers the checks, the upload and what happens to flows when you upload a new version.
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| `collabase-plug init [folder] --name <package name>` | Creates a plug in an empty folder. |
+| `collabase-plug build [folder]` | Bundles the plug, checks the licences of what it bundles and packs it into `dist/<name>-<version>.tgz`. |
+| `collabase-plug licenses [folder]` | Checks only the licences of the bundled dependencies. |
+| `collabase-plug publish <archive> --url <instance>` | Uploads the package. The token comes from `--token` or from `COLLABASE_API_TOKEN`. |
+
+The package contains one file with your code and everything it imports, a manifest and a list of the licences of the bundled dependencies.
+
+## Licences
+
+Collabase is proprietary software and ships to customers, so it may only redistribute dependencies with a licence from the allow list. The build stops when a bundled dependency has another licence. The allow list is `MIT`, `Apache-2.0`, `BSD-2-Clause`, `BSD-3-Clause`, `ISC`, `0BSD`, `BlueOak-1.0.0`, `CC0-1.0`, `Unlicense`, `Python-2.0`, `MIT-0` and `Zlib`. The instance checks the list again on upload and refuses a package with another licence.
+
+## Upload
+
+An upload needs an API token of a system administrator with the write level for **Automation**, created under **Profile, Security**. The token acts as that person. Run:
+
+```bash
+COLLABASE_API_TOKEN=cb_... collabase-plug publish dist/supplier-portal-0.2.0.tgz --url https://your-instance
+```
+
+The instance:
+
+- refuses a package over 20 MB,
+- checks the licence list and the package in the sandbox,
+- installs it as the active version of its name with the origin **Own**,
+- writes an audit entry with the name, the version and the checksum of the package, never its content.
+
+## Names
+
+The name of a plug is the `name` in `package.json`. It must not equal the name of a plug in the catalog or of a plug that comes with Collabase, so choose a prefix of your company. The upload is refused otherwise.
+
+## Versions
+
+Set the `version` in `package.json` to a new exact version for every upload, such as `0.2.0`.
+
+- The newest upload becomes the **active** version, and the earlier one stays installed but inactive.
+- A **published flow keeps using the version it was published with** until you publish the flow again. Uploading a new version never changes a running flow by itself.
+- When you publish a flow again, it picks up the active version. If the actions or inputs changed, the editor marks the steps that no longer fit.
+- Do not rename an action or an input that flows already use. Add a new one and keep the old one until the flows have moved.
+
+## Remove a plug
+
+An administrator removes an installed plug under **Administration, Automation, Plugs**. Flows that use it are marked, and their steps show **Not installed**. See [Automation plugs](/admin/automation-plugs).
+
+## Related
+
+- [Get started](/developer/plugs/get-started)
+- [Automation plugs](/admin/automation-plugs)
+- [Plugs](/automation/plugs)

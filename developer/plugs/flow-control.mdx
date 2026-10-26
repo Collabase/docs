@@ -1,0 +1,38 @@
+---
+title: "Flow control"
+sidebarTitle: "Flow control"
+icon: "git-branch"
+description: "A plug action returns a result and the flow goes on. To wait, ask a person or answer a caller, combine your action with the flow control steps."
+---
+
+An action of a plug does one thing and returns a result. It does not decide whether the flow stops, waits or answers a caller. The flow does that, with steps of the **Flow control** plug that comes with Collabase.
+
+| You want to | Add this step after your action |
+|---|---|
+| Wait for a time or until a date | **Wait** |
+| Wait until another system calls back | **Wait for a call**. The step shows the address to call. |
+| Hold the flow until a person agrees | **Ask for approval** |
+| Answer the caller of a synchronous webhook | **Respond to webhook** |
+| Run steps only for some items | A **Loop** over the list your action returned |
+
+## Design the result for the next step
+
+Let your action return what the next step needs to decide. For example, an action that starts a long job in another system returns the job id. The flow then uses **Wait for a call**, and the other system calls the address when the job is done.
+
+```ts
+run: async (context) => {
+  const job = await startJob(context.auth, context.propsValue.document);
+  return { jobId: job.id, status: "started" };
+},
+```
+
+## What an action must not do
+
+- Do not poll in a loop inside the action until something finishes. A step may run for at most 10 minutes, and the run holds a worker while it waits. Return at once and let the flow wait.
+- Do not start a long wait of your own. A paused run holds no resources, and only the flow control steps can pause one.
+
+## Related
+
+- [Runs and approvals](/automation/runs)
+- [Webhooks](/automation/webhooks)
+- [Actions](/developer/plugs/actions)

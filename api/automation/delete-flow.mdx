@@ -1,0 +1,17 @@
+---
+title: "Delete a flow"
+description: "Delete a flow with its versions and runs; the call is recorded in the audit trail of the workspace."
+api: "DELETE /api/v1/automation/flows/{flowId}"
+---
+
+Deletes the flow, all its versions and its runs. This cannot be undone.
+
+<Info>
+  Scope `automation:write`. The token owner needs the editor role in the workspace of the flow.
+</Info>
+
+```json
+{ "data": { "success": true } }
+```
+
+A flow that does not exist, or that the token owner cannot see, answers `404`. A viewer gets `403`. A webhook that a plug trigger registered in another system is not removed when you delete a flow that is on, so switch the flow off first.

@@ -1,0 +1,49 @@
+---
+title: "Tables"
+sidebarTitle: "Tables"
+icon: "table"
+description: "Keep rows of data that flows read and write: how tables map onto the Registry, which field types exist and how flows react to new, changed and deleted rows."
+---
+
+A table holds rows of data that your flows use as a memory: customers that were already processed, orders waiting for a decision, a list of results. Flows create tables, add and change rows, and start from changes. People work with the same data in the **Registry**.
+
+## Tables are Registry object types
+
+The **Tables** plug works on the Registry. Each automation workspace gets its own Registry schema, named **Automation:** followed by the name of the workspace. A table is an **Object Type** in that schema, a field of the table is an attribute, and a row is an **Object**. Open the Registry to browse and edit them like any other data, with the usual views, search and permissions.
+
+A flow always acts with the service account of its workspace. It sees the tables of the schemas that account may read, and it changes only what the account may change.
+
+## Fields
+
+| Field type | Stores |
+|---|---|
+| **Text** | Text |
+| **Number** | A number. Registry currency, rating and progress fields read as numbers. |
+| **Date** | A day |
+| **Date and time** | A day, shown as a date in the Registry |
+| **Dropdown** | One value of a fixed list |
+
+The first field of a table is its label, the title that the Registry shows for a row. Every other Registry field type reads as text.
+
+## Work with rows
+
+The **Tables** plug has actions to create a table and its fields, and to find, read, insert, change and delete rows. Add them in the step list like any other action. The names are listed there.
+
+| Limit | Value |
+|---|---|
+| Rows in one list page | 50 by default, 200 at most |
+| Rows a filter looks at | The first 1,000 |
+| Rows one insert adds | Up to 100 |
+| Text in one cell | Up to 10,000 characters |
+
+Deleting rows cannot be undone.
+
+## Start a flow from a row
+
+Choose a trigger of the Tables plug to run a flow when a row is created, updated or deleted. A table can have up to 20 such subscriptions. A run starts only for a row the workspace's service account may see.
+
+## Related
+
+- [Plug reference](/automation/plug-reference)
+- [Registry](/registry/overview)
+- [Workspaces](/automation/workspaces)

@@ -1,0 +1,72 @@
+---
+title: "Actions"
+sidebarTitle: "Actions"
+icon: "mouse-pointer-click"
+description: "Write an action: name it, describe its inputs, read the context, return a result for later steps and fail in a way the run log can explain."
+---
+
+An action is one step a flow can run. Create it with `createAction` and list it in the plug's `actions`.
+
+```ts
+const confirmDelivery = createAction({
+  name: "confirm_delivery",
+  displayName: "Confirm delivery",
+  description: "Marks an order as delivered.",
+  props: {
+    orderId: Property.ShortText({ displayName: "Order id", required: true }),
+    note: Property.LongText({ displayName: "Note", required: false }),
+  },
+  run: async (context) => {
+    const { orderId, note } = context.propsValue;
+    return { orderId, confirmed: true, note: note ?? null };
+  },
+});
+```
+
+## Fields
+
+| Field | Description |
+|---|---|
+| `name` | A stable id in `snake_case`. Flows refer to it, so never rename it after the first release. |
+| `displayName`, `description` | What people read in the step list. Say what the action does. |
+| `props` | The inputs. See [Properties](/developer/plugs/properties). |
+| `run` | The function that does the work. |
+| `requireAuth` | `true` by default: the step asks for a connection. Set `false` for an action that needs none. |
+| `errorHandlingOptions` | The defaults of **Try again on failure** and **Continue on failure**, which a person can change in the step. |
+
+## The context
+
+| Member | Content |
+|---|---|
+| `context.propsValue` | The values of the inputs, with references already replaced by their data. |
+| `context.auth` | The connection of the step. See [Authentication](/developer/plugs/authentication). |
+| `context.store` | Storage that outlives a run. See [Persistent storage](/developer/plugs/storage). |
+| `context.files` | Write files. See [Files](/developer/plugs/files). |
+| `context.run` | The run id and the hooks to stop or pause the flow. See [Flow control](/developer/plugs/flow-control). |
+| `context.executionType` | `BEGIN` on the first call and `RESUME` after a pause. |
+
+## Return a result
+
+Return anything that can be written as JSON. The next steps read it by field: a return value of `{ orderId: "A1", confirmed: true }` lets the data picker offer `orderId` and `confirmed`. Keep the result small and flat, and return only what a flow needs. A result that is very large is kept as a file next to the run and read in full by later steps.
+
+## Fail clearly
+
+Throw an `Error` with a message that tells a person what to change:
+
+```ts
+if (response.status === 404) {
+  throw new Error(`The order ${orderId} does not exist in the supplier portal.`);
+}
+```
+
+The message is shown on the failed step. It must not contain a credential, an address of your network or the raw text of a library error. A step may run for up to 10 minutes before it is stopped.
+
+## Make an action safe to repeat
+
+A step may run twice, for example after a retry. An action that creates something should check first, or send an idempotency key that the other system understands. Use `context.run.id` together with the step as a stable key.
+
+## Related
+
+- [Properties](/developer/plugs/properties)
+- [Triggers](/developer/plugs/triggers)
+- [Flow control](/developer/plugs/flow-control)

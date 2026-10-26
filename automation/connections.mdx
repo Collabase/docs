@@ -1,0 +1,37 @@
+---
+title: "Connections"
+description: "Store the credentials a plug needs, connect with OAuth, and keep secrets in HashiCorp Vault or Azure Key Vault instead of Collabase."
+icon: "key-round"
+---
+
+A connection holds the credentials a plug uses to reach another system. Create connections in the **Connections** tab of a workspace, then choose one in the step.
+
+## Create a connection
+
+<Steps>
+  <Step title="Start">
+    In **Connections**, select **New connection** and choose the plug.
+  </Step>
+  <Step title="Enter the credentials">
+    The form depends on the plug: a secret text such as an API key, a user name and password, several values, or **Connect with the provider** for OAuth.
+  </Step>
+  <Step title="Save">
+    Collabase stores the values encrypted. They are never shown again. To change a value, replace the connection.
+  </Step>
+</Steps>
+
+## OAuth
+
+For OAuth plugs, select **Connect with the provider** and sign in with your own account. Your instance needs an OAuth app registered for the plug first, which an administrator sets up. See [OAuth apps](/admin/automation-oauth-apps).
+
+## Secret stores
+
+An administrator can connect HashiCorp Vault or Azure Key Vault. A connection then holds only a reference, and the value is read just before the step runs, so Collabase never stores it. See [Secret stores](/admin/automation-secret-stores).
+
+## When a connection stops working
+
+A connection that fails is marked **Invalid**. The admins of the workspace get a notification, and flows that use it fail until you replace it or fix the store.
+
+## Connections and exports
+
+An export, a template or a Git push never contains connection values. Steps that need a connection come back empty, and you choose one again.

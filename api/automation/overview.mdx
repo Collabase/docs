@@ -1,0 +1,51 @@
+---
+title: "Automation API"
+sidebarTitle: "Overview"
+description: "Read and control automation workspaces, flows and runs with an API token: scopes, pagination, idempotent starts and what the API does not expose."
+---
+
+The Automation API lets an integration list workspaces, manage flows and start and follow runs. It is part of `/api/v1`, so it uses the same tokens, the same envelope and the same errors as the rest of the API.
+
+## Authentication and scopes
+
+Send the token as `Authorization: Bearer cb_...`. A token acts as the person who made it and can never do more than that person.
+
+| Scope | Allows |
+|---|---|
+| `automation:read` | List workspaces, flows and runs, and read one of each. |
+| `automation:write` | Create, rename, delete, publish and switch flows, start runs and retry runs. |
+
+Without a scope the answer is `403 INSUFFICIENT_SCOPE`. An unknown or expired token gets `401`. A person with the viewer role gets `403` on every change, whatever the token's scope.
+
+## Pagination
+
+Lists answer `{ "data": { "items": [...], "nextCursor": "..." } }`. Send `nextCursor` as `cursor` for the next page. `limit` is at most 100.
+
+## Idempotent starts
+
+Send an `Idempotency-Key` header, up to 200 printable characters, when you start a run. A repeat with the same key within 24 hours answers with the run of the first call and starts nothing. A call that arrives while the first is still being handled gets `409`.
+
+## What the API does not expose
+
+Connection values, secret store settings, OAuth apps, members, the Git connection and the AI provider are not reachable through the API.
+
+## Endpoints
+
+<CardGroup cols={2}>
+  <Card title="List workspaces" href="/api/automation/list-workspaces">
+    The workspaces the token owner may see.
+  </Card>
+  <Card title="Start a run" href="/api/automation/start-run">
+    Start a published flow with a payload.
+  </Card>
+  <Card title="Call a webhook" href="/api/automation/call-webhook">
+    Start a flow from another system, with or without waiting for the answer.
+  </Card>
+  <Card title="Upload a plug" href="/api/automation/upload-plug">
+    Install your own plug, as the plug command line tool does.
+  </Card>
+</CardGroup>
+
+## Addresses without a token
+
+Three addresses work without a token, because another system calls them: [the webhook address](/api/automation/call-webhook), [its synchronous variant](/api/automation/call-webhook-sync) and [the address of a waiting run](/api/automation/resume-run). The flow id or the token in the address is the credential.

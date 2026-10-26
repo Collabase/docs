@@ -1,0 +1,46 @@
+---
+title: "Publishing flows"
+sidebarTitle: "Publishing flows"
+icon: "rocket"
+description: "Make a draft live with Publish, switch a flow on and off, and see what stops a publish: open issues, a missing plug or a second pair of eyes."
+---
+
+Edits to a flow do not go live at once. Collabase keeps the draft you are editing apart from the version that runs, so a half-finished change never disturbs a flow that is working.
+
+## Publish
+
+<Steps>
+  <Step title="Complete the draft">
+    The toolbar shows **Draft complete** or the number of open issues. Select a marked step and fill in what is missing.
+  </Step>
+  <Step title="Publish">
+    Select **Publish**. The draft becomes a new version and is locked. Runs that start from now on use it. Runs that are already going finish with the version they started with.
+  </Step>
+  <Step title="Switch it on">
+    Switch the flow **On**. A flow that is off does not start runs, whatever its trigger does.
+  </Step>
+</Steps>
+
+## What stops a publish
+
+| Reason | What to do |
+|---|---|
+| A required input is empty, a plug is not installed or a step has an input the action cannot use | Fix the steps marked **Incomplete**. The publish says how many issues are open. |
+| Someone else changed the draft since you opened it | Select **Reload** and check the change. |
+| The workspace is **Sensitive** | A second admin must approve. See [Flow approvals](/automation/flow-approvals). |
+
+## Switch on and off
+
+The switch in the toolbar and in the flow list turns a flow on or off. Switching off stops new runs and removes the schedule or the registrations of a plug trigger. Runs that are going finish. Switching on registers them again.
+
+A flow that fails 10 times in a row is switched off by Collabase, and the editors and admins of the workspace are told. Switching it on again clears the count.
+
+## After you publish
+
+Every publish adds a version to the [version history](/automation/version-history). Editing a published flow opens a new draft that copies the published version, so you can go on from there.
+
+## Related
+
+- [Flow approvals](/automation/flow-approvals)
+- [Version history](/automation/version-history)
+- [Triggers](/automation/triggers)

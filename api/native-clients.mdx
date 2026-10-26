@@ -1,0 +1,92 @@
+---
+title: "Sign in a native app"
+description: "Connect a desktop or mobile app with OAuth and PKCE, then read your own profile and manage app groups."
+---
+
+A native app signs people in through the browser, receives a token for the API and acts as that person. This page shows the flow and the endpoints an app needs for its own roles.
+
+## Before you start
+
+An administrator has to allow applications to register themselves, or has to register your app. Each person decides on a consent page what the app may do for them.
+
+<Warning>
+  An app never gets more than the person may do. A guest cannot connect an app at all, and scopes that answer about everyone on the instance go to system administrators only.
+</Warning>
+
+## Sign in
+
+<Steps>
+  <Step title="Discover the server">
+    Read `/.well-known/oauth-authorization-server` for the endpoints. Read `/.well-known/oauth-protected-resource/api/v1` to learn that this server issues tokens for the data API.
+  </Step>
+  <Step title="Register the app">
+    Register a public client with a loopback redirect address such as `http://127.0.0.1:8765/callback` and PKCE.
+  </Step>
+  <Step title="Open the browser">
+    Send the person to the authorization endpoint with `response_type=code`, your `client_id`, a PKCE `code_challenge` (`S256`), the `scope` you need and the parameter `resource=https://your-collabase.ch/api/v1`. Send exactly one `resource`.
+  </Step>
+  <Step title="Exchange the code">
+    Receive the code on your loopback address and exchange it at the token endpoint. Send the same `resource` again. Ask for `offline_access` to receive a refresh token.
+  </Step>
+  <Step title="Call the API">
+    Send the access token as `Authorization: Bearer`. It is short lived; refresh it with the refresh token.
+  </Step>
+</Steps>
+
+<Note>
+  A token is valid for one resource only. A token issued for the MCP endpoint does not work on `/api/v1`, and a request for both resources at once is refused. An app that already connected for the MCP endpoint is asked to agree again for `/api/v1`.
+</Note>
+
+## Scopes
+
+Scopes are an area and a level, such as `tests:read`. Two areas exist for apps:
+
+| Scope | Allows |
+|---|---|
+| `me:read` | `GET /api/v1/me`: the person's own id, name and groups. |
+| `appgroups:write` | Create, rename, delete and fill the groups of your app. |
+
+Ask for the area scopes of the data your app uses, for example `tests:read` and `tests:write`.
+
+## When access ends
+
+The person can withdraw the consent in their profile, an administrator can switch the app off, and a locked account stops working. The next call is answered with `401`. Withdrawing the consent also removes the person from the groups of your app.
+
+## Read the signed-in person
+
+```bash
+curl "https://your-collabase.ch/api/v1/me" -H "Authorization: Bearer <access token>"
+```
+
+```json
+{ "data": { "id": "u_1", "name": "Ada Lovelace", "groups": [{ "id": "g_1", "name": "Desktop: Testers", "appClientId": "client-1" }] } }
+```
+
+## Groups for your app's roles
+
+Your app can keep its own groups, for example one per role, and read each person's membership from `/api/v1/me`.
+
+| Request | Does |
+|---|---|
+| `POST /api/v1/app-groups` | Creates a group from `key`, `name` and an optional `description`. The group is named `<App>: <Name>`. Answers `201`. |
+| `PATCH /api/v1/app-groups/{groupId}` | Changes `name` or `description`. |
+| `DELETE /api/v1/app-groups/{groupId}` | Deletes the group. |
+| `PUT /api/v1/app-groups/{groupId}/members` | Makes exactly the people in `userIds` the members, up to 500. Answers how many were `added` and `removed`. |
+
+Rules:
+
+- All four need the `appgroups:write` scope and a token issued to an app. A personal API key is refused with `403`.
+- Your app changes only the groups it created. Other groups answer `403`.
+- A person can be a member only after they connected your app. One person who did not connect refuses the whole call with `422` and changes nothing.
+- An administrator can rename, fill and delete app groups in **Admin → Groups**, where they show an **App** label. They cannot be given access to a space, a module or a permission: a group that an app fills never grants rights in Collabase.
+
+<RequestExample>
+
+```bash cURL
+curl -X PUT "https://your-collabase.ch/api/v1/app-groups/g_1/members" \
+  -H "Authorization: Bearer <access token>" \
+  -H "Content-Type: application/json" \
+  -d '{ "userIds": ["u_1", "u_2"] }'
+```
+
+</RequestExample>

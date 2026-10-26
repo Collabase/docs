@@ -1,164 +1,65 @@
 ---
 title: "Triggers"
 sidebarTitle: "Triggers"
-description: "Triggers are the starting point of every automation — they listen for an event and fire the pipeline when it occurs."
+icon: "zap"
+description: "Start a flow from an event in Collabase, a webhook call, a schedule, a chat message or a trigger of an installed plug, and see the data each one hands over."
 ---
 
-A trigger is what starts an automation. Every automation has exactly one trigger node. When the trigger fires, it passes data downstream to your condition and action nodes.
+The trigger is the first step of a flow. Open the **Trigger** tab of the start step, search the list and choose what starts the flow. The flow starts a run each time the trigger fires, but only while the flow is **published** and switched **on**.
 
-## Trigger types
+## Event triggers
 
-| Type | When it fires |
+The Collabase plugs offer an event trigger for most apps. The trigger starts a run when the event happens, and the run receives the data of the event. A run starts only for objects that the workspace's service account may see, so a flow never reacts to something it could not open.
+
+| App | Events |
 |---|---|
-| **Collabase Event** | When something happens inside Collabase — a task is created, a page is updated, a registry object changes, etc. |
-| **Schedule** | On a recurring timer defined with a cron expression — for example, every weekday at 09:00. |
-| **Webhook** | When an external system sends a request to the automation's unique URL. |
-| **Manual** | When a user clicks **Run** from the automation dashboard, or via the API. |
-| **External Service Event** | When a connected service pushes an event to Collabase — for example, a GitHub push or a Stripe payment. Documented on each connector's page. |
+| **Work items** | Work item created, status changed, assigned |
+| **Pages** | Page created, updated, deleted |
+| **Comments** | Comment created |
+| **Registry** | Object created, updated, deleted |
+| **Meetings** | Meeting created, changed, cancelled, closed; decision recorded; minutes published |
+| **Test management** | Test passed, test failed, test cycle closed, test case version approved |
+| **Time tracking** | Time entry created |
 
----
-
-## Collabase Events {#collabase-events}
-
-These triggers fire on activity inside Collabase. Select one from the **Collabase** category when adding a trigger node.
-
-| Event | When it fires | Key payload fields |
-|---|---|---|
-| `task.created` | A new task is created in any project | `taskId`, `taskTitle`, `taskKey`, `projectId`, `spaceId`, `createdBy` |
-| `task.updated` | A task field is changed (title, description, priority, due date, etc.) | `taskId`, `taskKey`, `changedField`, `oldValue`, `newValue` |
-| `task.status_changed` | A task moves to a different status column | `taskId`, `taskKey`, `taskTitle`, `oldStatus`, `newStatus`, `changedBy` |
-| `task.assigned` | A task is assigned or reassigned | `taskId`, `taskKey`, `taskTitle`, `assigneeId`, `assignedBy` |
-| `task.completed` | A task reaches a completed status | `taskId`, `taskKey`, `taskTitle`, `completedBy`, `completedAt` |
-| `page.created` | A new page is created | `pageId`, `pageTitle`, `spaceId`, `createdBy` |
-| `page.updated` | A page is edited | `pageId`, `pageTitle`, `spaceId`, `updatedBy` |
-| `page.commented` | A comment is posted on a page | `pageId`, `pageTitle`, `commentId`, `commentBody`, `commentedBy` |
-| `test.run.completed` | A test run finishes | `testRunId`, `testRunName`, `totalCases`, `passed`, `failed`, `blocked` |
-| `registry.object.created` | A new object is created in a registry | `objectId`, `registryId`, `registryName`, `spaceId`, `createdBy` |
-| `registry.object.updated` | An existing registry object is edited | `objectId`, `registryId`, `changedField`, `oldValue`, `newValue` |
-| `comment.created` | A comment is posted anywhere in Collabase | `commentId`, `commentBody`, `entityType`, `entityId`, `authorId` |
-| `meeting.created` | A meeting is created, including each new occurrence of a series | `meetingId`, `seriesId`, `spaceId`, `startsAt`, `occurrenceStart` |
-| `meeting.updated` | The time, place or settings of a meeting change | the fields above, plus `changedFields` |
-| `meeting.cancelled` | A meeting or one occurrence of a series is cancelled | `meetingId`, `seriesId`, `spaceId`, `startsAt`, `occurrenceStart` |
-| `meeting.closed` | A running meeting is ended | the fields above, plus `decisionCount` and `taskCount` |
-| `meeting.decision_recorded` | A decision is recorded, also when it replaces an earlier one | the fields above, plus `decisionId`, `title`, `supersedesId` |
-| `meeting.note_published` | The note of a closed meeting is published | the fields above, plus `pageId` |
-
-<Note>
-  All payload fields are available in downstream nodes using `{payload.fieldName}` — for example, `{payload.taskTitle}` or `{payload.oldStatus}`.
-</Note>
-
-<Note>
-  Meeting events reach only automations whose owner may see the meeting; a private meeting reaches only automations owned by its participants. The events carry identifiers, dates and a decision's title, never agenda text or notes. To act on the content, read it through the [Meetings API](/api/meetings/overview) with a token of the person who owns the automation.
-</Note>
-
----
-
-## Schedule (Cron)
-
-A schedule trigger fires on a recurring timer. Define the schedule using cron syntax or use the visual picker in the builder.
-
-### Cron expression examples
-
-| Expression | When it runs |
-|---|---|
-| `0 9 * * 1-5` | Every weekday at 09:00 |
-| `0 9 * * 1` | Every Monday at 09:00 |
-| `0 0 1 * *` | First day of every month at midnight |
-| `*/15 * * * *` | Every 15 minutes |
-| `0 8,17 * * *` | Every day at 08:00 and 17:00 |
-| `0 0 * * 0` | Every Sunday at midnight |
-
-<Note>
-  Schedule triggers always run in **UTC** unless you set a timezone in the trigger configuration. Set the **Timezone** field to your local timezone (e.g. `Europe/Zurich`) to have expressions evaluated in that zone.
-</Note>
-
-Schedule triggers produce no payload fields. Use **Set Variable** or **Data Store** nodes if you need to pass context through the automation.
-
----
+The [plug reference](/automation/plug-reference) lists every trigger with the data it hands over. A flow never starts from an event that one of its own runs caused.
 
 ## Webhook
 
-A webhook trigger fires when an external system sends a `POST` request to the automation's unique URL. Collabase generates one URL per automation — no additional configuration is required to receive requests.
+**Webhook received** starts a run when another system calls the flow's webhook address. The address is on the **Trigger** tab. [Webhooks](/automation/webhooks) explains the address, the answer and the limits.
 
-### Getting the webhook URL
+## Schedule
 
-<Steps>
-  <Step title="Open the trigger node">
-    Open your automation and click the trigger node. The node panel opens on the right.
-  </Step>
-  <Step title="Copy the URL">
-    Copy the **Webhook URL** shown in the configuration panel. It looks like:
-    `https://your-collabase.example/api/v1/automation/auto-abc123/webhook`
-  </Step>
-  <Step title="Configure the sending system">
-    Paste the URL into your external service's webhook settings. The service will send a `POST` request to this URL when its event occurs.
-  </Step>
-</Steps>
+**On a schedule** starts a run at a fixed interval, from every minute to every week. Choose an amount and a unit. A flow that is switched off does not run on its schedule, and a schedule picks up again when the flow is switched on.
 
-### Example request
+## Called by another flow
 
-```bash
-curl -X POST "https://your-collabase.example/api/v1/automation/auto-abc123/webhook" \
-  -H "Content-Type: application/json" \
-  -H "X-Webhook-Secret: your-secret-here" \
-  -d '{"event": "deployment.completed", "environment": "production", "version": "2.4.1"}'
-```
+**Called by another flow** starts a flow when another flow of the same workspace runs the **Run another flow** step. The data the first flow passes becomes the trigger data. Use it to split a long flow into parts that several flows share. The called flow must be published and switched on.
 
-The full request body is available in downstream nodes as `{payload.*}`:
+## A flow run failed
 
-- `{payload.event}` → `deployment.completed`
-- `{payload.environment}` → `production`
-- `{payload.version}` → `2.4.1`
+**A flow run failed** starts a flow when a production run of another flow in the same workspace fails. Use it as an error flow that tells people or cleans up.
 
-### Webhook verification
+## Chat message
 
-Set a **Secret** in the trigger configuration to protect your endpoint. When set, Collabase checks the `X-Webhook-Secret` header on every incoming request and rejects requests with a missing or incorrect value.
+**Chat message received** starts a run for each message that a visitor sends on the flow's [chat page](/automation/chat-page). The **Reply in the chat** step answers the visitor.
 
-<Warning>
-  Without a secret, anyone who knows the URL can trigger your automation. Always set a secret for production automations that receive external requests.
-</Warning>
+## Triggers of other plugs
 
----
+Installed core and community plugs bring their own triggers. They come in two kinds:
 
-## Manual
+| Kind | How it starts runs |
+|---|---|
+| **Polling** | Collabase asks the plug every 5 minutes for new items and starts one run for each. One poll starts at most 100 runs. |
+| **Webhook** | The plug registers the flow's webhook address with the other system when you switch the flow on, and removes it when you switch the flow off. Each call to the address goes to the plug, which turns it into one run per item. |
 
-A manual trigger fires when a user explicitly starts the automation. This is useful for workflows you want to control — one-off tasks, testing, or on-demand processes that should not run automatically.
+Plug triggers run in the sandbox. A flow with a plug trigger needs the sandbox to be available. Republishing the flow runs the trigger's enable step again. Switch a flow off before you delete it, so that the other system forgets the address.
 
-### Triggering manually in the UI
+## Test a trigger
 
-<Steps>
-  <Step title="Open the automation">
-    Navigate to **Automation** in your Space sidebar and open the automation.
-  </Step>
-  <Step title="Click Run">
-    Click the **Run** button in the top-right of the automation builder. The automation fires immediately.
-  </Step>
-</Steps>
+A trigger shows sample data until a real event has happened. Test the steps after it with the sample data, or switch the flow on and cause a real event. Webhook triggers of plugs cannot be tested before they are published, because the other system sends the data.
 
-### Triggering via the API
+## Related
 
-You can also trigger a manual automation via the Collabase REST API:
-
-```bash
-POST /api/v1/automation/{automationId}/run
-Authorization: Bearer <your-api-token>
-Content-Type: application/json
-
-{
-  "inputs": {
-    "targetSpaceId": "space-abc123"
-  }
-}
-```
-
-Any fields passed in `inputs` are available in downstream nodes as `{payload.fieldName}`.
-
----
-
-## External service events
-
-Several connectors support incoming events — they listen for activity in the external service and fire the automation when it occurs. These triggers are documented on each connector's individual page.
-
-Examples include GitHub push events, Stripe payment confirmations, and Microsoft Teams messages posted to a channel.
-
-→ [Browse connectors and their triggers](/automation/connectors/overview)
+- [Building flows](/automation/building-flows)
+- [Passing data](/automation/passing-data)
+- [Runs and approvals](/automation/runs)

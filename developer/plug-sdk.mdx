@@ -1,0 +1,62 @@
+---
+title: "Plug SDK"
+sidebarTitle: "Plug SDK"
+icon: "blocks"
+description: "Build your own plugs for Automation: what a plug can do, how it runs, when the Plug SDK is published and where each step of the guide is."
+---
+
+The Plug SDK is the way to add your own triggers and actions to Automation. A plug connects flows to a system that the catalog does not cover: your ERP, an internal service, a supplier's API.
+
+<Note>
+  The Plug SDK is published from **Q4 2026**, with the npm packages and the command line tool. The SDK, the tool and the example plugs are open source under the MIT licence. The built-in plugs and the engine are not. The guide below describes how plugs are built, tested and uploaded.
+</Note>
+
+## What you can build
+
+- **Actions**, which flows run as steps: read an order, confirm a delivery, send a document.
+- **Triggers**, which start flows: poll a system for new items, or register a webhook in it.
+- **Authentication**, so that a person connects the plug once with a secret, a login or OAuth and flows use that connection.
+
+A plug that Collabase did not write runs in a sandbox with no route to your internal systems and gets only the connection of the step that is running. See [Limits of the sandbox](/developer/plugs/sandbox).
+
+## A first plug
+
+```bash
+collabase-plug init hello-plug --name hello-plug
+cd hello-plug
+collabase-plug build
+COLLABASE_API_TOKEN=cb_... collabase-plug publish dist/hello-plug-0.1.0.tgz --url https://your-instance
+```
+
+The plug appears in the step list of the flow editor, marked as an own plug. [Get started](/developer/plugs/get-started) walks through it with the code.
+
+## The guide
+
+<CardGroup cols={2}>
+  <Card title="Build plugs" icon="blocks" href="/developer/plugs/overview">
+    What a plug is made of and how it runs.
+  </Card>
+  <Card title="Get started" icon="play" href="/developer/plugs/get-started">
+    Create, build, upload and run a first plug.
+  </Card>
+  <Card title="Actions and properties" icon="mouse-pointer-click" href="/developer/plugs/actions">
+    Steps and their inputs.
+  </Card>
+  <Card title="Triggers" icon="zap" href="/developer/plugs/triggers">
+    Polling and webhooks.
+  </Card>
+  <Card title="Publish and versions" icon="upload" href="/developer/plugs/publish">
+    Licences, upload and what happens to flows.
+  </Card>
+  <Card title="Test a plug" icon="flask-conical" href="/developer/plugs/testing">
+    From unit tests to a real run.
+  </Card>
+</CardGroup>
+
+The website describes the product on [its page](https://collabase.ch/platform/developers/plug-sdk).
+
+## Related
+
+- [Developers](/developer/overview)
+- [Plugs](/automation/plugs)
+- [Automation API](/api/automation/overview)

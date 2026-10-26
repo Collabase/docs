@@ -1,0 +1,60 @@
+---
+title: "Test a plug"
+sidebarTitle: "Testing"
+icon: "flask-conical"
+description: "Check a plug before people rely on it: unit tests for your logic, an upload to a test instance, a step test with real data and a read of the run log."
+---
+
+A plug is code that calls a system you do not control. Test it in layers, from your own code to a real run.
+
+## 1. Test your own logic
+
+Write the work of an action as plain functions, such as `listOrders(token, query)`, and keep the action thin. Test the functions with any test runner against recorded answers of the other system. You then do not need Collabase to know that a date is parsed or a page is requested correctly.
+
+## 2. Build and check
+
+```bash
+collabase-plug build
+```
+
+A successful build means the plug bundles into one file and that every dependency has an allowed licence.
+
+## 3. Upload to a test instance
+
+Upload to an instance that is not your production one, with an API token of an administrator there. Give each test upload a new version. See [Publish and versions](/developer/plugs/publish).
+
+## 4. Test a step with real data
+
+<Steps>
+  <Step title="Create a flow">
+    In a test workspace, create a flow and add a step of your plug.
+  </Step>
+  <Step title="Create a connection">
+    If the plug needs credentials, create a connection with a test account of the other system.
+  </Step>
+  <Step title="Test the step">
+    Fill in the inputs and select **Test step**. The step runs once in the sandbox, for real. The result is shown and saved, and the data picker of later steps offers its fields.
+  </Step>
+</Steps>
+
+## 5. Read the run
+
+Run the flow and open it under **Runs**. Check the input of the step as the plug received it, the output, and the message of a failed step. A secret never appears in the log: Collabase replaces the values of the connection with `***`. See [Debugging runs](/automation/debugging-runs).
+
+## What to try
+
+| Case | Why |
+|---|---|
+| A required input left empty | The editor stops this, but a reference that resolves to nothing reaches the plug. |
+| The other system answers with an error or does not answer | The message of the failed step must say what to do. |
+| A connection with a wrong key | The step must fail with a clear message and never show the key. |
+| The same step twice | Repeats must not create a second order. |
+| A large result | The result must stay small, or a file must carry the content. |
+
+Webhook triggers cannot be tested before the flow is published, because the other system sends the data. See [Webhook trigger](/developer/plugs/webhook-trigger).
+
+## Related
+
+- [Publish and versions](/developer/plugs/publish)
+- [Debugging runs](/automation/debugging-runs)
+- [Actions](/developer/plugs/actions)

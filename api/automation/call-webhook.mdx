@@ -1,0 +1,40 @@
+---
+title: "Call a webhook"
+description: "Start a flow with a call from another system: the address, the data the run receives, the size limit and the answers."
+api: "POST /api/v1/automation/webhooks/{flowId}"
+authMethod: "none"
+---
+
+Starts a run of a flow that begins with **Webhook received**. The call answers at once with the run id, before the run has finished. `GET` works the same way.
+
+<Warning>
+  No token is needed. The flow id in the address is the only credential, so anyone who knows it can start the flow.
+</Warning>
+
+## Request
+
+The body may be JSON or text, up to 5 MB. The run receives `method`, `body` and `query` as its trigger data.
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/webhooks/cm1abc?ref=7" \
+  -H "Content-Type: application/json" \
+  -d '{"order": 4711}'
+```
+
+## Answers
+
+```json
+{ "data": { "runId": "cm1def" } }
+```
+
+| Status | Meaning |
+|---|---|
+| `200` | The run was started. |
+| `404` | The flow does not exist, is not published or does not start from a webhook. |
+| `410` | The flow is switched off. |
+| `413` | The body is larger than 5 MB. |
+| `429` | Too many calls from this address to this flow. `Retry-After` says when to try again. |
+
+For a flow whose trigger belongs to a plug, the call goes to the plug, which returns zero or more items. The answer then holds the id of the first run, or `null` when no run started.
+
+To wait for the result, use [the synchronous address](/api/automation/call-webhook-sync).

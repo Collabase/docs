@@ -1,0 +1,49 @@
+---
+title: "Git sync and releases"
+description: "Connect a workspace to a Git repository to move published flows from development to production, review the differences and roll back."
+icon: "git-branch"
+---
+
+Git sync moves flows between instances or workspaces: one **development** workspace pushes its published flows to a branch, and a **production** workspace pulls them. Only admins connect a repository.
+
+## Connect a repository
+
+<Steps>
+  <Step title="Open the Git tab">
+    In the workspace, open **Git**.
+  </Step>
+  <Step title="Enter the repository">
+    Enter the https address, the branch and the role of this workspace, and an access token. Collabase stores the token encrypted and never shows it again. SSH addresses and plain http are not accepted.
+  </Step>
+</Steps>
+
+## Push from development
+
+Write a commit message and select **Push published flows**. The push runs in the background. Only one push of a workspace runs at a time, and the tab shows the result of the last one. Only published flows are pushed, and connection values never are.
+
+## Pull in production
+
+<Steps>
+  <Step title="Check differences">
+    Select **Check differences**. The list shows each flow as new, changed or no longer in the branch. Flows missing in the branch stay as they are.
+  </Step>
+  <Step title="Put in place">
+    Select **Put in place**. New flows are created, changed flows get the definition in their draft, and both are published. Flows that cannot be published, for example because a plug is not installed, are listed and the others still go through.
+  </Step>
+</Steps>
+
+In a sensitive workspace nothing is published directly. Each changed flow becomes an approval request for a second admin.
+
+## Releases and rollback
+
+Every pull is recorded as a release. The **Releases** list shows each one. Select **Go back to this state** to put an earlier release in place. A rollback is a release of its own.
+
+## Conflicts
+
+If the repository changed while a push was under way, the push stops with a message and nothing is overwritten. Pull first, then push again.
+
+## Related
+
+- [Automation workspaces](/automation/workspaces)
+- [Import, export and templates](/automation/import-export-templates)
+- [Runs and approvals](/automation/runs)

@@ -1,0 +1,47 @@
+---
+title: "AI provider"
+sidebarTitle: "AI provider"
+icon: "brain"
+description: "Choose which model AI steps use: the model of your instance or a provider that the workspace brings, with a key kept encrypted and an optional token budget."
+---
+
+AI in Automation is optional. Without an AI model, flows that use AI cannot be published, and everything else keeps working.
+
+## Two sources
+
+| Source | Used when |
+|---|---|
+| **Model of the instance** | The step is set to the instance model, which an administrator configured under [AI configuration](/admin/ai-configuration). This is the default. |
+| **Provider of this workspace** | The step is set to the workspace's own provider. |
+
+Each AI step, the **Agent** and **Ask the model**, has its own **Model** setting. If the workspace's provider is removed, steps that chose it fail. They never switch to the instance model on their own.
+
+## Set up a provider for the workspace
+
+Workspace admins find the provider under **Settings**.
+
+<Steps>
+  <Step title="Choose the provider and the model">
+    Pick the provider and enter the model name.
+  </Step>
+  <Step title="Enter the access">
+    Add the API key and, where the provider needs it, an `https` address. The key is stored encrypted and never shown again.
+  </Step>
+  <Step title="Set a budget">
+    Optionally enter a monthly token budget. When the workspace has used it, AI steps of the workspace stop with a message that says so.
+  </Step>
+</Steps>
+
+## How requests reach the provider
+
+A plug of the sandbox cannot call a model on its own. AI steps run in Collabase, and the call to the provider goes out from there, so the key never leaves your instance. An address you enter must be public and use `https`.
+
+## Where the cost shows
+
+The analytics page of the workspace shows agent steps and AI tokens. System administrators see all workspaces under **Administration, Automation analytics**.
+
+## Related
+
+- [Agent step](/automation/agent-step)
+- [Workspaces](/automation/workspaces)
+- [AI configuration](/admin/ai-configuration)

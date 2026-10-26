@@ -1,0 +1,43 @@
+---
+title: "Automation analytics"
+sidebarTitle: "Automation analytics"
+description: "See how Automation is used across the instance: active flows, runs per day, failures, durations, the most used plugs, who builds and what AI costs."
+icon: "chart-column"
+---
+
+The analytics page shows how much Automation is used and where it fails. System administrators see every workspace. Admins of a workspace see their own workspace under its **Analytics** tab.
+
+## Open it
+
+Open **Administration, Automation analytics**. The page covers all workspaces you administer. Choose the **Period**. The default is the last 30 days.
+
+## What it shows
+
+| Figure | Meaning |
+|---|---|
+| **Active flows** | Flows that are switched on. |
+| **Runs per day** | Successful and failed runs for each day, as a chart and as a table (**Show as table**). |
+| **Average duration** | How long a run takes from start to finish. |
+| **Most used plugs** | The ten plugs that steps use most. |
+| **Who builds** | The ten people who saved or published the most, with their counts. |
+| **Agent steps and AI tokens** | How often agents worked and how many tokens the AI steps used. |
+
+The figures are collected every hour from the finished runs of the last hours, so they are up to an hour old. A run that ends late is still counted.
+
+## As a dashboard gadget
+
+The same figures are available as the **Automation analytics** gadget on a dashboard. People only see the workspaces they may see.
+
+## Use it
+
+| You see | Do this |
+|---|---|
+| Failures rise on one day | Open the **Runs** tab, filter by **Failed** and that day, and read the failed step. See [Debugging runs](/automation/debugging-runs). |
+| A plug is used by one flow only | Check whether it is worth keeping installed. See [Automation plugs](/admin/automation-plugs). |
+| AI tokens grow | Look at the agent steps of the workspace and consider a monthly budget. See [AI provider](/automation/ai-provider). |
+
+## Related
+
+- [Workspaces](/automation/workspaces)
+- [Automation operations](/admin/automation-operations)
+- [Dashboards](/concepts/dashboards)

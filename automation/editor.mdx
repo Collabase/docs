@@ -1,0 +1,47 @@
+---
+title: "The flow editor"
+sidebarTitle: "Editor"
+description: "Build a flow in the editor: choose a trigger, add steps, test them, publish the draft, switch the flow on and go back to an earlier version."
+icon: "pen-tool"
+---
+
+A flow has a draft and a published version. You change the draft in the editor. Runs use the published version, so editing never affects a flow that is running.
+
+## Build a flow
+
+<Steps>
+  <Step title="Choose the trigger">
+    Open the **Trigger** tab of the start step and choose what starts the flow: an event in a Collabase app, a call to the flow's webhook address, a schedule, or a chat message. A schedule runs from every minute to every week. See [Triggers](/automation/triggers).
+  </Step>
+  <Step title="Add steps">
+    Select **Add step** or press `+`, choose a plug and an action. Steps run in order. A loop repeats its steps for each item of a list.
+  </Step>
+  <Step title="Fill in the inputs">
+    Each input is typed. Use the expression switch to take a value from an earlier step instead of typing it, or insert data with the data picker. See [Passing data](/automation/passing-data). Pickers list the spaces, projects, work items, pages, people and groups you may use. [Step inputs](/automation/step-inputs) describes every kind of input.
+  </Step>
+  <Step title="Choose a connection">
+    A step of a plug that needs credentials asks for a connection. See [Connections](/automation/connections).
+  </Step>
+  <Step title="Test">
+    Test a step with sample data, or the whole draft with a test run. The result shows what each step returned.
+  </Step>
+  <Step title="Publish and switch on">
+    Select **Publish**, then switch the flow on. See [Publishing flows](/automation/publishing-flows).
+  </Step>
+</Steps>
+
+## The canvas
+
+The flow is drawn from top to bottom. Use the controls at the lower left to zoom in and out and to fit the whole flow on the screen, and drag the canvas to move around. Right-click a step to **Duplicate step** or **Delete step**. Select a step to open its settings.
+
+## Step by language
+
+Select **Step by language**, describe a step in a sentence and the assistant adds an action from the plugs that are installed. If no installed plug fits, it says so and adds nothing. This needs an AI model.
+
+## Versions and the lock
+
+Every publish creates a version, and only one person edits a draft at a time. See [Version history](/automation/version-history).
+
+## Move flows
+
+You can [export, import and start from templates](/automation/import-export-templates), browse the [template library](/automation/template-library) and [sync with Git](/automation/git-sync).

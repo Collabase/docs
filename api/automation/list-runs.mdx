@@ -1,0 +1,35 @@
+---
+title: "List runs"
+description: "Page through the runs of an automation workspace, newest first, filtered by flow, status and time."
+api: "GET /api/v1/automation/runs"
+---
+
+<Info>
+  Scope `automation:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="workspaceId" type="string" required>
+  The workspace.
+</ParamField>
+
+<ParamField query="flowId" type="string">
+  Only runs of this flow.
+</ParamField>
+
+<ParamField query="status" type="string">
+  One run status, such as `FAILED`.
+</ParamField>
+
+<ParamField query="from" type="string">
+  Start of the period, an ISO date and time.
+</ParamField>
+
+<ParamField query="to" type="string">
+  End of the period.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `nextCursor` of the previous page.
+</ParamField>

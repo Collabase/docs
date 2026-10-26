@@ -1,0 +1,15 @@
+---
+title: "Switch a flow on or off"
+description: "Switch a published flow on or off; a sensitive workspace asks for approval before a flow is switched on."
+api: "POST /api/v1/automation/flows/{flowId}/status"
+---
+
+<Info>
+  Scope `automation:write`.
+</Info>
+
+## Body
+
+<ParamField body="enabled" type="boolean" required>
+  `true` switches the flow on, `false` off. Only a published flow can be switched on (`422 FLOW_NOT_PUBLISHED`). In a sensitive workspace switching on answers `409 APPROVAL_REQUESTED` after asking the admins.
+</ParamField>

@@ -1,0 +1,64 @@
+---
+title: "Polling trigger"
+sidebarTitle: "Polling trigger"
+icon: "refresh-cw"
+description: "Build a trigger that asks the other system for new items every five minutes and remembers where it stopped, with the polling helper of the framework."
+---
+
+A polling trigger asks the other system for new items. Collabase calls `run` every 5 minutes while the flow is on. The trigger must return only items it has not returned before, and it must remember where it stopped between polls.
+
+## The polling helper
+
+The framework helper does the remembering. You describe how to fetch items and choose a strategy for what counts as new.
+
+| Strategy | Fetch | New means |
+|---|---|---|
+| `DedupeStrategy.TIMEBASED` | Items with a timestamp. | A timestamp after the last poll. |
+| `DedupeStrategy.LAST_ITEM` | Items newest first, each with an id. | Everything before the id the trigger saw last. |
+
+```ts
+import { createTrigger, TriggerStrategy } from "@collabase/plug-framework";
+import { DedupeStrategy, pollingHelper, type Polling } from "@collabase/plug-framework/common";
+
+const polling: Polling<{ secret_text: string }, Record<string, never>> = {
+  strategy: DedupeStrategy.TIMEBASED,
+  items: async ({ auth, lastFetchEpochMS }) => {
+    const orders = await listOrders(auth.secret_text, { since: lastFetchEpochMS });
+    return orders.map((order) => ({ epochMilliSeconds: Date.parse(order.createdAt), data: order }));
+  },
+};
+
+export const newOrder = createTrigger({
+  name: "new_order",
+  displayName: "New order",
+  description: "Starts when an order arrives.",
+  type: TriggerStrategy.POLLING,
+  props: {},
+  sampleData: { id: "A1", total: 120, createdAt: "2026-10-26T08:00:00.000Z" },
+  onEnable: async (context) => pollingHelper.onEnable(polling, { auth: context.auth, store: context.store, propsValue: context.propsValue }),
+  onDisable: async (context) => pollingHelper.onDisable(polling, { auth: context.auth, store: context.store, propsValue: context.propsValue }),
+  run: async (context) => pollingHelper.poll(polling, { auth: context.auth, store: context.store, propsValue: context.propsValue, files: context.files }),
+});
+```
+
+## What happens at each hook
+
+| Hook | What the helper does |
+|---|---|
+| `onEnable` | Stores the time of now, or the id of the newest item, so that items from before the flow was switched on do not start runs. |
+| `run` | Fetches the items, keeps those that are new and returns them, oldest first. Each one starts a run. |
+| `onDisable` | Nothing to clean up. |
+
+Switching a flow off and on again resets the stored position, which is also the way to recover from a bad state.
+
+## Limits
+
+- A poll starts at most **100 runs**. Items beyond that are dropped and logged, so fetch with a page size at most that large.
+- The interval is fixed at 5 minutes.
+- A poll runs in the sandbox with the connection of the flow. If the connection fails, the poll fails and is logged. The flow stays on.
+
+## Related
+
+- [Triggers overview](/developer/plugs/triggers)
+- [Persistent storage](/developer/plugs/storage)
+- [Triggers](/automation/triggers)

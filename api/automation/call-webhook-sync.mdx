@@ -1,0 +1,26 @@
+---
+title: "Call a webhook and wait"
+description: "Start a flow and wait up to 30 seconds for its answer, which the Respond to webhook step sets with its own status and body."
+api: "POST /api/v1/automation/webhooks/{flowId}/sync"
+authMethod: "none"
+---
+
+Starts a run like [Call a webhook](/api/automation/call-webhook) and waits for the answer. `GET` works the same way. No token is needed; the flow id in the address is the credential.
+
+## Answers
+
+| Case | Answer |
+|---|---|
+| The flow runs a **Respond to webhook** step | The status of that step, with `{ "data": <body> }`. |
+| The run ends without that step | `200` with `{ "data": { "runId": "...", "status": "SUCCEEDED" } }`. |
+| The run is still going after 30 seconds | `202` with `{ "data": { "runId": "...", "state": "PENDING" } }`. The run goes on. |
+
+The body of the answer is limited to 1 MB. The other statuses are the same as for the call without waiting: `404`, `410`, `413` and `429`.
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/webhooks/cm1abc/sync" \
+  -H "Content-Type: application/json" \
+  -d '{"order": 4711}'
+```
+
+See [Webhooks](/automation/webhooks) for the step that sets the answer.

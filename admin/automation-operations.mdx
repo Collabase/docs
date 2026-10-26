@@ -1,0 +1,87 @@
+---
+title: "Automation operations"
+sidebarTitle: "Automation operations"
+description: "How Automation carries out runs, what happens after a crash, how concurrency and retention work, which settings the services need and what to watch."
+icon: "server-cog"
+---
+
+This page is for the person who runs Collabase. It explains how Automation carries out runs, what protects a run from a crash, and what to check when something is slow.
+
+## The parts
+
+| Part | Role |
+|---|---|
+| **Application** | Serves the editor and the API, accepts triggers and starts runs. |
+| **Run worker** | Part of the application process. It takes runs from the queue and carries out their steps. |
+| **Queue and counters** | Redis. A queue holds runs that wait, and counters limit how many runs of a workspace go at once. |
+| **Database** | Workspaces, flows, versions, runs and the step journal. |
+| **File storage** | Trigger data, large step results, step logs and files that plugs write. |
+| **Plug sandbox** | A separate service that runs every plug Collabase did not write. See [Automation sandbox](/admin/automation-sandbox). |
+
+Collabase plugs run in the application. Plugs from the catalog and your own plugs run in the sandbox. Without the sandbox, flows that use only Collabase plugs keep working.
+
+## How a run is carried out
+
+<Steps>
+  <Step title="A trigger puts the run in the queue">
+    The run exists in the database before it is queued, with its trigger data kept in storage.
+  </Step>
+  <Step title="A worker takes it">
+    The worker takes a lease on the run and renews it every 10 seconds while a step runs. A workspace may have 10 runs going at once by default. A run that finds its workspace full goes back to the queue after two seconds.
+  </Step>
+  <Step title="Steps run one after another">
+    After every step the worker writes the result to the step journal. A step may run for up to 10 minutes.
+  </Step>
+  <Step title="The run finishes or pauses">
+    A run ends as succeeded, failed, cancelled or timed out. A run that waits for a delay, a call or an approval is paused and holds no worker.
+  </Step>
+</Steps>
+
+Each application process carries out up to 20 runs at once. Add application replicas to add capacity.
+
+## After a crash
+
+The step journal makes a run survive a restart of the application, of Redis or of the host.
+
+- A worker that stops without releasing its run loses the lease. Within about 45 seconds another worker takes the run over.
+- The new worker reads the journal and **skips every step that already finished**. It repeats only the step that was in progress.
+- A sweep every minute puts runs that have had no write for two minutes back in the queue, so a run is not lost when Redis loses its queue.
+- If the database or the sandbox is unavailable, the run waits and tries again up to ten times, five seconds apart, and then the sweep picks it up.
+
+A step in progress at the crash may run twice. Plugs must be safe to repeat. See [Actions](/developer/plugs/actions).
+
+## Concurrency
+
+The limit for one workspace is 10 runs at once by default, and can be set between 1 and 200. It keeps one busy workspace from using all workers. The limit is a counter in Redis, so it holds across all replicas. A slot that a lost worker never gave back frees itself after 30 minutes.
+
+## Retention
+
+A daily sweep deletes finished runs that are older than the retention of their workspace, together with their step logs and files. The retention is 30 days by default and can be set between 1 and 365 days in the workspace settings. Runs that are going are never removed. Back up the database and the file storage together, because the step logs and large results are in storage.
+
+## Settings the services need
+
+| Variable | Used by | Meaning |
+|---|---|---|
+| `SANDBOX_URL` | Application | The address of the sandbox service. |
+| `SANDBOX_SHARED_SECRET` | Application and sandbox | A secret of at least 32 characters. It authenticates the calls of the application to the sandbox. |
+| `ENGINE_API_URL` | Application and sandbox | The address where the sandbox reaches the engine API of the application. |
+| `ENGINE_TOKEN_SECRET` | Application | A secret of at least 32 characters. It signs the short-lived tokens that a plug receives. |
+
+The installers create the secrets for a new installation, and the updater adds them to an existing one. Set them by hand only for an installation that you assemble yourself. If one is missing, plugs from the catalog and your own plugs are not available, and the application says so. Collabase plugs keep working.
+
+## What to watch
+
+| Where | What it tells you |
+|---|---|
+| **Runs** tab of a workspace | Failed runs, runs that stay paused, and retries. |
+| **Administration, Automation analytics** | Failed runs per day and the average duration, for all workspaces. See [Automation analytics](/admin/automation-analytics). |
+| The sandbox health address | `ok` or `degraded`. See [Automation sandbox](/admin/automation-sandbox). |
+| **Audit log** | Who installed a plug, changed a limit or connected Git. See [Audit events](/automation/audit-events). |
+
+A flow that fails ten times in a row is switched off, and the editors and admins of its workspace are told.
+
+## Related
+
+- [Automation sandbox](/admin/automation-sandbox)
+- [Automation plugs](/admin/automation-plugs)
+- [Limits](/automation/limits)

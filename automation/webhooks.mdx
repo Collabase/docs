@@ -1,0 +1,81 @@
+---
+title: "Webhooks"
+sidebarTitle: "Webhooks"
+icon: "webhook"
+description: "Start a flow with a call from another system, wait for the flow's answer with the synchronous address, and respond with your own status and body."
+---
+
+Every flow that starts from **Webhook received** has a webhook address. Another system calls it with `POST` or `GET`, and the flow starts a run.
+
+## The address
+
+The address is shown on the **Trigger** tab of the start step:
+
+```text
+https://your-instance/api/v1/automation/webhooks/<flow id>
+```
+
+<Warning>
+  The flow id in the address is the only credential. Anyone who knows the address can start the flow. Treat it like a password and keep it out of public places.
+</Warning>
+
+The flow must be published and switched on. An address of a flow that does not exist, or that does not start from a webhook, answers `404`. A flow that is switched off answers `410`.
+
+## What the flow receives
+
+The run receives the call as trigger data:
+
+| Field | Content |
+|---|---|
+| `method` | `POST` or `GET` |
+| `body` | The body, read as JSON when it is JSON and as text otherwise |
+| `query` | The query parameters as text |
+
+The body may be up to 5 MB. A larger body is refused with `413`. A call that starts a run answers `200` with `{ "data": { "runId": "..." } }` at once, before the run has finished.
+
+Calls to one address are limited per caller and flow. Above the limit the answer is `429` with a `Retry-After` header.
+
+## Wait for the answer
+
+Add `/sync` to the address when the caller needs the result:
+
+```text
+https://your-instance/api/v1/automation/webhooks/<flow id>/sync
+```
+
+The call starts a run and waits for up to 30 seconds:
+
+| Case | Answer |
+|---|---|
+| The flow runs a **Respond to webhook** step | The status and the body of that step. |
+| The run ends without that step | `200` with the run id and the status of the run. |
+| The run is still going after 30 seconds | `202` with the run id. The run goes on. |
+
+### Respond to webhook
+
+Add **Respond to webhook** from the flow control plug at the point where the answer is known:
+
+| Input | Description |
+|---|---|
+| **Status** | An HTTP status from 200 to 599. The default is 200. |
+| **Body** | The JSON that the caller receives, up to 1 MB. |
+
+The step sets the answer. The flow can go on with more steps afterwards. The caller does not wait for them.
+
+## Test a webhook
+
+Switch the flow on and call the address, for example with `curl`:
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/webhooks/<flow id>/sync" \
+  -H "Content-Type: application/json" \
+  -d '{"order": 4711}'
+```
+
+Open the **Runs** tab to see the run and the data it received.
+
+## Related
+
+- [Triggers](/automation/triggers)
+- [Automation API](/api/automation/overview)
+- [Runs and approvals](/automation/runs)

@@ -1,0 +1,86 @@
+---
+title: "Agent step"
+sidebarTitle: "Agent step"
+icon: "bot"
+description: "Add an AI agent to a flow: give it a goal and tools, decide which model it uses, limit its steps and read exactly what it did in the run."
+---
+
+The **Agent** step lets a model reach a goal in several steps. You describe the goal in plain language and name the tools it may use. At each step the model reads the situation, chooses a tool, reads the result and goes on until the goal is reached or the step limit is.
+
+## Flow or agent
+
+| | Flow | Agent step |
+|---|---|---|
+| **Logic** | You decide every step once. | The model works it out on each run. |
+| **Same input** | The same steps, always. | The model may act differently. |
+| **Use it when** | You know the process. | The work varies and cannot be drawn as steps. |
+
+If you can write the rule in one sentence without saying "depends", it is a condition in a flow and not a job for an agent.
+
+## Add the step
+
+<Steps>
+  <Step title="Add the step">
+    Select **Add step**, open **Collabase AI** and choose **Agent**.
+  </Step>
+  <Step title="Write the goal">
+    Say what the agent should achieve and what a good answer looks like. Insert data from earlier steps where it matters. The goal reaches the model as data to work on, not as an instruction it must obey blindly.
+  </Step>
+  <Step title="Add tools">
+    Add the [tools](/automation/agent-tools) the agent may use. An agent can only do what its tools allow.
+  </Step>
+  <Step title="Choose approvers">
+    If any tool asks a person first, choose the approvers. They can be people and groups.
+  </Step>
+  <Step title="Test the step">
+    Run **Test step**. The agent runs for real, so tools that change something do change it.
+  </Step>
+</Steps>
+
+## Inputs
+
+| Input | Description |
+|---|---|
+| **Goal** | What the agent should achieve. |
+| **Tools** | What the agent may call. |
+| **Fixed inputs** | JSON with values the agent must not change, such as the project of a new work item. For example `{"collabase-tasks.create_task": {"projectId": "..."}}`. The key is the plug and the action. |
+| **Approvers** | People and groups who approve tool calls that ask first. |
+| **Most steps** | How many steps the agent may take. The default is 20, the most is 50. |
+| **Model** | **Model of the instance** or **Provider of this workspace**. See [AI provider](/automation/ai-provider). |
+
+## What the step returns
+
+| Field | Content |
+|---|---|
+| `text` | The agent's final answer, a short summary of what it did and found. |
+| `steps` | How many steps it took. |
+| `tokens` | The tokens it used. |
+| `truncated` | `true` if the agent stopped at the step limit before it was done. |
+| `calls` | One entry per tool call with the tool, whether it worked and, for tools that asked first, whether it was approved. |
+
+The text varies from run to run. For branching, ask in the goal for a short, fixed answer, or let the agent call a flow tool whose steps do the work.
+
+## Limits of an agent
+
+- An agent has no memory between runs.
+- It never invents results. If a tool did not return something, it says it does not know.
+- If a tool is refused or fails, it reports that and does not look for a way around.
+- Tool results are long text, so Collabase cuts a result to 8,000 characters before the model reads it.
+
+<Warning>
+  Give an agent only the tools it needs, and ask for approval for every tool that changes something or sends something. Text from outside, such as a search hit or the data a flow started with, may try to give the model orders. The step hands it over as data, but approval is the safeguard you control.
+</Warning>
+
+## Approvals while the agent works
+
+When the model chooses a tool that asks first, the run pauses. The approvers get an entry in their inbox with the tool and the exact input. They approve or reject within seven days. Only the input they saw runs, and the agent goes on with the result or with the refusal.
+
+## Track the cost
+
+Agent steps and the tokens they use appear in the workspace analytics. A workspace that uses its own provider can set a monthly token budget that stops AI steps when it is used up.
+
+## Related
+
+- [Agent tools](/automation/agent-tools)
+- [AI provider](/automation/ai-provider)
+- [Flow approvals](/automation/flow-approvals)

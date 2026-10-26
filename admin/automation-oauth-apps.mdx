@@ -1,0 +1,41 @@
+---
+title: "Automation OAuth apps"
+description: "Register your own app with a provider such as Microsoft so that people can connect OAuth plugs with their own account."
+icon: "key-round"
+---
+
+An OAuth plug signs people in with a provider. Every instance registers its own app with the provider, and there is no shared Collabase app. You enter the app's client ID and secret under **Administration, OAuth apps**.
+
+## Register your own Microsoft app
+
+<Steps>
+  <Step title="Create the registration">
+    In the Azure portal open **Microsoft Entra ID, App registrations, New registration**. Name it, for example "Collabase plugs", and choose **Accounts in this organizational directory only**.
+  </Step>
+  <Step title="Set the redirect address">
+    Choose the type **Web** and enter the address shown in Collabase under **Administration, OAuth apps**. It ends in `/api/automation/oauth/callback`.
+  </Step>
+  <Step title="Copy the client ID">
+    After saving, copy the **Application (client) ID**.
+  </Step>
+  <Step title="Create a secret">
+    Under **Certificates and secrets** create a client secret and copy its value at once. It is shown only once.
+  </Step>
+  <Step title="Add permissions">
+    Under **API permissions** add the delegated Microsoft Graph permissions the plug needs and grant admin consent if your tenant asks for it. The plug's page in the catalog lists its scopes.
+  </Step>
+  <Step title="Enter the app in Collabase">
+    Under **Administration, OAuth apps** choose the plug, for example Microsoft Teams, enter client ID and secret and save.
+  </Step>
+</Steps>
+
+People with the Automation right can now connect the plug under **Connections** with their own account.
+
+## Renew a secret
+
+Enter the new secret in the same place. Connections keep working, and their next token refresh uses the new secret. The stored secret is never shown, so leave the field empty to keep it.
+
+## Related
+
+- [Connections](/automation/connections)
+- [Automation plugs](/admin/automation-plugs)

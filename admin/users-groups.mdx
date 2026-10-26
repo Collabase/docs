@@ -57,7 +57,7 @@ From **Admin → Users**, you can take the following actions on any account:
 | **Edit profile** | Update name, email, job title, and department |
 | **Unlock** | Removes a lockout caused by repeated failed login attempts |
 | **Remove second step** | Takes the authenticator app, the passkeys and the trusted devices from a member who lost their device. The button appears only for members who have a second step. They sign in with the password alone until they set one up again, and Collabase tells them by email. |
-| **Delete** | Anonymizes the member for good. Pages, work items, comments, attachments and booked time stay, and the author shows as the name followed by `(deleted)`. The email address, password, two-factor setup, sessions, API tokens, and group and space memberships are removed. If the member owns automations, connections or registry schemas, you choose a new owner first; those move to that person and keep working unchanged. The email address can be used again right away. A deleted member cannot be re-enabled and no longer appears in the user list; the **Deleted** tab shows them when you need to find one. A SCIM token the member created keeps working, so your identity provider stays connected; replace it under **SCIM** if you want it tied to someone else. |
+| **Delete** | Anonymizes the member for good. Pages, work items, comments, attachments and booked time stay, and the author shows as the name followed by `(deleted)`. The email address, password, two-factor setup, sessions, API tokens, and group and space memberships are removed. If the member owns registry schemas, you choose a new owner first; those move to that person and keep working unchanged. The email address can be used again right away. A deleted member cannot be re-enabled and no longer appears in the user list; the **Deleted** tab shows them when you need to find one. A SCIM token the member created keeps working, so your identity provider stays connected; replace it under **SCIM** if you want it tied to someone else. |
 
 ### Second step for administrators
 
@@ -127,7 +127,7 @@ Some Collabase modules are instance-wide — not tied to any space. Access to th
 | **Intranet** | Admin | Admin: create and manage content, configure settings. All logged-in users can read Intranet content without a group assignment. |
 | **Time Reports** | Admin, Manager | Admin: view all time across all users. Manager: view time from spaces where they are a space member. Without a group assignment, users see only their own time. |
 
-Automation does not use group-based module roles — permissions are set per individual rule.
+Automation does not use group-based module roles yet.
 
 ### Assigning module access to a group
 

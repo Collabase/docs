@@ -1,0 +1,63 @@
+---
+title: "Build plugs"
+sidebarTitle: "Overview"
+icon: "blocks"
+description: "A plug adds triggers and actions to Automation. Learn what a plug is made of, how it runs in the sandbox and the path from an empty folder to an installed plug."
+---
+
+A plug connects Automation to a system that the catalog does not cover: your ERP, an internal service, a supplier's API. It adds **triggers**, which start flows, and **actions**, which flows run as steps. Developers write plugs in TypeScript with the plug framework and upload them with the command line tool.
+
+<Note>
+  The Plug SDK, with its npm packages and the command line tool, is published from Q4 2026. See [Plug SDK](/developer/plug-sdk).
+</Note>
+
+## What a plug is made of
+
+| Part | Purpose |
+|---|---|
+| **Plug definition** | The name, logo, authentication, actions and triggers. See [Plug definition](/developer/plugs/definition). |
+| **Authentication** | What credentials the plug needs from a connection. See [Authentication](/developer/plugs/authentication). |
+| **Actions** | Steps a flow can run. See [Actions](/developer/plugs/actions). |
+| **Triggers** | Events that start a flow, by polling or by webhook. See [Triggers](/developer/plugs/triggers). |
+| **Properties** | The inputs of an action or trigger. The editor draws a form from them. See [Properties](/developer/plugs/properties). |
+
+## How a plug runs
+
+A plug that Collabase did not write runs in the **sandbox service**, never in the application:
+
+- Each call runs in a locked-down process with its own memory and time limits. A process that failed is discarded.
+- The process has no route to your database or other internal services. It can reach the internet, and an address filter blocks private ranges.
+- The process gets one token for one workspace and the connection of the step that is running. It never sees application secrets or the connections of another workspace.
+- A step may run for up to 10 minutes.
+
+## The path to a running plug
+
+<Steps>
+  <Step title="Create the plug">
+    `collabase-plug init` creates a folder with a manifest and a sample action. See [Get started](/developer/plugs/get-started).
+  </Step>
+  <Step title="Write actions and triggers">
+    Describe the inputs and write the code that calls the other system.
+  </Step>
+  <Step title="Build and check">
+    `collabase-plug build` bundles the plug into one file and checks the licence of everything in it.
+  </Step>
+  <Step title="Upload">
+    `collabase-plug publish` uploads the package to your instance. The instance checks it again and installs it. See [Publish and versions](/developer/plugs/publish).
+  </Step>
+  <Step title="Use it in a flow">
+    The plug appears in the step list, marked as an own plug. Test an action, then build flows with it.
+  </Step>
+</Steps>
+
+## Plugs from the catalog
+
+You may not need to build anything. The catalog lists hundreds of core and community plugs that an administrator can install. See [Plugs](/automation/plugs) and the [plug reference](/automation/plug-reference).
+
+## Related
+
+- [Get started](/developer/plugs/get-started)
+- [Plug definition](/developer/plugs/definition)
+- [Test a plug](/developer/plugs/testing)
+- [Limits of the sandbox](/developer/plugs/sandbox)
+- [Automation plugs administration](/admin/automation-plugs)

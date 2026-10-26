@@ -1,0 +1,43 @@
+---
+title: "App SDK"
+sidebarTitle: "App SDK"
+icon: "app-window"
+description: "Build your own apps for Collabase in TypeScript and React: what an app can add, how it stays safe and when the App SDK is published."
+---
+
+The App SDK is a typed TypeScript and React toolkit for apps that run inside Collabase, on any instance, in the cloud or on your own server. An app adds pages, panels, gadgets and automations without changing the core.
+
+<Note>
+  The App SDK is announced for **Q4 2026**, together with the Plug SDK, Collakit and AgentKit. The repository on GitHub is public. The npm packages are published from Q4 2026. The SDK is open source under the MIT licence.
+</Note>
+
+## What an app can add
+
+- A window in the app drawer, with its own sidebar and pages.
+- A panel on work items.
+- Gadgets for dashboards and cockpits.
+- Settings at three levels: the whole instance, a space and a project.
+- Its own triggers and actions for [Automation](/automation/overview).
+- Reactions to events, such as a work item being created.
+- Incoming webhooks, so an external system such as a build server can send results to the app.
+- Data storage: collections you can query, key-value entries that expire, and custom values on work items, pages and projects.
+- Platform services: the inbox, mail, digests, the audit log, global search and the Collabase AI of the instance.
+
+## Safe by design
+
+- The backend code of an app runs in isolated environments with limits for time and memory.
+- The user interface uses the components of Collabase, so dark mode, themes, languages and accessibility come from Collabase. See [Collakit](/developer/collakit).
+- An app never has more rights than the person using it. It acts as its own app user and works only in spaces where it is activated.
+- Administrators confirm the permissions, the hosts and the data flows to the AI, release an app per group and activate it per space.
+- An app that fails repeatedly is locked automatically. Its data stays in your instance, including the backups.
+
+## How you work with it
+
+You scaffold an app with `npm create collabase-app`, develop it against a local instance with `npm run dev` and build the package with `npm run package`. An administrator uploads the package. No app store is needed.
+
+## Related
+
+- [Developers](/developer/overview)
+- [Collakit](/developer/collakit)
+- [AgentKit](/developer/agentkit)
+- [The page on the website](https://collabase.ch/platform/developers/app-sdk)

@@ -87,22 +87,8 @@
               "group": "IAM mit Microsoft",
               "pages": [
                 "de/admin/iam-microsoft-entra"
-              ],
-              "tag": "Enterprise"
+              ]
             }
-          ]
-        }
-      ]
-    },
-    {
-      "tab": "Sicherheit und Datenschutz",
-      "groups": [
-        {
-          "group": "Sicherheit und Datenschutz",
-          "pages": [
-            "de/security/overview",
-            "de/security/statement",
-            "de/security/data-protection"
           ]
         }
       ]

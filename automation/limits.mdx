@@ -1,0 +1,91 @@
+---
+title: "Limits"
+sidebarTitle: "Limits"
+icon: "gauge"
+description: "The numbers that bound Automation: sizes, times, counts and rates for flows, runs, webhooks, variables, connections, agents, chat and the sandbox."
+---
+
+These limits apply to every instance. They keep one flow from using up what everyone shares. The values are the ones of the current version.
+
+## Flows and steps
+
+| Limit | Value |
+|---|---|
+| Size of a flow definition | 2 MB |
+| Items a loop goes through | 10,000 |
+| Steps one run may carry out | 100,000 |
+| Time one step may run | 10 minutes |
+| Tries of a step with **Try again on failure** | 4 in total, with growing pauses |
+| Output of a step kept with the run | 64 KB, larger output is kept as a file |
+| Files a plug writes | 25 MB each |
+| A value a plug stores | 512 KB |
+| Editor lock | Lapses 10 minutes after the last change |
+| Flows that fail in a row before a flow is switched off | 10 |
+
+## Workspaces
+
+| Limit | Value |
+|---|---|
+| Runs of one workspace at the same time | 10 by default, between 1 and 200 |
+| Run retention | 30 days by default, between 1 and 365 |
+| Members and groups of a workspace | 200 |
+| Variables of a workspace | 500 |
+| Name of a variable | 100 characters of letters, numbers and underscores |
+| Value of a variable | 10,000 characters |
+| Connections listed for a workspace | 500 |
+| Value of a connection | 32 KB |
+
+## Triggers and webhooks
+
+| Limit | Value |
+|---|---|
+| Body of a webhook call | 5 MB |
+| Wait of the synchronous webhook address | 30 seconds |
+| Answer of a **Respond to webhook** step | 1 MB |
+| Body of a call that resumes a paused run | 512 KB |
+| Schedule | From every 1 minute to every 7 days |
+| Poll of a plug trigger | Every 5 minutes, at most 100 runs per poll |
+
+## Waiting and approvals
+
+| Limit | Value |
+|---|---|
+| Wait of **Give up after** | 30 days by default, at most 365 |
+| Approvers of one approval | 50 |
+| Wait of a tool approval in an agent step | 7 days |
+
+## Agents
+
+| Limit | Value |
+|---|---|
+| Steps of an agent | 20 by default, at most 50 |
+| Tool rows of an agent | 20 |
+| Result of a tool the model reads | 8,000 characters |
+| Matches of the knowledge search | 5 |
+| Tools of one MCP server | 30 |
+| Time of one MCP call | 30 seconds |
+| Answer of an MCP server | 2 MB |
+| Approvers of an agent step | 20 |
+
+## Chat page
+
+| Limit | Value |
+|---|---|
+| Length of a message | 4,000 characters |
+| Wait for the answer | 30 seconds |
+| Messages per address and minute | 100 |
+| Messages shown in the history | 100 |
+
+## Import, plugs and Git
+
+| Limit | Value |
+|---|---|
+| Flow file to import | 2 MB |
+| Package of an uploaded plug | 20 MB |
+| Flows in a Git repository | 5,000 |
+
+## Related
+
+- [Runs and approvals](/automation/runs)
+- [Webhooks](/automation/webhooks)
+- [Automation sandbox](/admin/automation-sandbox)

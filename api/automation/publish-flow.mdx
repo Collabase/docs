@@ -1,0 +1,13 @@
+---
+title: "Publish a flow"
+description: "Publish the draft of a flow, or ask the admins of a sensitive workspace to approve it."
+api: "POST /api/v1/automation/flows/{flowId}/publish"
+---
+
+Publishes the draft. A draft with open issues answers `422`.
+
+<Info>
+  Scope `automation:write`.
+</Info>
+
+In a sensitive workspace the call does not publish. It asks the admins and answers `{ "status": "REQUESTED", "requestId": "..." }`.

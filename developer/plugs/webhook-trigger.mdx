@@ -1,0 +1,74 @@
+---
+title: "Webhook trigger"
+sidebarTitle: "Webhook trigger"
+icon: "webhook"
+description: "Build a trigger that the other system calls: register the flow's address when the flow goes on, turn the call into items and remove the address again."
+---
+
+A webhook trigger lets the other system tell Automation when something happens. It registers the flow's address with the other system when the flow is switched on, and removes it when the flow is switched off.
+
+## The address
+
+Every flow has one webhook address. Collabase hands it to the trigger as `context.webhookUrl`:
+
+```text
+https://your-instance/api/v1/automation/webhooks/<flow id>
+```
+
+Anyone who knows the address can call it. See [Webhooks](/automation/webhooks).
+
+## Enable, run, disable
+
+```ts
+export const orderChanged = createTrigger({
+  name: "order_changed",
+  displayName: "Order changed",
+  description: "Starts when an order changes.",
+  type: TriggerStrategy.WEBHOOK,
+  props: {},
+  sampleData: { id: "A1", status: "shipped" },
+  onEnable: async (context) => {
+    const hook = await registerHook(context.auth, context.webhookUrl);
+    await context.store.put("hookId", hook.id);
+  },
+  onDisable: async (context) => {
+    const hookId = await context.store.get<string>("hookId");
+    if (hookId) await removeHook(context.auth, hookId);
+  },
+  run: async (context) => [context.payload.body],
+});
+```
+
+| Hook | Purpose |
+|---|---|
+| `onEnable` | Register `context.webhookUrl` with the other system and store the id of the registration. |
+| `run` | Receives each call and returns the items. Return `[context.payload.body]` to pass the body on as one item, or build several items. Return an empty list to start nothing, for example for a ping. |
+| `onDisable` | Delete the registration, using the stored id. |
+
+## What `run` receives
+
+`context.payload` holds the call that arrived:
+
+| Field | Content |
+|---|---|
+| `body` | The body, read as JSON when it is JSON and as text otherwise. |
+| `queryParams` | The query parameters. |
+| `method` | `POST` or `GET`. |
+
+<Warning>
+  The headers of the call are not handed to the plug. A signature that the other system sends in a header cannot be checked in `run`. Prefer a system that signs the body or lets you choose a secret that travels in the body or in the address.
+</Warning>
+
+## Not supported
+
+Handshake and renewal hooks are not called, so a system that first asks the address to answer a challenge cannot be connected with a plug trigger. Use a flow with the built-in **Webhook received** trigger and answer with **Respond to webhook** in that case.
+
+## Test
+
+A webhook trigger cannot be tested before the flow is published, because the other system sends the data. Switch the flow on, cause an event in the other system and open the run.
+
+## Related
+
+- [Triggers overview](/developer/plugs/triggers)
+- [Webhooks](/automation/webhooks)
+- [Persistent storage](/developer/plugs/storage)

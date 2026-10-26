@@ -1,0 +1,17 @@
+---
+title: "Rename or delete a flow"
+description: "Rename a flow or delete it with its runs through the public API."
+api: "PATCH /api/v1/automation/flows/{flowId}"
+---
+
+`PATCH` renames the flow. `DELETE` removes the flow with its versions and runs.
+
+<Info>
+  Scope `automation:write`. The token owner needs the editor role.
+</Info>
+
+## Body of PATCH
+
+<ParamField body="name" type="string" required>
+  The new name.
+</ParamField>

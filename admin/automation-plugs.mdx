@@ -1,0 +1,33 @@
+---
+title: "Automation plugs"
+description: "Install, update and remove plugs from the catalog, upload your own, and see which plugs a licence check has blocked."
+icon: "blocks"
+---
+
+Plugs are managed by system administrators under **Administration, Plugs**. The page lists every plug with its origin, installed version, status and available updates.
+
+## Install a plug
+
+<Steps>
+  <Step title="Find the plug">
+    Filter by origin (**Collabase**, **Core**, **Community**, **Uploaded**) or search by name.
+  </Step>
+  <Step title="Install">
+    Select **Install**. The install runs in the background, and you are told when it is done, with the plug's name and logo.
+  </Step>
+</Steps>
+
+Every version is checked for its licences first. A plug whose dependencies carry a licence that Collabase may not ship shows **Not installable: a licence is not allowed**, and it is left out of the editor's step picker.
+
+## Update and remove
+
+An available update shows **Version x is available**. Select **Update** to replace the installed version. Flows that use the plug run with the new version after their next publish. **Remove** deletes the plug with all its versions, and flows that use it are switched off.
+
+## Upload your own plug
+
+Plugs your developers build are uploaded with the command line tool, see [Build a plug](/automation/build-a-plug), or on this page. The package is checked for its licences and installed as an uploaded plug.
+
+## Sandbox needed
+
+Every plug that is not a Collabase plug needs the sandbox service. Without it the install fails with a message that the plug sandbox is not configured. See [Automation sandbox](/admin/automation-sandbox).
+- [Automation overview](/automation/overview)

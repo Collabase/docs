@@ -1,0 +1,85 @@
+---
+title: "Audit events"
+sidebarTitle: "Audit events"
+icon: "scroll-text"
+description: "Every Automation event the audit trail records, from workspace and flow changes to approvals, connections, variables, Git and plugs, and who may read them."
+---
+
+Automation writes an entry to the audit trail for each change that matters. An entry names who did it, what it was about and when. It never contains a secret, a connection value, a variable value or the content of a flow.
+
+## Where to read the trail
+
+| Who | Where |
+|---|---|
+| Admins of a workspace | The **Audit** tab of the workspace, for that workspace only. |
+| People with the audit right | **Administration, Audit log**, for the whole instance. |
+
+Changes that a flow makes in Collabase, such as a new work item, are recorded as made by the service account of the workspace. Each entry also carries the flow and the run as its origin.
+
+## Workspaces and members
+
+| Event | Recorded when |
+|---|---|
+| **Automation workspace created, updated, deleted** | A workspace is created, changed or deleted. |
+| **Automation workspace members changed** | Members or roles are replaced. |
+| **Automation concurrency limit changed** | The number of runs at the same time is changed. |
+| **Automation AI provider changed** | The workspace provider or its budget is set or removed. |
+
+## Flows
+
+| Event | Recorded when |
+|---|---|
+| **Automation flow created** | A flow is created, from scratch, a file or a template. |
+| **Automation flow published** | A draft is published. |
+| **Automation flow turned on, turned off** | The status of a flow changes. |
+| **Automation flow deleted** | A flow is deleted. |
+| **Automation flow version restored** | A version is copied into the draft. |
+| **Automation flow imported, exported** | A flow file is imported or exported. |
+| **Automation MCP release changed** | A flow is released for MCP clients or withdrawn. |
+| **Automation chat link changed** | The chat link of a flow is created or replaced. |
+| **Automation template saved, deleted** | An instance template is saved or deleted. |
+
+## Approvals
+
+| Event | Recorded when |
+|---|---|
+| **Flow approval requested, granted, rejected, request withdrawn** | The four-eyes steps of a sensitive workspace. |
+| **Automation approval decided** | A person decides an approval step of a run. |
+| **Automation approvers reassigned** | The approvers of a waiting approval are replaced. |
+
+## Runs
+
+| Event | Recorded when |
+|---|---|
+| **Automation run started manually** | Someone starts a run by hand, through the editor or the API. |
+| **Automation run retried, cancelled** | A run is retried or cancelled. |
+
+## Connections, variables and secrets
+
+| Event | Recorded when |
+|---|---|
+| **Automation connection created, replaced, deleted** | A connection of a workspace changes. |
+| **Automation connection releases changed** | An instance connection is released for a workspace or withdrawn. |
+| **Automation OAuth app changed** | An administrator changes an OAuth app. |
+| **Automation variable created, value replaced, deleted** | A variable changes. |
+| **Automation variable value shown** | Someone selects **Show value**. |
+
+## Git and releases
+
+| Event | Recorded when |
+|---|---|
+| **Git repository connected, disconnected** | The Git connection of a workspace changes. |
+| **Flows pushed to Git** | A push finishes. |
+| **Release applied, rolled back** | A release or a rollback changes the flows. |
+
+## Plugs
+
+| Event | Recorded when |
+|---|---|
+| **Plug installed, upgraded, removed, uploaded** | An administrator changes the installed plugs. |
+
+## Related
+
+- [Workspaces](/automation/workspaces)
+- [Audit log](/admin/audit-log)
+- [Automation API](/api/automation/overview)

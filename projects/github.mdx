@@ -103,13 +103,13 @@ Under **Settings → Integrations → Automation Rules**, a project admin define
 | **PR closed (not merged)** | Move back to To Do |
 | **CI checks failed** | Move back to In Progress |
 
-The action is always **Select status**. For more complex reactions to GitHub events, use the [GitHub connector](/automation/connectors/github) of Automation.
+The action is always **Select status**.
 
 ## Limits
 
 | Topic | Behavior |
 |---|---|
-| **Hosts** | GitHub.com only. GitHub Enterprise Server, GitLab and Bitbucket have no development panel. GitLab is available as an [Automation connector](/automation/connectors/gitlab) |
+| **Hosts** | GitHub.com only. GitHub Enterprise Server, GitLab and Bitbucket have no development panel. |
 | **Pull requests per work item** | One |
 | **Boards and lists** | Cards show no GitHub status. Open the work item to see it |
 
@@ -127,8 +127,5 @@ The action is always **Select status**. For more complex reactions to GitHub eve
 <CardGroup cols={2}>
   <Card title="Work items" icon="circle-check" href="/projects/tasks">
     The detail view and its panels.
-  </Card>
-  <Card title="GitHub connector" icon="github" href="/automation/connectors/github">
-    Triggers and actions for Automation.
   </Card>
 </CardGroup>

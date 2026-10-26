@@ -1,0 +1,64 @@
+---
+title: "Agent tools"
+sidebarTitle: "Agent tools"
+icon: "wrench"
+description: "Tools let an agent look things up and act: search knowledge, start a flow, run a plug action or call an MCP server, each with an optional approval."
+---
+
+A tool is something an agent may do. Add tools in the **Tools** input of an [agent step](/automation/agent-step). Each row has a kind, a target and optional settings. An agent that has no tools can only answer from what the goal contains.
+
+## The kinds of tool
+
+| Kind | What the agent can do |
+|---|---|
+| **Search knowledge** | Search what the workspace's service account may read and get the best matches, with their titles. |
+| **Start a flow** | Start an enabled flow of the same workspace and get the run id back. |
+| **Plug action** | Run one action of a Collabase plug or of an installed plug. |
+| **MCP server** | Use the tools of an external MCP server. |
+
+### Search knowledge
+
+The tool searches pages and other content that the service account of the workspace may read, never more. It returns up to five matches with a short text. An administrator must have configured an embedding model under [AI configuration](/admin/ai-configuration), otherwise the tool reports that the search is not available.
+
+### Start a flow
+
+Use a flow tool for steps that must run the same way every time. The agent chooses *when* to run the flow and what data to give it, and the flow decides the steps. The flow must be switched on and in the same workspace.
+
+### Plug action
+
+Choose an action from the list of plugs. The agent sees what the action asks for, as the plug describes it, and fills in the inputs.
+
+- For a **Collabase plug**, the action runs with the rights of the workspace's service account.
+- For an **installed plug** that signs in to another system, choose a **connection**. Collabase reads the connection of this workspace when the tool is used. The agent never sees the credentials.
+- Inputs you set in **Fixed inputs** are hidden from the agent and cannot be changed by it.
+
+An action that waits, such as **Ask for approval**, cannot be a tool.
+
+### MCP server
+
+Add the address of an MCP server, with `https`. Collabase lists the server's tools and gives them to the agent.
+
+| Setting | Description |
+|---|---|
+| **Address** | The `https` address of the server. |
+| **Connection** | Optional. A connection of the type secret text is sent as a bearer token, and a connection with a user name and password as a basic login. |
+
+The call goes through Collabase's guarded outbound path: only public addresses are reachable, and addresses in your internal network are refused. An answer may be up to 2 MB, a call may take up to 30 seconds, and one server may add up to 30 tools. Everything a server returns reaches the model as untrusted text.
+
+## Approval
+
+Tick **A person approves each call first** on a row to hold every call of that tool until a person has seen the input. For an MCP server the setting applies to every tool of the server. The step needs [approvers](/automation/flow-approvals#approve-a-tool-of-an-agent) when any row asks first.
+
+## What is recorded
+
+Every tool call is listed in the result of the agent step with the tool, the outcome and the approval. Calls that change something in Collabase appear in the audit trail with the service account as the actor and the run as the origin.
+
+<Note>
+  Collabase does not keep what an external MCP server did on its own side. For systems you cannot afford to lose track of, add a flow tool that does the work in a flow and records it there.
+</Note>
+
+## Related
+
+- [Agent step](/automation/agent-step)
+- [Connections](/automation/connections)
+- [MCP server](/automation/mcp-server)

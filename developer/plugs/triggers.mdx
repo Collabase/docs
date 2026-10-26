@@ -1,0 +1,68 @@
+---
+title: "Triggers of a plug"
+sidebarTitle: "Overview"
+icon: "zap"
+description: "A trigger starts a flow. Choose between polling and webhook, learn the hooks that run when a flow is switched on or off and what each returned item does."
+---
+
+A trigger tells Automation when something happened in the other system. Each item that a trigger returns starts one run of the flow.
+
+## Types
+
+| Type | How it works | Use it when |
+|---|---|---|
+| **Polling** | Collabase asks the plug for new items every 5 minutes. | The other system has an API to list recent items and no way to call you. |
+| **Webhook** | The other system calls the flow's webhook address when something happens. | The other system can send events. |
+
+Create a trigger with `createTrigger` and set `type` to `TriggerStrategy.POLLING` or `TriggerStrategy.WEBHOOK`. Triggers of the type `APP_WEBHOOK`, which share one address for many users, are not supported.
+
+```ts
+export const newOrder = createTrigger({
+  name: "new_order",
+  displayName: "New order",
+  description: "Starts when an order arrives.",
+  type: TriggerStrategy.POLLING,
+  props: {},
+  sampleData: { id: "A1", total: 120 },
+  onEnable: async (context) => { /* remember where to continue */ },
+  onDisable: async () => { /* nothing to remove */ },
+  run: async (context) => [/* new items */],
+});
+```
+
+## Fields
+
+| Field | Description |
+|---|---|
+| `name`, `displayName`, `description` | As for an action. |
+| `type` | `POLLING` or `WEBHOOK`. |
+| `props` | Inputs of the trigger, such as which board to watch. |
+| `sampleData` | Example of one item, shown as the trigger's data in the editor until a real event has happened. Make it match what `run` returns. |
+| `onEnable` | Runs when the flow is switched on or published while it is on. |
+| `onDisable` | Runs when the flow is switched off or deleted. |
+| `run` | Returns the new items, as a list. One run starts per item. |
+
+## When the hooks run
+
+| Event | Hook |
+|---|---|
+| The flow is switched on | `onEnable` |
+| The flow is published while it is on | `onEnable` runs again. Make it safe to run twice. |
+| The flow is switched off | `onDisable` |
+
+A failing `onEnable` is logged and the flow stays on. One poll starts at most 100 runs, and the rest is dropped and logged. A trigger runs in the sandbox, so a flow with a plug trigger needs the sandbox to be available. See [Triggers](/automation/triggers).
+
+## The context
+
+| Member | Content |
+|---|---|
+| `context.store` | Storage that keeps values between polls. See [Persistent storage](/developer/plugs/storage). |
+| `context.webhookUrl` | The address of the flow's webhook, for webhook triggers. |
+| `context.payload` | The call that arrived, for webhook triggers: `body`, `headers`, `queryParams`. |
+| `context.propsValue`, `context.auth` | The inputs and the connection of the flow. |
+
+## Related
+
+- [Polling trigger](/developer/plugs/polling-trigger)
+- [Webhook trigger](/developer/plugs/webhook-trigger)
+- [Triggers](/automation/triggers)

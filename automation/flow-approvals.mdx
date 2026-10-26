@@ -1,0 +1,53 @@
+---
+title: "Flow approvals"
+sidebarTitle: "Flow approvals"
+icon: "shield-check"
+description: "Two kinds of approval: a second admin who must agree before a flow in a sensitive workspace goes live, and people who approve a step while a flow runs."
+---
+
+Collabase has two approvals that work independently. One guards the **publication** of a flow. The other pauses a **run** until a person has decided.
+
+## Approve a publication
+
+In a **Sensitive** workspace, a flow can do harm if it is wrong, so publishing it or switching it on needs a second person. Switch on **Sensitive** under **Settings** of the workspace.
+
+<Steps>
+  <Step title="Ask for approval">
+    The editor selects **Ask for approval** instead of **Publish**. A banner shows that a request is pending. The version that was live stays live while the request waits.
+  </Step>
+  <Step title="Admins are told">
+    The other admins of the workspace get a notification with a link to the request.
+  </Step>
+  <Step title="Decide">
+    An admin opens the request, looks at the flow and approves or rejects it. The decision must come from an admin who did not ask for it and did not make the last change to the draft.
+  </Step>
+  <Step title="Result">
+    An approval publishes the flow or switches it on, as the admin who approved. A rejection changes nothing. The editor is told either way.
+  </Step>
+</Steps>
+
+The editor can withdraw a pending request. If anyone changes the draft after the request, the request is withdrawn on its own, so nobody approves something they did not see. The audit trail records the request and the decision.
+
+## Approve a step in a run
+
+Add **Ask for approval** from the flow control plug where a person must decide before the flow goes on, for example before an order is released.
+
+| Input | Description |
+|---|---|
+| **Approvers** | The people and groups who may decide. They do not have to be members of the workspace. |
+| **Text for the approver** | What the approver reads. |
+| **Give up after (days)** | How long the run waits. The default is 30 days. |
+
+Each named person gets an inbox entry with a link. The page shows the names of the flow and the step, your text and the deadline, and nothing else of the run. The first decision counts. The step returns the decision, so a later step can read it. If nobody decides in time, the run ends as **Timed out**.
+
+While it waits, the run is **Paused** and holds no resources.
+
+## Approve a tool of an agent
+
+An [AI agent](/automation/agent-step) can ask a person before it uses a tool. The approvers see the tool and the exact input, and only that input runs after they approve.
+
+## Related
+
+- [Workspaces](/automation/workspaces)
+- [Runs and approvals](/automation/runs)
+- [Agent tools](/automation/agent-tools)

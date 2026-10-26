@@ -1,0 +1,65 @@
+---
+title: "Workspace variables"
+sidebarTitle: "Variables"
+icon: "braces"
+description: "Keep values such as a channel id or a webhook address in one place, read them in any step, replace them without editing a flow and see who looked at them."
+---
+
+A variable is a named value of an automation workspace. Any step of any flow in the workspace can read it. Use variables for values that several flows share and that you may need to change: a chat channel id, an address, a feature switch, a fixed project key.
+
+A variable is not the place for the credentials of a plug. Those belong in a [connection](/automation/connections), which a plug is built to use.
+
+## Create a variable
+
+<Steps>
+  <Step title="Open the Variables tab">
+    Open an automation workspace and select **Variables**.
+  </Step>
+  <Step title="Create it">
+    Select **New variable**, enter a name and a value and save. A name has letters, numbers and underscores only, such as `SLACK_CHANNEL_ID`. The value may have up to 10,000 characters.
+  </Step>
+</Steps>
+
+A workspace holds up to 500 variables. Names are case sensitive and unique in a workspace.
+
+## Use a variable in a step
+
+Write the reference in any input of a step:
+
+```text
+{{variables['SLACK_CHANNEL_ID']}}
+```
+
+In the data picker of a step, the group **Variables** lists the variables of the workspace. Select one to insert its reference at the cursor. In the list on the **Variables** tab, **Copy reference** copies it.
+
+The value is read when the step runs. Replacing a variable therefore reaches every flow on its next run, without editing or publishing anything.
+
+## Values stay hidden
+
+Collabase stores the value encrypted. The list never shows it, and neither does the dialog to replace it. A run log shows `***` in place of the value wherever it turns up in the input or the output of a step, so a value does not leak through a log.
+
+| Action | Who may |
+|---|---|
+| See the names and references | Every member of the workspace |
+| Create a variable | Editors and admins |
+| **Replace value**, which sets a new value without showing the old one | Editors and admins |
+| **Show value** | Editors and admins. Each request is written to the audit trail. |
+| Delete a variable | Editors and admins |
+
+## Delete with care
+
+Deleting a variable does not change the flows that use it. Their steps fail with a message at their next run, because the variable no longer exists. Search your flows for the reference and update them before you delete.
+
+## Variables, exports and Git
+
+An export, a template and a Git push contain the reference, such as `{{variables['SLACK_CHANNEL_ID']}}`, and never the value. After an import into another workspace, create the variables the flow names.
+
+## Audit trail
+
+The audit trail of the workspace records when a variable is created, when its value is replaced, when it is shown and when it is deleted. An entry names the variable and never holds the value.
+
+## Related
+
+- [Passing data](/automation/passing-data)
+- [Connections](/automation/connections)
+- [Workspaces](/automation/workspaces)

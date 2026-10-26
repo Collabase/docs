@@ -1,0 +1,52 @@
+---
+title: "Limits of the sandbox"
+sidebarTitle: "Sandbox limits"
+icon: "shield"
+description: "What a plug may do and may not: the network, the connection, time, files and libraries, so that you design a plug the sandbox will run."
+---
+
+Plugs run in a separate service that is built to contain code that Collabase did not write. Design your plug for these rules.
+
+## What a plug can reach
+
+| Can | Cannot |
+|---|---|
+| The internet, to call the other system | Your database, your cache or other internal services of the instance |
+| Public addresses | Private addresses: the plug process blocks ranges such as `10.x`, `192.168.x`, `127.x` and the cloud metadata address |
+| The Collabase engine address, for its own calls such as the store, files and the connection of the step | Application secrets, the secrets of another workspace |
+
+A plug that has to reach a system in your own network cannot do it from the sandbox. Offer the system a public, protected address, or send events to a webhook flow from inside your network.
+
+## What a plug receives
+
+Each call gets one short-lived token for one workspace and the connection of the step that is running. The token allows the store, files and the connections that the step names, and nothing else.
+
+## Time, memory and files
+
+| Limit | Value |
+|---|---|
+| Time of one step | 10 minutes |
+| Time to load the options of a dropdown | 15 seconds |
+| A file a plug writes | 25 MB |
+| A value in the store | 512 KB |
+| A package | 20 MB |
+
+A process that failed is discarded and never reused, so do not keep state in memory between calls. Use the store.
+
+## Libraries
+
+Everything the plug imports is bundled into one file when you build. Dependencies need an allowed licence. Do not rely on native programs or on files on disk. The process does not have the packages of the host.
+
+## Code that is not allowed
+
+A plug is not a way to run code that a flow author supplies. Do not use `eval` or `new Function` on input values. Collabase refuses to accept this as a design.
+
+## If the sandbox is not available
+
+If the sandbox service is missing or degraded, the Collabase plugs keep working and the plugs that Collabase did not write do not. A run that needs the sandbox waits and tries again. See [Automation sandbox](/admin/automation-sandbox).
+
+## Related
+
+- [Build plugs](/developer/plugs/overview)
+- [Automation sandbox](/admin/automation-sandbox)
+- [Plugs](/automation/plugs)

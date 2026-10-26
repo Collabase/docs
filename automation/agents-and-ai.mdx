@@ -1,0 +1,32 @@
+---
+title: "AI and agents in Automation"
+sidebarTitle: "AI and agents"
+description: "Use AI in flows: ask a model, let an agent use tools with approvals, choose your own AI provider and work with flows from Collabase AI or an MCP client."
+icon: "bot"
+---
+
+AI in Automation is optional. Without an AI model on your instance or in the workspace, flows that use AI cannot be published, and everything else keeps working.
+
+## What you can do
+
+| You want to | Use |
+|---|---|
+| Summarise, classify or draft text in a flow | The **Ask the model** step. It sends one question and returns the answer as text. |
+| Let a model work out the steps to reach a goal | The [Agent step](/automation/agent-step), with [tools](/automation/agent-tools). |
+| Choose which model is used and set a budget | The [AI provider](/automation/ai-provider) of the workspace. |
+| Describe a step in a sentence, or ask what went wrong in a run | [Build with AI](/automation/build-with-ai). |
+| Use your flows from Claude, Cursor or your own agent | The [MCP server](/automation/mcp-server) of the workspace. |
+| Let people talk to a flow in a browser | The [chat page](/automation/chat-page). |
+
+## Safe by design
+
+- An agent can only do what its tools allow, and a tool can ask a person first.
+- Text from outside, such as the data a flow was started with or what a search returns, is handed to the model as data and not as instructions.
+- Calls to the model go out from Collabase. A plug of the sandbox never sees the key of your provider.
+- The assistants never publish a flow.
+
+## Related
+
+- [Agent step](/automation/agent-step)
+- [Flow approvals](/automation/flow-approvals)
+- [AI configuration](/admin/ai-configuration)

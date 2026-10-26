@@ -1,0 +1,43 @@
+---
+title: "Automation sandbox"
+description: "Run the plug sandbox safely: what the host needs, how to load the AppArmor profile, the sysctl fallback and how to check that it works."
+icon: "shield"
+---
+
+The sandbox is a separate service that runs every plug Collabase did not write. It uses a locked-down process per call and has no route to your database or other internal services. It needs a few kernel features on the host.
+
+## What the host needs
+
+- **Docker Compose installs** get the sandbox with the installer. The installer loads its AppArmor profile `collabase-sandbox` on hosts that use AppArmor.
+- **The AppArmor rule `userns`** needs AppArmor 4. On older versions the profile cannot be loaded.
+- **Hosts without AppArmor** need unprivileged user namespaces enabled in the kernel.
+
+## If the profile cannot be loaded
+
+The sandbox still starts and reports **degraded**. Collabase plugs keep working and third-party plugs are off. You have two choices:
+
+1. Update the host so that AppArmor 4 is available, then run the installer or updater again.
+2. As a fallback, set `kernel.apparmor_restrict_unprivileged_userns=0` in `/etc/sysctl.d/60-collabase-sandbox.conf` and apply it. This opens user namespaces for every process on the host, so prefer the first choice.
+
+## Check that it works
+
+On a Docker host run this from the install folder:
+
+```bash
+docker exec collabase-sandbox node -e "fetch('http://127.0.0.1:8100/health').then(r=>r.text()).then(console.log)"
+```
+
+The answer says `ok` when plugs can run and `degraded` when the isolation is missing.
+
+## Docker Swarm
+
+Swarm cannot set the profiles a service needs, so the sandbox runs outside the stack on its own node. Run `bash deployment/swarm/sandbox-node.sh` on a node after the stack is deployed. It creates the shared secret, loads the profile, pulls the image and starts the container. Run it on more than one node to add capacity, and load the profile on each.
+
+## Kubernetes
+
+The Helm chart includes the sandbox. Enable it in the values and make sure the nodes can load the profile. A network policy keeps the sandbox away from the database and other services.
+
+## Related
+
+- [Automation plugs](/admin/automation-plugs)
+- [Plugs](/automation/plugs)

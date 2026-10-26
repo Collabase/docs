@@ -1,0 +1,89 @@
+---
+title: "Get started with a plug"
+sidebarTitle: "Get started"
+icon: "play"
+description: "Create your first plug with the command line tool, add an action, build it, upload it to an instance and run it in a flow."
+---
+
+This page builds a plug with one action and runs it in a flow. You need Node.js 24 and an instance where you are a system administrator.
+
+## Create the plug
+
+```bash
+collabase-plug init hello-plug --name hello-plug
+cd hello-plug
+```
+
+The command creates a folder with `package.json`, `src/index.ts`, a short `README.md` and a `.gitignore`. The folder must be empty. The package name may use lower case letters, digits, dots, dashes and underscores, and it must not equal the name of a plug in the catalog or of a plug that comes with Collabase.
+
+## The generated code
+
+`src/index.ts` holds one action:
+
+```ts
+import { createAction, createPiece, PieceAuth, Property } from "@collabase/plug-framework";
+
+const greet = createAction({
+  name: "greet",
+  displayName: "Greet",
+  description: "Returns a greeting for a name.",
+  props: { name: Property.ShortText({ displayName: "Name", required: true }) },
+  run: async (context) => ({ greeting: `Hello ${context.propsValue.name}` }),
+});
+
+export const plug = createPiece({
+  displayName: "Hello plug",
+  description: "A Collabase plug.",
+  logoUrl: "https://example.com/logo.svg",
+  auth: PieceAuth.None(),
+  minimumSupportedRelease: "0.0.1",
+  authors: [],
+  actions: [greet],
+  triggers: [],
+});
+```
+
+<Note>
+  The function names `createPiece` and `PieceAuth` are the names of the framework. In the product, and in everything a person reads, the thing you build is a plug.
+</Note>
+
+## Build
+
+```bash
+collabase-plug build
+```
+
+The command bundles `src/index.ts` and everything it imports into one file, lists the licences of what went in, and packs the result into `dist/`. A dependency with a licence that Collabase may not redistribute stops the build. See [Publish and versions](/developer/plugs/publish).
+
+## Upload
+
+<Steps>
+  <Step title="Get an API token">
+    A system administrator creates an API token with the write level for **Automation** under **Profile, Security**. The token acts as that person.
+  </Step>
+  <Step title="Upload the package">
+    ```bash
+    export COLLABASE_API_TOKEN=cb_...
+    collabase-plug publish dist/hello-plug-0.1.0.tgz --url https://your-instance
+    ```
+    The tool prints the name, the version and the checksum of the package.
+  </Step>
+</Steps>
+
+## Use it
+
+Open a flow, select **Add step** and search for **Greet**. The plug is listed with the origin **Own**. Enter a name and run **Test step**. The result shows `{ "greeting": "Hello ..." }`, and the data picker offers `greeting` to the steps after it.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Plug definition" icon="file-code" href="/developer/plugs/definition">
+    All fields of a plug.
+  </Card>
+  <Card title="Properties" icon="sliders-horizontal" href="/developer/plugs/properties">
+    Inputs and how they look.
+  </Card>
+  <Card title="Triggers" icon="zap" href="/developer/plugs/triggers">
+    Start flows from your system.
+  </Card>
+</CardGroup>

@@ -1,0 +1,43 @@
+---
+title: "Plug definition"
+sidebarTitle: "Plug definition"
+icon: "file-code"
+description: "The fields of a plug: name, logo, authors, authentication, supported releases, actions and triggers, and which of them Collabase reads."
+---
+
+Create a plug with `createPiece`. It returns the object that the build packs and the sandbox loads. Export it as `plug` from `src/index.ts`.
+
+```ts
+export const plug = createPiece({
+  displayName: "Supplier portal",
+  description: "Read orders and confirm deliveries.",
+  logoUrl: "https://example.com/logo.svg",
+  auth: PieceAuth.SecretText({ displayName: "API key", required: true }),
+  minimumSupportedRelease: "0.0.1",
+  authors: ["Your team"],
+  actions: [listOrders, confirmDelivery],
+  triggers: [newOrder],
+});
+```
+
+## Fields
+
+| Field | Description |
+|---|---|
+| `displayName` | The name people see in the step list. |
+| `description` | One sentence under the name. |
+| `logoUrl` | The address of the logo that the step list shows. |
+| `authors` | A list of names, shown with the plug. May be empty. |
+| `auth` | What credentials the plug needs. Use `PieceAuth.None()` for none. See [Authentication](/developer/plugs/authentication). |
+| `actions` | The actions of the plug. See [Actions](/developer/plugs/actions). |
+| `triggers` | The triggers of the plug. See [Triggers](/developer/plugs/triggers). |
+| `minimumSupportedRelease` | The oldest release of the framework the plug is written for. Leave it at the value `init` writes. |
+| `categories`, `deprecated` | Optional metadata. |
+
+The **name** and the **version** of the plug come from `package.json`, not from the code. The build needs a valid name and an exact version such as `0.1.0`. Names are unique per instance. See [Publish and versions](/developer/plugs/publish).
+
+## Related
+
+- [Get started](/developer/plugs/get-started)
+- [Authentication](/developer/plugs/authentication)
+- [Publish and versions](/developer/plugs/publish)

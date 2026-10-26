@@ -1,0 +1,45 @@
+---
+title: "Props validation"
+sidebarTitle: "Props validation"
+icon: "badge-check"
+description: "Check inputs with Zod before an action works, and turn a bad input into a message that tells the person which field to fix."
+---
+
+The editor checks that a required input is filled. It cannot know that a quantity must be between 1 and 100 or that an address must look like an email. Check these rules in your code.
+
+## Validate with Zod
+
+```ts
+import { createAction, Property } from "@collabase/plug-framework";
+import { propsValidation } from "@collabase/plug-framework/common";
+import { z } from "zod";
+
+export const reserve = createAction({
+  name: "reserve",
+  displayName: "Reserve",
+  description: "Reserves a number of items.",
+  props: {
+    quantity: Property.Number({ displayName: "Quantity", required: true }),
+    email: Property.ShortText({ displayName: "Email", required: true }),
+  },
+  run: async (context) => {
+    await propsValidation.validateZod(context.propsValue, {
+      quantity: z.number().int().min(1, "The quantity must be at least 1.").max(100, "The quantity must be at most 100."),
+      email: z.string().email("The email address is not valid."),
+    });
+    return { reserved: context.propsValue.quantity };
+  },
+});
+```
+
+`validateZod` takes the values and a map of input names to Zod schemas. It throws when a value does not fit, before any call to the other system.
+
+## Messages
+
+Write the message for the person who fills in the step. It is shown on the failed step in the run, so say which input is wrong and what is allowed. Do not repeat the value: values can be personal data.
+
+## Related
+
+- [Properties](/developer/plugs/properties)
+- [Actions](/developer/plugs/actions)
+- [Debugging runs](/automation/debugging-runs)

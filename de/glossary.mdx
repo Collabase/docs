@@ -12,7 +12,7 @@ Dieses Glossar erklärt die Begriffe, denen du beim Betrieb und bei der Arbeit m
 
 ### Action (Aktion)
 
-Eine Action ist der Knoten in einer Automation, der etwas ausführt: Sie legt einen Task an, ändert eine Seite, schickt eine Slack-Nachricht oder ruft einen externen Dienst auf. Native Actions arbeiten ohne Einrichtung mit Collabase-Inhalten. Actions externer Connectors brauchen eine gespeicherte [Connection](#connection-verbindung). Jede Action erhält die Daten der vorherigen Knoten und gibt ihr eigenes Ergebnis weiter. [Mehr zu Actions](/automation/actions).
+Eine Action ist der Knoten in einer Automation, der etwas ausführt: Sie legt einen Task an, ändert eine Seite, schickt eine Slack-Nachricht oder ruft einen externen Dienst auf. Native Actions arbeiten ohne Einrichtung mit Collabase-Inhalten. Actions externer Connectors brauchen eine gespeicherte [Connection](#connection-verbindung). Jede Action erhält die Daten der vorherigen Knoten und gibt ihr eigenes Ergebnis weiter.
 
 ### Active Directory
 
@@ -28,7 +28,7 @@ Mit der REST-API von Collabase verbindest du Collabase mit anderen Werkzeugen un
 
 ### Approval node (Freigabe-Knoten)
 
-Der Approval-Knoten hält eine Automation an, bis eine bestimmte Person sie freigibt oder ablehnt. Sobald der Knoten läuft, erhält die freigebende Person eine Benachrichtigung mit einem Link zum Freigeben und einem zum Ablehnen. [Mehr zu den Knoten der Ablaufsteuerung](/automation/nodes).
+Der Approval-Knoten hält eine Automation an, bis eine bestimmte Person sie freigibt oder ablehnt. Sobald der Knoten läuft, erhält die freigebende Person eine Benachrichtigung mit einem Link zum Freigeben und einem zum Ablehnen.
 
 ### Attachments macro (Anhänge-Makro)
 
@@ -40,7 +40,7 @@ Ein Attribut ist ein Feld eines Object Type in der Registry, zum Beispiel Text, 
 
 ### Automation
 
-Automation ist die eingebaute Workflow-App von Collabase. Du verbindest einen Trigger, Conditions und Actions in einem visuellen Baukasten per Drag-and-drop, ohne Code zu schreiben. Jeder Lauf wird mit Eingabe, Ausgabe und Status jedes Knotens protokolliert. [Mehr zu Automation](/automation/overview).
+Automation ist die eingebaute Workflow-App von Collabase. Du verbindest einen Trigger, Conditions und Actions in einem visuellen Baukasten per Drag-and-drop, ohne Code zu schreiben. Jeder Lauf wird mit Eingabe, Ausgabe und Status jedes Knotens protokolliert.
 
 ## B {#b}
 
@@ -88,15 +88,15 @@ CollabaseAI ist der in Collabase eingebaute Assistent. Er beantwortet Fragen zu 
 
 ### Condition (Bedingung)
 
-Eine Condition ist ein Knoten in einer Automation, der einen Wert gegen eine Regel prüft. Ein **Filter**-Knoten stoppt den Zweig, wenn die Regel nicht erfüllt ist; ein **IfElse**-Knoten läuft auf einem Wahr- oder einem Falsch-Pfad weiter. [Mehr zu Conditions](/automation/conditions).
+Eine Condition ist ein Knoten in einer Automation, der einen Wert gegen eine Regel prüft. Ein **Filter**-Knoten stoppt den Zweig, wenn die Regel nicht erfüllt ist; ein **IfElse**-Knoten läuft auf einem Wahr- oder einem Falsch-Pfad weiter.
 
 ### Connection (Verbindung) {#connection-verbindung}
 
-Eine Connection ist ein benannter, verschlüsselter Satz Zugangsdaten für einen externen Connector. Du legst sie einmal in der Automation-App an und verwendest sie in jeder Automation wieder. Zugangsdaten erscheinen nie in den Ausführungsprotokollen. [Mehr zu Connections](/automation/actions).
+Eine Connection ist ein benannter, verschlüsselter Satz Zugangsdaten für einen externen Connector. Du legst sie einmal in der Automation-App an und verwendest sie in jeder Automation wieder. Zugangsdaten erscheinen nie in den Ausführungsprotokollen.
 
 ### Connector
 
-Ein Connector ist eine vorgefertigte Anbindung zwischen Automation und einem externen Dienst wie Slack, Microsoft Teams, GitHub oder bexio. Jeder Connector bringt eigene Trigger und Actions mit. [Mehr zu Connectors](/automation/connectors/overview).
+Ein Connector ist eine vorgefertigte Anbindung zwischen Automation und einem externen Dienst wie Slack, Microsoft Teams, GitHub oder bexio. Jeder Connector bringt eigene Trigger und Actions mit.
 
 ## D {#d}
 
@@ -178,7 +178,7 @@ Mit Live Collaboration bearbeiten mehrere Personen dieselbe Seite gleichzeitig. 
 
 ### MCP
 
-MCP (Model Context Protocol) ist ein offener Standard, um KI-Anwendungen mit externen Systemen zu verbinden. In Automation ruft der MCP-Knoten ein Werkzeug auf, das auf einem externen MCP-Server registriert ist. [Mehr zu den KI-Knoten](/automation/nodes).
+MCP (Model Context Protocol) ist ein offener Standard, um KI-Anwendungen mit externen Systemen zu verbinden. In Automation ruft der MCP-Knoten ein Werkzeug auf, das auf einem externen MCP-Server registriert ist.
 
 ### Member (Mitglied)
 
@@ -342,7 +342,7 @@ Ein Timesheet ist eine monatliche Periode von Zeiteinträgen. Es durchläuft die
 
 ### Trigger (Auslöser)
 
-Ein Trigger startet eine Automation. Das kann ein Collabase-Ereignis sein, ein Zeitplan, ein Webhook, ein manueller Start oder ein Ereignis aus einem verbundenen Dienst. Jede Automation hat genau einen Trigger. [Mehr zu Triggers](/automation/triggers).
+Ein Trigger startet eine Automation. Das kann ein Collabase-Ereignis sein, ein Zeitplan, ein Webhook, ein manueller Start oder ein Ereignis aus einem verbundenen Dienst. Jede Automation hat genau einen Trigger.
 
 ## U {#u}
 
@@ -361,10 +361,6 @@ Jedes Speichern einer Seite legt eine Momentaufnahme in ihrer Versionsgeschichte
 Die Sichtbarkeit eines Space bestimmt, wer ihn findet und lesen kann: **Private** nur eingeladene Members, **Internal** alle Angemeldeten, **Public** alle, auch Personen ohne Konto. [Mehr zur Sichtbarkeit von Spaces](/concepts/spaces).
 
 ## W {#w}
-
-### WASM plugin (WASM-Plugin)
-
-Ein WASM-Plugin erweitert das Backend von Collabase mit Logik, die nach WebAssembly kompiliert ist. Es läuft ohne Oberfläche auf deinem Server, in einer abgeschotteten Umgebung mit Grenzen für Speicher und Laufzeit. [Mehr zu WASM-Plugins](/developer/wasm).
 
 ### Work item
 

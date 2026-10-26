@@ -145,10 +145,6 @@ description: "One sentence describing what this page covers and why it matters."
 ```
 [frontmatter]
 
-import { AppHero } from "/snippets/app-hero.mdx";   ← app overview pages only
-
-<AppHero app="<app>" ... />   ← app overview pages only, see section 25
-
 <div className="home-cards brand-cards">   ← wraps the rest of an app overview page
 
 One short paragraph, no heading above it. What this is and why it matters.
@@ -291,8 +287,6 @@ A page with plain prose and one `<Steps>` block beats a page with five component
 ### App overview page pattern
 
 ```mdx
-<AppHero app="<app>" ... />   (section 25)
-
 # App Name
 
 [One-paragraph description]
@@ -384,14 +378,21 @@ Add a new page's slug to the correct `group` → `pages` array:
   live under `de/` with the same file name as the English page. A path appears in exactly one
   language. German currently covers the home page, the guides (getting started, HERMES, glossary,
   «Warum es Collabase gibt»), the guide «IAM mit Microsoft Entra ID» and security and privacy; the app reference is English only.
-- **Header (en):** four items, three of them dropdowns (`menu` on the tab): **Guides** (Welcome,
-  Getting started, User guide, HERMES, IAM with Microsoft) · **Administration** · **Reference**
-  (API reference, Developer) · **Resources** (Security and privacy, Release notes). German has
-  **Leitfäden** (Willkommen, Erste Schritte, HERMES, IAM mit Microsoft) and **Sicherheit und
-  Datenschutz**. A new guide is a new item in the Guides dropdown, with its own group. A new top-level
-  tab needs a reason, the header must stay short. A tab either has `groups` or a `menu`, never both.
-  The Welcome item holds `index`, `introduction`, `about/story` and `glossary`; `index` stays in the
-  navigation so it appears in the sitemap.
+- **Header (en):** seven tabs, each with an icon and a click that opens its first page. The header
+  tabs are plain links and carry no dropdown: everything below a tab is the sidebar. **Guides**
+  (Welcome, Getting started, Core concepts, HERMES, IAM with Microsoft, Air-gapped installation) ·
+  **Apps** (one collapsible group per app, each with its app icon from `images/apps/`) ·
+  **Automation** (Overview, Build flows, Run and publish, Agents and AI, Share and reuse, Workspaces
+  and plugs, Reference, then the four groups of Build plugs) · **Administration** · **Developers**
+  (Overview, App SDK, Collakit, MCP, Plug SDK, AgentKit, each with its status) · **API reference** ·
+  **Release notes**. A tab has `groups`, not a `menu`. A new app is a new group in the Apps tab with
+  its icon, a new guide a new group in Guides, a new developer product a new page in the Developers
+  group. The header is full at seven tabs, so a new tab replaces nothing without a reason. The
+  Welcome group holds `index`, `introduction`, `about/story` and `glossary`; `index` stays in the
+  navigation so it appears in the sitemap. Security and privacy statements live on the website, not
+  in the docs.
+- **Icons in the sidebar.** Every group and page of the Automation tab, Build plugs included, has an
+  `icon` (lucide). Other tabs add icons only to hub pages.
 - **Language switch.** Each language block has its own `navbar` with a link to the other language
   and the same primary button. The home pages repeat the link at the top right.
 - **Removing a page** always adds an entry under `redirects` to its successor. Indexed URLs must
@@ -1028,7 +1029,6 @@ name starts with a capital letter, and a nested snippet imports its own children
 | `EnterpriseNote` | One line that the feature is part of the Enterprise Edition | none |
 | `WhoCanDoThis` | The two-row **Role** and **Edition** table | `role`, `edition` |
 | `TokenShownOnce` | The warning that a token is shown only once | `days` |
-| `AppHero` | The top block of an app overview page (section 25) | `app`, `name`, `lead`, `rest`, `facts`, `points`, `primary`, `secondary` |
 
 Values from an imported expression do not appear to crawlers and AI tools, so write facts that
 matter as plain text and use snippets for text blocks only.
@@ -1044,8 +1044,8 @@ Every page has `title` and `description`. The other fields are used where they h
 | `title` | Required. Unique across the site, sentence case. Becomes the H1 and the browser title | `"SAML single sign-on"` |
 | `sidebarTitle` | A shorter label in the navigation | `"Overview"` |
 | `description` | Required. One sentence in the present tense, at most 160 characters, unique. It is also the text in `llms.txt`, which uses the first paragraph up to 300 characters | |
-| `icon` | An icon next to the page in the sidebar. Only for hub pages | `icon: "key-round"` |
-| `tag` | A label next to the title in the sidebar: `Enterprise`, `Beta` | `tag: "Enterprise"` |
+| `icon` | An icon next to the page in the sidebar. On every page of the Automation and Developers tabs, otherwise only on hub pages | `icon: "key-round"` |
+| `tag` | A label next to the title in the sidebar: `Beta` only. Never `Enterprise`; say it in the page with `EnterpriseNote` | `tag: "Beta"` |
 | `keywords` | Search terms that the text does not contain, as an array | `keywords: ["SAML", "SSO", "Entra"]` |
 | `boost` | Raises the page in the site search, 0.1 to 10. Entry points get 2 to 5, legacy pages below 1 | `boost: 3` |
 | `hideFooterPagination` | Hides the previous and next links on landing and changelog pages | `true` |
@@ -1089,7 +1089,7 @@ Change it only for a reason, and say the reason in the pull request. What we set
 
 | Setting | Value or policy |
 |---|---|
-| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: almond, lime, Outfit, lucide, page `#f7f7f7`. `colors.primary` is forest `#0f4d38` because it colors text and links, `light` and `dark` are lime `#ccfc75` |
+| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: the `mint` theme, lime, Outfit, lucide, page `#f7f7f7`. `colors.primary` is forest `#0f4d38` because it colors text and links, `light` and `dark` are lime `#ccfc75` |
 | `description` | One sentence about Collabase for search engines and AI tools |
 | `seo.metatags`, `seo.organization` | `og:site_name`, `twitter:card`, the organization with logo |
 | `thumbnails` | Preset `headline`, eyebrow from the tab |
@@ -1105,9 +1105,10 @@ Change it only for a reason, and say the reason in the pull request. What we set
 | `redirects` | One per removed page, see §11 |
 | `integrations` | Analytics only behind the consent key, see §15 |
 
-Navigation limits: at most seven header items (we have four), a label of at most four words, verbs
+Navigation limits: at most seven header tabs (we have seven), a label of at most four words, verbs
 for tasks and nouns for reference. A group can open a `root` page, and `directory` can list its
-children as cards. `tag` marks Enterprise or Beta groups. Only one kind of child per level.
+children as cards. `tag` marks Beta groups; Enterprise is never a sidebar label, the page says it
+with `EnterpriseNote`. Only one kind of child per level.
 
 Not configured because the plan does not offer them: page feedback, the assistant, analytics, CI
 checks of Mintlify. The rules describe our own checks in §24.
@@ -1249,21 +1250,7 @@ the same markup. No other page gets floating icons.
 
 ### App landing pages
 
-An app overview page opens with `AppHero` from `snippets/app-hero.mdx`, then the theme's own header (breadcrumb,
-title, description) and the page. `style.css` puts the hero first, draws a divider under it and keeps the theme
-header below. Parts of `AppHero`:
-
-| Part | Content | Source |
-|---|---|---|
-| Pill | The app name | `name` |
-| Headline | Two tones, the app icon set into the sentence: `lead` dark, `rest` grey | `lead`, `rest`, `app` |
-| Actions | A lime primary and a white secondary link to existing pages | `primary`, `secondary` |
-| Facts | Chips on sage 1 with forest text: a label and a number | `facts` |
-| Points | Three cards with the double edge: icon box, title, one sentence | `points` |
-
-Every number in `facts` is counted from the page it sits on or stated there (feature areas, views, roles,
-connectors), and every sentence in `points` restates what the page says. Nothing is invented for the hero. Wrap the
-rest of the page in `<div className="home-cards brand-cards">` so its cards get the same edge and icon box.
+An app overview page has no hero block. It opens with the theme's own header (breadcrumb, title, description) and one short paragraph. Wrap the rest of the page in `<div className="home-cards brand-cards">` so its cards get the same edge and icon box.
 
 ### Announcement banner
 
@@ -1286,7 +1273,6 @@ default and dark on request, so each rule has a light and a dark form.
 | Buttons | Lime, dark text | Lime, dark text | `colors.dark` in `docs.json` and the text rule in `style.css` |
 | Text and links | Forest `#0f4d38` | Lime | `colors.primary` and `colors.light` in `docs.json` |
 | Home background | Dots in forest at 18 %, app icons light | Dots in lime at 16 %, app icons dark | `home-bg` block in `index.mdx` and `de/index.mdx` |
-| App landing hero | White pill, two-tone headline, lime and white buttons, sage chips, three cards | Dark cards, lime chip outline | `AppHero`, classes `app-hero-*` in `style.css` |
 | Announcement banner | Dark with light text | same | `#banner` in `style.css` |
 | Fonts | Outfit 500 headings, Outfit 400 body | same | `fonts` in `docs.json`, tracking in `style.css` |
 

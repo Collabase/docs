@@ -1,0 +1,23 @@
+---
+title: "Upload a plug"
+description: "Upload the package of your own plug, built with the plug command line tool; only system administrators may, and every upload is audited."
+api: "POST /api/v1/automation/plugs"
+---
+
+Uploads a plug package as the multipart part `file`. This is the call that `collabase-plug publish` makes. The instance checks the package in the sandbox and installs it as the active version of its name. See [Publish and versions](/developer/plugs/publish).
+
+<Info>
+  Scope `automation:write`. The token owner must be a system administrator.
+</Info>
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/plugs" \
+  -H "Authorization: Bearer cb_..." \
+  -F "file=@dist/supplier-portal-0.2.0.tgz"
+```
+
+```json
+{ "data": { "name": "supplier-portal", "version": "0.2.0", "sha256": "..." } }
+```
+
+The answer is `202`. A package over 20 MB answers `413`, a file that is not a package or whose licences are not allowed `422`, and a token of someone who is not a system administrator `403`.

@@ -1,0 +1,29 @@
+---
+title: "Start a run"
+description: "Start a published flow with a payload and get the run id at once, with an optional Idempotency-Key to make repeats safe."
+api: "POST /api/v1/automation/flows/{flowId}/runs"
+---
+
+Starts a run of the published version and answers `202` with the run id. The run goes on after the call.
+
+<Info>
+  Scope `automation:write`. The token owner needs the editor role.
+</Info>
+
+## Headers
+
+<ParamField header="Idempotency-Key" type="string">
+  Up to 200 printable characters. A repeat within 24 hours answers with the first run.
+</ParamField>
+
+## Body
+
+<ParamField body="payload" type="object">
+  The data the flow starts with.
+</ParamField>
+
+```json
+{ "data": { "runId": "cm1abc" } }
+```
+
+An unpublished flow answers `409 FLOW_NOT_RUNNABLE`.

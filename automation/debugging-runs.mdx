@@ -1,0 +1,75 @@
+---
+title: "Debugging runs"
+sidebarTitle: "Debugging runs"
+icon: "bug"
+description: "Find out why a run failed: open the run list, read each step's input and output, test one step again, retry from the failed step and read the audit trail."
+---
+
+Each run keeps a record of what every step received and returned. When a flow does not do what you expect, the record tells you where it went wrong.
+
+## Find the run
+
+<Steps>
+  <Step title="Open the Runs tab">
+    Open the automation workspace and select **Runs**. The list shows the newest run first. Filter by flow, by status or by date.
+  </Step>
+  <Step title="Open the run">
+    Select a run. The page shows each step with its status: started, succeeded, failed or waiting.
+  </Step>
+  <Step title="Inspect a step">
+    Select a step to see what it received and what it returned. A step that ran more than once shows each attempt. A failed step shows its message, and the run shows which step failed.
+  </Step>
+</Steps>
+
+From the run, **Open the flow** takes you to the flow. Runs that started from the editor are marked **Test**, runs of the live flow **Production**.
+
+## Statuses
+
+| Status | Meaning |
+|---|---|
+| **Waiting** | The run is queued. |
+| **Running** | A step is being carried out. |
+| **Paused** | The run waits for a delay, a call or an approval. |
+| **Succeeded** | All steps finished. |
+| **Failed** | A step failed. |
+| **Cancelled** | An editor cancelled the run. |
+| **Timed out** | A wait or an approval ran out, or the run took too long. A single step may run for up to 10 minutes. |
+| **Internal error** | Collabase could not carry the run out, for example because the plug sandbox was not available. Retry it. |
+| **Out of memory** | A step used more memory than it may. |
+| **Log too large** | The log of the run grew beyond what Collabase keeps. |
+
+## Test one step again
+
+You do not have to run the whole flow to check a change. Open a step of the draft, go to **Test** and select **Test step**. The step runs once with the saved results of the steps before it. The test runs the step for real, so a step that creates something creates it again. The result is saved and feeds the data picker.
+
+## Retry a run
+
+Select **Retry** on a run, or tick several runs and select **Retry selected**. Choose where to start:
+
+- **The failed step**, with the outputs of the steps before it. Use this when the cause was outside the flow.
+- **The start**, with the same trigger data. Use this after you changed the flow.
+
+Then choose the version: **the published version** or **the version the run used**. The original run stays as it is, and the retry is a new run marked **retry**.
+
+## Cancel a run
+
+Select **Cancel run** on a run that is going. It stops at its next step. Steps that already ran stay done.
+
+## Common causes
+
+| What you see | Likely cause |
+|---|---|
+| A step failed with a message that names a reference | An earlier step returned nothing under that name. Open that step and look at its output. |
+| A step failed with a `FORBIDDEN` message | The service account of the workspace has no right to the object. Give it the right in the space or project. |
+| A step failed with a message about a variable | The variable was deleted or never created in this workspace. See [Variables](/automation/variables). |
+| A connection step fails and the connection is **Invalid** | The credentials no longer work. Replace the connection. |
+| The run stays **Paused** | It waits for a delay, a call to the resume address or an approval. |
+| The log of a run is gone | [Retention](/automation/workspaces#run-retention) removed it. The status of the run is still correct. |
+
+A flow that fails 10 times in a row is switched off, and the editors and admins of the workspace are told.
+
+## Related
+
+- [Runs and approvals](/automation/runs)
+- [Passing data](/automation/passing-data)
+- [Audit events](/automation/audit-events)

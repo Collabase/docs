@@ -1,0 +1,11 @@
+---
+title: "Get a run"
+description: "Read one run with the status, the failed step and the result of each step it carried out."
+api: "GET /api/v1/automation/runs/{runId}"
+---
+
+Returns the run and its steps. A step output that is too large is left out and marked truncated.
+
+<Info>
+  Scope `automation:read`.
+</Info>
