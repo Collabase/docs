@@ -3,65 +3,222 @@ title: "Developers"
 sidebarTitle: "Overview"
 icon: "code-xml"
 description: "The ways to extend and connect Collabase as a developer: MCP today, and the App SDK, Plug SDK, Collakit and AgentKit from Q4 2026."
+mode: "custom"
 ---
 
-Collabase can be extended and connected in several ways. This page lists them, says what you can use today and points to where each one is described.
+export const SectionTitle = ({ children }) => (
+  <h2 className="home-section-title mb-5 mt-16">{children}</h2>
+);
 
-## What is available and what is coming
+export const Pille = ({ x, y, b, text, signal = false, code = false }) => (
+  <g>
+    <rect x={x} y={y} width={b} height={16} rx={8} className={signal ? "dz-signal-weich" : "dz-flaeche"} />
+    <text x={x + b / 2} y={y + 11} textAnchor="middle" className={`dz-text${signal ? " dz-text-hell" : ""}${code ? " dz-code" : ""}`}>{text}</text>
+  </g>
+);
 
-| Product | What it is for | Status |
-|---|---|---|
-| **MCP** | Connect an AI agent such as Claude, ChatGPT or Cursor to Collabase. | Available now |
-| **App SDK** | Build apps in TypeScript and React that run inside Collabase. | Q4 2026 |
-| **Plug SDK** | Write plugs that add triggers and actions to Automation. | Q4 2026 |
-| **Collakit** | The Collabase design system for apps: foundations, components, icons and tokens. | Q4 2026 |
-| **AgentKit** | Rules, skills and MCP access that help coding agents build apps and plugs the same way every time. | Q4 2026 |
+export const Balken = ({ x, y, b }) => <rect x={x} y={y} width={b} height={3} rx={1.5} className="dz-balken" />;
+
+export const Fenster = ({ x, y, b, h }) => (
+  <g>
+    <rect x={x} y={y} width={b} height={h} rx={6} className="dz-tief" />
+    <line x1={x} y1={y + 12} x2={x + b} y2={y + 12} className="dz-hilfe" />
+    <circle cx={x + 7} cy={y + 6} r={1.6} className="dz-punkt" />
+    <circle cx={x + 12} cy={y + 6} r={1.6} className="dz-punkt" />
+    <circle cx={x + 17} cy={y + 6} r={1.6} className="dz-punkt" />
+  </g>
+);
+
+export const Drawing = ({ children }) => (
+  <svg viewBox="0 0 200 120" className="dev-tile-svg" aria-hidden="true" focusable="false">{children}</svg>
+);
+
+export const DrawingMcp = () => (
+  <Drawing>
+    <line x1={58} y1={30} x2={100} y2={60} className="dz-linie" />
+    <line x1={58} y1={90} x2={100} y2={60} className="dz-linie" />
+    <line x1={142} y1={60} x2={100} y2={60} className="dz-linie" />
+    <Pille x={14} y={22} b={44} text="Claude" />
+    <Pille x={8} y={82} b={50} text="ChatGPT" />
+    <Pille x={142} y={52} b={46} text="Cursor" />
+    <circle cx={100} cy={60} r={12} className="dz-signal-weich" />
+    <circle cx={100} cy={60} r={3} className="dz-signal-f" />
+  </Drawing>
+);
+
+export const DrawingApp = () => (
+  <Drawing>
+    <Fenster x={18} y={14} b={150} h={92} />
+    <Balken x={26} y={34} b={34} />
+    <Balken x={26} y={44} b={26} />
+    <Balken x={26} y={54} b={30} />
+    <rect x={96} y={30} width={86} height={80} rx={6} className="dz-tief" />
+    <rect x={96} y={30} width={86} height={80} rx={6} className="dz-signal" />
+    <line x1={120} y1={30} x2={120} y2={110} className="dz-hilfe" />
+    <Balken x={102} y={42} b={12} />
+    <Balken x={102} y={52} b={9} />
+    <Balken x={128} y={42} b={44} />
+    <Balken x={128} y={52} b={30} />
+    <Balken x={128} y={62} b={38} />
+  </Drawing>
+);
+
+export const DrawingPlug = () => (
+  <Drawing>
+    <rect x={16} y={40} width={50} height={40} rx={6} className="dz-flaeche" />
+    <text x={41} y={63} textAnchor="middle" className="dz-text">CI</text>
+    <rect x={124} y={26} width={60} height={68} rx={6} className="dz-tief" />
+    <Balken x={132} y={38} b={36} />
+    <Balken x={132} y={48} b={28} />
+    <line x1={66} y1={60} x2={118} y2={60} className="dz-linie" />
+    <Pille x={74} y={66} b={38} text="POST" />
+    <rect x={132} y={62} width={44} height={18} rx={4} className="dz-signal-weich" />
+    <text x={154} y={74} textAnchor="middle" className="dz-text dz-text-hell">passed</text>
+  </Drawing>
+);
+
+export const DrawingKit = () => (
+  <Drawing>
+    <rect x={20} y={20} width={70} height={22} rx={6} className="dz-flaeche" />
+    <Balken x={30} y={30} b={40} />
+    <rect x={100} y={20} width={80} height={22} rx={6} className="dz-tief" />
+    <Balken x={108} y={30} b={30} />
+    <rect x={20} y={56} width={30} height={16} rx={8} className="dz-flaeche" />
+    <circle cx={28} cy={64} r={5} className="dz-punkt" />
+    <rect x={60} y={56} width={30} height={16} rx={8} className="dz-signal-weich" />
+    <circle cx={82} cy={64} r={5} className="dz-signal-f" />
+    <rect x={100} y={56} width={16} height={16} rx={4} className="dz-flaeche" />
+    <path d="M104 64 L107 67 L112 61" className="dz-linie" />
+    <Balken x={122} y={62} b={44} />
+    <rect x={20} y={86} width={160} height={18} rx={5} className="dz-tief" />
+    <Balken x={28} y={93} b={64} />
+  </Drawing>
+);
+
+export const DrawingAgent = () => (
+  <Drawing>
+    <path d="M62 12 H124 L140 28 V108 H62 Z" className="dz-tief" />
+    <path d="M124 12 V28 H140" className="dz-linie" />
+    <text x={72} y={34} className="dz-text dz-text-hell dz-code">AGENTS.md</text>
+    <line x1={72} y1={40} x2={118} y2={40} className="dz-signal" />
+    <Balken x={72} y={52} b={56} />
+    <Balken x={72} y={62} b={44} />
+    <Balken x={72} y={72} b={60} />
+    <Balken x={72} y={82} b={36} />
+    <Balken x={72} y={92} b={50} />
+  </Drawing>
+);
+
+export const DrawingApi = () => (
+  <Drawing>
+    <rect x={18} y={44} width={64} height={32} rx={6} className="dz-flaeche" />
+    <text x={50} y={63} textAnchor="middle" className="dz-text">Trigger</text>
+    <line x1={82} y1={60} x2={118} y2={60} className="dz-linie" />
+    <circle cx={100} cy={60} r={2.5} className="dz-punkt" />
+    <rect x={118} y={44} width={64} height={32} rx={6} className="dz-signal-weich" />
+    <text x={150} y={63} textAnchor="middle" className="dz-text dz-text-hell">Action</text>
+    <rect x={18} y={86} width={64} height={18} rx={5} className="dz-tief" />
+    <Balken x={26} y={93} b={38} />
+  </Drawing>
+);
+
+export const Tile = ({ href, title, status, children, drawing }) => (
+  <a href={href} className="dev-tile">
+    <div className="dev-tile-bild">{drawing}</div>
+    <p className="dev-tile-titel">{title}{status}</p>
+    <p className="dev-tile-text">{children}</p>
+  </a>
+);
+
+export const Mark = () => (
+  <svg viewBox="0 0 120 100" className="dev-mark" aria-hidden="true" focusable="false">
+    <circle cx={54} cy={50} r={38} className="dz-hilfe" />
+    <circle cx={54} cy={50} r={21} className="dz-hilfe" />
+    <circle cx={54} cy={50} r={46} className="dz-hilfe" />
+    <line x1={2} y1={50} x2={118} y2={50} className="dz-hilfe" />
+    <line x1={54} y1={0} x2={54} y2={100} className="dz-hilfe" />
+    <line x1={16} y1={12} x2={92} y2={88} className="dz-hilfe" />
+    <line x1={92} y1={12} x2={16} y2={88} className="dz-hilfe" />
+    <path
+      d="M 80.870 76.870 A 38 38 0 1 1 54.000 12.000 L 54.000 29.000 A 21 21 0 1 0 68.849 64.849 Z"
+      pathLength={100}
+      className="dz-linie dev-schleife"
+    />
+    <path
+      d="M 56.830 52.830 A 38 38 0 0 1 83.700 41.700 L 83.700 58.700 A 21 21 0 0 0 68.851 64.851 Z"
+      pathLength={100}
+      className="dz-signal dev-schleife dev-schleife-spaet"
+    />
+    {[
+      [54, 12],
+      [54, 29],
+      [80.87, 76.87],
+      [68.85, 64.85],
+      [83.7, 41.7],
+      [83.7, 58.7],
+      [56.83, 52.83],
+    ].map(([x, y]) => (
+      <rect key={`${x}-${y}`} x={x - 0.7} y={y - 0.7} width={1.4} height={1.4} className="dz-punkt" />
+    ))}
+  </svg>
+);
+
+<div className="dev-hero">
+  <div className="dev-raster" aria-hidden="true" />
+  <div className="dev-hero-inner">
+    <div className="dev-hero-text">
+      <h1 className="home-title">
+        Extend and connect <span className="brand-marker-action">Collabase</span>
+      </h1>
+      <p className="mt-6 max-w-xl text-lg">
+        Connect an AI agent today with MCP. Build apps, plugs and design-system components with the App SDK, the Plug SDK and Collakit from Q4 2026.
+      </p>
+    </div>
+    <div className="dev-hero-mark"><Mark /></div>
+  </div>
+</div>
+
+<div className="home-cards mx-auto max-w-5xl px-6 pb-24">
+
+<SectionTitle>Build on Collabase</SectionTitle>
+
+<div className="dev-tiles">
+  <Tile href="/developer/mcp" title="MCP" status={<Badge color="green">Available now</Badge>} drawing={<DrawingMcp />}>
+    Connect an AI agent such as Claude, ChatGPT or Cursor to Collabase.
+  </Tile>
+  <Tile href="/developer/app-sdk" title="App SDK" status={<Badge color="gray">Q4 2026</Badge>} drawing={<DrawingApp />}>
+    Build apps in TypeScript and React that run inside Collabase.
+  </Tile>
+  <Tile href="/developer/plug-sdk" title="Plug SDK" status={<Badge color="gray">Q4 2026</Badge>} drawing={<DrawingPlug />}>
+    Write plugs that add triggers and actions to Automation.
+  </Tile>
+  <Tile href="/developer/collakit" title="Collakit" status={<Badge color="gray">Q4 2026</Badge>} drawing={<DrawingKit />}>
+    The Collabase design system for apps: foundations, components, icons and tokens.
+  </Tile>
+  <Tile href="/developer/agentkit" title="AgentKit" status={<Badge color="gray">Q4 2026</Badge>} drawing={<DrawingAgent />}>
+    Rules, skills and MCP access that help coding agents build the same way every time.
+  </Tile>
+  <Tile href="/api/automation/overview" title="Automation API" drawing={<DrawingApi />}>
+    Read and control automation workspaces, flows and runs with an API token.
+  </Tile>
+</div>
+
+<SectionTitle>Open source</SectionTitle>
 
 The App SDK, the Plug SDK, Collakit and AgentKit are open source under the MIT licence. Their repositories on GitHub are public, and the npm packages are published from Q4 2026. The built-in plugs and the automation engine are not open source.
 
-<CardGroup cols={2}>
-  <Card title="MCP" icon="plug" href="/developer/mcp">
-    Connect an AI agent to Collabase. Available now.
+<SectionTitle>Related</SectionTitle>
+
+<Columns cols={3} className="brand-cards">
+  <Card title="API reference" icon="code" href="/api/introduction">
+    Endpoints for pages, work items, test management, automation and SCIM.
   </Card>
-  <Card title="App SDK" icon="app-window" href="/developer/app-sdk">
-    Apps inside Collabase. Q4 2026.
+  <Card title="Apps and agents" icon="shield-user" href="/admin/apps-and-agents">
+    Decide how AI agents and other applications may ask your members for access.
   </Card>
-  <Card title="Plug SDK" icon="blocks" href="/developer/plug-sdk">
-    Plugs for Automation. Q4 2026.
+  <Card title="Build a plug" icon="hammer" href="/developer/plug-sdk">
+    Plugs run in an isolated sandbox with no route to your internal systems.
   </Card>
-  <Card title="Collakit" icon="package" href="/developer/collakit">
-    The design system. Q4 2026.
-  </Card>
-  <Card title="AgentKit" icon="bot" href="/developer/agentkit">
-    Coding agents build with Collabase rules. Q4 2026.
-  </Card>
-</CardGroup>
+</Columns>
 
-## MCP
-
-The MCP server connects AI agents to Collabase data. An agent signs in with OAuth and acts with the rights of the person who connected it. It has the same tools as Collabase AI, limited to the permissions granted at connection, and an administrator decides who may connect an agent. Guests cannot. You get the endpoint from your administrator. It ends in `/api/mcp`. Each automation workspace also has its own endpoint for flows. See [Connect an AI agent](/concepts/connect-ai-agents), the [MCP server of Automation](/automation/mcp-server) and the [page on the website](https://collabase.ch/platform/developers/mcp).
-
-## App SDK
-
-The App SDK is a TypeScript and React toolkit for apps that run inside Collabase, in the cloud and on your own server. An app can add a window in the app drawer with its own sidebar, a panel on work items, gadgets for dashboards, settings at the level of the instance, a space or a project, and its own triggers and actions for Automation. Its backend code runs in isolated environments with limits for time and memory, and an app never has more rights than the person using it. Administrators confirm the permissions and activate an app per space. It is announced for Q4 2026. See the [page on the website](https://collabase.ch/platform/developers/app-sdk).
-
-## Plug SDK
-
-A plug adds triggers and actions to Automation for a system that the catalog does not cover. Plugs are written in TypeScript and run in an isolated sandbox with no route to your internal systems. They come with the Plug SDK in Q4 2026. The guide for building them is already in this documentation. See [Plug SDK](/developer/plug-sdk) and the [page on the website](https://collabase.ch/platform/developers/plug-sdk).
-
-## Collakit
-
-Collakit is the design system of Collabase: colours, icons, typography, components and design tokens, with dark mode, themes, languages and accessibility built in. The core of Collabase uses the same tokens, so an app built with Collakit looks and behaves like Collabase. The repository is public, and the npm package `@getcollabase/collakit` follows in Q4 2026. See the [page on the website](https://collabase.ch/platform/developers/collakit).
-
-## AgentKit
-
-AgentKit is a package of rules, skills and MCP access for coding agents. It contains a plugin for Claude Code, an `AGENTS.md` file for any agent that reads it and adapters for Codex, Cursor and ChatGPT, so that agents build apps and plugs by the same rules every time. It launches in Q4 2026 together with the App SDK. See the [page on the website](https://collabase.ch/platform/developers/agentkit).
-
-## Related
-
-- [App SDK](/developer/app-sdk)
-- [Plug SDK](/developer/plug-sdk)
-- [Collakit](/developer/collakit)
-- [AgentKit](/developer/agentkit)
-- [Automation API](/api/automation/overview)
-- [Apps and agents](/admin/apps-and-agents)
+</div>

@@ -1,132 +1,140 @@
-/*
-  Brand colors. The surface decides the color, not the element (documentation-rules.md, section 25).
-  The page is #f7f7f7, a card is white. Sage only sits on a white card with a hairline, text and lines on light
-  are forest green (wald), never lime, green, mint or sage.
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
 
-  - Action surfaces (hero, buttons): lime. A button has dark text, a headline word gets a lime marker.
-  - Light content sections: sage. Sage 1 is the pill, sage 2 the marker and the icon box, sage 3 lines and dots.
-    Everything else is neutral.
-  - Dark surfaces: lime, green and mint for text, check marks and tags. The core gradient (lime, green, mint)
-    exists only here and in the logo.
-  There is no gold. Never sage on dark, never neon text on light.
+/*
+  Tokens of the website's new design (collabase-landingpage, src/styles/geruest.css). The values are copies, the
+  website is the source. Light and dark switch through the tokens, never through classes in the markup.
+  Lime carries no text on white, forest green does. There is no gold and no sage.
 */
 
 :root {
-  --brand-lime: #ccfc75;
-  --brand-green: #77f355;
-  --brand-mint: #1ae299;
-  --brand-sage-1: #dfe9c0;
-  --brand-sage-2: #c9dfae;
-  --brand-sage-3: #b5d2a0;
-  --brand-wald: #0f4d38;
-  --page: #f7f7f7;
-  --card-line: #e5e5e5;
-  --card-hairline: rgb(0 0 0 / 0.06);
-  --brand-ink-on-neon: #10200a;
-  --brand-core-gradient: linear-gradient(90deg, #ccfc75, #77f355, #1ae299);
+  --ds-bg: #ffffff;
+  --ds-bg-2: #fafafb;
+  --ds-bg-3: #f3f4f6;
+  --ds-bg-4: #edeff3;
+  --ds-linie: #eceef2;
+  --ds-linie-2: #e1e4ea;
+  --ds-linie-3: #cad0d9;
+  --ds-punkt: #b5bdc9;
+  --ds-text-1: #17181a;
+  --ds-text-2: #3a3f47;
+  --ds-text-3: #6b7482;
+  --ds-text-4: #8f99a8;
+  --ds-signal: #10a874;
+  --ds-signal-weich: rgb(16 168 116 / 0.12);
+  --ds-akzent-text: #0f4d38;
+  --ds-knopf: #ccfc75;
+  --ds-knopf-schrift: #101010;
+  --ds-kopf: rgb(255 255 255 / 0.9);
+  --ds-bild-kante: rgb(0 0 0 / 0.08);
+  --ds-hero-licht: radial-gradient(60% 70% at 50% 100%, rgb(229 233 240 / 0.9), transparent 70%);
+  --ds-band: #101010;
+  --ds-band-2: #17181a;
+  --ds-band-linie-2: #2e3238;
 }
 
-/* Headline marker on a content section: one word, sage 2 with dark green text on light, lime text on dark. */
-.brand-marker {
-  background: var(--brand-sage-2);
-  border-radius: 0.375rem;
-  color: var(--brand-wald);
-  padding: 0 0.35em;
+.dark {
+  --ds-bg: #101010;
+  --ds-bg-2: #161718;
+  --ds-bg-3: #1c1d1f;
+  --ds-bg-4: #232529;
+  --ds-linie: #1f2023;
+  --ds-linie-2: #2a2d32;
+  --ds-linie-3: #383e47;
+  --ds-punkt: #505967;
+  --ds-text-1: #f3f4f6;
+  --ds-text-2: #cad0d9;
+  --ds-text-3: #8f99a8;
+  --ds-text-4: #6f7988;
+  --ds-signal: #1ae299;
+  --ds-signal-weich: rgb(26 226 153 / 0.14);
+  --ds-akzent-text: #ccfc75;
+  --ds-kopf: rgb(16 16 16 / 0.88);
+  --ds-bild-kante: rgb(255 255 255 / 0.1);
+  --ds-hero-licht: radial-gradient(60% 70% at 50% 100%, rgb(56 62 71 / 0.35), transparent 70%);
+  --ds-band: #0a0a0a;
+  --ds-band-2: #131415;
 }
 
-.dark .brand-marker {
-  background: transparent;
-  color: var(--brand-lime);
-  padding: 0;
-}
-
-/* Headline marker on an action surface such as the hero: a lime fill with dark text in both modes. */
+/* Headline accent: one word with dark text on a lime marker on light, lime text without a fill on dark. */
+.brand-marker,
 .brand-marker-action {
-  background: var(--brand-lime);
+  background: var(--ds-knopf);
   border-radius: 0.375rem;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  color: var(--brand-ink-on-neon);
+  color: var(--ds-knopf-schrift);
   padding: 0 0.3em;
 }
 
-/* Icon box: a sage 2 tile behind a card icon on light, a lime outline on dark. Only inside .brand-cards.
-   Mintlify draws the icon as a mask, so the color is the background of the svg. */
-.brand-cards [data-component-part="card-icon"] {
-  align-items: center;
-  background: var(--brand-sage-2);
-  border-radius: 0.5rem;
-  box-sizing: content-box;
-  display: inline-flex;
-  justify-content: center;
-  padding: 0.4rem;
-}
-
-.brand-cards [data-component-part="card-icon"] svg {
-  background-color: var(--brand-wald) !important;
-}
-
-.dark .brand-cards [data-component-part="card-icon"] {
+.dark .brand-marker,
+.dark .brand-marker-action {
   background: transparent;
-  box-shadow: inset 0 0 0 1px rgb(204 252 117 / 0.35);
+  color: var(--ds-akzent-text);
+  padding: 0;
 }
 
-.dark .brand-cards [data-component-part="card-icon"] svg {
-  background-color: var(--brand-lime) !important;
+/* Card icon on a card: neutral, no tile. Mintlify draws the icon as a mask, so the color is the background of the svg. */
+.brand-cards [data-component-part="card-icon"] svg {
+  background-color: var(--ds-text-2) !important;
 }
 
-/* Tag next to a page or group in the sidebar, for example Enterprise: the sage 1 pill on light, the core
-   gradient on dark. The color sits on the inner span. */
+/* Tag next to a page or group in the sidebar, for example Enterprise. The color sits on the inner span. */
 .nav-tag-pill .nav-tag-pill-text {
-  background: var(--brand-sage-1);
-  color: var(--brand-wald);
+  background: var(--ds-bg-3);
+  box-shadow: inset 0 0 0 1px var(--ds-linie-2);
+  color: var(--ds-akzent-text);
 }
 
-.dark .nav-tag-pill .nav-tag-pill-text {
-  background: var(--brand-core-gradient);
-  color: var(--brand-ink-on-neon);
-}
-
-/* Buttons are lime with dark text. Mintlify paints the button with colors.dark and white text. */
+/* The primary button is lime with dark text. Mintlify paints the text white. */
 #topbar-cta-button,
 #topbar-cta-button a,
 #topbar-cta-button span {
-  color: var(--brand-ink-on-neon) !important;
+  color: var(--ds-knopf-schrift) !important;
 }
 
-/* The top bar of the two home pages is transparent, so content scrolls under it. Give it a calm backing.
-   Other pages keep the theme's own bar. */
+/* The top bar of the home pages is transparent, so content scrolls under it. Give it a calm backing. */
 html[data-current-path="/"] header#navbar,
 html[data-current-path="/de"] header#navbar {
   backdrop-filter: blur(12px);
-  background-color: rgb(255 255 255 / 0.95);
+  background-color: var(--ds-kopf);
 }
 
-html.dark[data-current-path="/"] header#navbar,
-html.dark[data-current-path="/de"] header#navbar {
-  background-color: rgb(9 9 9 / 0.8);
-}
-
-/* Green badge, the only badge color that carries the brand: the sage 1 pill on light, lime on dark. */
+/* Green badge, the only badge color that carries the brand. */
 [data-badge][data-color="green"] {
-  background: var(--brand-sage-1);
-  border-color: var(--brand-sage-3);
-  color: var(--brand-wald);
+  background: var(--ds-signal-weich);
+  border-color: transparent;
+  color: var(--ds-akzent-text);
 }
 
-.dark [data-badge][data-color="green"] {
-  background: var(--brand-lime);
-  border-color: var(--brand-lime);
-  color: var(--brand-ink-on-neon);
-}
-
-/* Type: Outfit, headlines at weight 500 with tight tracking, body at 400. */
+/* Type: Inter, headlines at weight 500 with tight tracking, body at 400. Mono only for code. */
 h1, h2, h3 {
   letter-spacing: -0.03em;
 }
 
 body {
   letter-spacing: -0.01em;
+}
+
+code, kbd, pre {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0;
+}
+
+/* Flat surfaces: a callout and a code block get a hairline and no shadow. */
+.callout {
+  box-shadow: none;
+}
+
+.code-block {
+  background: var(--ds-band-2);
+  border-color: var(--ds-band-linie-2);
+  box-shadow: none;
+}
+
+/* Screenshots in procedures keep a quiet frame. */
+.prose img:not([noZoom]) {
+  border: 1px solid var(--ds-bild-kante);
+  border-radius: 0.75rem;
 }
 
 /* Home page. */
@@ -136,7 +144,7 @@ body {
 }
 
 .home-title {
-  color: #171717;
+  color: var(--ds-text-1);
   font-size: 2.5rem;
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -149,90 +157,56 @@ body {
   }
 }
 
-.dark .home-title {
-  color: #fafafa;
-}
-
-/* Section label above the hero headline: a white pill with a 1px ring, normal case. */
+/* Label above the hero headline: [ LABEL ], 12px, uppercase, no fill. */
 .home-pill {
-  background: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 0 1px var(--card-line);
-  color: #404040;
+  color: var(--ds-text-3);
   display: inline-block;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  padding: 0.25rem 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.dark .home-pill {
-  background: rgb(255 255 255 / 0.06);
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12);
-  color: #e5e5e5;
+.home-pill::before {
+  content: "[ ";
+}
+
+.home-pill::after {
+  content: " ]";
 }
 
 .home-section-title {
-  color: #171717;
+  color: var(--ds-text-1);
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: -0.025em;
 }
 
-.dark .home-section-title {
-  color: #fafafa;
-}
-
 .home-link:hover {
-  color: var(--brand-wald);
+  color: var(--ds-akzent-text);
 }
 
-.dark .home-link:hover {
-  color: var(--brand-lime);
-}
-
-/* Search field: a white card with the double edge, control radius. */
+/* Search field and cards: flat, one 1px line, no shadow and no second edge. */
 .home-search,
 .home-cards .card {
-  background: #fff;
-  border: 1px solid var(--card-hairline);
-  border-radius: 0.875rem;
-  margin: 6px;
-  outline: 1px solid var(--card-line);
-  outline-offset: 5px;
+  background: var(--ds-bg);
+  border: 1px solid var(--ds-linie-2);
+  border-radius: 0.75rem;
+  box-shadow: none;
 }
 
 .home-search {
   border-radius: 0.625rem;
-  box-shadow: none;
-  width: calc(100% - 12px);
-}
-
-.dark .home-search,
-.dark .home-cards .card {
-  background: #171717;
-  border-color: rgb(255 255 255 / 0.08);
-  outline-color: rgb(255 255 255 / 0.12);
-}
-
-.home-cards .card {
-  box-shadow: none;
+  width: 100%;
 }
 
 .home-cards .card:hover {
-  border-color: var(--brand-sage-3);
+  background: var(--ds-bg-2);
+  border-color: var(--ds-linie-3);
 }
 
-.dark .home-cards .card:hover {
-  border-color: rgb(204 252 117 / 0.5);
-}
-
-.home-cards [data-component-part="card-icon"]:not(.brand-cards *) {
+.home-cards [data-component-part="card-icon"] {
   background: transparent;
-}
-
-/* Icon box on a white card: sage 2 with a hairline, forest green icon. */
-.brand-cards [data-component-part="card-icon"] {
-  box-shadow: 0 0 0 1px var(--brand-sage-3);
 }
 
 .home-cards {
@@ -244,11 +218,14 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* The announcement banner is dark with light text. Its text color is fixed by the theme, so the fill gives
-   the contrast, not the text. */
+/* The announcement banner is lime with dark text. Its text color is fixed by the theme, so it is forced here. */
 html body #banner {
-  background: #0b0f0a;
-  border-bottom: 1px solid rgb(204 252 117 / 0.3);
+  background: var(--ds-knopf);
+}
+
+html body #banner,
+html body #banner * {
+  color: var(--ds-knopf-schrift) !important;
 }
 
 /* Home background: a dot field that fades out downwards and the app icons floating at the edges. Decoration only,
@@ -259,17 +236,24 @@ html body #banner {
   position: absolute;
 }
 
+/* The light fades out before the bottom edge, so the hero runs into the page without a seam. */
+.home-bg::before {
+  background: radial-gradient(ellipse 60% 75% at 50% 35%, var(--ds-bg-3), transparent 75%);
+  content: "";
+  inset: 0;
+  mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+  position: absolute;
+}
+
 .home-dots {
-  background-image: radial-gradient(rgb(15 77 56 / 0.18) 1px, transparent 1.5px);
+  background-image: radial-gradient(var(--ds-punkt) 1px, transparent 1.5px);
   background-size: 22px 22px;
   inset: 0;
   mask-image: radial-gradient(70% 90% at 50% 0%, #000 30%, transparent 100%);
   -webkit-mask-image: radial-gradient(70% 90% at 50% 0%, #000 30%, transparent 100%);
+  opacity: 0.6;
   position: absolute;
-}
-
-.dark .home-dots {
-  background-image: radial-gradient(rgb(204 252 117 / 0.16) 1px, transparent 1.5px);
 }
 
 .home-float {
@@ -316,3 +300,243 @@ html body #banner {
     animation: none;
   }
 }
+
+/* Developers overview: a hero with a line grid and the drawn mark. It follows the mode: light on light, dark on
+   dark. Decoration only. */
+.dev-hero {
+  background: var(--ds-bg);
+  color: var(--ds-text-2);
+  overflow: hidden;
+  position: relative;
+}
+
+.dev-hero .home-title {
+  color: var(--ds-text-1);
+}
+
+.dev-raster {
+  background-image:
+    linear-gradient(to right, var(--ds-linie) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ds-linie) 1px, transparent 1px);
+  background-position: -1px -1px;
+  background-size: 48px 48px;
+  inset: 0;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, #000 30%, transparent 100%);
+  pointer-events: none;
+  position: absolute;
+}
+
+.dev-hero-inner {
+  align-items: center;
+  display: grid;
+  gap: 3rem;
+  margin: 0 auto;
+  max-width: 72rem;
+  padding: 4rem 1.5rem;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .dev-hero-inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    padding: 6rem 2.5rem;
+  }
+}
+
+.dev-hero-mark {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .dev-hero-mark {
+    justify-content: flex-end;
+  }
+}
+
+.dev-mark {
+  height: auto;
+  max-width: 22rem;
+  width: 100%;
+}
+
+.dev-mark * {
+  vector-effect: non-scaling-stroke;
+}
+
+.dev-mark .dz-linie,
+.dev-mark .dz-signal {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.dev-mark .dz-linie {
+  stroke: var(--ds-punkt);
+}
+
+.dev-mark .dz-signal {
+  stroke: var(--ds-signal);
+}
+
+.dev-mark .dz-hilfe {
+  fill: none;
+  stroke: var(--ds-linie-3);
+  stroke-dasharray: 2 4;
+  stroke-linecap: round;
+  stroke-width: 1;
+}
+
+.dev-mark .dz-punkt {
+  fill: var(--ds-punkt);
+}
+
+/* The mark draws itself in a calm 9 second loop: draw, hold, fade, restart. The stroke is in viewBox units so
+   pathLength normalises the dash. */
+@keyframes dev-schleife {
+  0% { stroke-dashoffset: 100; opacity: 1; }
+  38% { stroke-dashoffset: 0; opacity: 1; }
+  78% { stroke-dashoffset: 0; opacity: 1; }
+  94% { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 100; opacity: 0; }
+}
+
+.dev-mark .dev-schleife {
+  animation: dev-schleife 9s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  stroke-width: 0.45;
+  vector-effect: none;
+}
+
+.dev-mark .dev-schleife-spaet {
+  animation-delay: 0.7s;
+  animation-fill-mode: backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dev-mark .dev-schleife {
+    animation: none;
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* "On this page": a dot marks the active entry and glides to the next one (toc-dot.js). The active entry is
+   accent colored, the others stay quiet. */
+#table-of-contents nav {
+  position: relative;
+}
+
+#table-of-contents-content {
+  padding-left: 1rem;
+}
+
+#table-of-contents [data-layout-item="toc-item"][data-active] > [data-layout-item="toc-item-link"] {
+  color: var(--ds-akzent-text) !important;
+  font-weight: 500;
+}
+
+#table-of-contents [data-layout-item="toc-indicator"] {
+  background-color: var(--ds-akzent-text);
+  border-radius: 9999px;
+  height: 0.375rem;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transform: translateY(-50%);
+  transition: top 0.16s cubic-bezier(0.25, 0.75, 0.2, 1), opacity 0.16s;
+  width: 0.375rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #table-of-contents [data-layout-item="toc-indicator"] {
+    transition: none;
+  }
+}
+
+/* Developers overview tiles: a 16:9 picture with a fine grid and the drawing from the website, title and sentence
+   below. The drawing uses one signal color, the rest stays neutral. */
+.dev-tiles {
+  display: grid;
+  gap: 2.5rem 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .dev-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.dev-tile {
+  border-bottom: 0 !important;
+  color: inherit;
+  display: block;
+  text-decoration: none !important;
+}
+
+.dev-tile-bild {
+  align-items: center;
+  aspect-ratio: 16 / 9;
+  background-color: var(--ds-bg-2);
+  background-image:
+    linear-gradient(to right, var(--ds-linie) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ds-linie) 1px, transparent 1px);
+  background-position: -1px -1px;
+  background-size: 24px 24px;
+  border: 1px solid var(--ds-linie-2);
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  transition: border-color 0.12s ease;
+}
+
+.dev-tile:hover .dev-tile-bild {
+  border-color: var(--ds-linie-3);
+}
+
+.dev-tile-svg {
+  height: auto;
+  margin: 0;
+  max-width: 62%;
+  width: 100%;
+}
+
+.dev-tile-titel {
+  align-items: center;
+  color: var(--ds-text-1);
+  display: flex;
+  font-weight: 500;
+  gap: 0.5rem;
+  margin: 1rem 0 0.25rem;
+}
+
+.dev-tile-text {
+  color: var(--ds-text-3);
+  margin: 0;
+}
+
+.dev-tile-svg .dz-linie,
+.dev-tile-svg .dz-signal {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.dev-tile-svg .dz-linie { stroke: var(--ds-punkt); }
+.dev-tile-svg .dz-signal { stroke: var(--ds-signal); }
+.dev-tile-svg .dz-hilfe { fill: none; stroke: var(--ds-linie-3); stroke-dasharray: 2 4; stroke-linecap: round; stroke-width: 1; }
+.dev-tile-svg .dz-flaeche { fill: var(--ds-bg-3); stroke: var(--ds-linie-3); stroke-width: 1; }
+.dev-tile-svg .dz-tief { fill: var(--ds-bg); stroke: var(--ds-linie-3); stroke-width: 1; }
+.dev-tile-svg .dz-balken { fill: var(--ds-linie-3); }
+.dev-tile-svg .dz-punkt { fill: var(--ds-punkt); }
+.dev-tile-svg .dz-signal-f { fill: var(--ds-signal); }
+.dev-tile-svg .dz-signal-weich { fill: var(--ds-signal-weich); stroke: var(--ds-signal); stroke-width: 1; }
+.dev-tile-svg .dz-text { fill: var(--ds-text-3); font-family: Inter, system-ui, sans-serif; font-size: 8px; font-weight: 500; letter-spacing: 0; }
+.dev-tile-svg .dz-text-hell { fill: var(--ds-text-1); }
+.dev-tile-svg .dz-code { font-family: "JetBrains Mono", ui-monospace, monospace; }

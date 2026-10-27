@@ -25,9 +25,10 @@ A flow that starts from a chat message can be offered on a page of its own. Ever
 
 - A visitor's conversation belongs to their browser tab. A reply that takes longer than 30 seconds shows a notice and appears in the conversation when it is ready.
 - One address can send 100 messages a minute.
-- Messages and replies are kept with the run and removed with it.
+- Messages, replies and their files are kept with the run and removed with it.
 - **Make a new link** replaces the link at once. The old address shows a not found page.
-- Only text is supported.
+- A visitor can add up to three files of 10 MB each to a message. The trigger hands the flow their `fileId`, name, size and type in `files`, and a step reads one with the engine's file call.
+- A reply can carry up to three files. In **Reply in the chat**, list one stored file per line: its id, a space and the name the visitor sees. The visitor downloads them from the conversation; the browser never opens them itself.
 
 ## Related
 

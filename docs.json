@@ -256,6 +256,7 @@
             "groups": [
               {
                 "group": "Install and run",
+                "icon": "rocket",
                 "pages": [
                   "installation",
                   "installation-kubernetes",
@@ -267,6 +268,7 @@
               },
               {
                 "group": "Members and access",
+                "icon": "users",
                 "pages": [
                   "admin/users-groups",
                   "admin/identity-providers",
@@ -278,6 +280,7 @@
               },
               {
                 "group": "Instance settings",
+                "icon": "sliders-horizontal",
                 "pages": [
                   "admin/system-settings",
                   "admin/branding",
@@ -292,6 +295,7 @@
               },
               {
                 "group": "Work configuration",
+                "icon": "layout-list",
                 "pages": [
                   "admin/custom-fields",
                   "admin/work-item-types",
@@ -300,6 +304,7 @@
               },
               {
                 "group": "AI",
+                "icon": "sparkles",
                 "pages": [
                   "admin/ai-configuration",
                   "admin/ai-costs"
@@ -307,6 +312,7 @@
               },
               {
                 "group": "Automation",
+                "icon": "workflow",
                 "pages": [
                   "admin/automation-plugs",
                   "admin/automation-oauth-apps",
@@ -318,12 +324,14 @@
               },
               {
                 "group": "Time tracking",
+                "icon": "clock",
                 "pages": [
                   "admin/time-tracking"
                 ]
               },
               {
                 "group": "Operations",
+                "icon": "server",
                 "pages": [
                   "admin/hosting",
                   "admin/scaling",
@@ -729,11 +737,11 @@
   },
   "fonts": {
     "heading": {
-      "family": "Outfit",
+      "family": "Inter",
       "weight": 500
     },
     "body": {
-      "family": "Outfit",
+      "family": "Inter",
       "weight": 400
     }
   },
@@ -742,7 +750,8 @@
   },
   "background": {
     "color": {
-      "light": "#f7f7f7"
+      "light": "#ffffff",
+      "dark": "#101010"
     }
   },
   "interaction": {

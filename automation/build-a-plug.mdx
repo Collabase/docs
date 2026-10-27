@@ -13,7 +13,7 @@ Your developers can build plugs for systems that the catalog does not cover. A p
 | `collabase-plug init [folder] --name <package name>` | Creates a plug in a folder. |
 | `collabase-plug build [folder]` | Bundles the plug, checks the licences of what it bundles and packs it into `dist/`. |
 | `collabase-plug licenses [folder]` | Checks only the licences of the bundled dependencies. |
-| `collabase-plug publish <archive> --url <instance>` | Uploads the package. The token comes from `--token` or `COLLABASE_API_TOKEN`. |
+| `collabase-plug publish <archive> --url <instance> [--confirm-upgrade]` | Uploads the package; a new version of an active plug waits for confirmation unless `--confirm-upgrade` is set. The token comes from `--token` or `COLLABASE_API_TOKEN`. |
 
 ## Publish
 

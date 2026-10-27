@@ -14,7 +14,7 @@ The command line tool `collabase-plug` builds the package and uploads it. This p
 | `collabase-plug init [folder] --name <package name>` | Creates a plug in an empty folder. |
 | `collabase-plug build [folder]` | Bundles the plug, checks the licences of what it bundles and packs it into `dist/<name>-<version>.tgz`. |
 | `collabase-plug licenses [folder]` | Checks only the licences of the bundled dependencies. |
-| `collabase-plug publish <archive> --url <instance>` | Uploads the package. The token comes from `--token` or from `COLLABASE_API_TOKEN`. |
+| `collabase-plug publish <archive> --url <instance> [--confirm-upgrade]` | Uploads the package. The token comes from `--token` or from `COLLABASE_API_TOKEN`. When another version is active, the new one waits for confirmation unless you add `--confirm-upgrade`. |
 
 The package contains one file with your code and everything it imports, a manifest and a list of the licences of the bundled dependencies.
 

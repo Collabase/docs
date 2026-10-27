@@ -75,6 +75,7 @@ React to registry objects and create, change, find and delete them.
 | **Delete registry object** | Deletes a registry object. |
 | **Search registry objects** | Finds objects of a schema by text, as far as the service account may see them. |
 | **Read registry object** | Reads the label of a registry object. |
+| **List registry object types** | Lists the object types the service account may see, with the names and kinds of their fields, so a flow or an agent knows what to write. |
 
 ### Comments
 
@@ -174,10 +175,10 @@ Wait for a time, for a call from another system or for the approval of a person.
 | Name | What it does |
 |---|---|
 | **Webhook received** | A system calls the flow's webhook address. The body and the query become the trigger data. |
-| **Chat message received** | A visitor of the flow's chat page sends a message. Answer with the Reply in the chat step. |
+| **Chat message received** | A visitor of the flow's chat page sends a message, with up to three files of 10 MB. Answer with the Reply in the chat step. |
 | **Called by another flow** | The flow starts when another flow of the workspace runs the Run another flow step. The data it passes becomes the trigger data. |
 | **A flow run failed** | A production run of another flow in this workspace failed. Use it for an error flow that tells people or cleans up. |
-| **On a schedule** | Starts the flow at a fixed interval while it is switched on. |
+| **On a schedule** | Starts the flow at a fixed interval or by a cron pattern in a time zone while it is switched on. |
 
 **Actions**
 
@@ -202,777 +203,774 @@ Ask the model a question or let an agent reach a goal with tools you allow.
 
 ## Catalog of core and community plugs
 
-An administrator installs a plug from **Administration, Plugs**. Every version is checked for its licences first; 0 plugs are left out of this list because a licence does not allow shipping them. Open the plug in the flow editor to see its triggers and actions.
+An administrator installs a plug from **Administration, Plugs**. Each name links to the plug's page on collabase.ch. Open the plug in the flow editor to see its triggers and actions.
 
-| Plug | Origin | Licence status |
-|---|---|---|
-| **0CodeKit** | Community | Allowed |
-| **1ClickImpact** | Community | Allowed |
-| **ActiveCampaign** | Community | Allowed |
-| **Activepieces Platform** | Community | Allowed |
-| **Actual Budget** | Community | Not checked |
-| **Acuity Scheduling** | Community | Allowed |
-| **Acumbamail** | Community | Allowed |
-| **AddEvent** | Community | Allowed |
-| **Afforai** | Community | Allowed |
-| **AgentX** | Community | Allowed |
-| **AI** | Community | Allowed |
-| **AI Answer** | Community | Allowed |
-| **Aidbase** | Community | Allowed |
-| **AiPrise** | Community | Allowed |
-| **Aircall** | Community | Allowed |
-| **AirOps** | Community | Allowed |
-| **Airparser** | Community | Allowed |
-| **Airtable** | Community | Allowed |
-| **Airtop** | Community | Allowed |
-| **AITable** | Community | Allowed |
-| **Alai** | Community | Allowed |
-| **Algolia** | Community | Allowed |
-| **AltText.ai** | Community | Allowed |
-| **AltTextify** | Community | Allowed |
-| **Amazon S3** | Community | Not checked |
-| **Amazon SES** | Community | Allowed |
-| **Amazon SNS** | Community | Allowed |
-| **Amazon SQS** | Community | Allowed |
-| **Aminos** | Community | Allowed |
-| **AMPECO** | Community | Allowed |
-| **Anthropic Claude** | Community | Allowed |
-| **AnyHook GraphQL** | Community | Allowed |
-| **AnyHook Websocket** | Community | Allowed |
-| **Apache Kafka** | Community | Allowed |
-| **Apify** | Community | Allowed |
-| **APITemplate.io** | Community | Allowed |
-| **Apollo** | Community | Allowed |
-| **AppFollow** | Community | Allowed |
-| **Approval (Legacy)** | Core | Allowed |
-| **Asana** | Community | Allowed |
-| **Ashby** | Community | Allowed |
-| **AskHandle** | Community | Allowed |
-| **AskNews** | Community | Allowed |
-| **Assembled** | Community | Allowed |
-| **AssemblyAI** | Community | Allowed |
-| **Attio** | Community | Allowed |
-| **Autocalls** | Community | Allowed |
-| **Avian** | Community | Allowed |
-| **Avoma** | Community | Allowed |
-| **AWS Bedrock** | Community | Allowed |
-| **AWS Bedrock (Deprecated)** | Community | Allowed |
-| **AWS Lambda** | Community | Allowed |
-| **AWS Secrets Manager** | Community | Allowed |
-| **AWS Textract** | Community | Allowed |
-| **Azure Active Directory** | Community | Allowed |
-| **Azure Blob Storage** | Community | Allowed |
-| **Azure Communication Services** | Community | Allowed |
-| **Azure DevOps** | Community | Allowed |
-| **Azure OpenAI** | Community | Allowed |
-| **Backblaze** | Community | Allowed |
-| **BambooHR** | Community | Allowed |
-| **Bannerbear** | Community | Allowed |
-| **Barcode Lookup** | Community | Allowed |
-| **Baremetrics** | Community | Allowed |
-| **Base44** | Community | Allowed |
-| **Baserow** | Community | Allowed |
-| **Beamer** | Community | Allowed |
-| **Beebole** | Community | Allowed |
-| **Beehiiv** | Community | Allowed |
-| **Bettermode** | Community | Allowed |
-| **Bexio** | Community | Allowed |
-| **BigCommerce** | Community | Allowed |
-| **Bigin by Zoho CRM** | Community | Allowed |
-| **Bika.ai** | Community | Allowed |
-| **Billplz** | Community | Allowed |
-| **Binance** | Community | Allowed |
-| **Bird** | Community | Allowed |
-| **Bitly** | Community | Allowed |
-| **Bland AI** | Community | Allowed |
-| **Blockscout** | Community | Allowed |
-| **Bluesky** | Community | Allowed |
-| **Bocha** | Community | Allowed |
-| **Bokio** | Community | Allowed |
-| **Bolna AI** | Community | Allowed |
-| **Bonjoro** | Community | Allowed |
-| **Bookedin** | Community | Allowed |
-| **Box** | Community | Allowed |
-| **Brave Search** | Community | Allowed |
-| **Brevo** | Community | Allowed |
-| **Brilliant Directories** | Community | Allowed |
-| **Browse AI** | Community | Allowed |
-| **Browserless** | Community | Allowed |
-| **Bubble** | Community | Allowed |
-| **Buffer** | Community | Allowed |
-| **Bumpups** | Community | Allowed |
-| **BurstyAI** | Community | Allowed |
-| **Buttondown** | Community | Allowed |
-| **Cal.com** | Community | Allowed |
-| **Calendly** | Community | Allowed |
-| **Call-rounded** | Community | Allowed |
-| **Camb.AI** | Community | Allowed |
-| **Campaign Monitor** | Community | Allowed |
-| **Canny** | Community | Allowed |
-| **Canva** | Community | Allowed |
-| **Capsule CRM** | Community | Allowed |
-| **Captain-data** | Community | Allowed |
-| **Carbone** | Community | Allowed |
-| **Cartloom** | Community | Allowed |
-| **Cashfree Payments** | Community | Allowed |
-| **Certopus** | Community | Allowed |
-| **Chainalysis Screening API** | Community | Allowed |
-| **ChainAware.AI** | Community | Allowed |
-| **Chaindesk** | Community | Allowed |
-| **Chargebee** | Community | Allowed |
-| **ChargeKeep** | Community | Allowed |
-| **Chartly** | Community | Allowed |
-| **Chat Aid** | Community | Allowed |
-| **Chat Data** | Community | Allowed |
-| **Chatbase** | Community | Allowed |
-| **Chatfly** | Community | Allowed |
-| **Chatling** | Community | Allowed |
-| **ChatNode** | Community | Allowed |
-| **Chatsistant** | Community | Allowed |
-| **Chatwoot** | Community | Allowed |
-| **Checkout.com** | Community | Allowed |
-| **Chess.com** | Community | Allowed |
-| **Circle** | Community | Allowed |
-| **Cisco Webex Meetings** | Community | Allowed |
-| **Clarifai** | Community | Allowed |
-| **Clay** | Community | Allowed |
-| **Clearout** | Community | Allowed |
-| **ClearoutPhone** | Community | Allowed |
-| **Clicdata** | Community | Allowed |
-| **ClickFunnels** | Community | Allowed |
-| **ClickSend SMS** | Community | Allowed |
-| **ClickUp** | Community | Allowed |
-| **Clockify** | Community | Allowed |
-| **Clockodo** | Community | Allowed |
-| **Close** | Community | Allowed |
-| **CloudConvert** | Community | Allowed |
-| **Cloudinary** | Community | Allowed |
-| **Cloutly** | Community | Allowed |
-| **Coda** | Community | Allowed |
-| **Cody** | Community | Allowed |
-| **Cognito Forms** | Community | Allowed |
-| **Cohere** | Community | Allowed |
-| **CometAPI** | Community | Allowed |
-| **Comfy.ICU** | Community | Allowed |
-| **Confluence** | Community | Allowed |
-| **Connections** | Core | Allowed |
-| **ConnectUC** | Community | Allowed |
-| **Constant Contact** | Community | Allowed |
-| **Contentful** | Community | Allowed |
-| **Contextual AI** | Community | Allowed |
-| **Contiguity** | Community | Allowed |
-| **ConvertAPI** | Community | Allowed |
-| **ConvertKit** | Community | Allowed |
-| **Copper** | Community | Allowed |
-| **Copy.ai** | Community | Allowed |
-| **Coralogix** | Community | Allowed |
-| **Couchbase** | Community | Allowed |
-| **Coupa** | Community | Allowed |
-| **Crisp** | Community | Allowed |
-| **Crypto** | Core | Not checked |
-| **Cryptolens** | Community | Allowed |
-| **CSV** | Core | Allowed |
-| **Cursor** | Community | Allowed |
-| **customer.io** | Community | Allowed |
-| **CustomGPT** | Community | Allowed |
-| **CyberArk** | Community | Allowed |
-| **Dappier** | Community | Allowed |
-| **Dashworks** | Community | Allowed |
-| **Data Mapper** | Core | Allowed |
-| **Data Summarizer** | Core | Allowed |
-| **Datadog** | Community | Allowed |
-| **DataForB2B** | Community | Allowed |
-| **DataFuel** | Community | Allowed |
-| **Date Helper** | Core | Allowed |
-| **Dato CMS** | Community | Allowed |
-| **Deepgram** | Community | Allowed |
-| **DeepL** | Community | Allowed |
-| **DeepSeek** | Community | Allowed |
-| **Deftform** | Community | Allowed |
-| **Delay** | Core | Allowed |
-| **Denser.ai** | Community | Allowed |
-| **Descript** | Community | Allowed |
-| **DETECTING-AI.COM** | Community | Allowed |
-| **Devin AI** | Community | Allowed |
-| **DigitalOcean** | Community | Allowed |
-| **DigitalPilot** | Community | Allowed |
-| **DIMO** | Community | Allowed |
-| **Discord** | Community | Allowed |
-| **Discourse** | Community | Allowed |
-| **Dittofeed** | Community | Allowed |
-| **DocsBot** | Community | Allowed |
-| **Doctly AI** | Community | Allowed |
-| **DocumentPro** | Community | Allowed |
-| **DocuMerge** | Community | Allowed |
-| **Docusign** | Community | Allowed |
-| **Drip** | Community | Allowed |
-| **Dropbox** | Community | Allowed |
-| **Drupal** | Community | Allowed |
-| **Dub** | Community | Allowed |
-| **DuckDB** | Community | Allowed |
-| **Dumpling AI** | Community | Allowed |
-| **Dust** | Community | Allowed |
-| **Easy-Peasy.AI** | Community | Allowed |
-| **Echowin** | Community | Allowed |
-| **Eden AI** | Community | Allowed |
-| **EditionGuard** | Community | Allowed |
-| **Elastic Email** | Community | Allowed |
-| **ElevenLabs** | Community | Allowed |
-| **Emailit** | Community | Allowed |
-| **EmailOctopus** | Community | Allowed |
-| **Enrich Layer** | Community | Allowed |
-| **eSignatures** | Community | Allowed |
-| **Ethereum Name Service (ENS)** | Community | Allowed |
-| **Everhour** | Community | Allowed |
-| **Exa** | Community | Allowed |
-| **Extracta.ai** | Community | Allowed |
-| **Facebook Leads** | Community | Allowed |
-| **Facebook Pages** | Community | Allowed |
-| **Famulor AI - Voice Agent** | Community | Allowed |
-| **Fathom** | Community | Not checked |
-| **Fathom Analytics** | Community | Allowed |
-| **Feathery** | Community | Allowed |
-| **FeedHive** | Community | Allowed |
-| **Fellow.ai** | Community | Allowed |
-| **Figma** | Community | Allowed |
-| **Files Helper** | Core | Allowed |
-| **FileToPDF** | Community | Allowed |
-| **Fillout Forms** | Community | Allowed |
-| **Fireberry** | Community | Allowed |
-| **Firecrawl** | Community | Allowed |
-| **Fireflies.ai** | Community | Allowed |
-| **Flipando AI** | Community | Allowed |
-| **Fliqr AI** | Community | Allowed |
-| **Floqer** | Community | Allowed |
-| **Flow Helper** | Community | Allowed |
-| **Flowise** | Community | Allowed |
-| **Flowlu** | Community | Allowed |
-| **FlowParser** | Community | Allowed |
-| **Folk** | Community | Allowed |
-| **Foreplay** | Community | Allowed |
-| **Form.io** | Community | Allowed |
-| **Formbricks** | Community | Allowed |
-| **Formitable** | Community | Allowed |
-| **Formsite** | Community | Allowed |
-| **Formspark** | Community | Allowed |
-| **Formstack** | Community | Allowed |
-| **Fountain** | Community | Allowed |
-| **Fragment** | Community | Allowed |
-| **Frame** | Community | Allowed |
-| **FreeAgent** | Community | Allowed |
-| **Freshdesk** | Community | Allowed |
-| **Freshsales** | Community | Allowed |
-| **Freshservice** | Community | Allowed |
-| **Frill** | Community | Allowed |
-| **Front** | Community | Allowed |
-| **FTP/SFTP** | Core | Allowed |
-| **Gameball** | Community | Allowed |
-| **Gamma** | Community | Allowed |
-| **GCloud Pub/Sub** | Community | Allowed |
-| **Gender API** | Community | Allowed |
-| **GenerateBanners** | Community | Allowed |
-| **GetResponse** | Community | Allowed |
-| **GhostCMS** | Community | Allowed |
-| **Giftbit** | Community | Allowed |
-| **Gistly** | Community | Allowed |
-| **Gitea** | Community | Allowed |
-| **GitHub** | Community | Allowed |
-| **GitLab** | Community | Allowed |
-| **Gladia** | Community | Allowed |
-| **Glide** | Community | Allowed |
-| **Gmail** | Community | Allowed |
-| **GoodMem** | Community | Allowed |
-| **Google Ads** | Community | Allowed |
-| **Google BigQuery** | Community | Allowed |
-| **Google Calendar** | Community | Allowed |
-| **Google Chat** | Community | Allowed |
-| **Google Cloud Storage** | Community | Allowed |
-| **Google Contacts** | Community | Allowed |
-| **Google Docs** | Community | Allowed |
-| **Google Document AI** | Community | Allowed |
-| **Google Drive** | Community | Allowed |
-| **Google Forms** | Community | Allowed |
-| **Google Gemini** | Community | Allowed |
-| **Google My Business** | Community | Allowed |
-| **Google Search** | Community | Allowed |
-| **Google Search Console** | Community | Allowed |
-| **Google Sheets** | Community | Allowed |
-| **Google Slides** | Community | Allowed |
-| **Google Tasks** | Community | Allowed |
-| **Google Translate** | Community | Allowed |
-| **Google Vertex AI** | Community | Allowed |
-| **Gorgias** | Community | Allowed |
-| **Gotify** | Community | Allowed |
-| **GPTZero** | Community | Allowed |
-| **Granola** | Community | Allowed |
-| **GraphQL** | Core | Allowed |
-| **Gravity Forms** | Community | Allowed |
-| **Greenhouse** | Community | Allowed |
-| **GreenPT** | Community | Allowed |
-| **Greip** | Community | Allowed |
-| **Griptape Cloud** | Community | Allowed |
-| **Grist** | Community | Allowed |
-| **Grok by xAI** | Community | Allowed |
-| **Groq** | Community | Allowed |
-| **GuideLite** | Community | Allowed |
-| **Hacker News** | Community | Allowed |
-| **Harvest** | Community | Allowed |
-| **HashiCorp Vault** | Community | Allowed |
-| **Hastewire** | Community | Allowed |
-| **Heartbeat** | Community | Allowed |
-| **Hedy** | Community | Allowed |
-| **Help Scout** | Community | Allowed |
-| **HeyGen** | Community | Allowed |
-| **Heymarket SMS** | Community | Allowed |
-| **Hootsuite** | Community | Allowed |
-| **Housecall Pro** | Community | Allowed |
-| **HTTP** | Core | Allowed |
-| **HTTP (OAuth2)** | Community | Allowed |
-| **HubSpot** | Community | Allowed |
-| **Hugging Face** | Community | Allowed |
-| **Human Input** | Core | Allowed |
-| **Hume AI** | Community | Not checked |
-| **Hunter** | Community | Allowed |
-| **Hystruct** | Community | Allowed |
-| **IBM Cognos Analytics** | Community | Allowed |
-| **iLoveAPI** | Community | Allowed |
-| **Image Helper** | Core | Not checked |
-| **ImageRouter** | Community | Allowed |
-| **IMAP** | Community | Allowed |
-| **iMeetify** | Community | Allowed |
-| **Inbox** | Community | Allowed |
-| **Influencers.club** | Community | Allowed |
-| **Insightly** | Community | Allowed |
-| **Insighto.ai** | Community | Allowed |
-| **Instabase** | Community | Allowed |
-| **InstaCharts** | Community | Allowed |
-| **Instagram for Business** | Community | Allowed |
-| **Instantly.ai** | Community | Allowed |
-| **Instasent** | Community | Allowed |
-| **Intercom** | Community | Allowed |
-| **Intruder** | Community | Allowed |
-| **Invoice Ninja** | Community | Allowed |
-| **Jina AI** | Community | Allowed |
-| **Jira Cloud** | Community | Allowed |
-| **Jira Data Center** | Community | Allowed |
-| **Jira Service Management Operations** | Community | Allowed |
-| **JoggAI** | Community | Allowed |
-| **Jotform** | Community | Allowed |
-| **JSON** | Community | Allowed |
-| **JumpCloud** | Community | Allowed |
-| **Jungle Grid** | Community | Allowed |
-| **JustInvoice** | Community | Allowed |
-| **Kallabot** | Community | Allowed |
-| **Kapso** | Community | Allowed |
-| **Katana** | Community | Allowed |
-| **Kimai** | Community | Allowed |
-| **Kissflow** | Community | Allowed |
-| **Kizeo Forms** | Community | Allowed |
-| **Klaviyo** | Community | Allowed |
-| **Klenty** | Community | Allowed |
-| **Klipy** | Community | Allowed |
-| **Knack** | Community | Allowed |
-| **Knock** | Community | Allowed |
-| **Ko-fi** | Community | Allowed |
-| **Kommo** | Community | Allowed |
-| **KrispCall** | Community | Allowed |
-| **Kudosity** | Community | Allowed |
-| **Kustomer** | Community | Allowed |
-| **LeadConnector** | Community | Allowed |
-| **Leap AI** | Community | Allowed |
-| **Leexi** | Community | Allowed |
-| **Lemlist** | Community | Allowed |
-| **Lemon Squeezy** | Community | Allowed |
-| **Let** | Community | Allowed |
-| **Letmepost** | Community | Allowed |
-| **Letta** | Community | Allowed |
-| **Lever** | Community | Allowed |
-| **Lightfunnels** | Community | Allowed |
-| **Line Bot** | Community | Allowed |
-| **Linear** | Community | Allowed |
-| **Linka** | Community | Allowed |
-| **LinkedIn** | Community | Allowed |
-| **Linkup** | Community | Allowed |
-| **LinkupAPI** | Community | Allowed |
-| **LiveSession** | Community | Allowed |
-| **LLMRails** | Community | Allowed |
-| **LobsterMail** | Community | Allowed |
-| **LocalAI** | Community | Allowed |
-| **Lofty** | Community | Allowed |
-| **LogRocket** | Community | Allowed |
-| **LogSnag** | Community | Allowed |
-| **Lokalise** | Community | Allowed |
-| **Loops** | Community | Allowed |
-| **Lucidya** | Community | Allowed |
-| **Lusha** | Community | Allowed |
-| **Luxury Presence** | Community | Allowed |
-| **Magical API** | Community | Allowed |
-| **MagicSlides** | Community | Allowed |
-| **Mailchain** | Community | Allowed |
-| **Mailchimp** | Community | Allowed |
-| **Mailercheck** | Community | Allowed |
-| **MailerLite** | Community | Allowed |
-| **Maileroo** | Community | Allowed |
-| **Mailgun** | Community | Allowed |
-| **Mailjet** | Community | Allowed |
-| **Manual Trigger** | Core | Allowed |
-| **Manus** | Community | Allowed |
-| **Manychat** | Community | Allowed |
-| **Mastodon** | Community | Allowed |
-| **Math Helper** | Core | Allowed |
-| **Matomo** | Community | Allowed |
-| **Matrix** | Community | Allowed |
-| **Mattermost** | Community | Allowed |
-| **Mautic** | Community | Allowed |
-| **MCP** | Community | Allowed |
-| **MCP Client** | Community | Allowed |
-| **Medullar** | Community | Allowed |
-| **Meetgeek** | Community | Allowed |
-| **MeisterTask** | Community | Allowed |
-| **Mem** | Community | Allowed |
-| **Mempool** | Community | Allowed |
-| **Metabase** | Community | Allowed |
-| **Metatext** | Community | Allowed |
-| **Microsoft 365 Copilot** | Community | Allowed |
-| **Microsoft 365 People** | Community | Allowed |
-| **Microsoft 365 Planner** | Community | Allowed |
-| **Microsoft Dynamics 365 Business Central** | Community | Allowed |
-| **Microsoft Dynamics CRM** | Community | Allowed |
-| **Microsoft Excel 365** | Community | Allowed |
-| **Microsoft OneDrive** | Community | Allowed |
-| **Microsoft OneNote** | Community | Allowed |
-| **Microsoft Outlook** | Community | Allowed |
-| **Microsoft Outlook Calendar** | Community | Allowed |
-| **Microsoft Power BI** | Community | Allowed |
-| **Microsoft SharePoint** | Community | Allowed |
-| **Microsoft SQL Server** | Community | Allowed |
-| **Microsoft Teams** | Community | Allowed |
-| **Microsoft Teams Bot** | Community | Allowed |
-| **Microsoft To Do** | Community | Allowed |
-| **MillionVerifier** | Community | Allowed |
-| **Mindee** | Community | Allowed |
-| **MindStudio** | Community | Allowed |
-| **Missive** | Community | Allowed |
-| **Mistral AI** | Community | Allowed |
-| **Mixmax** | Community | Allowed |
-| **Mixpanel** | Community | Allowed |
-| **ModelsLab** | Community | Allowed |
-| **Mollie** | Community | Allowed |
-| **monday.com** | Community | Allowed |
-| **MongoDB** | Community | Allowed |
-| **Moon Invoice** | Community | Allowed |
-| **Moonclerk** | Community | Allowed |
-| **Motion** | Community | Allowed |
-| **MotionTools** | Community | Allowed |
-| **Moveo** | Community | Allowed |
-| **Moxie** | Community | Allowed |
-| **Muna** | Community | Allowed |
-| **Murf AI** | Community | Allowed |
-| **MyCase** | Community | Allowed |
-| **Mysendingbox** | Community | Allowed |
-| **MySQL** | Community | Allowed |
-| **Netlify** | Community | Allowed |
-| **NetSuite** | Community | Allowed |
-| **NeverBounce** | Community | Allowed |
-| **Nifty** | Community | Allowed |
-| **Ninety** | Community | Allowed |
-| **NinjaPipe** | Community | Allowed |
-| **Ninox** | Community | Allowed |
-| **NocoDB** | Community | Allowed |
-| **Notion** | Community | Allowed |
-| **ntfy** | Community | Allowed |
-| **Nuelink** | Community | Allowed |
-| **Octopush SMS** | Community | Allowed |
-| **Odoo** | Community | Allowed |
-| **Okta** | Community | Allowed |
-| **Omni** | Community | Allowed |
-| **Omni HR** | Community | Allowed |
-| **Omnisend** | Community | Allowed |
-| **Oncehub** | Community | Allowed |
-| **Onfleet** | Community | Allowed |
-| **OpenAI** | Community | Allowed |
-| **OpenMic AI** | Community | Allowed |
-| **OpenPhone** | Community | Allowed |
-| **OpenRouter** | Community | Allowed |
-| **Opnform** | Community | Allowed |
-| **Opportify** | Community | Allowed |
-| **Oracle Database** | Community | Allowed |
-| **Oracle Fusion Cloud ERP** | Community | Allowed |
-| **Orimon** | Community | Allowed |
-| **Outseta** | Community | Allowed |
-| **Paddle** | Community | Allowed |
-| **PagerDuty** | Community | Allowed |
-| **PandaDoc** | Community | Allowed |
-| **Paperform** | Community | Allowed |
-| **Parallel** | Community | Allowed |
-| **Parser Expert** | Community | Allowed |
-| **Parseur** | Community | Allowed |
-| **Pastebin** | Community | Allowed |
-| **Pastefy** | Community | Allowed |
-| **Paywhirl** | Community | Allowed |
-| **PDF** | Core | Not checked |
-| **PDF.co** | Community | Allowed |
-| **PDF4me** | Community | Allowed |
-| **Pdfcrowd** | Community | Allowed |
-| **PDFMonkey** | Community | Allowed |
-| **PeekShot** | Community | Allowed |
-| **Pendo** | Community | Allowed |
-| **Perplexity AI** | Community | Allowed |
-| **Personal AI** | Community | Allowed |
-| **PhantomBuster** | Community | Allowed |
-| **Phone Validator** | Community | Allowed |
-| **Photoroom** | Community | Allowed |
-| **Pinch Payments** | Community | Allowed |
-| **Pinecone** | Community | Allowed |
-| **Pinterest** | Community | Allowed |
-| **Pipedrive** | Community | Allowed |
-| **Placid** | Community | Allowed |
-| **Plausible Analytics** | Community | Allowed |
-| **Plunk** | Community | Allowed |
-| **Pocketbase** | Community | Allowed |
-| **Podio** | Community | Allowed |
-| **PollyBot AI** | Community | Allowed |
-| **PolyDoc** | Community | Allowed |
-| **Poper** | Community | Allowed |
-| **Postgres** | Community | Allowed |
-| **PostHog** | Community | Allowed |
-| **Postiz** | Community | Allowed |
-| **Postmark** | Community | Allowed |
-| **PredictLeads** | Community | Allowed |
-| **Predis.ai** | Community | Allowed |
-| **Presenton** | Community | Allowed |
-| **Productboard** | Community | Allowed |
-| **Produktly** | Community | Allowed |
-| **PromoteKit** | Community | Allowed |
-| **PromptHub** | Community | Allowed |
-| **PromptMate** | Community | Allowed |
-| **ProvenExpert** | Community | Allowed |
-| **Proxycurl** | Community | Allowed |
-| **Pubrio** | Community | Allowed |
-| **Pushbullet** | Community | Allowed |
-| **Pushover** | Community | Allowed |
-| **Pylon** | Community | Allowed |
-| **Qawafel** | Community | Allowed |
-| **Qdrant** | Community | Allowed |
-| **QR Code** | Core | Allowed |
-| **Quaderno** | Community | Allowed |
-| **Queue** | Community | Allowed |
-| **Quickbase** | Community | Allowed |
-| **QuickBooks Desktop (via Conductor)** | Community | Allowed |
-| **Quickbooks Online** | Community | Allowed |
-| **QuickBooks Online (Sandbox)** | Community | Allowed |
-| **Quickzu** | Community | Allowed |
-| **Quizell** | Community | Allowed |
-| **Qwilr** | Community | Allowed |
-| **RabbitMQ** | Community | Allowed |
-| **raia** | Community | Allowed |
-| **Raindrop** | Community | Allowed |
-| **RapidText AI** | Community | Allowed |
-| **Razorpay** | Community | Allowed |
-| **re:tune** | Community | Allowed |
-| **Reachinbox** | Community | Allowed |
-| **Readwise** | Community | Allowed |
-| **Recall.ai** | Community | Allowed |
-| **Recurly** | Community | Allowed |
-| **Reddit** | Community | Allowed |
-| **Rendex** | Community | Allowed |
-| **Reoon Email Verifier** | Community | Allowed |
-| **Reply.io** | Community | Allowed |
-| **Resend** | Community | Allowed |
-| **Respaid** | Community | Allowed |
-| **Respond.io** | Community | Allowed |
-| **Retable** | Community | Allowed |
-| **Retell AI** | Community | Allowed |
-| **Returning AI** | Community | Allowed |
-| **RingCentral** | Community | Allowed |
-| **Robolly** | Community | Allowed |
-| **Roe AI** | Community | Allowed |
-| **RSS Feed** | Community | Allowed |
-| **Runware** | Community | Allowed |
-| **Runway** | Community | Allowed |
-| **Saastic** | Community | Allowed |
-| **Sage Accounting** | Community | Allowed |
-| **Saleor** | Community | Allowed |
-| **Salesforce** | Community | Allowed |
-| **Salesloft** | Community | Allowed |
-| **SAP Ariba** | Community | Allowed |
-| **Sardis** | Community | Allowed |
-| **SavvyCal** | Community | Allowed |
-| **Scenario** | Community | Allowed |
-| **Schedule** | Core | Allowed |
-| **ScrapeGraphAI** | Community | Allowed |
-| **Scrapeless** | Community | Allowed |
-| **SeekTable** | Community | Allowed |
-| **Segment** | Community | Allowed |
-| **Sender** | Community | Allowed |
-| **SendFox** | Community | Allowed |
-| **SendGrid** | Community | Allowed |
-| **SendIt** | Community | Allowed |
-| **SendPulse** | Community | Allowed |
-| **Sendr** | Community | Allowed |
-| **Sendy** | Community | Allowed |
-| **Senja** | Community | Allowed |
-| **SerpApi** | Community | Allowed |
-| **Serpstat** | Community | Allowed |
-| **ServiceNow** | Community | Allowed |
-| **Sessions.us** | Community | Allowed |
-| **seven** | Community | Allowed |
-| **Shippo** | Community | Allowed |
-| **Shopify** | Community | Allowed |
-| **Short.io** | Community | Allowed |
-| **SignNow** | Community | Allowed |
-| **Signrequest** | Community | Allowed |
-| **SimplePDF** | Community | Allowed |
-| **SimpliRoute** | Community | Allowed |
-| **SimplyBook.me** | Community | Allowed |
-| **SimplyPrint** | Community | Allowed |
-| **SiteSpeakAI** | Community | Allowed |
-| **SkyPrep** | Community | Allowed |
-| **Skyvern** | Community | Allowed |
-| **Slack** | Community | Allowed |
-| **SlashedCloud** | Community | Allowed |
-| **SlideSpeak** | Community | Allowed |
-| **Slite** | Community | Allowed |
-| **Smaily** | Community | Allowed |
-| **SmartLead** | Community | Allowed |
-| **Smartsheet** | Community | Allowed |
-| **SmartSuite** | Community | Allowed |
-| **Smoove** | Community | Allowed |
-| **smsmode** | Community | Allowed |
-| **SMTP** | Core | Allowed |
-| **Snowflake** | Community | Not checked |
-| **SOAP** | Community | Allowed |
-| **Socialkit** | Community | Allowed |
-| **Softr** | Community | Allowed |
-| **Sofya** | Community | Allowed |
-| **Sperse** | Community | Allowed |
-| **Splitwise** | Community | Allowed |
-| **Spotify** | Community | Allowed |
-| **Square** | Community | Allowed |
-| **Stability AI** | Community | Allowed |
-| **Stable Dffusion web UI** | Community | Allowed |
-| **Storage** | Core | Allowed |
-| **Straico** | Community | Allowed |
-| **Strale** | Community | Allowed |
-| **Streak** | Community | Allowed |
-| **Stripe** | Community | Allowed |
-| **Sub Flows** | Core | Allowed |
-| **Supabase** | Community | Allowed |
-| **Supadata** | Community | Allowed |
-| **SurrealDB** | Community | Allowed |
-| **SurveyMonkey** | Community | Allowed |
-| **SurveyTale** | Community | Allowed |
-| **SwarmNode** | Community | Allowed |
-| **Synthesia** | Community | Allowed |
-| **Systeme.io** | Community | Allowed |
-| **Tableau** | Community | Allowed |
-| **Tables** | Core | Allowed |
-| **Tags** | Core | Allowed |
-| **Talkable** | Community | Allowed |
-| **Tally** | Community | Allowed |
-| **Tapfiliate** | Community | Allowed |
-| **Tarvent** | Community | Allowed |
-| **Taskade** | Community | Allowed |
-| **Tavily** | Community | Allowed |
-| **Teable** | Community | Allowed |
-| **Teamhood** | Community | Allowed |
-| **Teamleader** | Community | Allowed |
-| **Teamwork** | Community | Allowed |
-| **Telegram Bot** | Community | Allowed |
-| **Telnyx** | Community | Allowed |
-| **Tenzo** | Community | Allowed |
-| **Text Helper** | Core | Allowed |
-| **TextCortex AI** | Community | Allowed |
-| **Thankster** | Community | Allowed |
-| **TickTick** | Community | Allowed |
-| **Tidely** | Community | Allowed |
-| **TidyCal** | Community | Allowed |
-| **TimelinesAI** | Community | Allowed |
-| **TimeOps** | Community | Allowed |
-| **Tiny Talk AI** | Community | Allowed |
-| **tl;dv** | Community | Allowed |
-| **Todoist** | Community | Allowed |
-| **Toggl Track** | Community | Allowed |
-| **Total CMS** | Community | Allowed |
-| **Trello** | Community | Allowed |
-| **TrueLayer** | Community | Allowed |
-| **Trust** | Community | Allowed |
-| **Twenty** | Community | Allowed |
-| **Twilio** | Community | Allowed |
-| **Twin Web Agent** | Community | Allowed |
-| **Twitch** | Community | Allowed |
-| **Twitter** | Community | Allowed |
-| **Typeform** | Community | Allowed |
-| **Typefully** | Community | Allowed |
-| **Umami** | Community | Allowed |
-| **Upgrade.chat** | Community | Allowed |
-| **UptimeRobot** | Community | Allowed |
-| **Uscreen** | Community | Allowed |
-| **UXsniff** | Community | Allowed |
-| **Vadoo AI** | Community | Allowed |
-| **ValidatedMails** | Community | Allowed |
-| **Valyu** | Community | Allowed |
-| **Vapi** | Community | Not checked |
-| **VBOUT** | Community | Allowed |
-| **Vercel** | Community | Allowed |
-| **Vero** | Community | Allowed |
-| **VideoAsk** | Community | Allowed |
-| **VidLab7** | Community | Allowed |
-| **Vidnoz** | Community | Allowed |
-| **Village** | Community | Allowed |
-| **Vimeo** | Community | Allowed |
-| **Visible** | Community | Allowed |
-| **VLM Run** | Community | Allowed |
-| **VoIPstudio** | Community | Allowed |
-| **Vouchery** | Community | Allowed |
-| **VTEX** | Community | Allowed |
-| **Vtiger** | Community | Allowed |
-| **Wafeq** | Community | Allowed |
-| **WaitWhile** | Community | Allowed |
-| **Wayfront** | Community | Allowed |
-| **Wealthbox** | Community | Allowed |
-| **Webflow** | Community | Allowed |
-| **Webhook** | Core | Allowed |
-| **Webling** | Community | Allowed |
-| **WebScraping AI** | Community | Allowed |
-| **Wedof** | Community | Allowed |
-| **Weekdone** | Community | Allowed |
-| **Weekdone** | Community | Allowed |
-| **WhatConverts** | Community | Allowed |
-| **Whatsable** | Community | Allowed |
-| **WhatsApp Business** | Community | Allowed |
-| **WhatsScale** | Community | Allowed |
-| **Wistia** | Community | Allowed |
-| **Wonderchat** | Community | Allowed |
-| **WooCommerce** | Community | Allowed |
-| **Woodpecker** | Community | Allowed |
-| **Wootric** | Community | Allowed |
-| **Word Documents** | Core | Allowed |
-| **WordPress** | Community | Allowed |
-| **Workable** | Community | Allowed |
-| **Workday** | Community | Allowed |
-| **Wrike** | Community | Allowed |
-| **Writesonic** | Community | Allowed |
-| **Wufoo** | Community | Allowed |
-| **Xero** | Community | Allowed |
-| **XML** | Core | Allowed |
-| **Xquik** | Community | Allowed |
-| **YouCanBookMe** | Community | Allowed |
-| **Youform** | Community | Allowed |
-| **YouTrack** | Community | Allowed |
-| **YouTube** | Community | Allowed |
-| **Zagomail** | Community | Allowed |
-| **Zendesk** | Community | Allowed |
-| **Zendesk-sell** | Community | Allowed |
-| **Zeplin** | Community | Allowed |
-| **ZeroBounce** | Community | Allowed |
-| **Zoho Bookings** | Community | Allowed |
-| **Zoho Books** | Community | Allowed |
-| **Zoho Campaigns** | Community | Allowed |
-| **Zoho CRM** | Community | Allowed |
-| **Zoho Desk** | Community | Allowed |
-| **Zoho Invoice** | Community | Allowed |
-| **Zoho Mail** | Community | Allowed |
-| **Zoo** | Community | Allowed |
-| **Zoom** | Community | Allowed |
-| **Zuora** | Community | Allowed |
+- [0CodeKit](https://collabase.ch/integrations/0codekit)
+- [1ClickImpact](https://collabase.ch/integrations/oneclickimpact)
+- [ActiveCampaign](https://collabase.ch/integrations/activecampaign)
+- [Actual Budget](https://collabase.ch/integrations/actualbudget)
+- [Acuity Scheduling](https://collabase.ch/integrations/acuity-scheduling)
+- [Acumbamail](https://collabase.ch/integrations/acumbamail)
+- [AddEvent](https://collabase.ch/integrations/add-event)
+- [Afforai](https://collabase.ch/integrations/afforai)
+- [AgentX](https://collabase.ch/integrations/agentx)
+- [AI](https://collabase.ch/integrations/ai)
+- [AI Answer](https://collabase.ch/integrations/aianswer)
+- [Aidbase](https://collabase.ch/integrations/aidbase)
+- [AiPrise](https://collabase.ch/integrations/aiprise)
+- [Aircall](https://collabase.ch/integrations/aircall)
+- [AirOps](https://collabase.ch/integrations/air-ops)
+- [Airparser](https://collabase.ch/integrations/airparser)
+- [Airtable](https://collabase.ch/integrations/airtable)
+- [Airtop](https://collabase.ch/integrations/airtop)
+- [AITable](https://collabase.ch/integrations/apitable)
+- [Alai](https://collabase.ch/integrations/alai)
+- [Algolia](https://collabase.ch/integrations/algolia)
+- [AltText.ai](https://collabase.ch/integrations/alt-text-ai)
+- [AltTextify](https://collabase.ch/integrations/alttextify)
+- [Amazon S3](https://collabase.ch/integrations/amazon-s3)
+- [Amazon SES](https://collabase.ch/integrations/amazon-ses)
+- [Amazon SNS](https://collabase.ch/integrations/amazon-sns)
+- [Amazon SQS](https://collabase.ch/integrations/amazon-sqs)
+- [Aminos](https://collabase.ch/integrations/aminos)
+- [AMPECO](https://collabase.ch/integrations/ampeco)
+- [Anthropic Claude](https://collabase.ch/integrations/claude)
+- [AnyHook GraphQL](https://collabase.ch/integrations/anyhook-graphql)
+- [AnyHook Websocket](https://collabase.ch/integrations/anyhook-websocket)
+- [Apache Kafka](https://collabase.ch/integrations/apache-kafka)
+- [Apify](https://collabase.ch/integrations/apify)
+- [APITemplate.io](https://collabase.ch/integrations/apitemplate-io)
+- [Apollo](https://collabase.ch/integrations/apollo)
+- [AppFollow](https://collabase.ch/integrations/appfollow)
+- [Approval (Legacy)](https://collabase.ch/integrations/approval)
+- [Asana](https://collabase.ch/integrations/asana)
+- [Ashby](https://collabase.ch/integrations/ashby)
+- [AskHandle](https://collabase.ch/integrations/ask-handle)
+- [AskNews](https://collabase.ch/integrations/asknews)
+- [Assembled](https://collabase.ch/integrations/assembled)
+- [AssemblyAI](https://collabase.ch/integrations/assemblyai)
+- [Attio](https://collabase.ch/integrations/attio)
+- [Autocalls](https://collabase.ch/integrations/autocalls)
+- [Avian](https://collabase.ch/integrations/avian)
+- [Avoma](https://collabase.ch/integrations/avoma)
+- [AWS Bedrock](https://collabase.ch/integrations/amazon-bedrock)
+- AWS Bedrock (Deprecated)
+- [AWS Lambda](https://collabase.ch/integrations/amazon-lambda)
+- [AWS Secrets Manager](https://collabase.ch/integrations/amazon-secrets-manager)
+- [AWS Textract](https://collabase.ch/integrations/amazon-textract)
+- [Azure Active Directory](https://collabase.ch/integrations/azure-ad)
+- [Azure Blob Storage](https://collabase.ch/integrations/azure-blob-storage)
+- [Azure Communication Services](https://collabase.ch/integrations/azure-communication-services)
+- [Azure DevOps](https://collabase.ch/integrations/azure-devops)
+- [Azure OpenAI](https://collabase.ch/integrations/azure-openai)
+- [Backblaze](https://collabase.ch/integrations/backblaze)
+- [BambooHR](https://collabase.ch/integrations/bamboohr)
+- [Bannerbear](https://collabase.ch/integrations/bannerbear)
+- [Barcode Lookup](https://collabase.ch/integrations/barcode-lookup)
+- [Baremetrics](https://collabase.ch/integrations/baremetrics)
+- [Base44](https://collabase.ch/integrations/base44)
+- [Baserow](https://collabase.ch/integrations/baserow)
+- [Beamer](https://collabase.ch/integrations/beamer)
+- [Beebole](https://collabase.ch/integrations/beebole)
+- [Beehiiv](https://collabase.ch/integrations/beehiiv)
+- [Bettermode](https://collabase.ch/integrations/bettermode)
+- [Bexio](https://collabase.ch/integrations/bexio)
+- [BigCommerce](https://collabase.ch/integrations/bigcommerce)
+- [Bigin by Zoho CRM](https://collabase.ch/integrations/bigin-by-zoho)
+- [Bika.ai](https://collabase.ch/integrations/bika)
+- [Billplz](https://collabase.ch/integrations/billplz)
+- [Binance](https://collabase.ch/integrations/binance)
+- [Bird](https://collabase.ch/integrations/messagebird)
+- [Bitly](https://collabase.ch/integrations/bitly)
+- [Bland AI](https://collabase.ch/integrations/bland-ai)
+- [Blockscout](https://collabase.ch/integrations/blockscout)
+- [Bluesky](https://collabase.ch/integrations/bluesky)
+- [Bocha](https://collabase.ch/integrations/bocha-search)
+- [Bokio](https://collabase.ch/integrations/bokio)
+- [Bolna AI](https://collabase.ch/integrations/bolna)
+- [Bonjoro](https://collabase.ch/integrations/bonjoro)
+- [Bookedin](https://collabase.ch/integrations/bookedin)
+- [Box](https://collabase.ch/integrations/box)
+- [Brave Search](https://collabase.ch/integrations/brave-search)
+- [Brevo](https://collabase.ch/integrations/sendinblue)
+- [Brilliant Directories](https://collabase.ch/integrations/brilliant-directories)
+- [Browse AI](https://collabase.ch/integrations/browse-ai)
+- [Browserless](https://collabase.ch/integrations/browserless)
+- [Bubble](https://collabase.ch/integrations/bubble)
+- [Buffer](https://collabase.ch/integrations/buffer)
+- [Bumpups](https://collabase.ch/integrations/bumpups)
+- [BurstyAI](https://collabase.ch/integrations/bursty-ai)
+- [Buttondown](https://collabase.ch/integrations/buttondown)
+- [Cal.com](https://collabase.ch/integrations/cal-com)
+- [Calendly](https://collabase.ch/integrations/calendly)
+- [Call-rounded](https://collabase.ch/integrations/rounded-studio)
+- [Camb.AI](https://collabase.ch/integrations/camb-ai)
+- [Campaign Monitor](https://collabase.ch/integrations/campaign-monitor)
+- [Canny](https://collabase.ch/integrations/canny)
+- [Canva](https://collabase.ch/integrations/canva)
+- [Capsule CRM](https://collabase.ch/integrations/capsule-crm)
+- [Captain-data](https://collabase.ch/integrations/captain-data)
+- [Carbone](https://collabase.ch/integrations/carbone)
+- [Cartloom](https://collabase.ch/integrations/cartloom)
+- [Cashfree Payments](https://collabase.ch/integrations/cashfree-payments)
+- [Certopus](https://collabase.ch/integrations/certopus)
+- [Chainalysis Screening API](https://collabase.ch/integrations/chainalysis-api)
+- [ChainAware.AI](https://collabase.ch/integrations/chain-aware)
+- [Chaindesk](https://collabase.ch/integrations/chaindesk)
+- [Chargebee](https://collabase.ch/integrations/chargebee)
+- [ChargeKeep](https://collabase.ch/integrations/chargekeep)
+- [Chartly](https://collabase.ch/integrations/chartly)
+- [Chat Aid](https://collabase.ch/integrations/chat-aid)
+- [Chat Data](https://collabase.ch/integrations/chat-data)
+- [Chatbase](https://collabase.ch/integrations/chatbase)
+- [Chatfly](https://collabase.ch/integrations/chatfly)
+- [Chatling](https://collabase.ch/integrations/chatling)
+- [ChatNode](https://collabase.ch/integrations/chatnode)
+- [Chatsistant](https://collabase.ch/integrations/chatsistant)
+- [Chatwoot](https://collabase.ch/integrations/chatwoot)
+- [Checkout.com](https://collabase.ch/integrations/checkout)
+- [Chess.com](https://collabase.ch/integrations/chess-com)
+- [Circle](https://collabase.ch/integrations/circle)
+- [Cisco Webex Meetings](https://collabase.ch/integrations/webex)
+- [Clarifai](https://collabase.ch/integrations/clarifai)
+- [Clay](https://collabase.ch/integrations/clay)
+- [Clearout](https://collabase.ch/integrations/clearout)
+- [ClearoutPhone](https://collabase.ch/integrations/clearoutphone)
+- [Clicdata](https://collabase.ch/integrations/clicdata)
+- [ClickFunnels](https://collabase.ch/integrations/clickfunnels)
+- [ClickSend SMS](https://collabase.ch/integrations/clicksend)
+- [ClickUp](https://collabase.ch/integrations/clickup)
+- [Clockify](https://collabase.ch/integrations/clockify)
+- [Clockodo](https://collabase.ch/integrations/clockodo)
+- [Close](https://collabase.ch/integrations/close)
+- [CloudConvert](https://collabase.ch/integrations/cloudconvert)
+- [Cloudinary](https://collabase.ch/integrations/cloudinary)
+- [Cloutly](https://collabase.ch/integrations/cloutly)
+- [Coda](https://collabase.ch/integrations/coda)
+- [Cody](https://collabase.ch/integrations/cody)
+- [Cognito Forms](https://collabase.ch/integrations/cognito-forms)
+- [Cohere](https://collabase.ch/integrations/cohere)
+- [CometAPI](https://collabase.ch/integrations/cometapi)
+- [Comfy.ICU](https://collabase.ch/integrations/comfyicu)
+- [Confluence](https://collabase.ch/integrations/confluence)
+- [Connections](https://collabase.ch/integrations/connections)
+- [ConnectUC](https://collabase.ch/integrations/connectuc)
+- [Constant Contact](https://collabase.ch/integrations/constant-contact)
+- [Contentful](https://collabase.ch/integrations/contentful)
+- [Contextual AI](https://collabase.ch/integrations/contextual-ai)
+- [Contiguity](https://collabase.ch/integrations/contiguity)
+- [ConvertAPI](https://collabase.ch/integrations/convertapi)
+- [ConvertKit](https://collabase.ch/integrations/convertkit)
+- [Copper](https://collabase.ch/integrations/copper)
+- [Copy.ai](https://collabase.ch/integrations/copy-ai)
+- [Coralogix](https://collabase.ch/integrations/coralogix)
+- [Couchbase](https://collabase.ch/integrations/couchbase)
+- [Coupa](https://collabase.ch/integrations/coupa)
+- [Crisp](https://collabase.ch/integrations/crisp)
+- [Crypto](https://collabase.ch/integrations/crypto)
+- [Cryptolens](https://collabase.ch/integrations/cryptolens)
+- [CSV](https://collabase.ch/integrations/csv)
+- [Cursor](https://collabase.ch/integrations/cursor)
+- [customer.io](https://collabase.ch/integrations/customer-io)
+- [CustomGPT](https://collabase.ch/integrations/customgpt)
+- [CyberArk](https://collabase.ch/integrations/cyberark)
+- [Dappier](https://collabase.ch/integrations/dappier)
+- [Dashworks](https://collabase.ch/integrations/dashworks)
+- [Data Mapper](https://collabase.ch/integrations/data-mapper)
+- [Data Summarizer](https://collabase.ch/integrations/data-summarizer)
+- [Datadog](https://collabase.ch/integrations/datadog)
+- [DataForB2B](https://collabase.ch/integrations/dataforb2b)
+- [DataFuel](https://collabase.ch/integrations/datafuel)
+- [Date Helper](https://collabase.ch/integrations/date-helper)
+- [Dato CMS](https://collabase.ch/integrations/datocms)
+- [Deepgram](https://collabase.ch/integrations/deepgram)
+- [DeepL](https://collabase.ch/integrations/deepl)
+- [DeepSeek](https://collabase.ch/integrations/deepseek)
+- [Deftform](https://collabase.ch/integrations/deftform)
+- [Delay](https://collabase.ch/integrations/delay)
+- [Denser.ai](https://collabase.ch/integrations/denser-ai)
+- [Descript](https://collabase.ch/integrations/descript)
+- [DETECTING-AI.COM](https://collabase.ch/integrations/detecting-ai)
+- [Devin AI](https://collabase.ch/integrations/devin)
+- [DigitalOcean](https://collabase.ch/integrations/digital-ocean)
+- [DigitalPilot](https://collabase.ch/integrations/digital-pilot)
+- [DIMO](https://collabase.ch/integrations/dimo)
+- [Discord](https://collabase.ch/integrations/discord)
+- [Discourse](https://collabase.ch/integrations/discourse)
+- [Dittofeed](https://collabase.ch/integrations/dittofeed)
+- [DocsBot](https://collabase.ch/integrations/docsbot)
+- [Doctly AI](https://collabase.ch/integrations/doctly)
+- [DocumentPro](https://collabase.ch/integrations/documentpro)
+- [DocuMerge](https://collabase.ch/integrations/documerge)
+- [Docusign](https://collabase.ch/integrations/docusign)
+- [Drip](https://collabase.ch/integrations/drip)
+- [Dropbox](https://collabase.ch/integrations/dropbox)
+- [Drupal](https://collabase.ch/integrations/drupal)
+- [Dub](https://collabase.ch/integrations/dub)
+- [DuckDB](https://collabase.ch/integrations/duckdb)
+- [Dumpling AI](https://collabase.ch/integrations/dumpling-ai)
+- [Dust](https://collabase.ch/integrations/dust)
+- [Easy-Peasy.AI](https://collabase.ch/integrations/easy-peasy-ai)
+- [Echowin](https://collabase.ch/integrations/echowin)
+- [Eden AI](https://collabase.ch/integrations/eden-ai)
+- [EditionGuard](https://collabase.ch/integrations/editionguard)
+- [Elastic Email](https://collabase.ch/integrations/elastic-email)
+- [ElevenLabs](https://collabase.ch/integrations/elevenlabs)
+- [Emailit](https://collabase.ch/integrations/emailit)
+- [EmailOctopus](https://collabase.ch/integrations/emailoctopus)
+- [Enrich Layer](https://collabase.ch/integrations/enrichlayer)
+- [eSignatures](https://collabase.ch/integrations/esignatures)
+- [Ethereum Name Service (ENS)](https://collabase.ch/integrations/eth-name-service)
+- [Everhour](https://collabase.ch/integrations/everhour)
+- [Exa](https://collabase.ch/integrations/exa)
+- [Extracta.ai](https://collabase.ch/integrations/extracta-ai)
+- [Facebook Leads](https://collabase.ch/integrations/facebook-leads)
+- [Facebook Pages](https://collabase.ch/integrations/facebook-pages)
+- [Famulor AI - Voice Agent](https://collabase.ch/integrations/famulor)
+- [Fathom](https://collabase.ch/integrations/fathom)
+- [Fathom Analytics](https://collabase.ch/integrations/fathom-analytics)
+- [Feathery](https://collabase.ch/integrations/feathery)
+- [FeedHive](https://collabase.ch/integrations/feedhive)
+- [Fellow.ai](https://collabase.ch/integrations/fellow)
+- [Figma](https://collabase.ch/integrations/figma)
+- [Files Helper](https://collabase.ch/integrations/file-helper)
+- [FileToPDF](https://collabase.ch/integrations/filetopdf)
+- [Fillout Forms](https://collabase.ch/integrations/fillout-forms)
+- [Fireberry](https://collabase.ch/integrations/fireberry)
+- [Firecrawl](https://collabase.ch/integrations/firecrawl)
+- [Fireflies.ai](https://collabase.ch/integrations/fireflies-ai)
+- [Flipando AI](https://collabase.ch/integrations/flipando)
+- [Fliqr AI](https://collabase.ch/integrations/fliqr-ai)
+- [Floqer](https://collabase.ch/integrations/floqer)
+- [Flow Helper](https://collabase.ch/integrations/flow-helper)
+- [Flowise](https://collabase.ch/integrations/flowise)
+- [Flowlu](https://collabase.ch/integrations/flowlu)
+- [FlowParser](https://collabase.ch/integrations/flow-parser)
+- [Folk](https://collabase.ch/integrations/folk)
+- [Foreplay](https://collabase.ch/integrations/foreplay-co)
+- [Form.io](https://collabase.ch/integrations/formio)
+- [Formbricks](https://collabase.ch/integrations/formbricks)
+- [Formitable](https://collabase.ch/integrations/formitable)
+- [Formsite](https://collabase.ch/integrations/formsite)
+- [Formspark](https://collabase.ch/integrations/formspark)
+- [Formstack](https://collabase.ch/integrations/formstack)
+- [Fountain](https://collabase.ch/integrations/fountain)
+- [Fragment](https://collabase.ch/integrations/fragment)
+- [Frame](https://collabase.ch/integrations/frame)
+- [FreeAgent](https://collabase.ch/integrations/free-agent)
+- [Freshdesk](https://collabase.ch/integrations/freshdesk)
+- [Freshsales](https://collabase.ch/integrations/freshsales)
+- [Freshservice](https://collabase.ch/integrations/freshservice)
+- [Frill](https://collabase.ch/integrations/frill)
+- [Front](https://collabase.ch/integrations/front)
+- [FTP/SFTP](https://collabase.ch/integrations/sftp)
+- [Gameball](https://collabase.ch/integrations/gameball)
+- [Gamma](https://collabase.ch/integrations/gamma)
+- [GCloud Pub/Sub](https://collabase.ch/integrations/gcloud-pubsub)
+- [Gender API](https://collabase.ch/integrations/gender-api)
+- [GenerateBanners](https://collabase.ch/integrations/generatebanners)
+- [GetResponse](https://collabase.ch/integrations/getresponse)
+- [GhostCMS](https://collabase.ch/integrations/ghostcms)
+- [Giftbit](https://collabase.ch/integrations/giftbit)
+- [Gistly](https://collabase.ch/integrations/gistly)
+- [Gitea](https://collabase.ch/integrations/gitea)
+- [GitHub](https://collabase.ch/integrations/github)
+- [GitLab](https://collabase.ch/integrations/gitlab)
+- [Gladia](https://collabase.ch/integrations/gladia)
+- [Glide](https://collabase.ch/integrations/glide)
+- [Gmail](https://collabase.ch/integrations/gmail)
+- [GoodMem](https://collabase.ch/integrations/goodmem)
+- [Google Ads](https://collabase.ch/integrations/google-ads)
+- [Google BigQuery](https://collabase.ch/integrations/google-bigquery)
+- [Google Calendar](https://collabase.ch/integrations/google-calendar)
+- [Google Chat](https://collabase.ch/integrations/googlechat)
+- [Google Cloud Storage](https://collabase.ch/integrations/google-cloud-storage)
+- [Google Contacts](https://collabase.ch/integrations/google-contacts)
+- [Google Docs](https://collabase.ch/integrations/google-docs)
+- [Google Document AI](https://collabase.ch/integrations/google-document-ai)
+- [Google Drive](https://collabase.ch/integrations/google-drive)
+- [Google Forms](https://collabase.ch/integrations/google-forms)
+- [Google Gemini](https://collabase.ch/integrations/google-gemini)
+- [Google My Business](https://collabase.ch/integrations/google-my-business)
+- [Google Search](https://collabase.ch/integrations/google-search)
+- [Google Search Console](https://collabase.ch/integrations/google-search-console)
+- [Google Sheets](https://collabase.ch/integrations/google-sheets)
+- [Google Slides](https://collabase.ch/integrations/google-slides)
+- [Google Tasks](https://collabase.ch/integrations/google-tasks)
+- [Google Translate](https://collabase.ch/integrations/google-translate)
+- [Google Vertex AI](https://collabase.ch/integrations/google-vertexai)
+- [Gorgias](https://collabase.ch/integrations/gorgias)
+- [Gotify](https://collabase.ch/integrations/gotify)
+- [GPTZero](https://collabase.ch/integrations/gptzero-detect-ai)
+- [Granola](https://collabase.ch/integrations/granola)
+- [GraphQL](https://collabase.ch/integrations/graphql)
+- [Gravity Forms](https://collabase.ch/integrations/gravityforms)
+- [Greenhouse](https://collabase.ch/integrations/greenhouse)
+- [GreenPT](https://collabase.ch/integrations/greenpt)
+- [Greip](https://collabase.ch/integrations/greip)
+- [Griptape Cloud](https://collabase.ch/integrations/griptape)
+- [Grist](https://collabase.ch/integrations/grist)
+- [Grok by xAI](https://collabase.ch/integrations/grok-xai)
+- [Groq](https://collabase.ch/integrations/groq)
+- [GuideLite](https://collabase.ch/integrations/guidelite)
+- [Hacker News](https://collabase.ch/integrations/hackernews)
+- [Harvest](https://collabase.ch/integrations/harvest)
+- [HashiCorp Vault](https://collabase.ch/integrations/hashi-corp-vault)
+- [Hastewire](https://collabase.ch/integrations/hastewire)
+- [Heartbeat](https://collabase.ch/integrations/heartbeat)
+- [Hedy](https://collabase.ch/integrations/hedy)
+- [Help Scout](https://collabase.ch/integrations/help-scout)
+- [HeyGen](https://collabase.ch/integrations/heygen)
+- [Heymarket SMS](https://collabase.ch/integrations/heymarket-sms)
+- [Hootsuite](https://collabase.ch/integrations/hootsuite)
+- [Housecall Pro](https://collabase.ch/integrations/housecall-pro)
+- [HTTP](https://collabase.ch/integrations/http)
+- [HTTP (OAuth2)](https://collabase.ch/integrations/http-oauth2)
+- [HubSpot](https://collabase.ch/integrations/hubspot)
+- [Hugging Face](https://collabase.ch/integrations/hugging-face)
+- [Human Input](https://collabase.ch/integrations/forms)
+- [Hume AI](https://collabase.ch/integrations/hume-ai)
+- [Hunter](https://collabase.ch/integrations/hunter)
+- [Hystruct](https://collabase.ch/integrations/hystruct)
+- [IBM Cognos Analytics](https://collabase.ch/integrations/ibm-cognose)
+- [iLoveAPI](https://collabase.ch/integrations/iloveapi)
+- [Image Helper](https://collabase.ch/integrations/image-helper)
+- [ImageRouter](https://collabase.ch/integrations/image-router)
+- [IMAP](https://collabase.ch/integrations/imap)
+- [iMeetify](https://collabase.ch/integrations/imeetify)
+- [Inbox](https://collabase.ch/integrations/useinbox)
+- [Influencers.club](https://collabase.ch/integrations/influencers-club)
+- [Insightly](https://collabase.ch/integrations/insightly)
+- [Insighto.ai](https://collabase.ch/integrations/insighto-ai)
+- [Instabase](https://collabase.ch/integrations/instabase)
+- [InstaCharts](https://collabase.ch/integrations/insta-charts)
+- [Instagram for Business](https://collabase.ch/integrations/instagram-business)
+- [Instantly.ai](https://collabase.ch/integrations/instantly-ai)
+- [Instasent](https://collabase.ch/integrations/instasent)
+- [Intercom](https://collabase.ch/integrations/intercom)
+- [Intruder](https://collabase.ch/integrations/intruder)
+- [Invoice Ninja](https://collabase.ch/integrations/invoiceninja)
+- [Jina AI](https://collabase.ch/integrations/jina-ai)
+- [Jira Cloud](https://collabase.ch/integrations/jira-cloud)
+- [Jira Data Center](https://collabase.ch/integrations/jira-data-center)
+- [Jira Service Management Operations](https://collabase.ch/integrations/jsm-operations)
+- [JoggAI](https://collabase.ch/integrations/jogg-ai)
+- [Jotform](https://collabase.ch/integrations/jotform)
+- [JSON](https://collabase.ch/integrations/json)
+- [JumpCloud](https://collabase.ch/integrations/jumpcloud)
+- [Jungle Grid](https://collabase.ch/integrations/jungle-grid)
+- [JustInvoice](https://collabase.ch/integrations/just-invoice)
+- [Kallabot](https://collabase.ch/integrations/kallabot-ai)
+- [Kapso](https://collabase.ch/integrations/kapso)
+- [Katana](https://collabase.ch/integrations/katana)
+- [Kimai](https://collabase.ch/integrations/kimai)
+- [Kissflow](https://collabase.ch/integrations/kissflow)
+- [Kizeo Forms](https://collabase.ch/integrations/kizeo-forms)
+- [Klaviyo](https://collabase.ch/integrations/klaviyo)
+- [Klenty](https://collabase.ch/integrations/klenty)
+- [Klipy](https://collabase.ch/integrations/klipy)
+- [Knack](https://collabase.ch/integrations/knack)
+- [Knock](https://collabase.ch/integrations/knock)
+- [Ko-fi](https://collabase.ch/integrations/ko-fi)
+- [Kommo](https://collabase.ch/integrations/kommo)
+- [KrispCall](https://collabase.ch/integrations/krisp-call)
+- [Kudosity](https://collabase.ch/integrations/kudosity)
+- [Kustomer](https://collabase.ch/integrations/kustomer)
+- [LeadConnector](https://collabase.ch/integrations/lead-connector)
+- [Leap AI](https://collabase.ch/integrations/leap-ai)
+- [Leexi](https://collabase.ch/integrations/leexi)
+- [Lemlist](https://collabase.ch/integrations/lemlist)
+- [Lemon Squeezy](https://collabase.ch/integrations/lemon-squeezy)
+- [Let](https://collabase.ch/integrations/lets-calendar)
+- [Letmepost](https://collabase.ch/integrations/letmepost)
+- [Letta](https://collabase.ch/integrations/letta)
+- [Lever](https://collabase.ch/integrations/lever)
+- [Lightfunnels](https://collabase.ch/integrations/lightfunnels)
+- [Line Bot](https://collabase.ch/integrations/line)
+- [Linear](https://collabase.ch/integrations/linear)
+- [Linka](https://collabase.ch/integrations/linka)
+- [LinkedIn](https://collabase.ch/integrations/linkedin)
+- [Linkup](https://collabase.ch/integrations/linkup)
+- [LinkupAPI](https://collabase.ch/integrations/linkupapi)
+- [LiveSession](https://collabase.ch/integrations/livesession)
+- [LLMRails](https://collabase.ch/integrations/llmrails)
+- [LobsterMail](https://collabase.ch/integrations/lobstermail)
+- [LocalAI](https://collabase.ch/integrations/localai)
+- [Lofty](https://collabase.ch/integrations/lofty)
+- [LogRocket](https://collabase.ch/integrations/logrocket)
+- [LogSnag](https://collabase.ch/integrations/logsnag)
+- [Lokalise](https://collabase.ch/integrations/lokalise)
+- [Loops](https://collabase.ch/integrations/loops)
+- [Lucidya](https://collabase.ch/integrations/lucidya)
+- [Lusha](https://collabase.ch/integrations/lusha)
+- [Luxury Presence](https://collabase.ch/integrations/luxury-presence)
+- [Magical API](https://collabase.ch/integrations/magical-api)
+- [MagicSlides](https://collabase.ch/integrations/magicslides)
+- [Mailchain](https://collabase.ch/integrations/mailchain)
+- [Mailchimp](https://collabase.ch/integrations/mailchimp)
+- [Mailercheck](https://collabase.ch/integrations/mailercheck)
+- [MailerLite](https://collabase.ch/integrations/mailer-lite)
+- [Maileroo](https://collabase.ch/integrations/maileroo)
+- [Mailgun](https://collabase.ch/integrations/mailgun)
+- [Mailjet](https://collabase.ch/integrations/mailjet)
+- [Manual Trigger](https://collabase.ch/integrations/manual-trigger)
+- [Manus](https://collabase.ch/integrations/manus)
+- [Manychat](https://collabase.ch/integrations/manychat)
+- [Mastodon](https://collabase.ch/integrations/mastodon)
+- [Math Helper](https://collabase.ch/integrations/math-helper)
+- [Matomo](https://collabase.ch/integrations/matomo)
+- [Matrix](https://collabase.ch/integrations/matrix)
+- [Mattermost](https://collabase.ch/integrations/mattermost)
+- [Mautic](https://collabase.ch/integrations/mautic)
+- [MCP](https://collabase.ch/integrations/mcp)
+- [MCP Client](https://collabase.ch/integrations/mcp-client)
+- [Medullar](https://collabase.ch/integrations/medullar)
+- [Meetgeek](https://collabase.ch/integrations/meetgeek-ai)
+- [MeisterTask](https://collabase.ch/integrations/meistertask)
+- [Mem](https://collabase.ch/integrations/mem)
+- [Mempool](https://collabase.ch/integrations/mempool-space)
+- [Metabase](https://collabase.ch/integrations/metabase)
+- [Metatext](https://collabase.ch/integrations/metatext)
+- [Microsoft 365 Copilot](https://collabase.ch/integrations/microsoft-copilot)
+- [Microsoft 365 People](https://collabase.ch/integrations/microsoft-365-people)
+- [Microsoft 365 Planner](https://collabase.ch/integrations/microsoft-365-planner)
+- [Microsoft Dynamics 365 Business Central](https://collabase.ch/integrations/microsoft-dynamics-365-business-central)
+- [Microsoft Dynamics CRM](https://collabase.ch/integrations/microsoft-dynamics-crm)
+- [Microsoft Excel 365](https://collabase.ch/integrations/microsoft-excel-365)
+- [Microsoft OneDrive](https://collabase.ch/integrations/microsoft-onedrive)
+- [Microsoft OneNote](https://collabase.ch/integrations/microsoft-onenote)
+- [Microsoft Outlook](https://collabase.ch/integrations/microsoft-outlook)
+- [Microsoft Outlook Calendar](https://collabase.ch/integrations/microsoft-outlook-calendar)
+- [Microsoft Power BI](https://collabase.ch/integrations/microsoft-power-bi)
+- [Microsoft SharePoint](https://collabase.ch/integrations/microsoft-sharepoint)
+- [Microsoft SQL Server](https://collabase.ch/integrations/microsoft-sql-server)
+- [Microsoft Teams](https://collabase.ch/integrations/microsoft-teams)
+- [Microsoft Teams Bot](https://collabase.ch/integrations/microsoft-teams-bot)
+- [Microsoft To Do](https://collabase.ch/integrations/microsoft-todo)
+- [MillionVerifier](https://collabase.ch/integrations/millionverifier)
+- [Mindee](https://collabase.ch/integrations/mindee)
+- [MindStudio](https://collabase.ch/integrations/mind-studio)
+- [Missive](https://collabase.ch/integrations/missive)
+- [Mistral AI](https://collabase.ch/integrations/mistral-ai)
+- [Mixmax](https://collabase.ch/integrations/mixmax)
+- [Mixpanel](https://collabase.ch/integrations/mixpanel)
+- [ModelsLab](https://collabase.ch/integrations/modelslab)
+- [Mollie](https://collabase.ch/integrations/mollie)
+- [monday.com](https://collabase.ch/integrations/monday)
+- [MongoDB](https://collabase.ch/integrations/mongodb)
+- [Moon Invoice](https://collabase.ch/integrations/mooninvoice)
+- [Moonclerk](https://collabase.ch/integrations/moonclerk)
+- [Motion](https://collabase.ch/integrations/motion)
+- [MotionTools](https://collabase.ch/integrations/motiontools)
+- [Moveo](https://collabase.ch/integrations/moveo-ai)
+- [Moxie](https://collabase.ch/integrations/moxie-crm)
+- [Muna](https://collabase.ch/integrations/muna-ai)
+- [Murf AI](https://collabase.ch/integrations/murf-api)
+- [MyCase](https://collabase.ch/integrations/mycase-piece)
+- [Mysendingbox](https://collabase.ch/integrations/mysendingbox)
+- [MySQL](https://collabase.ch/integrations/mysql)
+- [Netlify](https://collabase.ch/integrations/netlify)
+- [NetSuite](https://collabase.ch/integrations/netsuite)
+- [NeverBounce](https://collabase.ch/integrations/neverbounce)
+- [Nifty](https://collabase.ch/integrations/nifty)
+- [Ninety](https://collabase.ch/integrations/ninety)
+- [NinjaPipe](https://collabase.ch/integrations/ninjapipe)
+- [Ninox](https://collabase.ch/integrations/ninox)
+- [NocoDB](https://collabase.ch/integrations/nocodb)
+- [Notion](https://collabase.ch/integrations/notion)
+- [ntfy](https://collabase.ch/integrations/ntfy)
+- [Nuelink](https://collabase.ch/integrations/nuelink)
+- [Octopush SMS](https://collabase.ch/integrations/octopush-sms)
+- [Odoo](https://collabase.ch/integrations/odoo)
+- [Okta](https://collabase.ch/integrations/okta)
+- [Omni](https://collabase.ch/integrations/omni-co)
+- [Omni HR](https://collabase.ch/integrations/omnihr)
+- [Omnisend](https://collabase.ch/integrations/omnisend)
+- [Oncehub](https://collabase.ch/integrations/oncehub)
+- [Onfleet](https://collabase.ch/integrations/onfleet)
+- [OpenAI](https://collabase.ch/integrations/openai)
+- [OpenMic AI](https://collabase.ch/integrations/openmic-ai)
+- [OpenPhone](https://collabase.ch/integrations/open-phone)
+- [OpenRouter](https://collabase.ch/integrations/open-router)
+- [Opnform](https://collabase.ch/integrations/opnform)
+- [Opportify](https://collabase.ch/integrations/opportify)
+- [Oracle Database](https://collabase.ch/integrations/oracle-database)
+- [Oracle Fusion Cloud ERP](https://collabase.ch/integrations/oracle-fusion-cloud-erp)
+- [Orimon](https://collabase.ch/integrations/orimon)
+- [Outseta](https://collabase.ch/integrations/outseta)
+- [Paddle](https://collabase.ch/integrations/paddle)
+- [PagerDuty](https://collabase.ch/integrations/pagerduty)
+- [PandaDoc](https://collabase.ch/integrations/pandadoc)
+- [Paperform](https://collabase.ch/integrations/paperform)
+- [Parallel](https://collabase.ch/integrations/parallel)
+- [Parser Expert](https://collabase.ch/integrations/parser-expert)
+- [Parseur](https://collabase.ch/integrations/parseur)
+- [Pastebin](https://collabase.ch/integrations/pastebin)
+- [Pastefy](https://collabase.ch/integrations/pastefy)
+- [Paywhirl](https://collabase.ch/integrations/paywhirl)
+- [PDF](https://collabase.ch/integrations/pdf)
+- [PDF.co](https://collabase.ch/integrations/pdf-co)
+- [PDF4me](https://collabase.ch/integrations/pdf4me)
+- [Pdfcrowd](https://collabase.ch/integrations/pdfcrowd)
+- [PDFMonkey](https://collabase.ch/integrations/pdfmonkey)
+- [PeekShot](https://collabase.ch/integrations/peekshot)
+- [Pendo](https://collabase.ch/integrations/pendo)
+- [Perplexity AI](https://collabase.ch/integrations/perplexity-ai)
+- [Personal AI](https://collabase.ch/integrations/personal-ai)
+- [PhantomBuster](https://collabase.ch/integrations/phantombuster)
+- [Phone Validator](https://collabase.ch/integrations/phone-validator)
+- [Photoroom](https://collabase.ch/integrations/photoroom)
+- [Pinch Payments](https://collabase.ch/integrations/pinch-payments)
+- [Pinecone](https://collabase.ch/integrations/pinecone)
+- [Pinterest](https://collabase.ch/integrations/pinterest)
+- [Pipedrive](https://collabase.ch/integrations/pipedrive)
+- [Placid](https://collabase.ch/integrations/placid)
+- [Plausible Analytics](https://collabase.ch/integrations/plausible)
+- [Plunk](https://collabase.ch/integrations/plunk)
+- [Pocketbase](https://collabase.ch/integrations/pocketbase)
+- [Podio](https://collabase.ch/integrations/podio)
+- [PollyBot AI](https://collabase.ch/integrations/pollybot-ai)
+- [PolyDoc](https://collabase.ch/integrations/polydoc)
+- [Poper](https://collabase.ch/integrations/poper)
+- [Postgres](https://collabase.ch/integrations/postgres)
+- [PostHog](https://collabase.ch/integrations/posthog)
+- [Postiz](https://collabase.ch/integrations/postiz)
+- [Postmark](https://collabase.ch/integrations/postmark)
+- [PredictLeads](https://collabase.ch/integrations/predict-leads)
+- [Predis.ai](https://collabase.ch/integrations/predis-ai)
+- [Presenton](https://collabase.ch/integrations/presentation)
+- [Productboard](https://collabase.ch/integrations/productboard)
+- [Produktly](https://collabase.ch/integrations/produktly)
+- [PromoteKit](https://collabase.ch/integrations/promotekit)
+- [PromptHub](https://collabase.ch/integrations/prompthub)
+- [PromptMate](https://collabase.ch/integrations/promptmate)
+- [ProvenExpert](https://collabase.ch/integrations/provenexpert)
+- [Proxycurl](https://collabase.ch/integrations/proxycurl)
+- [Pubrio](https://collabase.ch/integrations/pubrio)
+- [Pushbullet](https://collabase.ch/integrations/pushbullet)
+- [Pushover](https://collabase.ch/integrations/pushover)
+- [Pylon](https://collabase.ch/integrations/pylon)
+- [Qawafel](https://collabase.ch/integrations/qawafel)
+- [Qdrant](https://collabase.ch/integrations/qdrant)
+- [QR Code](https://collabase.ch/integrations/qrcode)
+- [Quaderno](https://collabase.ch/integrations/quaderno)
+- [Queue](https://collabase.ch/integrations/queue)
+- [Quickbase](https://collabase.ch/integrations/quickbase)
+- [QuickBooks Desktop (via Conductor)](https://collabase.ch/integrations/quickbooks-desktop-conductor)
+- [Quickbooks Online](https://collabase.ch/integrations/quickbooks)
+- [QuickBooks Online (Sandbox)](https://collabase.ch/integrations/quickbooks-sandbox)
+- [Quickzu](https://collabase.ch/integrations/quickzu)
+- [Quizell](https://collabase.ch/integrations/quizell)
+- [Qwilr](https://collabase.ch/integrations/qwilr)
+- [RabbitMQ](https://collabase.ch/integrations/rabbitmq)
+- [raia](https://collabase.ch/integrations/raia-ai)
+- [Raindrop](https://collabase.ch/integrations/raindrop)
+- [RapidText AI](https://collabase.ch/integrations/rapidtext-ai)
+- [Razorpay](https://collabase.ch/integrations/razorpay)
+- [re:tune](https://collabase.ch/integrations/retune)
+- [Reachinbox](https://collabase.ch/integrations/reachinbox)
+- [Readwise](https://collabase.ch/integrations/readwise)
+- [Recall.ai](https://collabase.ch/integrations/recall-ai)
+- [Recurly](https://collabase.ch/integrations/recurly)
+- [Reddit](https://collabase.ch/integrations/reddit)
+- [Rendex](https://collabase.ch/integrations/rendex)
+- [Reoon Email Verifier](https://collabase.ch/integrations/reoon-verifier)
+- [Reply.io](https://collabase.ch/integrations/reply-io)
+- [Resend](https://collabase.ch/integrations/resend)
+- [Respaid](https://collabase.ch/integrations/respaid)
+- [Respond.io](https://collabase.ch/integrations/respond-io)
+- [Retable](https://collabase.ch/integrations/retable)
+- [Retell AI](https://collabase.ch/integrations/retell-ai)
+- [Returning AI](https://collabase.ch/integrations/returning-ai)
+- [RingCentral](https://collabase.ch/integrations/ringcentral)
+- [Robolly](https://collabase.ch/integrations/robolly)
+- [Roe AI](https://collabase.ch/integrations/roe-ai)
+- [RSS Feed](https://collabase.ch/integrations/rss)
+- [Runware](https://collabase.ch/integrations/runware)
+- [Runway](https://collabase.ch/integrations/runway)
+- [Saastic](https://collabase.ch/integrations/saastic)
+- [Sage Accounting](https://collabase.ch/integrations/sage-accounting)
+- [Saleor](https://collabase.ch/integrations/saleor)
+- [Salesforce](https://collabase.ch/integrations/salesforce)
+- [Salesloft](https://collabase.ch/integrations/salesloft)
+- [SAP Ariba](https://collabase.ch/integrations/sap-ariba)
+- [Sardis](https://collabase.ch/integrations/sardis)
+- [SavvyCal](https://collabase.ch/integrations/savvycal)
+- [Scenario](https://collabase.ch/integrations/scenario)
+- [Schedule](https://collabase.ch/integrations/schedule)
+- [ScrapeGraphAI](https://collabase.ch/integrations/scrapegrapghai)
+- [Scrapeless](https://collabase.ch/integrations/scrapeless)
+- [SeekTable](https://collabase.ch/integrations/seek-table)
+- [Segment](https://collabase.ch/integrations/segment)
+- [Sender](https://collabase.ch/integrations/sender)
+- [SendFox](https://collabase.ch/integrations/sendfox)
+- [SendGrid](https://collabase.ch/integrations/sendgrid)
+- [SendIt](https://collabase.ch/integrations/send-it)
+- [SendPulse](https://collabase.ch/integrations/sendpulse)
+- [Sendr](https://collabase.ch/integrations/sendr)
+- [Sendy](https://collabase.ch/integrations/sendy)
+- [Senja](https://collabase.ch/integrations/senja)
+- [SerpApi](https://collabase.ch/integrations/serp-api)
+- [Serpstat](https://collabase.ch/integrations/serpstat)
+- [ServiceNow](https://collabase.ch/integrations/service-now)
+- [Sessions.us](https://collabase.ch/integrations/sessions-us)
+- [seven](https://collabase.ch/integrations/seven)
+- [Shippo](https://collabase.ch/integrations/shippo)
+- [Shopify](https://collabase.ch/integrations/shopify)
+- [Short.io](https://collabase.ch/integrations/short-io)
+- [SignNow](https://collabase.ch/integrations/sign-now)
+- [Signrequest](https://collabase.ch/integrations/signrequest)
+- [SimplePDF](https://collabase.ch/integrations/simplepdf)
+- [SimpliRoute](https://collabase.ch/integrations/simpliroute)
+- [SimplyBook.me](https://collabase.ch/integrations/simplybookme)
+- [SimplyPrint](https://collabase.ch/integrations/simplyprint)
+- [SiteSpeakAI](https://collabase.ch/integrations/sitespeakai)
+- [SkyPrep](https://collabase.ch/integrations/skyprep)
+- [Skyvern](https://collabase.ch/integrations/skyvern)
+- [Slack](https://collabase.ch/integrations/slack)
+- [SlashedCloud](https://collabase.ch/integrations/slashed)
+- [SlideSpeak](https://collabase.ch/integrations/slidespeak)
+- [Slite](https://collabase.ch/integrations/slite)
+- [Smaily](https://collabase.ch/integrations/smaily)
+- [SmartLead](https://collabase.ch/integrations/smartlead)
+- [Smartsheet](https://collabase.ch/integrations/smartsheet)
+- [SmartSuite](https://collabase.ch/integrations/smartsuite)
+- [Smoove](https://collabase.ch/integrations/smoove)
+- [smsmode](https://collabase.ch/integrations/smsmode)
+- [SMTP](https://collabase.ch/integrations/smtp)
+- [Snowflake](https://collabase.ch/integrations/snowflake)
+- [SOAP](https://collabase.ch/integrations/soap)
+- [Socialkit](https://collabase.ch/integrations/socialkit)
+- [Softr](https://collabase.ch/integrations/softr)
+- [Sofya](https://collabase.ch/integrations/sofya)
+- [Sperse](https://collabase.ch/integrations/sperse)
+- [Splitwise](https://collabase.ch/integrations/splitwise)
+- [Spotify](https://collabase.ch/integrations/spotify)
+- [Square](https://collabase.ch/integrations/square)
+- [Stability AI](https://collabase.ch/integrations/stability-ai)
+- [Stable Dffusion web UI](https://collabase.ch/integrations/stable-diffusion-webui)
+- [Storage](https://collabase.ch/integrations/store)
+- Straico
+- [Strale](https://collabase.ch/integrations/strale)
+- [Streak](https://collabase.ch/integrations/streak)
+- [Stripe](https://collabase.ch/integrations/stripe)
+- [Sub Flows](https://collabase.ch/integrations/subflows)
+- [Supabase](https://collabase.ch/integrations/supabase)
+- [Supadata](https://collabase.ch/integrations/supadata)
+- [SurrealDB](https://collabase.ch/integrations/surrealdb)
+- [SurveyMonkey](https://collabase.ch/integrations/surveymonkey)
+- [SurveyTale](https://collabase.ch/integrations/surveytale)
+- [SwarmNode](https://collabase.ch/integrations/swarmnode)
+- [Synthesia](https://collabase.ch/integrations/synthesia)
+- [Systeme.io](https://collabase.ch/integrations/systeme-io)
+- [Tableau](https://collabase.ch/integrations/tableau)
+- [Tables](https://collabase.ch/integrations/tables)
+- [Tags](https://collabase.ch/integrations/tags)
+- [Talkable](https://collabase.ch/integrations/talkable)
+- [Tally](https://collabase.ch/integrations/tally)
+- [Tapfiliate](https://collabase.ch/integrations/tapfiliate)
+- [Tarvent](https://collabase.ch/integrations/tarvent)
+- [Taskade](https://collabase.ch/integrations/taskade)
+- [Tavily](https://collabase.ch/integrations/tavily)
+- [Teable](https://collabase.ch/integrations/teable)
+- [Teamhood](https://collabase.ch/integrations/teamhood)
+- [Teamleader](https://collabase.ch/integrations/teamleader)
+- [Teamwork](https://collabase.ch/integrations/teamwork)
+- [Telegram Bot](https://collabase.ch/integrations/telegram-bot)
+- [Telnyx](https://collabase.ch/integrations/telnyx)
+- [Tenzo](https://collabase.ch/integrations/tenzo)
+- [Text Helper](https://collabase.ch/integrations/text-helper)
+- [TextCortex AI](https://collabase.ch/integrations/textcortex-ai)
+- [Thankster](https://collabase.ch/integrations/thankster)
+- [TickTick](https://collabase.ch/integrations/ticktick)
+- [Tidely](https://collabase.ch/integrations/tidely)
+- [TidyCal](https://collabase.ch/integrations/tidycal)
+- [TimelinesAI](https://collabase.ch/integrations/timelines-ai)
+- [TimeOps](https://collabase.ch/integrations/time-ops)
+- [Tiny Talk AI](https://collabase.ch/integrations/tiny-talk-ai)
+- [tl;dv](https://collabase.ch/integrations/tl-dv)
+- [Todoist](https://collabase.ch/integrations/todoist)
+- [Toggl Track](https://collabase.ch/integrations/toggl-track)
+- [Total CMS](https://collabase.ch/integrations/totalcms)
+- [Trello](https://collabase.ch/integrations/trello)
+- [TrueLayer](https://collabase.ch/integrations/truelayer)
+- [Trust](https://collabase.ch/integrations/trust)
+- [Twenty](https://collabase.ch/integrations/twenty)
+- [Twilio](https://collabase.ch/integrations/twilio)
+- [Twin Web Agent](https://collabase.ch/integrations/twin-labs)
+- [Twitch](https://collabase.ch/integrations/twitch)
+- [Twitter](https://collabase.ch/integrations/twitter)
+- [Typeform](https://collabase.ch/integrations/typeform)
+- [Typefully](https://collabase.ch/integrations/typefully)
+- [Umami](https://collabase.ch/integrations/umami)
+- [Upgrade.chat](https://collabase.ch/integrations/upgradechat)
+- [UptimeRobot](https://collabase.ch/integrations/uptimerobot)
+- [Uscreen](https://collabase.ch/integrations/uscreen)
+- [UXsniff](https://collabase.ch/integrations/uxsniff)
+- [Vadoo AI](https://collabase.ch/integrations/vadoo-ai)
+- [ValidatedMails](https://collabase.ch/integrations/validatedmails)
+- [Valyu](https://collabase.ch/integrations/valyu)
+- [Vapi](https://collabase.ch/integrations/vapi)
+- [VBOUT](https://collabase.ch/integrations/vbout)
+- [Vercel](https://collabase.ch/integrations/vercel)
+- [Vero](https://collabase.ch/integrations/vero)
+- [VideoAsk](https://collabase.ch/integrations/videoask)
+- [VidLab7](https://collabase.ch/integrations/vidlab7)
+- [Vidnoz](https://collabase.ch/integrations/vidnoz)
+- [Village](https://collabase.ch/integrations/village)
+- [Vimeo](https://collabase.ch/integrations/vimeo)
+- [Visible](https://collabase.ch/integrations/visible)
+- [VLM Run](https://collabase.ch/integrations/vlm-run)
+- [VoIPstudio](https://collabase.ch/integrations/voipstudio)
+- [Vouchery](https://collabase.ch/integrations/vouchery-io)
+- [VTEX](https://collabase.ch/integrations/vtex)
+- [Vtiger](https://collabase.ch/integrations/vtiger)
+- [Wafeq](https://collabase.ch/integrations/wafeq)
+- [WaitWhile](https://collabase.ch/integrations/waitwhile)
+- [Wayfront](https://collabase.ch/integrations/wayfront)
+- [Wealthbox](https://collabase.ch/integrations/wealthbox)
+- [Webflow](https://collabase.ch/integrations/webflow)
+- [Webhook](https://collabase.ch/integrations/webhook)
+- [Webling](https://collabase.ch/integrations/webling)
+- [WebScraping AI](https://collabase.ch/integrations/webscraping-ai)
+- [Wedof](https://collabase.ch/integrations/wedof)
+- [Weekdone](https://collabase.ch/integrations/week-done)
+- [Weekdone](https://collabase.ch/integrations/weekdone)
+- [WhatConverts](https://collabase.ch/integrations/what-converts)
+- [Whatsable](https://collabase.ch/integrations/whatsable)
+- [WhatsApp Business](https://collabase.ch/integrations/whatsapp)
+- [WhatsScale](https://collabase.ch/integrations/whatsscale)
+- [Wistia](https://collabase.ch/integrations/wistia)
+- [Wonderchat](https://collabase.ch/integrations/wonderchat)
+- [WooCommerce](https://collabase.ch/integrations/woocommerce)
+- [Woodpecker](https://collabase.ch/integrations/woodpecker)
+- [Wootric](https://collabase.ch/integrations/wootric)
+- [Word Documents](https://collabase.ch/integrations/word-documents)
+- [WordPress](https://collabase.ch/integrations/wordpress)
+- [Workable](https://collabase.ch/integrations/workable)
+- [Workday](https://collabase.ch/integrations/workday)
+- [Wrike](https://collabase.ch/integrations/wrike)
+- [Writesonic](https://collabase.ch/integrations/writesonic-bulk)
+- [Wufoo](https://collabase.ch/integrations/wufoo)
+- [Xero](https://collabase.ch/integrations/xero)
+- [XML](https://collabase.ch/integrations/xml)
+- [Xquik](https://collabase.ch/integrations/xquik)
+- [YouCanBookMe](https://collabase.ch/integrations/youcanbookme)
+- [Youform](https://collabase.ch/integrations/youform)
+- [YouTrack](https://collabase.ch/integrations/youtrack)
+- [YouTube](https://collabase.ch/integrations/youtube)
+- Zagomail
+- [Zendesk](https://collabase.ch/integrations/zendesk)
+- [Zendesk-sell](https://collabase.ch/integrations/zendesk-sell)
+- [Zeplin](https://collabase.ch/integrations/zeplin)
+- [ZeroBounce](https://collabase.ch/integrations/zerobounce)
+- [Zoho Bookings](https://collabase.ch/integrations/zoho-bookings)
+- [Zoho Books](https://collabase.ch/integrations/zoho-books)
+- [Zoho Campaigns](https://collabase.ch/integrations/zoho-campaigns)
+- [Zoho CRM](https://collabase.ch/integrations/zoho-crm)
+- [Zoho Desk](https://collabase.ch/integrations/zoho-desk)
+- [Zoho Invoice](https://collabase.ch/integrations/zoho-invoice)
+- [Zoho Mail](https://collabase.ch/integrations/zoho-mail)
+- [Zoo](https://collabase.ch/integrations/zoo)
+- [Zoom](https://collabase.ch/integrations/zoom)
+- [Zuora](https://collabase.ch/integrations/zuora)

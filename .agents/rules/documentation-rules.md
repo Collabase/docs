@@ -391,8 +391,11 @@ Add a new page's slug to the correct `group` → `pages` array:
   Welcome group holds `index`, `introduction`, `about/story` and `glossary`; `index` stays in the
   navigation so it appears in the sitemap. Security and privacy statements live on the website, not
   in the docs.
-- **Icons in the sidebar.** Every group and page of the Automation tab, Build plugs included, has an
-  `icon` (lucide). Other tabs add icons only to hub pages.
+- **Icons in the sidebar.** Every group and every page of the **Automation**, **Administration** and
+  **Developers** tabs has an `icon` (lucide): the group in `docs.json`, the page in its frontmatter.
+  A new page in one of these tabs ships with its icon, and a new group with its group icon. Pick a
+  name that exists in lucide and is not already used by a neighbour in the same group. Apps groups
+  use their app icon from `images/apps/`. Other tabs add icons only to hub pages.
 - **Language switch.** Each language block has its own `navbar` with a link to the other language
   and the same primary button. The home pages repeat the link at the top right.
 - **Removing a page** always adds an entry under `redirects` to its successor. Indexed URLs must
@@ -512,7 +515,7 @@ Checklist:
 - [ ] Written for the right audience (§2) — no developer jargon outside `developer/` and `api/`
 - [ ] Terminology matches §7
 - [ ] Procedures use `<Steps>`
-- [ ] New pages registered in `docs.json`
+- [ ] New pages registered in `docs.json`, with an `icon` on the page and the group in the Automation, Administration and Developers tabs (§11)
 - [ ] `mint validate` and `mint broken-links --check-anchors` are clean
 - [ ] `scripts/check-docs.mjs` and Vale report nothing new (§24)
 - [ ] No folder moved, renamed, or restructured
@@ -1089,7 +1092,7 @@ Change it only for a reason, and say the reason in the pull request. What we set
 
 | Setting | Value or policy |
 |---|---|
-| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: the `mint` theme, lime, Outfit, lucide, page `#f7f7f7`. `colors.primary` is forest `#0f4d38` because it colors text and links, `light` and `dark` are lime `#ccfc75` |
+| `theme`, `colors`, `fonts`, `icons.library`, `background` | Brand: the `mint` theme, lime, Inter, lucide, page `#ffffff` and `#101010`. `colors.primary` is forest `#0f4d38` because it colors text and links, `light` and `dark` are lime `#ccfc75` |
 | `description` | One sentence about Collabase for search engines and AI tools |
 | `seo.metatags`, `seo.organization` | `og:site_name`, `twitter:card`, the organization with logo |
 | `thumbnails` | Preset `headline`, eyebrow from the tab |
@@ -1176,69 +1179,50 @@ The Mintlify plan we use has no CI checks, so we run our own, locally and in the
 
 ## 25. Color, surface and type
 
-The docs follow the website's design system (Design V3). Lime is the brand, the surface decides which color a
-piece of interface gets, not the element. There is no gold.
+The docs follow the website's new design (`collabase-landingpage`, rule `design-neu.md`, live reference
+`/styleguide-2.0`). The website is the source: the tokens in `style.css` are copies of `src/styles/geruest.css`, and a
+change there is pulled into `style.css` the same day. Lime is the brand and sits on buttons and one headline marker. There
+is no gold and no sage.
 
 ### Surfaces
 
-The page is not white. Page and card have different colors, so containers separate without heavy borders or
-shadows, and the fill of an element depends on what it sits on.
+Calm and flat: no boxes, no second edge, no shadow on content. A surface is separated by one 1px line.
 
-| Layer | Hex | Use |
-|---|---|---|
-| Page | `#f7f7f7` | The page background (`docs.json` `background.color.light`). No grid, no decoration |
-| Card | `#ffffff` | Every card and field on the page |
-| Surface 2 / 3 | `#fafafa` / `#f2f2f2` | A row or a fill inside a card |
-| Border | `#e5e5e5` | The outer line of a card |
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `--ds-bg` | `#ffffff` | `#101010` | The page (`docs.json` `background.color`) and every card |
+| `--ds-bg-2` / `-3` / `-4` | `#fafafb` / `#f3f4f6` / `#edeff3` | `#161718` / `#1c1d1f` / `#232529` | Hover, a row, a fill inside a card |
+| `--ds-linie` / `-2` / `-3` | `#eceef2` / `#e1e4ea` / `#cad0d9` | `#1f2023` / `#2a2d32` / `#383e47` | Lines, from the faintest to a hover edge |
+| `--ds-text-1` to `-4` | `#17181a` to `#8f99a8` | `#f3f4f6` to `#6f7988` | Text, from headline to meta |
 
-A card carries the double edge: a visible outer line (`outline`, 5px offset), a gap through which the page shows,
-and the card with its own hairline. Never add a second `border` or a `shadow` on top. Inside a card, rows use
-only the hairline. Radius: 10px for controls (buttons, the search field), 14px for cards, 6 to 8px for pills.
+Radius: 10px for controls (search field, buttons), 12px for cards and screenshots.
 
 ### Colors
 
-| Color | Hex | Use |
-|---|---|---|
-| Lime | `#ccfc75` | The brand: buttons, the headline marker, lights. On dark, text and tags |
-| Green | `#77f355` | Middle of the gradient, never alone. On dark only |
-| Mint | `#1ae299` | On dark only |
-| Sage 1, 2, 3 | `#dfe9c0` `#c9dfae` `#b5d2a0` | Fills only: pill, marker and icon box, lines and dots |
-| Forest (wald) | `#0f4d38` | Text and lines on light, text on sage, links, `colors.primary` |
-| Ink on neon | `#10200a` | Text on a lime, green or mint fill |
+| Color | Light | Dark | Use |
+|---|---|---|---|
+| Lime `--ds-knopf` | `#ccfc75` | `#ccfc75` | Primary button, the headline marker, the banner. Always with dark text `#101010` |
+| Accent text `--ds-akzent-text` | forest `#0f4d38` | lime `#ccfc75` | Links, active entries, tags |
+| Signal `--ds-signal` | `#10a874` | `#1ae299` | Check marks, the green badge, focus |
+| Band `--ds-band` | `#101010` | `#0a0a0a` | Code blocks, dark bands |
 
-| Surface | Color | Role |
-|---|---|---|
-| Action: hero, buttons | Lime | A button with dark text, a marker behind one headline word |
-| Light sections, on a white card | Sage | Sage 1 the pill, sage 2 the icon box, sage 3 lines and dots, always with a hairline. Text and icon on it are forest. Everything else is neutral |
-| Dark surfaces | Lime, green, mint | Text, check marks, tags |
-
-- One gradient exists: lime, green, mint, in this order. Only on dark surfaces and in the logo. Never across a
-  whole section, never mixed with sage.
-- Never lime, green or mint as text or line on white: the contrast is under 2:1. Forest stands there.
-- Never sage on the page itself (1.18:1, it disappears). Sage lies on a white card with a hairline.
-- Never sage on dark, never neon as a fill behind running text.
-- At most one marker per section and one green moment per screen.
-
-| Pair | Contrast | Verdict |
-|---|---|---|
-| Forest on white / on page | 9.8 / 9.2 | passes AAA |
-| Forest on sage 1, 2, 3 | at least 5.9 | passes AA |
-| Ink on lime, green, mint | 14.4, 12.0, 10.0 | passes AAA |
-| Lime text on `#0b0f0a` | 16.3 | passes AAA |
-| Lime fill on a white page | 1.10 | fails as an edge, the text on it carries the contrast |
+- Lime never carries text on white (1.1:1). Forest stands there.
+- One marker per section. Light: dark text on a lime marker. Dark: lime text, no fill.
+- Icons on cards are neutral (`--ds-text-2`). Colored stay the app icons, the integration logos and the logo.
+- Contrast: forest on white 9.8, dark text on lime 14.4, lime on `#101010` 16.3. All pass AAA.
 
 ### Type
 
-Outfit, nothing else. Headlines weight 500 with tracking -0.03em, never 700 (too heavy). Body weight 400, 500 is
-too wide for Outfit. Home headline 56px with line height 1.05, section headline 24px. The section label above a
-headline is a pill in normal case (13px, weight 500, 1px ring), not an uppercase badge. Section heads are not
-centered, except the home hero.
+Inter for everything (`docs.json` `fonts`, headings 500, body 400), JetBrains Mono only for code. No fourth family.
+Headlines carry tracking -0.03em, never weight 700 or 900. Home headline 56px with line height 1.05, section headline
+24px. The label above a headline is `[ LABEL ]`: Inter 12px, uppercase, +0.06em, no fill (`home-pill`). Section heads
+are not centered, except the home hero.
 
 ### Header and illustration
 
-The header is flat: white at 95 %, no shadow, no radius. Illustrations are drawn, not scattered. A picture that
-says nothing once the title is covered is dropped. The only decoration that floats is the home page background
-below.
+The header is flat, with the `--ds-kopf` backing. Illustrations are drawn, not scattered. A picture that says nothing
+once the title is covered is dropped. Screenshots of procedures stay (the website's ban on screenshots is for its
+marketing pages), framed with a 1px `--ds-bild-kante` line and a 12px radius.
 
 ### Home background
 
@@ -1246,39 +1230,37 @@ The home hero carries a dot field that fades out downwards (`home-dots`) and the
 edges (`home-float`). Rules: decoration only (`aria-hidden`, no clicks, never behind text, kept clear of the search
 field), one float loop of 9 seconds with 10px and 2 degrees of travel, each icon with its own offset, hidden below
 1100px width, still with `prefers-reduced-motion`. Light and dark use the matching icon file. Both home pages carry
-the same markup. No other page gets floating icons.
+the same markup. The floating icons are the only continuous motion on the screen. No other page gets them.
 
 ### App landing pages
 
-An app overview page has no hero block. It opens with the theme's own header (breadcrumb, title, description) and one short paragraph. Wrap the rest of the page in `<div className="home-cards brand-cards">` so its cards get the same edge and icon box.
+An app overview page has no hero block. It opens with the theme's own header (breadcrumb, title, description) and one
+short paragraph. Wrap the rest of the page in `<div className="home-cards brand-cards">` so its cards get the flat
+card and the neutral icon.
 
 ### Announcement banner
 
-The theme fixes the banner text to white, so the banner is dark (`#0b0f0a`) with a thin lime line below. Never a
-lime banner: white on lime is unreadable.
+Lime with dark text. The theme fixes the banner text to white, so `style.css` forces the dark text.
 
 ### How the docs apply it
 
-The colors live in `style.css`, which Mintlify loads on every page, and in `docs.json`. The docs are light by
-default and dark on request, so each rule has a light and a dark form.
+The tokens live in `style.css`, which Mintlify loads on every page, and in `docs.json`. The docs are light by default
+and dark on request (class `.dark`), so each token has a light and a dark value.
 
-| Piece | Light | Dark | How |
-|---|---|---|---|
-| Home cards and search | White card, double edge | Dark card, white 12 % edge | class `home-cards` on the wrapper, `home-search` on the field |
-| Hero headline marker | Lime fill, dark text | Lime fill, dark text | `<span className="brand-marker-action">word</span>`, one word, the hero only |
-| Section headline marker | Sage 2 fill, forest text, inside a white card | Lime text, no fill | `<span className="brand-marker">word</span>`. Not on a bare page heading: sage never sits on the page |
-| Icon box of a card | Sage 2 tile with hairline, forest icon | Lime outline and icon | `className="brand-cards"` on the `Columns` that holds the cards. Not on cards with an image icon |
-| Sidebar tag | Sage 1 | The core gradient with dark text | `tag` in frontmatter or on a group |
-| Green `Badge` | Sage 1 | Lime fill | `<Badge color="green">`, the only badge color with the brand |
-| Buttons | Lime, dark text | Lime, dark text | `colors.dark` in `docs.json` and the text rule in `style.css` |
-| Text and links | Forest `#0f4d38` | Lime | `colors.primary` and `colors.light` in `docs.json` |
-| Home background | Dots in forest at 18 %, app icons light | Dots in lime at 16 %, app icons dark | `home-bg` block in `index.mdx` and `de/index.mdx` |
-| Announcement banner | Dark with light text | same | `#banner` in `style.css` |
-| Fonts | Outfit 500 headings, Outfit 400 body | same | `fonts` in `docs.json`, tracking in `style.css` |
+| Piece | How |
+|---|---|
+| Home cards and search | class `home-cards` on the wrapper, `home-search` on the field: 1px `--ds-linie-2`, no shadow |
+| Headline marker | `<span className="brand-marker-action">word</span>` in the hero, `brand-marker` in a section. One word |
+| Card icon | `className="brand-cards"` on the `Columns` that holds the cards. Not on cards with an image icon |
+| Sidebar tag | `tag` in frontmatter or on a group: `--ds-bg-3` with a 1px line, forest or lime text |
+| Green `Badge` | `<Badge color="green">`, the only badge color with the brand |
+| Buttons | `colors.dark` in `docs.json` and the text rule in `style.css` |
+| Text and links | `colors.primary` (forest) and `colors.light` in `docs.json` |
+| Fonts | `fonts` in `docs.json`, mono and tracking in `style.css` |
 
 Logo and favicon: `images/logo-black.svg` (light mode), `images/logo-white.svg` (dark mode) are the files of the
 brand set `Collabase_Logo_E`. The favicon is the black icon tile in two files, `images/favicon-light.png` and
 `images/favicon-dark.png`. Replace a file and keep its name when the brand set changes.
 
-Not used: green in callouts, in code blocks, or gold anywhere. Screenshots of the product show the product's
-own colors and are not recolored.
+Not used: sage, gold, a gradient, green in callouts, or a second edge around a card. Screenshots of the product show
+the product's own colors and are not recolored.

@@ -31,6 +31,16 @@ The [plug reference](/automation/plug-reference) lists every trigger with the da
 
 **On a schedule** starts a run at a fixed interval, from every minute to every week. Choose an amount and a unit. A flow that is switched off does not run on its schedule, and a schedule picks up again when the flow is switched on.
 
+For fixed times, enter a **Cron pattern** instead of an interval, with five fields: minute, hour, day of the month, month and weekday. Set the **Time zone** (for example `Europe/Zurich`, which is the default) so the times follow daylight saving.
+
+| Pattern | Runs |
+|---|---|
+| `30 2 * * *` | Every day at 02:30 |
+| `0 8 * * 1-5` | Weekdays at 08:00 |
+| `0 8 L * *` | On the last day of the month at 08:00 |
+
+A pattern that cannot be read, an unknown time zone or a pattern that fires more than once a minute blocks publishing and names the field. When a cron pattern is set, the interval is ignored.
+
 ## Called by another flow
 
 **Called by another flow** starts a flow when another flow of the same workspace runs the **Run another flow** step. The data the first flow passes becomes the trigger data. Use it to split a long flow into parts that several flows share. The called flow must be published and switched on.
