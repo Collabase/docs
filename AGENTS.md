@@ -1,13 +1,12 @@
 # Documentation project instructions
 
-Instructions for AI coding tools (Claude Code, Cursor, Copilot, Codex, …) working on the Collabase
-documentation.
+Instructions for coding tools working on the Collabase documentation.
 
 ## The standard is binding
 
 Read `.agents/rules/documentation-rules.md` before writing or editing any page. It is the single
 source of truth for audience, tone, layout, frontmatter, components, terminology, `docs.json`
-navigation, and release notes. Do not restate or summarize it elsewhere — point at it.
+navigation, and release notes. Do not restate or summarize it elsewhere, point at it.
 
 If anything here or in any other file contradicts it, `documentation-rules.md` wins.
 
@@ -15,15 +14,13 @@ If anything here or in any other file contradicts it, `documentation-rules.md` w
 
 - A [Mintlify](https://mintlify.com) docs site. Pages are MDX with YAML frontmatter.
 - Configuration and navigation live in `docs.json`.
-- `mint dev` previews locally. `npm run docs:check` in the product repo, or `scripts/docs-check.sh`, runs
-  every check: `mint validate`, `mint broken-links --check-anchors`, `mint a11y`, `scripts/check-docs.mjs` and Vale.
-- The docs live in the [Collabase repo](https://github.com/Collabase/collabase) at `docs/docs/`, and
-  are copied 1:1 into a private repo that Mintlify deploys from.
+- `mint dev` previews locally. `bash scripts/docs-check.sh` runs every check: `mint validate`,
+  `mint broken-links --check-anchors`, `mint a11y`, `scripts/check-docs.mjs` and Vale.
+- The published site is <https://collabase.ch/docs>. Mintlify deploys from this repository.
 
 ## Hard constraints
 
-- **Never move, rename, or restructure folders.** The two repos are kept identical by a manual copy.
-  `snippets/` (reusable text), `scripts/` and `styles/` (checks) and `.vale.ini` are part of the project.
+- **Never move, rename, or restructure folders.** `snippets/` (reusable text), `scripts/` and `styles/` (checks) and `.vale.ini` are part of the project.
   The last three are listed in `.mintignore` and never published. `snippets/` is build input and is not.
 - **Never change `docs.json`** beyond adding or reordering pages unless the user asks for it. Theme,
   colors, logos, languages and redirects change only on an explicit request (see §11 and §15 of the
@@ -34,11 +31,11 @@ If anything here or in any other file contradicts it, `documentation-rules.md` w
 - **Never register a page in `docs.json` without creating the `.mdx` file**, or the reverse.
 - **Never leave placeholder text.** A section ships complete or not at all.
 - **Never document running from source.** Give the commands for the ZIP deployment customers receive;
-  never point a reader at a private GitHub repo.
+  never point a reader at a source repository.
 
 ## Audience
 
-Write for **"Peter from IT"** — the administrator who deploys and runs Collabase, not a developer on
+Write for **"Peter from IT"**, the administrator who deploys and runs Collabase, not a developer on
 the codebase. No library names, no architecture, no database fields, no internal API routes.
 
 `developer/` and `api/` are the exception: those are for engineers, and technical detail belongs there.
