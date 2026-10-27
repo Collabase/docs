@@ -1,0 +1,51 @@
+name: Docs check
+
+# Runs every docs check (scripts/docs-check.sh): Mintlify validate, links and anchors,
+# accessibility, structure (scripts/check-docs.mjs) and prose (Vale).
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    name: Docs check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The structure check compares changed lines against the PR base.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Install Mintlify CLI
+        run: npm install --global mint@4.2.1018
+
+      - name: Install Vale
+        run: |
+          set -euo pipefail
+          VALE_VERSION=3.24.0
+          curl -sSfL -o vale.tar.gz "https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz"
+          echo "867534ddb678abca7f214bc4706ead0922bd5252ffe8035fc227013f66c8b214  vale.tar.gz" | sha256sum -c -
+          sudo tar -xzf vale.tar.gz -C /usr/local/bin vale
+          rm vale.tar.gz
+
+      - name: Check docs
+        env:
+          DOCS_BASE: ${{ github.event.pull_request.base.sha }}
+        run: bash scripts/docs-check.sh
