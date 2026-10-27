@@ -1,13 +1,15 @@
 ---
-title: "Automation"
+title: "Studio"
 sidebarTitle: "Overview"
 description: "Build flows that react to events in Collabase and other systems, run on a schedule, ask people for approval and use AI, with every run on record."
 icon: "hand"
 ---
 
-Automation runs work you would otherwise do by hand. A flow starts from a trigger, such as a new work item, a call from another system or a time of day, and then runs its steps one after the other. Each step is an action of a plug: create a work item, send a notification, call another system, ask a person to approve, or let an AI agent reach a goal.
+Studio runs work you would otherwise do by hand. A flow starts from a trigger, such as a new work item, a call from another system or a time of day, and then runs its steps one after the other. Each step is an action of a plug: create a work item, send a notification, call another system, ask a person to approve, or let an AI agent reach a goal.
 
-## Why use Automation
+Studio was called Collabase Automation before.
+
+## Why use Studio
 
 <AccordionGroup>
   <Accordion title="One place for routine work">
@@ -34,30 +36,34 @@ Automation runs work you would otherwise do by hand. A flow starts from a trigge
 | **Connection** | The credentials a plug uses to reach another system. |
 | **Run** | One execution of a flow, with the log of each step. |
 
-## How to access Automation
+## How to access Studio
 
 <Steps>
-  <Step title="Get the Automation right">
-    An administrator gives you the **Automation** app right under **Administration, Users**. Anyone with the right can create an automation workspace.
+  <Step title="Get the Studio right">
+    An administrator gives you the **Studio** app right under **Administration, Users**. Anyone with the right can create an automation workspace.
   </Step>
-  <Step title="Open Automation">
-    Select **Automation** in the app drawer. A system administrator finds a default workspace already there.
+  <Step title="Open Studio">
+    Select **Studio** in the app drawer. A system administrator finds a default workspace already there.
   </Step>
   <Step title="Create a flow">
     Open a workspace, select **New flow** and build it in the editor, or start from a template or a file.
   </Step>
 </Steps>
 
-## What Automation is made of
+## What Studio is made of
 
 | Part | What it does |
 |---|---|
 | **Flows** | A trigger and steps that run without anyone doing them by hand. [Building flows](/automation/building-flows) |
-| **Agents** | A model that works out the steps to reach a goal with the tools you give it. [Agent step](/automation/agent-step) |
+| **Agents** | A named assistant with an instruction, tools and knowledge, used in chats, flows and jobs. [Agents](/automation/agents) and the [Agent step](/automation/agent-step) |
 | **Tables** | Rows of data that flows read and write, kept in the Registry. [Tables](/automation/tables) |
 | **Plugs** | The triggers and actions for Collabase apps and other systems. [Plugs](/automation/plugs) |
 
-They combine freely. An agent can start a flow as a tool, a flow can run an agent as a step, and both can read and write the same tables.
+They combine freely. An Agent step can start a flow as a tool, a flow can run an agent as a step, and both can read and write the same tables.
+
+## Quick start
+
+The first page of Studio builds a flow or an agent from a description and lists everything you may open. See [Quick start](/automation/quick-start).
 
 ## Build with AI
 

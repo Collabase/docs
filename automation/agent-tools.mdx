@@ -2,21 +2,24 @@
 title: "Agent tools"
 sidebarTitle: "Agent tools"
 icon: "wrench"
-description: "Tools let an agent look things up and act: search knowledge, start a flow, run a plug action or call an MCP server, each with an optional approval."
+description: "Tools let an agent act: search knowledge, use Collabase AI skills, start a flow, run a plug action or call an MCP server, each with an optional approval."
 ---
 
 A tool is something an agent may do. Add tools in the **Tools** input of an [agent step](/automation/agent-step). Each row has a kind, a target and optional settings. An agent that has no tools can only answer from what the goal contains.
+
+An [agent](/automation/agents) holds its own tools. You pick them in the skill center, see [Tools of an agent](#tools-of-an-agent). A step that names an agent adds its own tools to those of the agent.
 
 ## The kinds of tool
 
 | Kind | What the agent can do |
 |---|---|
 | **Search knowledge** | Search what the workspace's service account may read and get the best matches, with their titles. |
+| **Collabase AI skill** | Use a skill of Collabase AI, for example to find or change work items and pages. A skill that changes data always asks first. |
 | **Start a flow** | Start an enabled flow of the same workspace and get the run id back. |
 | **Plug action** | Run one action of a Collabase plug or of an installed plug. |
 | **MCP server** | Use the tools of an external MCP server. |
 
-### Search knowledge
+### Search knowledge {#search-knowledge}
 
 The tool searches pages and other content that the service account of the workspace may read, never more. It returns up to five matches with a short text. An administrator must have configured an embedding model under [AI configuration](/admin/ai-configuration), otherwise the tool reports that the search is not available.
 
@@ -45,6 +48,23 @@ Add the address of an MCP server, with `https`. Collabase lists the server's too
 
 The call goes through Collabase's guarded outbound path: only public addresses are reachable, and addresses in your internal network are refused. An answer may be up to 2 MB, a call may take up to 30 seconds, and one server may add up to 30 tools. Everything a server returns reaches the model as untrusted text.
 
+### Collabase AI skill
+
+Choose one skill of Collabase AI. It runs with the rights of the account that the step acts as. A skill that changes data holds its call until a person has approved it, and you cannot switch that off. The step then needs [approvers](/automation/flow-approvals#approve-a-tool-of-an-agent).
+
+## Tools of an agent {#tools-of-an-agent}
+
+On the **Tools** card of an agent, **Add skills** opens the skill center instead of a list of kinds. It groups what you can add:
+
+| Group | What it holds |
+|---|---|
+| **Collabase** | Skills of Collabase AI by app: Projects, Docs, Registry, Times, Meetings, Tests, Blog and More. |
+| **Connected** | Actions of the plugs that are installed. |
+| **Connected servers** | The [MCP servers](/admin/mcp-servers) that an administrator connected, with their single tools. |
+| **Custom MCP server** | A server that you name by its `https` address. |
+
+An agent is not tied to one automation workspace, so two things differ from a flow step. It has no connections to choose, which means a plug action that signs in to another system is not usable. And it cannot start a flow as a tool. Both stay possible in the **Tools** input of an Agent step. In a chat, an agent uses only search, Collabase AI skills and MCP servers without a login. See [The agent editor](/automation/agent-editor#tools).
+
 ## Approval
 
 Tick **A person approves each call first** on a row to hold every call of that tool until a person has seen the input. For an MCP server the setting applies to every tool of the server. The step needs [approvers](/automation/flow-approvals#approve-a-tool-of-an-agent) when any row asks first.
@@ -60,5 +80,7 @@ Every tool call is listed in the result of the agent step with the tool, the out
 ## Related
 
 - [Agent step](/automation/agent-step)
+- [Agents](/automation/agents)
 - [Connections](/automation/connections)
 - [MCP server](/automation/mcp-server)
+- [MCP servers of the instance](/admin/mcp-servers)

@@ -48,14 +48,14 @@ For each area you choose a level: **Read**, **Read and write**, or **Administer*
 | Audit log | `audit:read` |
 | Registry | `registry:read`, `registry:write`, `registry:admin` |
 | Intranet | `intranet:read`, `intranet:write`, `intranet:admin` |
-| Automation | `automation:read`, `automation:write`, `automation:admin` |
+| Studio | `automation:read`, `automation:write`, `automation:admin` |
 | Time reports | `reports:read` |
 | Meetings | `meetings:read`, `meetings:write` |
 | Notifications | `notifications:read`, `notifications:write` |
 | Search | `search:read` (and the scope of the kind of object searched) |
 | Saved filters | `filters:read`, `filters:write` |
 
-Each endpoint states the scope it needs. Automation connections hold stored credentials, so reading or changing them needs `automation:admin`.
+Each endpoint states the scope it needs. Studio connections hold stored credentials, so reading or changing them needs `automation:admin`.
 
 Tokens issued before API keys were introduced no longer work. Your profile tells you how many are left; create new tokens to replace them. Guests cannot create tokens.
 

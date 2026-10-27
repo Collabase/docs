@@ -15,7 +15,7 @@ The diagram shows the two worlds: global modules apply to the whole instance, sp
 ```mermaid
 flowchart TB
     subgraph Global["Global modules: apply instance-wide"]
-        G["Registry, Automation, Intranet, Time Reports<br/>Access is granted to Groups by module, not per Space"]
+        G["Registry, Studio, Intranet, Time Reports<br/>Access is granted to Groups by module, not per Space"]
     end
     subgraph SpaceWorld["Space modules: governed by a Permission Scheme"]
         S["Projects, Docs, Test Management, Blog<br/>One Scheme covers all modules inside a Space"]
@@ -70,9 +70,9 @@ Configure per-schema access from the schema's **Settings → Permissions** tab.
 | **Admin** | Full access — configure widgets, categories, and settings; create and publish content |
 | *(all authenticated users)* | Can read Intranet content (news, events, quick links) without a group assignment |
 
-### Automation
+### Studio
 
-All authenticated users can build and manage their own automation rules. There are no group-based module roles for Automation — access to individual rules is controlled per rule:
+All authenticated users can build and manage their own automation rules. There are no group-based module roles for Studio, and access to individual rules is controlled per rule:
 
 | Permission | Who it grants |
 |---|---|

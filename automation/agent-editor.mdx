@@ -1,0 +1,121 @@
+---
+title: "The agent editor"
+sidebarTitle: "Agent editor"
+icon: "sliders-horizontal"
+description: "Change an agent with the builder chat, talk to it, review its memories and set its instruction, tools, knowledge and conversation starters."
+---
+
+An agent opens in two panes. On the left you work with the agent in three tabs: **Edit**, **Chat** and **Memories**. On the right the cards hold its definition. Select **Back** at the top left to return to the list of [agents](/automation/agents).
+
+The tabs and cards behave differently for people who manage an agent and for people who only use it. People who only use an agent open on the **Chat** tab and cannot change the definition.
+
+## The left pane
+
+### Edit: change the agent in a conversation {#edit}
+
+Ask the builder for a change in plain words, for example "Answer in German" or "Add the search of my project documents". The builder does not change anything on its own. It answers with a **Proposed change** card for each field it wants to change. The card shows what the field holds **Now** and what is **Proposed**.
+
+<Steps>
+  <Step title="Read the card">
+    Compare **Now** with **Proposed**. A tool that asks a person first is marked with the text "A person approves each call of" and the name of the tool.
+  </Step>
+  <Step title="Decide">
+    Select **Accept** to save the change, or **Reject** to leave the agent as it is. An accepted change is saved like a change you make by hand, so it appears in the audit log too.
+  </Step>
+</Steps>
+
+The builder can propose changes to the name, the description, the instruction, named skills with their instructions, the tools, the knowledge spaces, the most steps and the model. It cannot change the identity, the jobs, the sharing, the conversation starters or the approvers.
+
+- A proposal that no longer fits, because the agent changed after it was made, shows **Out of date**. Ask the builder again.
+- A card marked "Based on text the builder read from the agent or the instance" comes from text that the builder read while it worked. Check such a card with extra care.
+- Select **New conversation** to start over.
+- Only the creator, managers and administrators use the builder.
+
+### Chat: talk to the agent {#chat}
+
+The **Chat** tab is a conversation with the agent itself. It answers with its instruction and its tools, and **it acts with your permissions**. It can read and change only what you may read and change.
+
+- The conversation starters of the agent appear as pills in an empty chat. Choose one to send it as your first message.
+- A tool that changes data does not run on its own. The chat shows **The agent wants to run:** and the tool, with **Approve** and **Reject**. The input stays locked until you answer.
+- Open the title above the chat to see your earlier chats with this agent, to delete one or to start a new one. Select **New chat** for a new conversation.
+- A message can have up to 4,000 characters. You can send 20 messages a minute. One chat holds 400 messages, then it says **This chat is full. Start a new one.** Collabase keeps up to 100 chats per agent and person and drops the one you used least.
+- An answer takes up to 10 steps. If the agent has its own limit for the most steps, which you can ask the builder to set, that limit applies, up to 20.
+- Chats are private to you. Nobody else sees them in the agent.
+
+An agent chat can use these kinds of tool. Search, skills and the agent's own server are there only when you gave them to the agent:
+
+| Tool | In a chat |
+|---|---|
+| **Search knowledge** | Yes, with your permissions. |
+| Skills of **Collabase AI**, for example for work items and pages | Yes. Skills that change data ask you first. |
+| An MCP server the agent names itself, without a connection | Yes. A tool that is not marked read-only asks you first. |
+| The [MCP servers](/admin/mcp-servers) your administrator connected | Yes, in every chat of every agent. A tool that is not marked read-only asks you first. |
+| Plug actions, flows and MCP servers that need a connection | No. They only work when the agent runs in a flow or a job. |
+
+When the agent has tools of the last kind, a line above the chat names them: "These tools only work when the agent runs in a flow".
+
+The chat always uses the model of the instance. The agent can also suggest a memory, see the next tab.
+
+### Memories: what the agent keeps in mind {#memories}
+
+A memory is a short fact that the agent reads at the start of every chat, for example "Our fiscal year starts in April". Memories apply to chats only. Flows and jobs do not read them.
+
+| What | Detail |
+|---|---|
+| **Add a memory** | One short fact of up to 280 characters. |
+| **Active** | The memories the agent uses. An agent keeps up to 50. |
+| **Suggested by the agent** | The agent can suggest a memory during a chat. Select **Keep** to make it active or **Discard** to drop it. Up to 20 suggestions wait at a time. |
+
+Only managers change memories. Other people can read them. The agent never keeps a memory without a person's decision.
+
+## The cards on the right
+
+The bar at the top of the right pane jumps to a card. The header holds the picture, the name, the description, the model and the buttons **Usage** and **Share**. See [Agents](/automation/agents#usage-and-token-limit) for those two.
+
+### Instruction
+
+Say what the agent should do when someone chats with it or a flow runs it: the goal, the tone and what to avoid. The text can have up to 10,000 characters. It is the one card an agent needs besides its name.
+
+### Identity and jobs
+
+**Identity** gives the agent an account of its own, and **Jobs** says what starts it. Both have their own page: [Identity and jobs](/automation/agent-identity-and-jobs).
+
+### Tools {#tools}
+
+The **Tools** card lists what the agent may do. Each row shows the tool, a checkbox **A person approves each call first** and a button to remove it. Choose people and groups under **Approvers for tools that ask first**. They approve the calls of flows and jobs. In a chat, you approve your own.
+
+Select **Add skills** to open the skill center. It is the same list that the builder uses.
+
+| Group | What you find |
+|---|---|
+| **Collabase** | The skills of Collabase AI, grouped by app: Projects, Docs, Registry, Times, Meetings, Tests, Blog and More. A skill that changes data always asks first and its checkbox is locked. |
+| **Connected** | The actions of the plugs that are installed. |
+| **Connected servers** | The MCP servers an administrator connected. Open one to pick single tools. |
+| **Custom MCP server** | Any server that speaks MCP. Enter its `https` address and select **Add**. Its tools become skills of this agent. |
+
+Use **Search skills** to filter the list. Select **Add** on a skill, or **Remove** to take it away again, then **Done**.
+
+<Note>
+  The tools of a server that an administrator connected are available in every chat already. Adding them here also gives them to the agent in its flows and jobs.
+</Note>
+
+<Warning>
+  An agent that is not tied to one automation workspace has no connections of its own, so it cannot use a plug action that signs in to another system. Choose a connection in the [Agent step](/automation/agent-step) of a flow for that. An agent also cannot start a flow as a tool; a step in a flow can.
+</Warning>
+
+### Knowledge {#knowledge}
+
+Switch on **Search knowledge** to let the agent search pages and files. In a chat the search runs with your permissions. In a flow it runs with the rights of the service account of the automation workspace, and in a job started by a mention or an assignment with the rights of the agent's own identity.
+
+Add **Spaces** to limit the search to them. Leave the list empty to search everything the agent may read. You can add up to 50 spaces. The search needs an embedding model, see [Agent tools](/automation/agent-tools#search-knowledge).
+
+### Conversation starters {#conversation-starters}
+
+Add up to 8 starters. Each has an icon and a sentence of up to 120 characters. They appear as pills in an empty chat with the agent, on this page and in the docked chat. Choosing one sends it as the first message. Empty starters are not saved.
+
+## Related
+
+- [Agents](/automation/agents)
+- [Identity and jobs](/automation/agent-identity-and-jobs)
+- [Agent tools](/automation/agent-tools)
+- [MCP servers](/admin/mcp-servers)

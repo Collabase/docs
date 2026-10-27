@@ -1,11 +1,11 @@
 ---
-title: "Automation operations"
-sidebarTitle: "Automation operations"
-description: "How Automation carries out runs, what happens after a crash, how concurrency and retention work, which settings the services need and what to watch."
+title: "Studio operations"
+sidebarTitle: "Studio operations"
+description: "How Studio carries out runs, what happens after a crash, how concurrency and retention work, which settings the services need and what to watch."
 icon: "server-cog"
 ---
 
-This page is for the person who runs Collabase. It explains how Automation carries out runs, what protects a run from a crash, and what to check when something is slow.
+This page is for the person who runs Collabase. It explains how Studio carries out runs, what protects a run from a crash, and what to check when something is slow.
 
 ## The parts
 
@@ -16,7 +16,7 @@ This page is for the person who runs Collabase. It explains how Automation carri
 | **Queue and counters** | Redis. A queue holds runs that wait, and counters limit how many runs of a workspace go at once. |
 | **Database** | Workspaces, flows, versions, runs and the step journal. |
 | **File storage** | Trigger data, large step results, step logs and files that plugs write. |
-| **Plug sandbox** | A separate service that runs every plug Collabase did not write. See [Automation sandbox](/admin/automation-sandbox). |
+| **Plug sandbox** | A separate service that runs every plug Collabase did not write. See [Studio sandbox](/admin/automation-sandbox). |
 
 Collabase plugs run in the application. Plugs from the catalog and your own plugs run in the sandbox. Without the sandbox, flows that use only Collabase plugs keep working.
 
@@ -74,14 +74,14 @@ The installers create the secrets for a new installation, and the updater adds t
 | Where | What it tells you |
 |---|---|
 | **Runs** tab of a workspace | Failed runs, runs that stay paused, and retries. |
-| **Administration, Automation analytics** | Failed runs per day and the average duration, for all workspaces. See [Automation analytics](/admin/automation-analytics). |
-| The sandbox health address | `ok` or `degraded`. See [Automation sandbox](/admin/automation-sandbox). |
+| **Administration, Studio analytics** | Failed runs per day and the average duration, for all workspaces. See [Studio analytics](/admin/automation-analytics). |
+| The sandbox health address | `ok` or `degraded`. See [Studio sandbox](/admin/automation-sandbox). |
 | **Audit log** | Who installed a plug, changed a limit or connected Git. See [Audit events](/automation/audit-events). |
 
 A flow that fails ten times in a row is switched off, and the editors and admins of its workspace are told.
 
 ## Related
 
-- [Automation sandbox](/admin/automation-sandbox)
-- [Automation plugs](/admin/automation-plugs)
+- [Studio sandbox](/admin/automation-sandbox)
+- [Studio plugs](/admin/automation-plugs)
 - [Limits](/automation/limits)

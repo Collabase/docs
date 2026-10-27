@@ -1,0 +1,107 @@
+---
+title: "Agents"
+sidebarTitle: "Agents"
+icon: "bot-message-square"
+description: "Define an agent once for the whole instance and use it in chats, flows and jobs: create it from a description, share it, set a token limit and read its usage."
+---
+
+An agent is a named assistant that you define once. It has an instruction, tools, optional knowledge and its own conversation starters. Members chat with it, flows run it in an [Agent step](/automation/agent-step), and [jobs](/automation/agent-identity-and-jobs#jobs) start it from an event or a schedule.
+
+Agents belong to the instance, not to an automation workspace. Guests cannot use agents. Creating an agent from a description needs an AI model on your instance. See [AI configuration](/admin/ai-configuration).
+
+## Where to find agents
+
+| Where | What you can do |
+|---|---|
+| **Studio**, **Agents** in the sidebar | Open the list of agents, or select one in the sidebar. |
+| **Studio**, **Quick start** | Switch to **Agents** and describe a new one. See [Quick start](/automation/quick-start). |
+| **AI chats** in the header | Chat with any agent you may see in the docked chat. See [CollabaseAI](/concepts/collabase-ai#switch-to-an-agent). |
+
+## Create an agent
+
+<Steps>
+  <Step title="Open the agents page">
+    In **Studio**, select **Agents** in the sidebar.
+  </Step>
+  <Step title="Describe the job">
+    Write what the agent should do and press `Enter`. Press `Shift` + `Enter` for a new line. A description can have up to 2,000 characters. Four suggestions under the box fill it for you: **Task triage**, **Ticket writer**, **Meeting follow-up** and **Weekly status**.
+  </Step>
+  <Step title="Check the result">
+    The agent opens in the [agent editor](/automation/agent-editor). Read the instruction, then change what does not fit.
+  </Step>
+</Steps>
+
+Select **Create manually** instead to start with an empty agent named **New agent**.
+
+An agent made from a description gets a name, a description, an instruction, up to three skills and tools of Collabase AI that only read. It never gets a tool that changes data, knowledge, conversation starters or an identity of its own. Add those in the editor when you want them. If your instance has no AI model, the message says that Collabase AI is not set up.
+
+Each person can create up to 100 agents.
+
+## Who sees and manages an agent
+
+Select **Share** at the top right of an agent to set who sees it.
+
+| Setting | Meaning |
+|---|---|
+| **Everyone** | Every member can use the agent. This is the default. |
+| **Only invited** | Only the creator, the people and groups you invite, and administrators see the agent. |
+
+Invited people and groups get one of two roles.
+
+| Role | Can do |
+|---|---|
+| **Can use** | Chat with the agent and read how it is set up. |
+| **Can manage** | Change the agent, its jobs, its identity, its memories and its sharing. |
+
+The creator and system administrators always manage an agent. A line under the name shows who sees the agent and who manages it. A person who only uses an agent sees the editor without the **Jobs** card and cannot change anything in it.
+
+<Note>
+  A flow can run a restricted agent only while the person who published the flow may still see the agent. A flow that loses sight of its agent stops with a message instead of widening who can use it.
+</Note>
+
+## Use an agent
+
+| In | How |
+|---|---|
+| A chat | Open the agent and use the **Chat** tab, or choose it in the docked chat. It acts with your permissions. |
+| A flow | Choose the agent in the **Agent** input of an [Agent step](/automation/agent-step). |
+| A job | Add a job to the agent. It starts from a mention, an assignment, a schedule, a web address or shared meeting notes. See [Identity and jobs](/automation/agent-identity-and-jobs). |
+
+The model of an agent is set at the top of the editor. **Automatic** uses the model of the instance. The other choice uses the provider that was set for the automation workspace that runs the flow or job. A chat always uses the model of the instance.
+
+## Usage and token limit
+
+Select **Usage** at the top of an agent to see the last 30 days.
+
+| Figure | Meaning |
+|---|---|
+| **Runs** | Agent steps of flows and jobs. |
+| **Succeeded / failed** | How many of them ended well and how many failed. |
+| **Tokens** and **Steps** | What those runs used. |
+| **Runs per day** | One square per day, darker for more runs. |
+| **This month** | The tokens used in the current calendar month (UTC), with the limit if there is one. |
+
+Managers can enter a **Monthly token limit**. Once an agent has used that many tokens in a month, new runs of its flows and jobs stop, and a job shows that it is paused. Leave the field empty for no limit. The check happens before a run starts, so the run that crosses the limit may finish. Chats and the builder are not counted.
+
+## Good to know
+
+- An agent saves itself about a second after your last change. The top of the editor shows **Saving...**, **Saved** or **Saving failed**. Without a name and an instruction an agent is not saved.
+- There is no delete button on the agent page yet.
+- Changes to an agent, its identity, its sharing and its token limit appear in the audit log as **Automation agent created**, **changed** and **deleted**. See [Audit events](/automation/audit-events#agents).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="The agent editor" icon="sliders-horizontal" href="/automation/agent-editor">
+    Instruction, tools, knowledge and conversation starters.
+  </Card>
+  <Card title="Identity and jobs" icon="id-card" href="/automation/agent-identity-and-jobs">
+    Give an agent an account of its own and let events start it.
+  </Card>
+  <Card title="Agent step" icon="bot" href="/automation/agent-step">
+    Run an agent inside a flow.
+  </Card>
+  <Card title="MCP servers" icon="cable" href="/admin/mcp-servers">
+    Connect servers whose tools every chat can use.
+  </Card>
+</CardGroup>

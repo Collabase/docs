@@ -307,11 +307,12 @@
                 "icon": "sparkles",
                 "pages": [
                   "admin/ai-configuration",
-                  "admin/ai-costs"
+                  "admin/ai-costs",
+                  "admin/mcp-servers"
                 ]
               },
               {
-                "group": "Automation",
+                "group": "Studio",
                 "icon": "workflow",
                 "pages": [
                   "admin/automation-plugs",
@@ -346,14 +347,15 @@
             "icon": "settings"
           },
           {
-            "tab": "Automation",
+            "tab": "Studio",
             "icon": "workflow",
             "groups": [
               {
                 "group": "Overview",
                 "icon": "hand",
                 "pages": [
-                  "automation/overview"
+                  "automation/overview",
+                  "automation/quick-start"
                 ]
               },
               {
@@ -386,6 +388,9 @@
                 "icon": "bot",
                 "pages": [
                   "automation/agents-and-ai",
+                  "automation/agents",
+                  "automation/agent-editor",
+                  "automation/agent-identity-and-jobs",
                   "automation/agent-step",
                   "automation/agent-tools",
                   "automation/ai-provider",
@@ -657,7 +662,7 @@
                 ]
               },
               {
-                "group": "Automation",
+                "group": "Studio",
                 "pages": [
                   "api/automation/overview",
                   "api/automation/list-workspaces",
@@ -912,7 +917,7 @@
       "destination": "/developer/overview"
     }
   ],
-  "description": "Guides, administration and reference for Collabase, the collaboration platform from Switzerland: Docs, Projects, Test Management, Automation, Meetings and more.",
+  "description": "Guides, administration and reference for Collabase, the collaboration platform from Switzerland: Docs, Projects, Test Management, Studio, Meetings and more.",
   "seo": {
     "metatags": {
       "og:site_name": "Collabase documentation",

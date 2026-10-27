@@ -22,6 +22,14 @@ An action is the node in an automation that does something: it creates a task, u
 
 Active Directory is Microsoft's on-premises user directory. Collabase connects to it, and to other LDAP directories such as OpenLDAP and FreeIPA, so your team signs in with their existing company username and password. The LDAP settings include a preset for Active Directory that fills in the common attribute mappings. [Read more about LDAP and Active Directory](/admin/identity-providers).
 
+### Agent {#agent}
+
+An agent is a named assistant that you define once for the whole instance, with an instruction, tools, optional knowledge and conversation starters. Members chat with it, a flow runs it in an Agent step, and jobs start it. It is not the same as an outside AI agent that you connect through [MCP](#mcp). [Read more about agents](/automation/agents).
+
+### Agent identity {#agent-identity}
+
+An agent identity is a service account of its own that an agent can have. It has no password, never signs in and is never an administrator. It reads and works only in the Spaces where it was added, and it appears in the @ picker of comments in those Spaces. [Read more about the identity of an agent](/automation/agent-identity-and-jobs#identity).
+
 ### Announcement
 
 An announcement on the sign-in screen is the [login announcement banner](#login-announcement-banner). Inside the Intranet, news comes from the published blog posts of the News Space. [Read more about blog posts](/intranet/blog-posts).
@@ -36,7 +44,7 @@ The App Store adds apps to a Collabase installation. Every app ships with Collab
 
 ### Approval node
 
-The Approval node is a flow control node in Automation. It is not ready for production use yet and should not be used: the approver is not notified, the timeout is not applied and the automation does not continue after a decision. For approvals in projects, use [gates](#gate).
+The Approval node is a flow control node in Studio. It is not ready for production use yet and should not be used: the approver is not notified, the timeout is not applied and the automation does not continue after a decision. For approvals in projects, use [gates](#gate).
 
 ### Archived page {#archived-page}
 
@@ -53,10 +61,6 @@ An attribute is a field on an Object Type in the Registry, for example text, num
 ### Audit log {#audit-log}
 
 The audit log records changes and security events across the whole installation: sign-ins, permission changes, deletions and changes made by agents. Administrators open it under **Administration → Audit Log**. [Read more about the audit log](/admin/audit-log).
-
-### Automation
-
-Automation is the workflow app built into Collabase. You connect a trigger, conditions and actions in a visual drag-and-drop builder, without writing code. Every run is logged with the input, output and status of each node.
 
 ## B {#b}
 
@@ -116,11 +120,15 @@ A condition is a node in an automation that checks a value against a rule. A **F
 
 ### Connection {#connection}
 
-A connection is a named, encrypted set of credentials for an external connector. You create it once in the Automation app and reuse it in every automation. Credentials never appear in execution logs.
+A connection is a named, encrypted set of credentials for an external connector. You create it once in the Studio app and reuse it in every automation. Credentials never appear in execution logs.
 
 ### Connector
 
-A connector is a pre-built integration between Automation and an external service, such as Slack, Microsoft Teams, GitHub or bexio. Each connector brings its own triggers and actions.
+A connector is a pre-built integration between Studio and an external service, such as Slack, Microsoft Teams, GitHub or bexio. Each connector brings its own triggers and actions.
+
+### Conversation starter {#conversation-starter}
+
+A conversation starter is a ready sentence with an icon that an agent offers in an empty chat. Choosing it sends the sentence as the first message. An agent has up to eight. [Read more about conversation starters](/automation/agent-editor#conversation-starters).
 
 ### Cycle {#cycle}
 
@@ -176,7 +184,7 @@ A gate ends a [phase](#phase) with a set of exit criteria that a person reviews 
 
 ### Global module
 
-A global module is an app that is not tied to a Space: Registry, Automation, Intranet and Time Reports. Access to a global module is granted to groups per module under **Admin → Roles & App Access**. [Read more about permissions](/concepts/permissions).
+A global module is an app that is not tied to a Space: Registry, Studio, Intranet and Time Reports. Access to a global module is granted to groups per module under **Admin → Roles & App Access**. [Read more about permissions](/concepts/permissions).
 
 ### Governed workflow
 
@@ -248,9 +256,13 @@ A macro shows live content from Collabase inside a page, such as **Collabase Tas
 
 A mail event is one kind of mail Collabase can send, such as `task-assigned`. **Administration → Mail Templates** lists every event for review. Which kinds of mail members get is set per category under **Administration → Notifications**. [Read more about notification defaults](/admin/email#notification-defaults).
 
-### MCP
+### MCP {#mcp}
 
-MCP (Model Context Protocol) is an open standard for connecting AI applications to external systems. In Automation, the MCP node calls a tool registered on an external MCP server.
+MCP (Model Context Protocol) is an open standard for connecting AI applications to other systems. Collabase uses it in two directions: clients such as Claude or Cursor connect to Collabase, and Collabase connects to [MCP servers](#mcp-server) of other systems. [Read more about the Collabase MCP server](/developer/mcp).
+
+### MCP server {#mcp-server}
+
+An MCP server offers tools, for example a search in a documentation set. An administrator connects it once under **Admin → Settings → AI settings → MCP servers**, and its tools are then available in every CollabaseAI and agent chat. A tool that changes something asks for approval first. [Read more about MCP servers](/admin/mcp-servers).
 
 ### Member {#member}
 
@@ -382,6 +394,10 @@ Security policies control how long a sign-in stays valid, lock out repeated fail
 
 Semantic search finds content by meaning instead of exact words. When an administrator enables it in the AI settings, CollabaseAI uses it to find the relevant pages, work item descriptions and comments and answers with links to them. The header search and the Search page match words, not meaning. [Read more about search](/concepts/search#semantic-search).
 
+### Skill center {#skill-center}
+
+The skill center is the dialog on the **Tools** card of an agent, opened with **Add skills**. It lists the skills of CollabaseAI by app, the actions of installed plugs and the tools of MCP servers, and adds or removes them for the agent. [Read more about the skill center](/automation/agent-editor#tools).
+
 ### Space {#space}
 
 A Space is the top-level container in Collabase, with its own members, apps and content. Think of it as a department, a product area or a team. Spaces are isolated from each other, which makes them a reliable boundary for access control. [Read more about Spaces](/concepts/spaces).
@@ -409,6 +425,10 @@ A status report is the monthly report a project manager writes on a project's **
 ### Story points
 
 Story points are a relative effort estimate on a work item, in the Fibonacci sequence from 0 to 21. Collabase uses them for the burndown and velocity of [cycles](#cycle). A project can estimate in T-shirt sizes or hours instead. [Read more about estimation](/projects/sprints#estimation).
+
+### Studio
+
+Studio, called Collabase Automation before, is the workflow app built into Collabase. You connect a trigger, conditions and actions in a visual drag-and-drop builder, without writing code. Every run is logged with the input, output and status of each node.
 
 ### Suggestion
 

@@ -2,10 +2,10 @@
 title: "Audit events"
 sidebarTitle: "Audit events"
 icon: "scroll-text"
-description: "Every Automation event the audit trail records, from workspace and flow changes to approvals, connections, variables, Git and plugs, and who may read them."
+description: "Every Studio event the audit trail records, from workspace and flow changes to approvals, connections, variables, Git and plugs, and who may read them."
 ---
 
-Automation writes an entry to the audit trail for each change that matters. An entry names who did it, what it was about and when. It never contains a secret, a connection value, a variable value or the content of a flow.
+Studio writes an entry to the audit trail for each change that matters. An entry names who did it, what it was about and when. It never contains a secret, a connection value, a variable value or the content of a flow.
 
 ## Where to read the trail
 
@@ -25,7 +25,17 @@ Changes that a flow makes in Collabase, such as a new work item, are recorded as
 | **Automation concurrency limit changed** | The number of runs at the same time is changed. |
 | **Automation AI provider changed** | The workspace provider or its budget is set or removed. |
 
-## Flows
+## Agents {#agents}
+
+| Event | Recorded when |
+|---|---|
+| **Automation agent created** | An agent is created, by hand or from a description. |
+| **Automation agent changed** | An agent is edited, a builder proposal is accepted, its identity is switched on or off, its sharing or its monthly token limit changes. The details of the entry say which of these it was. |
+| **Automation agent deleted** | An agent is deleted. |
+
+The jobs of an agent are flows. Adding a job is recorded as **Automation flow created** and **Automation flow published**, with the source marked as an agent job. See [Flows](#flows).
+
+## Flows {#flows}
 
 | Event | Recorded when |
 |---|---|
@@ -82,4 +92,4 @@ Changes that a flow makes in Collabase, such as a new work item, are recorded as
 
 - [Workspaces](/automation/workspaces)
 - [Audit log](/admin/audit-log)
-- [Automation API](/api/automation/overview)
+- [Studio API](/api/automation/overview)

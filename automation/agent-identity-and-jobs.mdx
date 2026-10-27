@@ -1,0 +1,117 @@
+---
+title: "Agent identity and jobs"
+sidebarTitle: "Identity and jobs"
+icon: "id-card"
+description: "Give an agent an account of its own, add it to spaces, and let a mention, an assignment, a schedule, a web address or meeting notes start it."
+---
+
+An agent without an identity acts as the person who chats with it, or as the service account of an automation workspace when a flow or job runs it. An agent with an identity acts as itself, and only where you added it. Jobs say what starts an agent without anyone opening it.
+
+Both settings are in the [agent editor](/automation/agent-editor). Only the creator, managers and administrators see the **Jobs** card and change the identity.
+
+## Identity {#identity}
+
+An identity is a service account named like the agent. It has no password, it never signs in and it is never an administrator. It can read and work only in the Spaces where it was added, like a person with their own login.
+
+<Steps>
+  <Step title="Switch on the identity">
+    In the **Identity** card, switch on **Own identity**. The card now shows the agent with the label **Service account**.
+  </Step>
+  <Step title="Add it to a Space">
+    Under **Access**, select **Add to a space** and pick a Space. Until you add the agent somewhere, it can neither read nor change anything.
+  </Step>
+  <Step title="Choose its role">
+    Set the role in that Space to **Can read** or **Can read and work**. New entries start with **Can read and work**. An identity never manages a Space.
+  </Step>
+</Steps>
+
+| Detail | Behavior |
+|---|---|
+| Who may add the agent to a Space | A person who may manage the members of that Space. You can only pick such Spaces. |
+| Spaces you cannot open | They are not listed. The card counts them: "Also 2 memberships in spaces you cannot open or in projects." |
+| Renaming the agent | The account is renamed with it. |
+| Switching the identity off | A confirmation says that the agent loses all access and that its jobs for a mention and an assignment are removed. What it wrote stays. A new identity later is a new account. |
+
+### Mention an agent in a comment
+
+When you write a comment on a work item or a page and type `@`, the picker offers agents next to people. An agent appears when all of these hold:
+
+- You may see the agent.
+- Its identity is a member of the Space of the work item or page.
+- You typed at least one letter.
+
+The picker lists up to five agents. Guests never see agents. A mention starts the agent when its **Mention** job is on, see below.
+
+### What an agent writes
+
+Work an agent does with its identity is recorded under the account of the agent. After the identity is removed, the account stays anonymized so that what it wrote keeps an author that can no longer act.
+
+## Jobs {#jobs}
+
+The **Jobs** card lists what starts the agent. Each job holds a task: what the agent should do when the job starts. The agent also receives what started it, such as the comment or the work item, as data that it reads but never follows as instructions. Up to 20,000 characters of it reach the model.
+
+### Start on an event
+
+Four switches under **Start on an event** cover the common cases. An agent has at most one job of each of these kinds.
+
+| Job | Starts when | Needs an identity |
+|---|---|---|
+| **Mention** | Someone mentions the agent in a comment. | Yes |
+| **Direct message** | Not available yet. Collabase has no direct messages that could start an agent. | |
+| **Assign task** | A work item is assigned to the agent's account. | Yes |
+| **Meeting notes shared** | The minutes of a meeting that the automation workspace may see are published. | No |
+
+A job for a mention or an assignment runs as the agent's identity. It starts only when that identity may open the work item or page. A mention or assignment job stays off and says "Turn on the identity of the agent first" until the agent has an identity.
+
+Switching a job on for the first time opens a dialog. Choose the automation workspace where the job lives, write the task and save.
+
+### Schedule and web address
+
+**Scheduled** and **Webhook** jobs can be added as often as you need, up to 20 jobs per agent.
+
+| Job | Setting | Detail |
+|---|---|---|
+| **Scheduled** | **Frequency** | **Hourly**, **Daily**, **Weekly**, **Monthly** or **Custom (cron)**. |
+| | **Minute**, **Time**, **Weekday**, **Day of the month (1 to 28)** | Shown as the frequency needs them. |
+| | **Cron pattern** | For **Custom (cron)**. |
+| | **Time zone** | A new schedule starts as daily at 08:00 in Europe/Zurich. |
+| **Webhook** | **Webhook address** | Select **Copy address** and give it to the system that should start the agent. |
+
+<Warning>
+  Anyone with a webhook address can start the job. Share it only with systems you trust.
+</Warning>
+
+### Where a job runs
+
+Each job lives in an automation workspace that you choose when you add it. Collabase creates a flow there with one trigger and one [Agent step](/automation/agent-step) that carries the task. Change the job in the card.
+
+- You need the editor role in that automation workspace to add or switch on a job.
+- A sensitive automation workspace cannot hold a job, because its flows need an approval. The dialog says so.
+- A job that does not use the agent's identity runs as the service account of its automation workspace, never as a person.
+- Tools of the agent that ask first need [approvers](/automation/flow-approvals#approve-a-tool-of-an-agent), as in any Agent step.
+
+### State of a job
+
+Each job shows its automation workspace, a switch, and the result of its last run: **Not run yet** or **Last run** with the status. Two warnings can appear.
+
+| Message | Cause | What to do |
+|---|---|---|
+| **Paused: the agent used its tokens for this month.** | The monthly token limit of the agent is used up. | Raise the limit under **Usage** or wait for the next month. |
+| **Stopped after repeated failures. Switch it on again to retry.** | Collabase switched the flow of the job off, for example after repeated failures. | Check the runs in the automation workspace, then switch the job on again. |
+
+Select the pencil to change the task or the schedule. Select the bin to delete the job. Deleting removes the job, its flow and its run history, and the agent stays.
+
+### Flows that use the agent
+
+The **Automated** list names the flows that use the agent in an Agent step, with their automation workspace. Select one to open it, or select **Add automation** to build another flow in Studio. The list shows up to 20 flows.
+
+## What the run log keeps {#run-log}
+
+A run started by a mention or an assignment is about a work item or a comment that the people of the automation workspace may not be allowed to open. The run therefore stores only the ids and the type of the event as its trigger data. The title and the text are read again when the run starts and live in memory only.
+
+## Related
+
+- [The agent editor](/automation/agent-editor)
+- [Agents](/automation/agents)
+- [Runs](/automation/runs)
+- [Triggers](/automation/triggers)

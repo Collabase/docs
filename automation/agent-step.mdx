@@ -41,12 +41,22 @@ If you can write the rule in one sentence without saying "depends", it is a cond
 
 | Input | Description |
 |---|---|
-| **Goal** | What the agent should achieve. |
+| **Agent** | Optional. An [agent](/automation/agents) of the instance. Its instruction, skills, tools, knowledge and model apply to this step. |
+| **Goal** | What the agent should achieve. The goal always comes from the step. |
+| **Data** | What started the flow, for example `{{trigger}}`. The agent reads it as outside text and never as instructions. |
 | **Tools** | What the agent may call. |
 | **Fixed inputs** | JSON with values the agent must not change, such as the project of a new work item. For example `{"collabase-tasks.create_task": {"projectId": "..."}}`. The key is the plug and the action. |
 | **Approvers** | People and groups who approve tool calls that ask first. |
 | **Most steps** | How many steps the agent may take. The default is 20, the most is 50. |
-| **Model** | **Model of the instance** or **Provider of this workspace**. See [AI provider](/automation/ai-provider). |
+| **Model** | **Model of the instance** or the provider of the automation workspace. See [AI provider](/automation/ai-provider). With an agent chosen, the model of the agent applies. |
+
+## Use an agent in the step
+
+Choose an agent in the **Agent** input to reuse one definition in many flows. The step adds up the tools and the approvers of the agent and its own. A limit for the most steps on the step wins over the limit of the agent. The agent's instruction and skills guide the model, and its knowledge spaces limit the knowledge search.
+
+- Only an agent that the person who published the flow may see can run. A restricted agent that this person loses sight of stops the flow with a message.
+- An agent that has used its monthly token limit does not start. A step that is already waiting for an approval continues.
+- A step acts as the service account of the automation workspace. Only a [job](/automation/agent-identity-and-jobs#jobs) started by a mention or an assignment acts as the identity of the agent, so another flow cannot borrow the rights given to an agent.
 
 ## What the step returns
 
@@ -62,7 +72,7 @@ The text varies from run to run. For branching, ask in the goal for a short, fix
 
 ## Limits of an agent
 
-- An agent has no memory between runs.
+- An agent has no memory between runs. The memories of a chat do not apply in a flow.
 - It never invents results. If a tool did not return something, it says it does not know.
 - If a tool is refused or fails, it reports that and does not look for a way around.
 - Tool results are long text, so Collabase cuts a result to 8,000 characters before the model reads it.
@@ -81,6 +91,7 @@ Agent steps and the tokens they use appear in the workspace analytics. A workspa
 
 ## Related
 
+- [Agents](/automation/agents)
 - [Agent tools](/automation/agent-tools)
 - [AI provider](/automation/ai-provider)
 - [Flow approvals](/automation/flow-approvals)

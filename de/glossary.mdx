@@ -18,6 +18,14 @@ Eine Action ist der Knoten in einer Automation, der etwas ausführt: Sie legt ei
 
 Active Directory ist das lokale Benutzerverzeichnis von Microsoft. Collabase bindet es an, ebenso andere LDAP-Verzeichnisse wie OpenLDAP und FreeIPA. So meldet sich dein Team mit dem bestehenden Firmen-Benutzernamen und Passwort an. Die LDAP-Einstellungen enthalten eine Vorlage für Active Directory, welche die üblichen Attributzuordnungen ausfüllt. [Mehr zu LDAP und Active Directory](/admin/identity-providers).
 
+### Agent {#agent}
+
+Ein Agent ist ein benannter Assistent, den du einmal für die ganze Instanz definierst, mit Anweisung, Werkzeugen, optionalem Wissen und Conversation Starters. Members chatten mit ihm, ein Flow startet ihn in einem Agent-Schritt, und Jobs lösen ihn aus. Er ist nicht dasselbe wie ein externer KI-Agent, den du über [MCP](#mcp) anbindest. [Mehr zu Agents](/automation/agents).
+
+### Agent identity (Agenten-Identität) {#agent-identity}
+
+Eine Agenten-Identität ist ein eigenes Servicekonto, das ein Agent haben kann. Es hat kein Passwort, meldet sich nie an und ist nie Administrator. Es liest und arbeitet nur in den Spaces, zu denen es hinzugefügt wurde, und erscheint dort in der @-Auswahl von Kommentaren. [Mehr zur Identität eines Agents](/automation/agent-identity-and-jobs#identity).
+
 ### Announcement (Ankündigung)
 
 Ein Announcement ist ein Blog-Beitrag, der oben im Intranet-Feed angeheftet ist, über der chronologischen Liste der übrigen Beiträge. Nutze es für zeitkritische Mitteilungen, die alle sehen sollen. [Mehr zu Announcements](/intranet/blog-posts).
@@ -37,10 +45,6 @@ Das Attachments-Makro zeigt eine laufend aktuelle Liste der Anhänge einer Seite
 ### Attribute (Attribut)
 
 Ein Attribut ist ein Feld eines Object Type in der Registry, zum Beispiel Text, Zahl, Datum, Auswahl, Benutzer oder Relation. Ein Attribut jedes Object Type ist das Label, also der Anzeigename seiner Objects in der ganzen Oberfläche. [Mehr zu Attributen](/registry/overview).
-
-### Automation
-
-Automation ist die eingebaute Workflow-App von Collabase. Du verbindest einen Trigger, Conditions und Actions in einem visuellen Baukasten per Drag-and-drop, ohne Code zu schreiben. Jeder Lauf wird mit Eingabe, Ausgabe und Status jedes Knotens protokolliert.
 
 ## B {#b}
 
@@ -92,13 +96,17 @@ Eine Condition ist ein Knoten in einer Automation, der einen Wert gegen eine Reg
 
 ### Connection (Verbindung) {#connection-verbindung}
 
-Eine Connection ist ein benannter, verschlüsselter Satz Zugangsdaten für einen externen Connector. Du legst sie einmal in der Automation-App an und verwendest sie in jeder Automation wieder. Zugangsdaten erscheinen nie in den Ausführungsprotokollen.
+Eine Connection ist ein benannter, verschlüsselter Satz Zugangsdaten für einen externen Connector. Du legst sie einmal in der Studio-App an und verwendest sie in jeder Automation wieder. Zugangsdaten erscheinen nie in den Ausführungsprotokollen.
 
 ### Connector
 
-Ein Connector ist eine vorgefertigte Anbindung zwischen Automation und einem externen Dienst wie Slack, Microsoft Teams, GitHub oder bexio. Jeder Connector bringt eigene Trigger und Actions mit.
+Ein Connector ist eine vorgefertigte Anbindung zwischen Studio und einem externen Dienst wie Slack, Microsoft Teams, GitHub oder bexio. Jeder Connector bringt eigene Trigger und Actions mit.
 
 ## D {#d}
+
+### Conversation starter (Gesprächseinstieg) {#conversation-starter}
+
+Ein Conversation Starter ist ein fertiger Satz mit Symbol, den ein Agent in einem leeren Chat anbietet. Wählst du ihn, wird der Satz als erste Nachricht gesendet. Ein Agent hat bis zu acht. [Mehr zu Conversation Starters](/automation/agent-editor#conversation-starters).
 
 ### Desktop app (Desktop-App)
 
@@ -132,7 +140,7 @@ Im Dateispeicher legt Collabase hochgeladene Dateien wie Anhänge, Bilder und Ba
 
 ### Global module (Globales Modul)
 
-Ein globales Modul ist eine App, die an keinen Space gebunden ist: Registry, Automation, Intranet und Time Reports. Den Zugriff auf ein globales Modul erhalten Groups pro Modul unter **Admin → Roles & App Access**. [Mehr zu Berechtigungen](/concepts/permissions).
+Ein globales Modul ist eine App, die an keinen Space gebunden ist: Registry, Studio, Intranet und Time Reports. Den Zugriff auf ein globales Modul erhalten Groups pro Modul unter **Admin → Roles & App Access**. [Mehr zu Berechtigungen](/concepts/permissions).
 
 ### Governed workflow (Gesteuerter Workflow)
 
@@ -176,9 +184,13 @@ Mit Live Collaboration bearbeiten mehrere Personen dieselbe Seite gleichzeitig. 
 
 ## M {#m}
 
-### MCP
+### MCP {#mcp}
 
-MCP (Model Context Protocol) ist ein offener Standard, um KI-Anwendungen mit externen Systemen zu verbinden. In Automation ruft der MCP-Knoten ein Werkzeug auf, das auf einem externen MCP-Server registriert ist.
+MCP (Model Context Protocol) ist ein offener Standard, um KI-Anwendungen mit anderen Systemen zu verbinden. Collabase nutzt ihn in zwei Richtungen: Clients wie Claude oder Cursor verbinden sich mit Collabase, und Collabase verbindet sich mit [MCP-Servern](#mcp-server) anderer Systeme. [Mehr zum Collabase-MCP-Server](/developer/mcp).
+
+### MCP server (MCP-Server) {#mcp-server}
+
+Ein MCP-Server bietet Werkzeuge an, zum Beispiel eine Suche in einer Dokumentation. Eine Administratorin oder ein Administrator verbindet ihn einmal unter **Admin → Settings → AI settings → MCP servers**, danach stehen seine Werkzeuge in jedem Chat von CollabaseAI und der Agents zur Verfügung. Ein Werkzeug, das etwas verändert, fragt vorher nach Freigabe. [Mehr zu MCP-Servern](/admin/mcp-servers).
 
 ### Member (Mitglied)
 
@@ -266,6 +278,10 @@ Security Policies legen fest, wie lange eine Anmeldung gültig bleibt, sperren K
 
 Mit der semantischen Suche stellst du eine Frage in normaler Sprache und erhältst eine Antwort aus deinen eigenen Seiten, Work Items und Kommentaren, mit Links auf die Quellen. Sie braucht ein Embedding-Modell, das eine Administratorin oder ein Administrator einrichtet. [Mehr zu KI in Collabase](/concepts/ai).
 
+### Skill center (Skill-Center) {#skill-center}
+
+Das Skill-Center ist der Dialog auf der Karte **Tools** eines Agents, den du mit **Add skills** öffnest. Er listet die Skills von CollabaseAI nach App, die Actions installierter Plugs und die Werkzeuge von MCP-Servern und fügt sie dem Agent hinzu oder entfernt sie. [Mehr zum Skill-Center](/automation/agent-editor#tools).
+
 ### Space
 
 Ein Space ist der oberste Behälter in Collabase, mit eigenen Members, Apps und Inhalten. Stell ihn dir als Abteilung, Produktbereich oder Team vor. Spaces sind voneinander getrennt und bilden deshalb eine verlässliche Grenze für Zugriffsrechte. [Mehr zu Spaces](/concepts/spaces).
@@ -289,6 +305,10 @@ Jeder Workflow-Status gehört zu einer von drei Kategorien: TODO, IN_PROGRESS od
 ### Story points
 
 Story Points sind eine relative Aufwandsschätzung eines Tasks. Collabase nutzt sie für die Sprint-Velocity und das Burndown-Diagramm. Projekte können auch in T-Shirt-Grössen oder Stunden schätzen. [Mehr zu den Task-Feldern](/projects/tasks).
+
+### Studio
+
+Studio, früher Collabase Automation, ist die eingebaute Workflow-App von Collabase. Du verbindest einen Trigger, Conditions und Actions in einem visuellen Baukasten per Drag-and-drop, ohne Code zu schreiben. Jeder Lauf wird mit Eingabe, Ausgabe und Status jedes Knotens protokolliert.
 
 ### Suggestion (Änderungsvorschlag)
 

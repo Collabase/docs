@@ -4,7 +4,7 @@ sidebarTitle: "AI Features"
 description: "Where AI appears in Collabase, how to use it, and what changes depending on whether your provider runs locally or in the cloud."
 ---
 
-Collabase's AI features run under the name **CollabaseAI**. They share a single provider configuration set by your administrator, so the provider is chosen once and every feature uses it.
+Collabase's AI features run under the name **CollabaseAI**. They share a single provider configuration set by your administrator, so the provider is chosen once and every feature uses it. An administrator can also connect [MCP servers](/admin/mcp-servers) whose tools every chat can use.
 
 AI features are **off by default**. An admin must enable them under **Admin → Settings → AI settings → Language model** before they are available. See [AI Configuration](/admin/ai-configuration) for setup instructions.
 
@@ -19,7 +19,10 @@ AI features are **off by default**. An admin must enable them under **Admin → 
   <Card title="Writing assistant" icon="pen-to-square">
     Generate, summarize, translate, and improve text in any editor: Docs pages, task descriptions, Intranet posts, and Registry text fields.
   </Card>
-  <Card title="Automation AI nodes" icon="bolt">
+  <Card title="Agents" icon="bot" href="/automation/agents">
+    Assistants that you define once, with their own instruction, tools and knowledge. Chat with them in the docked panel, or let them work in flows and jobs.
+  </Card>
+  <Card title="Studio AI nodes" icon="bolt">
     Use AI actions inside automation pipelines to generate text, summarize inputs, or classify data as part of a larger workflow.
   </Card>
   <Card title="Semantic search" icon="magnifying-glass">
@@ -31,7 +34,7 @@ AI features are **off by default**. An admin must enable them under **Admin → 
 
 ## The CollabaseAI assistant
 
-The assistant is the chat panel behind the mark at the bottom centre of the screen, or `Cmd` + `J` / `Ctrl` + `J`. It reads your work items, pages, cycles, discussions, Registry objects and test runs, and it writes: new pages and whiteboards, new and changed work items and Registry objects, status moves, comments.
+The assistant is the chat panel docked at the right of the screen. Open it with **AI chats** in the search field of the top bar, or with `Cmd` + `J` / `Ctrl` + `J`. On the Home page it also appears inline. It reads your work items, pages, cycles, discussions, Registry objects and test runs, and it writes: new pages and whiteboards, new and changed work items and Registry objects, status moves, comments.
 
 It only ever sees what you can see, chats are private to you, and they are deleted after 30 days.
 
@@ -47,7 +50,7 @@ This cannot be switched off, and the reason is worth knowing. The assistant read
 
 <CardGroup cols={2}>
   <Card title="Using the assistant" icon="comments" href="/concepts/collabase-ai">
-    Where the launcher sits, the shortcut, suggestion chips, conversation history, and what it does with your data.
+    Where the panel sits, the shortcut, switching to an agent, starters, conversation history, and what it does with your data.
   </Card>
   <Card title="Skill reference" icon="list" href="/concepts/collabase-ai-skills">
     Every skill it has, grouped by subject, with an example of how to ask for each one.
@@ -102,7 +105,7 @@ Content is indexed automatically when it is saved, and is available in semantic 
 
 ---
 
-## AI in Automation
+## AI in Studio
 
 The **AI / LLM** automation connector lets you run AI actions inside any automation pipeline. Use it to:
 
@@ -110,7 +113,7 @@ The **AI / LLM** automation connector lets you run AI actions inside any automat
 - Classify incoming support requests and route them to the right project
 - Draft a task description based on data from another system
 
-AI nodes connect to the same provider configured globally, or to a separately configured connection if you need a different model for automation use cases. See the Automation documentation for details on setting up the AI connector and chaining it with other nodes.
+AI nodes connect to the same provider configured globally, or to a separately configured connection if you need a different model for automation use cases. See the Studio documentation for details on setting up the AI connector and chaining it with other nodes.
 
 ---
 
@@ -151,7 +154,7 @@ Hosted providers offer more capable models and require no server hardware, but c
 |---|---|---|
 | Writing assistant (`/ai` command) | Yes, except while others are editing the same page | Yes, except while others are editing the same page |
 | CollabaseAI assistant | Yes, with a model that supports tool calling | Yes |
-| Automation AI nodes | Yes | Yes |
+| Studio AI nodes | Yes | Yes |
 | Keyword search | Yes, no AI involved | Yes, no AI involved |
 | Semantic search | Yes, with an embedding model such as `nomic-embed-text` | Yes. Groq and Anthropic need a second provider for the embedding model |
 

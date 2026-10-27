@@ -5,7 +5,7 @@ description: "Connect Collabase to an AI provider, enable semantic search, and u
 icon: "sparkles"
 ---
 
-Collabase's AI features run under the name **CollabaseAI**: the assistant panel, writing assistance in Docs, task description generation in Projects, AI nodes in Automation, and semantic search.
+Collabase's AI features run under the name **CollabaseAI**: the assistant panel, writing assistance in Docs, task description generation in Projects, AI nodes in Studio, and semantic search.
 
 All AI features are **off by default**. The settings live under **Admin → Settings → AI settings**, split into four pages:
 
@@ -17,6 +17,8 @@ All AI features are **off by default**. The settings live under **Admin → Sett
 | **Usage** | Token consumption, cost, and whether each of the three slots is currently working. |
 
 These are **three separate models with three separate providers**. A chat provider that cannot produce embeddings does not stop semantic search from working, as long as you point the embedding slot somewhere else. Each slot has its own switch, and each one degrades on its own: without an embedding model the assistant still answers, without a re-ranking model search still finds.
+
+In the same group, **MCP servers** connects servers whose tools CollabaseAI and every agent can use in any chat. See [MCP servers](/admin/mcp-servers).
 
 ---
 
@@ -57,7 +59,7 @@ The deciding question is usually whether content may leave your infrastructure. 
     Open the admin panel and navigate to the language model page.
   </Step>
   <Step title="Toggle CollabaseAI to Enabled">
-    This master switch controls all AI features. When it is off, the assistant launcher is hidden, the `/ai` command disappears from the editor, and AI automation nodes do not run.
+    This master switch controls all AI features. When it is off, the **AI chats** button is hidden, the `/ai` command disappears from the editor, and AI automation nodes do not run.
   </Step>
   <Step title="Select your provider">
     Choose one of the tiles. The configuration fields below update to match the selection.
@@ -303,5 +305,8 @@ Assistant chats are private to the user who wrote them. There is no administrato
   </Card>
   <Card title="Using CollabaseAI" icon="comments" href="/concepts/collabase-ai">
     What your users will see once you have enabled it.
+  </Card>
+  <Card title="MCP servers" icon="cable" href="/admin/mcp-servers">
+    Connect servers whose tools every chat can use.
   </Card>
 </CardGroup>

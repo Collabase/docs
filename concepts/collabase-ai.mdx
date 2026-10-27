@@ -18,43 +18,57 @@ It only ever sees what you can see. Every question it answers is scoped to your 
 
 ---
 
-## Opening the assistant
+## Opening the assistant {#opening}
 
-The launcher sits at the bottom centre of every screen, in the middle of the small dock next to search and create. Click it to open the chat panel.
+CollabaseAI sits in a panel docked at the right edge of the screen, below the top bar. On a screen at least 1,024 pixels wide, the panel squeezes the page beside it and does not cover it. On a narrower screen it lies over the page.
 
 | Action | How |
 |---|---|
-| **Open or close the panel** | Click the CollabaseAI mark in the dock, or press `Cmd` + `J` (macOS) / `Ctrl` + `J` (Windows, Linux) |
-| **Start a fresh conversation** | Click the refresh icon in the panel header |
-| **Open saved chats** | Click the history icon in the panel header |
-| **Close the panel** | Click the close icon, or press the shortcut again |
+| **Open or close the panel** | Select **AI chats** in the search field of the top bar, or press `Cmd` + `J` (macOS) / `Ctrl` + `J` (Windows, Linux) |
+| **Start a fresh conversation** | Select **New conversation** at the top of the panel, or choose it in the chat menu |
+| **Open saved chats** | Select the title of the chat at the top of the panel |
+| **Close the panel** | Select **Close CollabaseAI** at the top right, or press the shortcut again |
 
-If the launcher is not there, an administrator has not enabled AI on this instance yet. See [AI Configuration](/admin/ai-configuration).
+Closing the panel does not end the conversation. An answer that is still coming in continues, and the chat is there when you open the panel again.
+
+If **AI chats** is not there, an administrator has not enabled AI on this instance yet, or you have not been given the **Collabase AI** app right. See [AI Configuration](/admin/ai-configuration).
+
+On the Home page, CollabaseAI also appears inline. See [Your Home page and favorites](/concepts/home-and-favorites#ai-start).
 
 ---
 
 ## Using the panel
 
-The panel floats above the page, so whatever you were reading stays in view behind it.
-
 ### Resizing
 
-Drag the **top edge** of the panel to make it taller, and the **right edge** to make it wider. The size is remembered on your device and applies the next time you open it.
+On a wide screen, drag the **left edge** of the panel to make it narrower or wider, between 420 and 720 pixels. The width is remembered on your device and applies the next time you open the panel.
 
-### Suggestion chips
+### Switch to an agent {#switch-to-an-agent}
 
-Above the input field is a row of starting points. What they offer depends on what you have open.
+The control at the top left of the panel names who answers. Select it to choose CollabaseAI or one of the [agents](/automation/agents) you may see. A search field filters the agents by name and description.
 
-| Where you are | What the chips offer |
+An agent chat looks like a CollabaseAI chat, with the picture and the name of the agent, its own chat history and its own [conversation starters](/automation/agent-editor#conversation-starters). The agent acts with your permissions. Your choice is remembered on your device. CollabaseAI keeps running in the background while you talk to an agent.
+
+### Starters
+
+An empty panel shows a row of starting points that drifts sideways. What it offers depends on what you have open.
+
+| Where you are | What the starters offer |
 |---|---|
 | Anywhere else in the platform | Your open work items, what happened in the last two weeks, what is due soon |
 | On a work item | What changed on this item, a summary of the discussion, where the item stands |
 | On a page | A summary of the page, the to-dos hidden in it, an explanation of the terms used |
 | On a Registry object | A summary of the Object, what it is linked to |
 
+Under the row, five categories help you word a question: **Search**, **Create**, **Summarize**, **Analyze** and **Plan**. Select a category to see three openers, then choose one. It is written into the input and not sent, so you finish the sentence before you send it.
+
 ### The context pill
 
-When you open the panel while a work item, page or Registry object is on screen, a small pill under the header names it. That is what CollabaseAI is reading, so you can ask "what changed here?" without naming the item.
+When a work item, page or Registry object is on screen, a small pill in the footer of the input names it. That is what CollabaseAI is reading, so you can ask "what changed here?" without naming the item.
+
+### The model
+
+The footer of the input shows the model that answers, with the provider it runs at. Collabase connects one model to CollabaseAI, so the list holds that one entry. Agent chats do not show it. They always use the model of the instance.
 
 ---
 
@@ -79,6 +93,10 @@ CollabaseAI works in two directions: it looks things up, and it changes things.
 
 Every skill it has, with an example of how to ask for it, is listed in the [skill reference](/concepts/collabase-ai-skills).
 
+### Tools of connected servers
+
+An administrator can connect [MCP servers](/admin/mcp-servers), for example one that searches this documentation. CollabaseAI and every agent can use their tools in any chat. A tool that the server marks as read-only runs on its own. Every other tool asks for your approval first, and the card shows the server, the tool and the exact input.
+
 ### Before it changes anything {#before-it-changes-anything}
 
 CollabaseAI never writes on its own. Creating a work item or a page, changing a field, moving an item, posting a comment: each one arrives in the chat as a card naming exactly what it would do, with **Approve** and **Reject**. Nothing happens until you approve, and rejecting changes nothing.
@@ -95,10 +113,10 @@ If a search comes back empty, it says so and names what it looked for. It does n
 
 ## Conversation history
 
-Chats are saved as you go. Open the history icon in the panel header to see your earlier conversations, each with a short title taken from your opening question. Click one to reopen it exactly as it was, including the result cards. Delete any chat from the same list.
+Chats are saved as you go. Select the title of the chat at the top of the panel to see your earlier conversations, each with a short title taken from your opening question. Click one to reopen it exactly as it was, including the result cards. Delete any chat from the same list. The list shows the hint **Kept for 30 days**.
 
 <Note>
-  Saved chats are kept for **30 days** and then deleted for good. This is a fixed window on every Collabase instance.
+  Saved CollabaseAI chats are kept for **30 days** and then deleted for good. This is a fixed window on every Collabase instance. Chats with an [agent](/automation/agent-editor#chat) follow other rules: you keep up to 100 of them per agent until you delete them.
 </Note>
 
 ---
@@ -111,7 +129,7 @@ Chat transcripts are unusually revealing. They hold what you were unsure about, 
 |---|---|
 | **Who can read your chats** | Only you. There is no sharing option and no administrator view. |
 | **What CollabaseAI can see** | Exactly what you can see. It resolves your permissions per space, per project and per page, including pages with restricted access. |
-| **How long chats are kept** | 30 days, then deleted. Deleting your account deletes your chats with it. |
+| **How long chats are kept** | CollabaseAI chats: 30 days, then deleted. Agent chats: until you delete them. Deleting your account deletes your chats with it. |
 | **Where the text is processed** | With the AI provider your administrator configured. On a self-hosted provider, nothing leaves your infrastructure. See [AI Configuration](/admin/ai-configuration). |
 
 ---

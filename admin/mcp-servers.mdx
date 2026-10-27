@@ -1,0 +1,73 @@
+---
+title: "MCP servers"
+description: "Connect MCP servers once so that their tools are available in every CollabaseAI and agent chat, test the connection, and remove a server again."
+icon: "cable"
+---
+
+An MCP server offers tools, for example a search in a documentation set. A server that you connect under **Admin → Settings → AI settings → MCP servers** is available in every chat of the instance, in CollabaseAI and in the chat of every agent, for as long as it is listed. Removing it switches it off. There is no per-server switch.
+
+Only system administrators see the page.
+
+<Note>
+  This page is about MCP servers that Collabase connects to, so that its chats can use their tools. It is the opposite direction of the [Collabase MCP server](/developer/mcp), which lets Claude, Cursor or another client work in Collabase, and of the [MCP server of Studio](/automation/mcp-server), which offers the flows of an automation workspace to such a client.
+</Note>
+
+## The documentation server
+
+Every instance starts with the **Collabase Dokumentation** server. It is public and needs no login, so CollabaseAI can answer questions from this documentation. It is marked **Default**. You can remove it. A server that you removed is not added again on the next start.
+
+## Connect a server
+
+<Steps>
+  <Step title="Select Add">
+    Open **Admin → Settings → AI settings → MCP servers** and select **Add**.
+  </Step>
+  <Step title="Enter the details">
+    Enter a name and the public https address of the server. If the server needs a login, enter an access token. Collabase sends it as a bearer token, stores it encrypted and never shows it again.
+  </Step>
+  <Step title="Test the connection">
+    Select **Test connection**. The result says how many tools the server offers, or why it could not be reached. Then select **Save**.
+  </Step>
+</Steps>
+
+<Warning>
+  The content of chats can be sent to a connected server. Connect only servers that you trust.
+</Warning>
+
+Only public https addresses are accepted. Addresses in a private network, loopback addresses and cloud metadata addresses are refused. The list shows up to 50 servers, and a name or an address can be used once.
+
+## What the chat may do with a tool
+
+- A tool that the server marks as read-only runs on its own.
+- Any other tool asks the person who is chatting for approval first. The approval shows the server, the tool and the exact input.
+- Everything a server answers reaches the model as outside text that it reads but never follows as an instruction.
+- A server that does not answer within 8 seconds is left out for that message. The chat goes on without it. A tool call can take up to 20 seconds.
+- One server adds up to 40 tools to a chat, and an answer is cut at 20,000 characters.
+
+These rules hold in the docked chat, on the home page and in the chat of every agent. See [CollabaseAI](/concepts/collabase-ai) and [Agents](/automation/agents).
+
+## The table
+
+| Column | Meaning |
+|---|---|
+| **Name** and **Address** | What you entered. |
+| **Tools** | How many tools the last test found. |
+| **Last check** and **Status** | **Connected**, **Error** or **Not checked**. |
+
+Select **Test** to check a server again.
+
+## Change or remove a server
+
+Select **Edit** to rename a server or to replace or remove its token. The address cannot change; connect a new server instead. Select **Remove** to take a server out of every chat. Agents that use tools of the server lose them.
+
+Connecting, changing and removing a server appear in the audit log as **MCP server connected**, **MCP server changed** and **MCP server removed**.
+
+## Give an agent the tools of a server
+
+The tools of a connected server are already available in every chat. To let an agent use them in its flows and jobs as well, open the agent, select **Add skills**, and choose the server under **Connected servers**. An agent can also name a server of its own under **Custom MCP server**. See [The agent editor](/automation/agent-editor#tools).
+
+## Related
+
+- [AI configuration](/admin/ai-configuration)
+- [Audit log](/admin/audit-log)
+- [Agents](/automation/agents)
