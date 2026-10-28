@@ -8,6 +8,54 @@ Release notes for Collabase are published here from version 1.0 onwards. For eve
 
 Each release has one entry with its version and month. Filter the entries by category with the tags, or subscribe with the RSS button.
 
-<Note>
-  Collabase 1.0 is not released yet. Until then, this page stays empty.
-</Note>
+<Update
+  label="October 2026"
+  description="v1.0.0"
+  tags={["New features", "Stability", "Security"]}
+  rss={{ title: "Collabase 1.0.0", description: "The first stable release of Collabase: docs, work management, test management and AI in one self-hosted application, with enterprise sign-in, an audit log and production-sized defaults." }}
+>
+  Collabase 1.0 is the first stable release. It is built for organisations that run their
+  collaboration on their own infrastructure: documentation, work management, test management and AI
+  in one application, with one permission model and one search across all modules. Your data stays on
+  your servers, and the AI provider is yours to choose.
+
+  From this version on, updates keep your data and settings, and every change that affects
+  administrators is announced here.
+
+  ### New features
+
+  - **Docs and spaces:** a page tree with a rich-text editor, templates, version history, comments and realtime co-editing.
+  - **Work management:** projects with work item types, workflows, custom fields, boards, backlogs and sprints, plus project templates, timeline, portfolio Gantt, phases with gates, milestones and status reports.
+  - **Planning and time:** a planner with capacity per person and team, time tracking and time evaluation.
+  - **Test management:** test cases, runs, plans and milestones in the space, linked to work items, with an API for external test tools.
+  - **Collabase AI:** an AI chat beside every page. The AI provider is chosen by the administrator.
+  - **Meetings and dashboards:** meetings with agenda and outcomes, and dashboards with gadgets across modules.
+  - **Registry and service desk:** objects with custom types and relations, and a request portal per space.
+  - **Search:** one search for global search, saved filters, lists and Collabase AI.
+  - **Collabase Lab:** each person can switch on features that are still in development, Studio for automations among them, under Preferences in the profile. An administrator can keep a feature off for everyone.
+  - **Deployment:** packages for Docker Compose, Kubernetes (Helm) and Docker Swarm. Updates apply database changes on start.
+
+  ### Stability
+
+  - **Production-sized defaults:** the database and the application connection pool are sized for organisation-wide use out of the box. Smaller hosts can lower the values.
+  - **Safe updates:** before an update changes the database, it checks the data and takes a backup. If either step fails, nothing is changed and you return to the previous version.
+  - **Checked images:** the application and collaboration images are started and health-checked before a release is published.
+  - **Long-term support runtime:** the application runs on a long-term-support platform that receives security fixes for years.
+
+  ### Security
+
+  - **Enterprise sign-in:** password, second factor with authenticator apps and backup codes, passkeys, single sign-on with SAML and OIDC, LDAP and SCIM provisioning.
+  - **Strong administrators:** system administrators who sign in with a password must set up a second factor before they reach administration.
+  - **Immediate lockout:** locking an account, by an administrator, SCIM or LDAP, ends all its sessions, switches off its API keys and withdraws its app grants at once.
+  - **Guests:** external people work in one project without seeing the rest of the instance.
+  - **Controlled API access:** API keys with scopes and a maximum lifetime of one year, shown only once. Third-party applications can connect only after an administrator allows it.
+  - **Traceability:** sign-in and security events in the audit log, kept for 180 days, and security mails to the person when a new device signs in or a security setting changes.
+  - **AI within permissions:** Collabase AI only sees what the person asking may see.
+  - **Verifiable supply chain:** container images ship with a software bill of materials and provenance attestations.
+
+  <Warning>
+    **Upgrading from a version before 1.0:** everyone signs in once again, and old API tokens stop
+    working and must be replaced with API keys. Automation rules of the previous engine are removed.
+    `ENCRYPTION_KEY` and `NEXTAUTH_URL` are required on every installation.
+  </Warning>
+</Update>

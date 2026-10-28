@@ -15,4 +15,3 @@ Intranet
 Registry
 pgvector
 Caddy
-Swarmit

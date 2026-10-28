@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Runs every docs check (documentation-rules.md, section 24). Runs from the folder that
-# contains docs.json. Stops with a non-zero exit if any check fails.
+# Runs every docs check (documentation-rules.md, section 24). Works from the product repo
+# (`npm run docs:check`) and from the docs repo. Stops with a non-zero exit if any check fails.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
