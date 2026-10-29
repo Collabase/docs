@@ -342,6 +342,8 @@ description: "..."
 ## 10. Images
 
 - Screenshots go in `images/`.
+- **Release images** live in `images/releases/<id>/` as WebP. They are exports of the product repo's
+  generator (`tools/release-art/`), the one exception to PNG only, and never replaced by hand.
 - **App icons** live in `images/apps/<app>-light.png` and `<app>-dark.png` (256 px, from the brand set
   `public/assets/brand_assets/v4/AppIcons/`). Every app overview page shows the pair at `width="60"` above the
   first paragraph, switched with `block dark:hidden` and `hidden dark:block`; the home page uses the light file
@@ -424,12 +426,15 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
   release, so `docs.json` does not change when you add one. Keep the page in the default page mode:
   `custom`, `center` and `wide` hide the tag filters and the table of contents.
 - **Frontmatter** has `rss: true`, which shows the RSS button.
+- **A new major** (x.0.0) opens its entry with the silhouette of its name in a `<Frame>` captioned
+  with the data source: `silhouette-light-wide.webp` with `className="block dark:hidden"`,
+  `silhouette-dark-wide.webp` with `className="hidden dark:block"` (`images/releases/<id>/`).
 - **One `<Update>` per release:**
 
   | Prop | Content |
   |---|---|
   | `label` | Month and year, for example `October 2026`. Becomes the entry in the table of contents. |
-  | `description` | The version, for example `v1.0.0` |
+  | `description` | The version and the name of its major, for example `v1.1.0 · Rigi` (`.agents/rules/release-ci.md` §6 in the product repo) |
   | `tags` | The categories this release has, from the fixed set below |
   | `rss` | Only if the entry has components or code: an object `{ title, description, date }` with plain text for subscribers |
 
@@ -438,6 +443,7 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
 
   | Tag and heading | What goes in |
   |---|---|
+  | `Breaking changes` | What stops working or needs a step after the update, for whom, and how to migrate. Always first |
   | `New features` | New capabilities and improvements |
   | `Layout & UX` | Changes to screens and workflows |
   | `Stability` | Fixes, performance, maintenance |
@@ -452,7 +458,7 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
 ```mdx
 <Update
   label="October 2026"
-  description="v1.0.0"
+  description="v1.0.0 · Rigi"
   tags={["New features", "Security"]}
   rss={{ title: "Collabase 1.0.0", description: "What changed for administrators in one plain sentence." }}
 >
