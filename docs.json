@@ -737,6 +737,724 @@
             }
           ]
         }
+      },
+      {
+        "language": "de",
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Zur Website",
+            "href": "https://collabase.ch"
+          }
+        },
+        "footer": {
+          "links": [
+            {
+              "header": "Collabase",
+              "items": [
+                {
+                  "label": "Website",
+                  "href": "https://collabase.ch"
+                },
+                {
+                  "label": "Download",
+                  "href": "https://collabase.ch/download"
+                },
+                {
+                  "label": "Trust Center",
+                  "href": "https://collabase.ch/vertrauen"
+                },
+                {
+                  "label": "Support",
+                  "href": "https://infometis.atlassian.net/servicedesk/customer/portal/1/group/81"
+                }
+              ]
+            }
+          ]
+        },
+        "banner": {
+          "content": "Die Leitfäden gibt es auf Deutsch. Die App-Referenz und die Administration liegen nur auf Englisch vor.",
+          "dismissible": true
+        },
+        "tabs": [
+          {
+            "tab": "Leitfäden",
+            "icon": "book-open",
+            "groups": [
+              {
+                "group": "Willkommen",
+                "pages": [
+                  "de/index",
+                  "introduction",
+                  "de/about/story",
+                  "de/glossary"
+                ]
+              },
+              {
+                "group": "Erste Schritte",
+                "pages": [
+                  "de/getting-started/overview",
+                  "de/getting-started/introduction",
+                  "de/getting-started/sign-in",
+                  "de/getting-started/spaces",
+                  "de/getting-started/invite-members",
+                  "de/getting-started/projects",
+                  "de/getting-started/tasks",
+                  "de/getting-started/boards",
+                  "de/getting-started/docs-pages",
+                  "de/getting-started/search",
+                  "de/getting-started/profile"
+                ]
+              },
+              {
+                "group": "Grundkonzepte",
+                "pages": [
+                  "concepts/spaces",
+                  "concepts/space-settings",
+                  "concepts/configuration-model",
+                  "concepts/permissions",
+                  "concepts/search",
+                  "concepts/filters",
+                  "concepts/share-filters",
+                  "concepts/export-results",
+                  "concepts/subscribe-to-filters",
+                  "concepts/quick-filters",
+                  "concepts/home-and-favorites",
+                  "concepts/dashboards",
+                  "concepts/share-dashboards",
+                  "concepts/dashboard-controller",
+                  "concepts/dashboard-gadgets",
+                  "concepts/keyboard-shortcuts",
+                  "concepts/documents",
+                  "concepts/notifications",
+                  "concepts/ai",
+                  "concepts/collabase-ai",
+                  "concepts/collabase-ai-skills",
+                  "concepts/profile",
+                  "concepts/connect-ai-agents"
+                ]
+              },
+              {
+                "group": "HERMES Projektmanagement",
+                "pages": [
+                  "de/hermes/overview",
+                  "de/hermes/introduction",
+                  "de/hermes/phases",
+                  "de/hermes/initiation",
+                  "de/hermes/concept",
+                  "de/hermes/implementation",
+                  "de/hermes/deployment",
+                  "de/hermes/execution",
+                  "de/hermes/closure",
+                  "de/hermes/milestones",
+                  "de/hermes/roles",
+                  "de/hermes/scenarios-and-modules",
+                  "de/hermes/outcomes",
+                  "de/hermes/collabase-setup"
+                ]
+              },
+              {
+                "group": "IAM mit Microsoft",
+                "pages": [
+                  "de/admin/iam-microsoft-entra"
+                ]
+              },
+              {
+                "group": "Installation ohne Internet",
+                "pages": [
+                  "admin/airgapped-installation"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Apps",
+            "icon": "layout-grid",
+            "groups": [
+              {
+                "group": "Apps",
+                "pages": [
+                  {
+                    "group": "Docs",
+                    "pages": [
+                      "docs/overview",
+                      "docs/pages",
+                      "docs/editor-elements",
+                      "docs/organize-pages",
+                      "docs/version-history",
+                      "docs/comments",
+                      "docs/collaboration",
+                      "docs/suggestions",
+                      "docs/templates",
+                      "docs/page-restrictions",
+                      "docs/translation",
+                      "docs/export"
+                    ],
+                    "icon": "/images/apps/docs-dark.png"
+                  },
+                  {
+                    "group": "Projects",
+                    "pages": [
+                      "projects/overview",
+                      "projects/project-setup",
+                      "projects/project-settings",
+                      "projects/templates",
+                      "projects/tasks",
+                      "projects/list-view",
+                      "projects/board",
+                      "projects/backlog",
+                      "projects/sprints",
+                      "projects/roadmap",
+                      "projects/reports",
+                      "projects/approvals",
+                      "projects/risks",
+                      "projects/project-costs",
+                      "projects/workflows",
+                      "projects/github",
+                      "projects/guests"
+                    ],
+                    "icon": "/images/apps/projects-dark.png"
+                  },
+                  {
+                    "group": "Planning",
+                    "pages": [
+                      "planning/overview",
+                      "planning/portfolios",
+                      "planning/planner-capacity",
+                      "planning/dependencies"
+                    ],
+                    "icon": "/images/apps/planning-dark.png"
+                  },
+                  {
+                    "group": "Meetings",
+                    "pages": [
+                      "meetings/overview",
+                      "meetings/planning",
+                      "meetings/invitations",
+                      "meetings/moderation",
+                      "meetings/decisions",
+                      "meetings/polls",
+                      "meetings/time-booking",
+                      "meetings/meeting-note",
+                      "meetings/ai-and-privacy"
+                    ],
+                    "icon": "/images/apps/meetings-dark.png"
+                  },
+                  {
+                    "group": "Test Management",
+                    "pages": [
+                      "test-management/overview",
+                      "test-management/test-cases",
+                      "test-management/cycles",
+                      "test-management/imports",
+                      "test-management/requirements",
+                      "test-management/reports",
+                      "test-management/settings"
+                    ],
+                    "icon": "/images/apps/test-management-dark.png"
+                  },
+                  {
+                    "group": "Time Tracking",
+                    "pages": [
+                      "time-tracking/overview",
+                      "time-tracking/logging-time",
+                      "time-tracking/timesheets",
+                      "time-tracking/reports",
+                      "time-tracking/teams",
+                      "time-tracking/billing-rules",
+                      "time-tracking/accounts",
+                      "time-tracking/holiday-workload-schemes",
+                      "time-tracking/worklog-attributes"
+                    ],
+                    "icon": "/images/apps/time-tracking-dark.png"
+                  },
+                  {
+                    "group": "Intranet",
+                    "pages": [
+                      "intranet/overview",
+                      "intranet/blog-posts",
+                      "intranet/events",
+                      "intranet/quick-links",
+                      "intranet/birthdays"
+                    ],
+                    "icon": "/images/apps/intranet-dark.png"
+                  },
+                  {
+                    "group": "Registry",
+                    "pages": [
+                      "registry/overview",
+                      "registry/schema-designer",
+                      "registry/object-browser",
+                      "registry/settings",
+                      "registry/csv-import"
+                    ],
+                    "icon": "/images/apps/registry-dark.png"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Administration",
+            "groups": [
+              {
+                "group": "Installieren und betreiben",
+                "icon": "rocket",
+                "pages": [
+                  "installation",
+                  "installation-kubernetes",
+                  "installation-swarm",
+                  "first-run",
+                  "desktop-app",
+                  "admin/editions-and-license"
+                ]
+              },
+              {
+                "group": "Mitglieder und Zugriff",
+                "icon": "users",
+                "pages": [
+                  "admin/users-groups",
+                  "admin/identity-providers",
+                  "admin/saml-sso",
+                  "admin/user-provisioning",
+                  "admin/apps-and-agents",
+                  "admin/security-policies"
+                ]
+              },
+              {
+                "group": "Instanzeinstellungen",
+                "icon": "sliders-horizontal",
+                "pages": [
+                  "admin/system-settings",
+                  "admin/branding",
+                  "admin/email",
+                  "admin/chat-notifications",
+                  "admin/inbound-mail",
+                  "admin/templates-and-exports",
+                  "admin/audit-log",
+                  "admin/data-retention",
+                  "admin/app-store"
+                ]
+              },
+              {
+                "group": "Arbeitskonfiguration",
+                "icon": "layout-list",
+                "pages": [
+                  "admin/custom-fields",
+                  "admin/work-item-types",
+                  "admin/workflows"
+                ]
+              },
+              {
+                "group": "KI",
+                "icon": "sparkles",
+                "pages": [
+                  "admin/ai-configuration",
+                  "admin/ai-costs",
+                  "admin/mcp-servers"
+                ]
+              },
+              {
+                "group": "Studio",
+                "icon": "workflow",
+                "pages": [
+                  "admin/automation-plugs",
+                  "admin/automation-oauth-apps",
+                  "admin/automation-secret-stores",
+                  "admin/automation-sandbox",
+                  "admin/automation-operations",
+                  "admin/automation-analytics"
+                ]
+              },
+              {
+                "group": "Zeiterfassung",
+                "icon": "clock",
+                "pages": [
+                  "admin/time-tracking"
+                ]
+              },
+              {
+                "group": "Betrieb",
+                "icon": "server",
+                "pages": [
+                  "admin/hosting",
+                  "admin/scaling",
+                  "admin/file-storage",
+                  "admin/backup",
+                  "admin/restore-runbook",
+                  "admin/updates",
+                  "admin/troubleshooting"
+                ]
+              }
+            ],
+            "icon": "settings"
+          },
+          {
+            "tab": "Studio",
+            "icon": "workflow",
+            "groups": [
+              {
+                "group": "Übersicht",
+                "icon": "hand",
+                "pages": [
+                  "automation/overview",
+                  "automation/quick-start"
+                ]
+              },
+              {
+                "group": "Flows bauen",
+                "icon": "hammer",
+                "pages": [
+                  "automation/building-flows",
+                  "automation/editor",
+                  "automation/triggers",
+                  "automation/webhooks",
+                  "automation/passing-data",
+                  "automation/step-inputs",
+                  "automation/variables",
+                  "automation/tables"
+                ]
+              },
+              {
+                "group": "Ausführen und veröffentlichen",
+                "icon": "rocket",
+                "pages": [
+                  "automation/publishing-flows",
+                  "automation/flow-approvals",
+                  "automation/runs",
+                  "automation/debugging-runs",
+                  "automation/version-history"
+                ]
+              },
+              {
+                "group": "Agents und KI",
+                "icon": "bot",
+                "pages": [
+                  "automation/agents-and-ai",
+                  "automation/agents",
+                  "automation/agent-editor",
+                  "automation/agent-identity-and-jobs",
+                  "automation/agent-step",
+                  "automation/agent-tools",
+                  "automation/ai-provider",
+                  "automation/build-with-ai",
+                  "automation/mcp-server",
+                  "automation/chat-page"
+                ]
+              },
+              {
+                "group": "Teilen und wiederverwenden",
+                "icon": "layout-template",
+                "pages": [
+                  "automation/template-library",
+                  "automation/import-export-templates",
+                  "automation/git-sync"
+                ]
+              },
+              {
+                "group": "Workspaces und Plugs",
+                "icon": "folder-kanban",
+                "pages": [
+                  "automation/workspaces",
+                  "automation/connections",
+                  "automation/plugs",
+                  "automation/plug-reference"
+                ]
+              },
+              {
+                "group": "Referenz",
+                "icon": "book-a",
+                "pages": [
+                  "automation/limits",
+                  "automation/audit-events"
+                ]
+              },
+              {
+                "group": "Plug bauen",
+                "icon": "hammer",
+                "pages": [
+                  "developer/plugs/overview",
+                  "developer/plugs/get-started",
+                  "developer/plugs/definition",
+                  "developer/plugs/authentication",
+                  "developer/plugs/actions",
+                  "developer/plugs/properties",
+                  "developer/plugs/validation"
+                ]
+              },
+              {
+                "group": "Plug-Trigger",
+                "icon": "zap",
+                "pages": [
+                  "developer/plugs/triggers",
+                  "developer/plugs/polling-trigger",
+                  "developer/plugs/webhook-trigger"
+                ]
+              },
+              {
+                "group": "Plug-Laufzeit",
+                "icon": "cpu",
+                "pages": [
+                  "developer/plugs/flow-control",
+                  "developer/plugs/storage",
+                  "developer/plugs/files",
+                  "developer/plugs/sandbox"
+                ]
+              },
+              {
+                "group": "Plug ausliefern",
+                "icon": "upload",
+                "pages": [
+                  "developer/plugs/testing",
+                  "developer/plugs/publish",
+                  "automation/build-a-plug"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Entwickler",
+            "icon": "code-xml",
+            "groups": [
+              {
+                "group": "Entwickler",
+                "icon": "code-xml",
+                "pages": [
+                  "developer/overview",
+                  "developer/app-sdk",
+                  "developer/collakit",
+                  "developer/mcp",
+                  "developer/plug-sdk",
+                  "developer/agentkit"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API-Referenz",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "Übersicht",
+                "pages": [
+                  "api/introduction",
+                  "api/native-clients"
+                ]
+              },
+              {
+                "group": "Seiten",
+                "pages": [
+                  "api/pages/create-page"
+                ]
+              },
+              {
+                "group": "Work Items",
+                "pages": [
+                  "api/tasks/move-work-item"
+                ]
+              },
+              {
+                "group": "Suche",
+                "pages": [
+                  "api/search/overview",
+                  "api/search/search",
+                  "api/search/aggregate",
+                  "api/search/fields"
+                ]
+              },
+              {
+                "group": "Gespeicherte Filter",
+                "pages": [
+                  "api/filters/overview",
+                  "api/filters/list-filters",
+                  "api/filters/create-filter",
+                  "api/filters/get-filter",
+                  "api/filters/update-filter",
+                  "api/filters/delete-filter",
+                  "api/filters/filter-results",
+                  "api/filters/get-filter-shares",
+                  "api/filters/replace-filter-shares"
+                ]
+              },
+              {
+                "group": "Projects",
+                "pages": [
+                  "api/projects/list-task-types",
+                  "api/projects/offer-task-type",
+                  "api/projects/order-task-types",
+                  "api/projects/remove-task-type"
+                ]
+              },
+              {
+                "group": "Dashboards",
+                "pages": [
+                  "api/dashboards/overview",
+                  "api/dashboards/list-dashboards",
+                  "api/dashboards/create-dashboard",
+                  "api/dashboards/get-dashboard",
+                  "api/dashboards/update-dashboard",
+                  "api/dashboards/delete-dashboard",
+                  "api/dashboards/gadget-data",
+                  "api/dashboards/replace-dashboard-shares"
+                ]
+              },
+              {
+                "group": "Benachrichtigungen",
+                "pages": [
+                  "api/notifications/overview",
+                  "api/notifications/list-notifications",
+                  "api/notifications/unread-count",
+                  "api/notifications/update-notification-state"
+                ]
+              },
+              {
+                "group": "Meetings",
+                "pages": [
+                  "api/meetings/overview",
+                  "api/meetings/list-meetings",
+                  "api/meetings/create-meeting",
+                  "api/meetings/get-meeting",
+                  "api/meetings/update-meeting",
+                  "api/meetings/delete-meeting",
+                  {
+                    "group": "Lebenszyklus",
+                    "pages": [
+                      "api/meetings/lifecycle/plan-meeting",
+                      "api/meetings/lifecycle/start-meeting",
+                      "api/meetings/lifecycle/close-meeting",
+                      "api/meetings/lifecycle/reopen-meeting",
+                      "api/meetings/lifecycle/cancel-meeting"
+                    ]
+                  },
+                  {
+                    "group": "Teilnehmende",
+                    "pages": [
+                      "api/meetings/participants/list-participants",
+                      "api/meetings/participants/invite-participant",
+                      "api/meetings/participants/update-participant",
+                      "api/meetings/participants/remove-participant",
+                      "api/meetings/participants/respond-to-invitation"
+                    ]
+                  },
+                  {
+                    "group": "Agenda",
+                    "pages": [
+                      "api/meetings/agenda/get-agenda",
+                      "api/meetings/agenda/create-section",
+                      "api/meetings/agenda/update-section",
+                      "api/meetings/agenda/delete-section",
+                      "api/meetings/agenda/move-section",
+                      "api/meetings/agenda/create-item",
+                      "api/meetings/agenda/update-item",
+                      "api/meetings/agenda/delete-item",
+                      "api/meetings/agenda/move-item"
+                    ]
+                  },
+                  {
+                    "group": "Ergebnisse",
+                    "pages": [
+                      "api/meetings/outcomes/list-outcomes",
+                      "api/meetings/outcomes/create-outcome",
+                      "api/meetings/outcomes/update-outcome",
+                      "api/meetings/outcomes/delete-outcome"
+                    ]
+                  },
+                  {
+                    "group": "Entscheide",
+                    "pages": [
+                      "api/meetings/decisions/list-decisions",
+                      "api/meetings/decisions/record-decision",
+                      "api/meetings/decisions/update-decision",
+                      "api/meetings/decisions/supersede-decision",
+                      "api/meetings/decisions/revoke-decision",
+                      "api/meetings/decisions/decision-register"
+                    ]
+                  },
+                  {
+                    "group": "Umfragen",
+                    "pages": [
+                      "api/meetings/polls/list-polls",
+                      "api/meetings/polls/create-poll",
+                      "api/meetings/polls/update-poll",
+                      "api/meetings/polls/open-poll",
+                      "api/meetings/polls/close-poll"
+                    ]
+                  },
+                  {
+                    "group": "Serien",
+                    "pages": [
+                      "api/meetings/series/create-series",
+                      "api/meetings/series/change-series-rule",
+                      "api/meetings/series/get-series"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Test Management",
+                "pages": [
+                  "api/test-management/list-projects",
+                  "api/test-management/create-project",
+                  "api/test-management/create-test-case",
+                  "api/test-management/create-test-cycle",
+                  "api/test-management/append-result",
+                  "api/test-management/import-report",
+                  "api/test-management/sync-cases",
+                  "api/test-management/list-changes",
+                  "api/test-management/case-evidence"
+                ]
+              },
+              {
+                "group": "Studio",
+                "pages": [
+                  "api/automation/overview",
+                  "api/automation/list-workspaces",
+                  "api/automation/list-flows",
+                  "api/automation/create-flow",
+                  "api/automation/get-flow",
+                  "api/automation/update-flow",
+                  "api/automation/publish-flow",
+                  "api/automation/set-flow-status",
+                  "api/automation/start-run",
+                  "api/automation/list-runs",
+                  "api/automation/get-run",
+                  "api/automation/retry-run",
+                  "api/automation/delete-flow",
+                  "api/automation/call-webhook",
+                  "api/automation/call-webhook-sync",
+                  "api/automation/resume-run",
+                  "api/automation/upload-plug"
+                ]
+              },
+              {
+                "group": "SCIM 2.0",
+                "pages": [
+                  "api/scim/overview",
+                  "api/scim/users",
+                  "api/scim/groups"
+                ]
+              },
+              {
+                "group": "Zustand",
+                "pages": [
+                  "api/health"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Release Notes",
+            "icon": "list",
+            "groups": [
+              {
+                "group": "Versionen",
+                "pages": [
+                  "de/changelog/overview"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },

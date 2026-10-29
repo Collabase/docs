@@ -1,111 +1,12 @@
 {
   "language": "de",
   "navbar": {
-    "links": [
-      {
-        "label": "English",
-        "href": "https://collabase.ch/docs",
-        "icon": "languages"
-      }
-    ],
     "primary": {
       "type": "button",
       "label": "Zur Website",
       "href": "https://collabase.ch"
     }
   },
-  "tabs": [
-    {
-      "tab": "Leitfäden",
-      "menu": [
-        {
-          "item": "Willkommen",
-          "icon": "book-open",
-          "groups": [
-            {
-              "group": "Willkommen",
-              "pages": [
-                "de/index",
-                "de/about/story",
-                "de/glossary"
-              ]
-            }
-          ]
-        },
-        {
-          "item": "Erste Schritte",
-          "icon": "rocket",
-          "groups": [
-            {
-              "group": "Erste Schritte",
-              "pages": [
-                "de/getting-started/overview",
-                "de/getting-started/introduction",
-                "de/getting-started/sign-in",
-                "de/getting-started/spaces",
-                "de/getting-started/invite-members",
-                "de/getting-started/projects",
-                "de/getting-started/tasks",
-                "de/getting-started/boards",
-                "de/getting-started/docs-pages",
-                "de/getting-started/search",
-                "de/getting-started/profile"
-              ]
-            }
-          ]
-        },
-        {
-          "item": "HERMES",
-          "icon": "milestone",
-          "groups": [
-            {
-              "group": "HERMES Projektmanagement",
-              "pages": [
-                "de/hermes/overview",
-                "de/hermes/introduction",
-                "de/hermes/phases",
-                "de/hermes/initiation",
-                "de/hermes/concept",
-                "de/hermes/implementation",
-                "de/hermes/deployment",
-                "de/hermes/execution",
-                "de/hermes/closure",
-                "de/hermes/milestones",
-                "de/hermes/roles",
-                "de/hermes/scenarios-and-modules",
-                "de/hermes/outcomes",
-                "de/hermes/collabase-setup"
-              ]
-            }
-          ]
-        },
-        {
-          "item": "IAM mit Microsoft",
-          "icon": "key-round",
-          "groups": [
-            {
-              "group": "IAM mit Microsoft",
-              "pages": [
-                "de/admin/iam-microsoft-entra"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "tab": "Release Notes",
-      "icon": "list",
-      "groups": [
-        {
-          "group": "Versionen",
-          "pages": [
-            "de/changelog/overview"
-          ]
-        }
-      ]
-    }
-  ],
   "footer": {
     "links": [
       {
@@ -134,5 +35,47 @@
   "banner": {
     "content": "Die Leitfäden gibt es auf Deutsch. Die App-Referenz und die Administration liegen nur auf Englisch vor.",
     "dismissible": true
+  },
+  "labels": {
+    "Guides": "Leitfäden",
+    "Welcome": "Willkommen",
+    "Getting started guide": "Erste Schritte",
+    "Core concepts": "Grundkonzepte",
+    "HERMES project management": "HERMES Projektmanagement",
+    "IAM with Microsoft": "IAM mit Microsoft",
+    "Air-gapped installation": "Installation ohne Internet",
+    "Install and run": "Installieren und betreiben",
+    "Members and access": "Mitglieder und Zugriff",
+    "Instance settings": "Instanzeinstellungen",
+    "Work configuration": "Arbeitskonfiguration",
+    "AI": "KI",
+    "Time tracking": "Zeiterfassung",
+    "Operations": "Betrieb",
+    "Overview": "Übersicht",
+    "Build flows": "Flows bauen",
+    "Run and publish": "Ausführen und veröffentlichen",
+    "Agents and AI": "Agents und KI",
+    "Share and reuse": "Teilen und wiederverwenden",
+    "Workspaces and plugs": "Workspaces und Plugs",
+    "Reference": "Referenz",
+    "Build a plug": "Plug bauen",
+    "Plug triggers": "Plug-Trigger",
+    "Plug runtime": "Plug-Laufzeit",
+    "Ship a plug": "Plug ausliefern",
+    "Developers": "Entwickler",
+    "API reference": "API-Referenz",
+    "Pages": "Seiten",
+    "Search": "Suche",
+    "Saved filters": "Gespeicherte Filter",
+    "Notifications": "Benachrichtigungen",
+    "Lifecycle": "Lebenszyklus",
+    "Participants": "Teilnehmende",
+    "Outcomes": "Ergebnisse",
+    "Decisions": "Entscheide",
+    "Polls": "Umfragen",
+    "Series": "Serien",
+    "Health": "Zustand",
+    "Release notes": "Release Notes",
+    "Releases": "Versionen"
   }
 }

@@ -378,8 +378,12 @@ Add a new page's slug to the correct `group` → `pages` array:
 - Order follows the user's journey, most important first.
 - Never add a page to `docs.json` without the `.mdx` file, or the reverse.
 - **Two languages.** `navigation.languages` holds `en` (default, full docs) and `de`. German pages
-  live under `de/` with the same file name as the English page. A path appears in exactly one
-  language. German currently covers the home page, the guides (getting started, HERMES, glossary,
+  live under `de/` with the same file name as the English page. The German navigation is never
+  edited by hand: `scripts/build-de-navigation.mjs --write` generates it from the English one (same
+  tabs, groups, icons and order, labels from `scripts/docs-de-navigation.json`, the `de/` twin where
+  one exists, the English page otherwise), and `check-docs.mjs` fails on any difference. After every
+  change to the English navigation or a new German page, run the generator. A reader who opens an
+  English page from the German menu continues in the English menu; that is accepted. German currently covers the home page, the guides (getting started, HERMES, glossary,
   «Warum es Collabase gibt»), the guide «IAM mit Microsoft Entra ID» and security and privacy; the app reference is English only.
 - **Header (en):** seven tabs, each with an icon and a click that opens its first page. The header
   tabs are plain links and carry no dropdown: everything below a tab is the sidebar. **Guides**
@@ -468,10 +472,8 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
   section, so readers can filter by app.
 - **German twin.** Every release note is drafted in both languages: `vX.Y.Z.mdx` and
   `vX.Y.Z.de.mdx`, same sections, same order, same entries, written together. At the release the
-  German entry goes to the top of `de/changelog/overview.mdx` (from 1.0.0 on, tab «Release Notes» in
-  `scripts/docs-de-navigation.json`). While German is paused (§15) the page is published but not
-  reachable. Headings and tags in
-  German, UI terms stay English (§15):
+  German entry goes to the top of `de/changelog/overview.mdx` (from 1.0.0 on; the generated German
+  navigation links it in the «Release Notes» tab). Headings and tags in German, UI terms stay English (§15):
 
   | English | German |
   |---|---|
@@ -843,7 +845,7 @@ These rules come from the move of the docs to `collabase.ch/docs` (September 202
 
 ### German pages
 
-The German version is paused: `docs.json` lists English only, so there is no language switcher and no link to `/de`. The German pages stay in `de/`, and the removed navigation entry is kept in `scripts/docs-de-navigation.json`. To switch German back on, add that entry to `navigation.languages`, restore the language link in the English `navbar` and on the home page.
+German is on: Mintlify shows the language switcher. The navigation is generated (see «Two languages» in §11); `scripts/docs-de-navigation.json` holds the German navbar, footer, banner and the label translations, nothing else. A tab or group label without a translation stays English, so add the translation there when you add an English label.
 
 - Swiss spelling (ss, never ß), Du-Form, no dashes as a stylistic device.
 - UI and product terms stay English as in the product (Space, Member, Collabase Docs, Object
