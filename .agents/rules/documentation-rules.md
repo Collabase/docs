@@ -426,9 +426,9 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
   release, so `docs.json` does not change when you add one. Keep the page in the default page mode:
   `custom`, `center` and `wide` hide the tag filters and the table of contents.
 - **Frontmatter** has `rss: true`, which shows the RSS button.
-- **A new major** (x.0.0) opens its entry with the silhouette of its name in a `<Frame>` captioned
-  with the data source: `silhouette-light-wide.webp` with `className="block dark:hidden"`,
-  `silhouette-dark-wide.webp` with `className="hidden dark:block"` (`images/releases/<id>/`).
+- **A new major** (x.0.0) opens its entry with the contour lines of its name in a `<Frame>` without a
+  caption: `contour-light-wide.webp` with `className="block dark:hidden"`,
+  `contour-dark-wide.webp` with `className="hidden dark:block"` (`images/releases/<id>/`).
 - **One `<Update>` per release:**
 
   | Prop | Content |
