@@ -348,7 +348,8 @@ description: "..."
   `public/assets/brand_assets/v4/AppIcons/`). Every app overview page shows the pair at `width="60"` above the
   first paragraph, switched with `block dark:hidden` and `hidden dark:block`; the home page uses the light file
   as `Card` icon, the tile carries its own background in both modes. `collabase-ai.png` is the previous mark
-  until the brand set has a new one. Never put app icons behind a headline as decoration.
+  until the brand set has a new one. Never put app icons behind a headline as decoration; the
+  app sections of a release note are the one exception (§12).
 - **Logos and favicon** in `docs.json` are `images/logo-black.svg` (light), `images/logo-white.svg` (dark)
   and `images/favicon-light.png` / `images/favicon-dark.png` (the black icon tile, light and dark), copies from the brand
   folder. Never reference `images/01_Collabase Logo/` directly: the folder is 174 MB, contains an
@@ -435,41 +436,90 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
   |---|---|
   | `label` | Month and year, for example `October 2026`. Becomes the entry in the table of contents. |
   | `description` | The version and the name of its major, for example `v1.1.0 · Rigi` (`.agents/rules/release-ci.md` §6 in the product repo) |
-  | `tags` | The categories this release has, from the fixed set below |
+  | `tags` | The sections and apps this release has, see below |
   | `rss` | Only if the entry has components or code: an object `{ title, description, date }` with plain text for subscribers |
 
-- **Categories** are the tags, in this order, and the same words are the `###` headings inside the
-  entry. Omit a category with no entries.
+- **Template and draft.** Every release starts from `docs/release-notes/TEMPLATE.mdx` in the
+  product repo, copied to `docs/release-notes/vX.Y.Z.mdx` and kept current while the version is
+  built. The draft lives outside `docs/docs/` on purpose: it is not synced, not published and not
+  part of `npm run docs:check`. Only when the version is released (tag pushed, images published) is
+  its `<Update>` moved to the top of `changelog/overview.mdx`, the draft file deleted, and the docs
+  synced to the publish repo (`docs-update.md` in the product repo). Never sync a release note, or
+  a page that describes an unreleased change, before its version is out.
+- **Sections, in this order.** Omit a section, and a bold group inside it, that has no entry.
 
-  | Tag and heading | What goes in |
+  | `###` section | What goes in |
   |---|---|
-  | `Breaking changes` | What stops working or needs a step after the update, for whom, and how to migrate. Always first |
-  | `New features` | New capabilities and improvements |
-  | `Layout & UX` | Changes to screens and workflows |
-  | `Stability` | Fixes, performance, maintenance |
-  | `Security` | Vulnerabilities and security updates |
+  | Lead (no heading) | One to three sentences on what the version is about. If it has a breaking change, a `<Warning>` that links to the update notice |
+  | `New apps and features` | The highlights: a new app, or a feature a person will notice, one line each with a link |
+  | One section per app (`Docs`, `Projects`, ...) | Every change in that app, grouped under the bold labels **New features**, **Improvements**, **Changed behaviour**, **Bug fixes**. Apps in the order of the Apps tab in `docs.json`, then the platform areas (Collabase AI, Search, Automation) |
+  | `Security` | Vulnerabilities and security updates, in one of the two formats below |
+  | `Administration` | Admin settings, permissions, users and groups, licence, App Store |
+  | `Performance & stability` | Speed, reliability, resource use, maintenance |
+  | `Update notice for self-hosters` | Always last. Bold groups **Breaking changes** (what breaks, for whom, the migration), **Before you update**, **What the update does** (migrations, new services, downtime), **Configuration** (environment variables) |
+
+- **App headings** carry the app icon pair from `images/apps/` (24 px, light and dark switched with
+  `inline-block dark:hidden` / `hidden dark:inline-block`) inside an `aria-hidden` span, so the feed
+  and screen readers see only the name. An area without an app icon uses its `docs.json` group icon
+  through `<Icon>`. This is the one place where an app icon sits in a heading (§10). Copy the markup
+  from the template.
+- **Tags** are the sections the entry has (`New apps`, `New features`, `Bug fixes`, `Security`,
+  `Administration`, `Performance & stability`, `Breaking changes`) plus the name of every app with a
+  section, so readers can filter by app.
+- **German twin.** Every release note is drafted in both languages: `vX.Y.Z.mdx` and
+  `vX.Y.Z.de.mdx`, same sections, same order, same entries, written together. At the release the
+  German entry goes to the top of `de/changelog/overview.mdx` (from 1.0.0 on, tab «Release Notes» in
+  `scripts/docs-de-navigation.json`). While German is paused (§15) the page is published but not
+  reachable. Headings and tags in
+  German, UI terms stay English (§15):
+
+  | English | German |
+  |---|---|
+  | New apps and features | Neue Apps und Funktionen |
+  | New features | Neue Funktionen |
+  | Improvements | Verbesserungen |
+  | Changed behaviour | Geändertes Verhalten |
+  | Bug fixes | Fehlerbehebungen |
+  | Security | Sicherheit |
+  | Administration | Administration |
+  | Performance & stability | Leistung & Stabilität |
+  | Update notice for self-hosters | Update-Hinweis für Self-Hoster |
+  | Breaking changes | Breaking Changes |
+  | Before you update | Vor dem Update |
+  | What the update does | Was das Update macht |
+  | Configuration | Konfiguration |
+  | New apps | Neue Apps |
 
 - **Filters and feed.** Readers filter by tag, several tags combine as AND, and the filter lives in
   the URL as `?tags=`. The feed is the page address plus `/rss.xml`, and it exists only on public
   docs. It contains plain Markdown only: components, code and HTML are left out, so every entry must
   read well without them. The feed publishes when you add an `<Update>` or change a heading of an
-  existing one, so leave old headings alone.
+  existing one, so leave old headings alone: the v1.0.0 entry keeps the earlier category headings.
 
 ```mdx
 <Update
-  label="October 2026"
-  description="v1.0.0 · Rigi"
-  tags={["New features", "Security"]}
-  rss={{ title: "Collabase 1.0.0", description: "What changed for administrators in one plain sentence." }}
+  label="November 2026"
+  description="v1.1.0 · Rigi"
+  tags={["New features", "Bug fixes", "Docs"]}
+  rss={{ title: "Collabase 1.1.0", description: "What changed for administrators in one plain sentence." }}
 >
-  ### New features
+  One sentence on what this version is about.
 
-  - One line per change, written for an administrator.
+  ### New apps and features
 
-  ### Security
+  - **Feature:** one line per change, written for the person who uses it. [Learn more](/page)
 
-  - Performed routine security updates and patched non-critical third-party dependencies in the
-    backend and AI services.
+  ### Docs
+
+  **Bug fixes**
+
+  - What did not work, and that it works now.
+
+  ### Update notice for self-hosters
+
+  **What the update does**
+
+  - One additive migration that runs on start, no step needed.
 </Update>
 ```
 

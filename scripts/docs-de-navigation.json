@@ -92,6 +92,18 @@
           ]
         }
       ]
+    },
+    {
+      "tab": "Release Notes",
+      "icon": "list",
+      "groups": [
+        {
+          "group": "Versionen",
+          "pages": [
+            "de/changelog/overview"
+          ]
+        }
+      ]
     }
   ],
   "footer": {

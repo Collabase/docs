@@ -1,0 +1,68 @@
+---
+title: "Release Notes"
+description: "Die Release Notes von Collabase ab Version 1.0: neue Funktionen, Änderungen und nötige Schritte pro Version."
+rss: true
+---
+
+Hier erscheinen die Release Notes von Collabase ab Version 1.0. Zu jeder Version findest du die neuen Funktionen, Verbesserungen und Änderungen, die für Administratoren wichtig sind.
+
+Jedes Jahr kommt eine neue Hauptversion mit eigenem Namen. Die monatlichen Versionen dazwischen können Änderungen enthalten, die einen Schritt von dir brauchen; sie stehen immer zuerst, unter **Breaking Changes**.
+
+Jede Version hat einen Eintrag mit Version und Monat. Filtere die Einträge mit den Tags nach Kategorie oder abonniere sie mit dem RSS-Button.
+
+<Update
+  label="Oktober 2026"
+  description="v1.0.0 · Rigi"
+  tags={["Neue Funktionen", "Stabilität", "Sicherheit"]}
+  rss={{ title: "Collabase 1.0.0", description: "Die erste stabile Version von Collabase: Doku, Arbeitsmanagement, Testmanagement und KI in einer selbst gehosteten Anwendung, mit Enterprise-Anmeldung, Audit-Log und Standardwerten für den Produktivbetrieb." }}
+>
+  <Frame>
+    <img className="block dark:hidden" src="/images/releases/rigi/contour-light-wide.webp" alt="Rigi, Collabase 1, Oktober 2026: Höhenlinien der Rigi von oben" />
+    <img className="hidden dark:block" src="/images/releases/rigi/contour-dark-wide.webp" alt="Rigi, Collabase 1, Oktober 2026: Höhenlinien der Rigi von oben" />
+  </Frame>
+
+  Collabase 1.0 ist die erste stabile Version. Sie ist für Organisationen gebaut, die ihre
+  Zusammenarbeit auf eigener Infrastruktur betreiben: Dokumentation, Arbeitsmanagement,
+  Testmanagement und KI in einer Anwendung, mit einem Berechtigungsmodell und einer Suche über alle
+  Module. Deine Daten bleiben auf deinen Servern, und den KI-Anbieter wählst du selbst.
+
+  Ab dieser Version behalten Updates deine Daten und Einstellungen, und jede Änderung, die
+  Administratoren betrifft, wird hier angekündigt.
+
+  ### Neue Funktionen
+
+  - **Docs und Spaces:** ein Seitenbaum mit Rich-Text-Editor, Vorlagen, Versionsverlauf, Kommentaren und Live-Zusammenarbeit.
+  - **Arbeitsmanagement:** Projekte mit Work Item Types, Workflows, Custom Fields, Boards, Backlogs und Sprints, dazu Projektvorlagen, Timeline, Portfolio-Gantt, Phasen mit Gates, Meilensteine und Statusberichte.
+  - **Planung und Zeit:** ein Planner mit Kapazität pro Person und Team, Zeiterfassung und Zeitauswertung.
+  - **Testmanagement:** Testfälle, Testläufe, Testpläne und Meilensteine im Space, verknüpft mit Work Items, mit einer API für externe Testwerkzeuge.
+  - **Collabase AI:** ein KI-Chat neben jeder Seite. Den KI-Anbieter wählt der Administrator.
+  - **Meetings und Dashboards:** Meetings mit Agenda und Ergebnissen, und Dashboards mit Gadgets über alle Module.
+  - **Registry und Service Desk:** Objekte mit eigenen Typen und Beziehungen, und ein Anfrageportal pro Space.
+  - **Suche:** eine Suche für die globale Suche, gespeicherte Filter, Listen und Collabase AI.
+  - **Collabase Lab:** Jede Person kann Funktionen einschalten, die noch in Entwicklung sind, darunter Studio für Automationen, unter Preferences im Profil. Ein Administrator kann eine Funktion für alle ausgeschaltet lassen.
+  - **Deployment:** Pakete für Docker Compose, Kubernetes (Helm) und Docker Swarm. Updates spielen Datenbankänderungen beim Start ein.
+
+  ### Stabilität
+
+  - **Standardwerte für den Produktivbetrieb:** Datenbank und Verbindungspool der Anwendung sind ab Werk für den organisationsweiten Einsatz ausgelegt. Auf kleineren Hosts lassen sich die Werte senken.
+  - **Sichere Updates:** Bevor ein Update die Datenbank ändert, prüft es die Daten und erstellt ein Backup. Schlägt einer der Schritte fehl, wird nichts geändert und du kehrst zur vorherigen Version zurück.
+  - **Geprüfte Images:** Die Images der Anwendung und des Collaboration-Dienstes werden gestartet und auf ihren Zustand geprüft, bevor eine Version veröffentlicht wird.
+  - **Laufzeit mit Langzeitsupport:** Die Anwendung läuft auf einer Plattform mit Langzeitsupport, die über Jahre Sicherheitskorrekturen erhält.
+
+  ### Sicherheit
+
+  - **Enterprise-Anmeldung:** Passwort, zweiter Faktor mit Authenticator-Apps und Backup-Codes, Passkeys, Single Sign-on mit SAML und OIDC, LDAP und SCIM-Provisionierung.
+  - **Starke Administratoren:** Systemadministratoren, die sich mit Passwort anmelden, müssen einen zweiten Faktor einrichten, bevor sie die Administration erreichen.
+  - **Sofortige Sperre:** Wird ein Konto gesperrt, durch einen Administrator, SCIM oder LDAP, enden sofort alle seine Sitzungen, seine API Keys werden abgeschaltet und seine App-Freigaben entzogen.
+  - **Gäste:** Externe arbeiten in einem Projekt, ohne den Rest der Instanz zu sehen.
+  - **Kontrollierter API-Zugriff:** API Keys mit Scopes und einer Laufzeit von höchstens einem Jahr, nur einmal angezeigt. Anwendungen von Dritten können sich erst verbinden, wenn ein Administrator es erlaubt.
+  - **Nachvollziehbarkeit:** Anmelde- und Sicherheitsereignisse im Audit-Log, 180 Tage aufbewahrt, und Sicherheits-Mails an die Person, wenn sich ein neues Gerät anmeldet oder eine Sicherheitseinstellung ändert.
+  - **KI innerhalb der Berechtigungen:** Collabase AI sieht nur, was die fragende Person sehen darf.
+  - **Prüfbare Lieferkette:** Container-Images kommen mit einer Software-Stückliste (SBOM) und Herkunftsnachweisen.
+
+  <Warning>
+    **Update von einer Version vor 1.0:** Alle melden sich einmal neu an, und alte API-Tokens
+    funktionieren nicht mehr und müssen durch API Keys ersetzt werden. Automationsregeln der früheren
+    Engine werden entfernt. `ENCRYPTION_KEY` und `NEXTAUTH_URL` sind auf jeder Installation Pflicht.
+  </Warning>
+</Update>
