@@ -438,8 +438,8 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
 
   | Prop | Content |
   |---|---|
-  | `label` | Month and year, for example `October 2026`. Becomes the entry in the table of contents. |
-  | `description` | The version and the name of its major, for example `v1.1.0 · Rigi` (`.agents/rules/release-ci.md` §6 in the product repo) |
+  | `label` | The version, for example `v1.1.0`. Becomes the entry in the table of contents and the anchor (`#v1-1-0`), the same in every language, which the release dialog of the app links to. Never change it once published. |
+  | `description` | The month in the page's language and the name of its major, for example `November 2026 · Rigi` (`.agents/rules/release-ci.md` §6 in the product repo) |
   | `tags` | The sections and apps this release has, see below |
   | `rss` | Only if the entry has components or code: an object `{ title, description, date }` with plain text for subscribers |
 
@@ -500,8 +500,8 @@ Release notes use the changelog format of Mintlify, with labels, category tags a
 
 ```mdx
 <Update
-  label="November 2026"
-  description="v1.1.0 · Rigi"
+  label="v1.1.0"
+  description="November 2026 · Rigi"
   tags={["New features", "Bug fixes", "Docs"]}
   rss={{ title: "Collabase 1.1.0", description: "What changed for administrators in one plain sentence." }}
 >
