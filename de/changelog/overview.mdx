@@ -11,6 +11,24 @@ Jedes Jahr kommt eine neue Hauptversion mit eigenem Namen. Die monatlichen Versi
 Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet mit der Version, zum Beispiel `#v1-0-0`. Filtere die Einträge mit den Tags nach Kategorie oder abonniere sie mit dem RSS-Button.
 
 <Update
+  label="v1.0.1"
+  description="November 2026 · Rigi"
+  tags={["Sicherheit"]}
+  rss={{ title: "Collabase 1.0.1", description: "Sicherheitsupdates für die PDF-Textextraktion, Diagramme und die Übersetzungsanbindung." }}
+>
+  Collabase 1.0.1 schliesst mehrere Sicherheitshinweise in Komponenten der Plattform. Wir empfehlen
+  dieses Update für jede Instanz.
+
+  ### Sicherheit
+
+  | Schwachstelle / CVE | Schweregrad | Betroffene Komponente / Beschreibung |
+  |---|---|---|
+  | CVE-2026-119203, CVE-2026-119204, CVE-2026-119205 | Hoch | Dokumentverarbeitung: Ein gezielt präpariertes PDF konnte die Textextraktion von PDF-Dateien in einer Endlosschleife halten oder sehr viel Arbeitsspeicher belegen. Behoben durch ein Update der PDF-Komponente. |
+  | CVE-2026-116689 | Hoch | Übersetzungsanbindung (DeepL): Eine Komponente für Webanfragen wurde aktualisiert. Sie konnte einen eigenen Header mit Zugangsdaten nach einer Weiterleitung an eine andere Website weitergeben. Vorsorglich aktualisiert. |
+  | CVE-2026-45249 | Mittel | Diagramme: Eine Cross-Site-Scripting-Schwachstelle in den Tooltips der Diagramm-Komponente wurde behoben. |
+</Update>
+
+<Update
   label="v1.0.0"
   description="Oktober 2026 · Rigi"
   tags={["Neue Funktionen", "Stabilität", "Sicherheit"]}
