@@ -15,7 +15,7 @@ The diagram shows the two worlds: global modules apply to the whole instance, sp
 ```mermaid
 flowchart TB
     subgraph Global["Global modules: apply instance-wide"]
-        G["Registry, Studio, Intranet, Time Reports<br/>Access is granted to Groups by module, not per Space"]
+        G["Registry, Studio, Intranet, Times<br/>Access is granted to Groups by module, not per Space"]
     end
     subgraph SpaceWorld["Space modules: governed by a Permission Scheme"]
         S["Projects, Docs, Test Management, Blog<br/>One Scheme covers all modules inside a Space"]
@@ -91,10 +91,19 @@ The rule's creator always has all permissions. You can share specific permission
 | **Triggering user** | Actions appear in the activity log attributed to the user who triggered the run. Recommended for compliance. |
 | **System bot** | Actions appear as an anonymous system user. Useful for background jobs where the triggering user should not be visible. |
 
-### Time Reports
+### Times
+
+Times is one app with three roles. A group gets the role under **Admin → Roles & App Access**, and a person holds the highest role of all their groups. Without a role on Times, the app does not appear in the sidebar.
 
 | Role | Access |
 |---|---|
+| **User** | My times, Reviews and the Planner |
+| **Manager** | Everything a User can do, plus Time Reporting for the spaces they manage |
+| **Admin** | Everything a Manager can do, plus all reports across every user and space, and the billing settings |
+
+Booking time on a work item does not depend on the Times app. It depends on the person's rights in the space the work item belongs to, so a person without a role on Times can still log time there.
+
+---|---|
 | **Admin** | View all time entries across all users and spaces, manage billing rates, lock periods, approve time |
 | **Manager** | View time entries from spaces where they are a member — entries outside their spaces are not visible |
 | *(users without a group assignment)* | Can log and view only their own time entries |
@@ -326,7 +335,7 @@ Groups let you assign space roles and module access to entire teams at once.
     In **Admin → Groups**, open the group, go to the **Space Access** tab, pick the Space and assign a space role. Every member of the group gets that role immediately. The Space's **Members** settings list the group under **Inherited group access**.
   </Step>
   <Step title="Grant module access">
-    In **Admin → Roles & App Access**, assign the group a role for Registry, Intranet, or Time Reports.
+    In **Admin → Roles & App Access**, assign the group a role for Registry, Intranet, or Times.
   </Step>
 </Steps>
 
@@ -344,7 +353,7 @@ When you add or remove someone from a group, their access across all assigned sp
 | Space administrator | Space role: **Space Admin** |
 | Global IT admin | Instance role: **Admin** |
 | Registry data steward | Registry group: **Editor** or **Admin** |
-| Time tracking approver | Time Reports group: **Manager** |
+| Time tracking approver | Times group: **Manager** |
 
 ---
 

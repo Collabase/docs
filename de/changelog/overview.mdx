@@ -11,6 +11,237 @@ Jedes Jahr kommt eine neue Hauptversion mit eigenem Namen. Die monatlichen Versi
 Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet mit der Version, zum Beispiel `#v1-0-0`. Filtere die Einträge mit den Tags nach Kategorie oder abonniere sie mit dem RSS-Button.
 
 <Update
+  label="v1.1.0"
+  description="November 2026 · Rigi"
+  tags={["Neue Funktionen", "Fehlerbehebungen", "Administration", "Breaking Changes", "Docs", "Projects", "Meetings", "Time Tracking", "Roadmaps", "Studio", "Service Management", "Collabase AI"]}
+  rss={{ title: "Collabase 1.1.0", description: "Studio bringt Automationen in Collabase, Meetings enden mit einer Zusammenfassung, Times wird eine App mit einer Zugriffseinstellung, und Collabase AI funktioniert wieder mit Infomaniak und Ollama." }}
+>
+  Collabase 1.1 hat ein neues Aussehen, bringt Studio mit Automationen, beendet jedes Meeting mit
+  einer Zusammenfassung und zeigt allen, wenn ihre Instanz aktualisiert wurde. Times wird eine App mit einer Zugriffseinstellung,
+  und Collabase AI funktioniert wieder für Instanzen, die Infomaniak oder Ollama als KI-Anbieter
+  nutzen.
+
+  <Warning>
+    Diese Version ändert, wer Times sieht. Siehe [Update-Hinweis für Self-Hoster](#update-hinweis-fuer-self-hoster).
+  </Warning>
+
+  ### Neue Apps und Funktionen
+
+  - **Neues Aussehen:** ein gemeinsamer Satz an Farben, Formen und Schrift für das ganze Produkt, mit Inter als einziger Schrift und Lime als Standard-Akzent. Jede App nutzt dieselben Bedienelemente, Menüs, Popups, Tabs, Listen, Detailansichten, Dashboards, Leerzustände, Status-Pillen und Icons, im hellen und dunklen Modus und in jeder Akzentfarbe. Bearbeitungsformulare öffnen als Popups, seitliche Sheets gibt es nicht mehr. Administratoren wählen weiterhin einen anderen Akzent unter **Einstellungen** → **System-Theme**, und jede Person wählt weiterhin hell, dunkel oder System.
+  - **Anmeldeseite:** die Anmeldeseite gibt es in zwei Designs, einer zentrierten Karte auf einem weichen Farbverlauf und einem zweispaltigen Layout mit Wallpaper.
+  - **Update-Hinweis:** Nach jedem Update sehen Admins einmal, welche Version die Instanz jetzt hat, bis wann sie unterstützt wird, was neu ist und einen kurzen Update-Bericht: wann aktualisiert wurde, ob die Dienste laufen und wie viele Apps installiert sind. Danach ist die Version mit einem Klick erreichbar, unten im Menü **Feedback & help** und auf der Anmeldeseite. [Mehr erfahren](/admin/updates#after-the-update)
+  - **Meeting-Zusammenfassung:** Beim Beenden eines Meetings erscheint ein Popup. Es zeigt, wer da war und wer nicht, den Link zu den Meeting-Notizen, wo Docs aktiv ist, die KI-Zusammenfassung, die nicht besprochenen Themen und die erstellten Aufgaben. Nur wer das Meeting beendet, sieht es.
+  - **Mir zuweisen:** Mit `I` in einem Work Item weist du es dir selbst zu.
+  - **Times-Zugriff:** Times ist jetzt eine App mit einer Zugriffseinstellung für Gruppen und ersetzt Time Reports und Planner. Siehe [Update-Hinweis](#update-hinweis-fuer-self-hoster).
+  - **Service Management:** eine neue App neben Projects für Teams, die Anfragen von Kundinnen und Kunden bearbeiten. Ein Service-Projekt hat Anliegen-Formulare, Queues mit den Tickets, die Aufmerksamkeit brauchen, SLA-Policies mit Uhren, die warnen, bevor ein Ziel verpasst wird, Genehmigungen, die starten, wenn ein Ticket einen Workflow-Status erreicht, öffentliche Antworten und interne Notizen sowie ein Kundenportal, in dem Kundinnen und Kunden Anfragen einreichen, verfolgen und mit Kolleginnen und Kollegen teilen. Kunden sind eine eigene Art von Konto, in Organisationen gruppiert, und können sich mit ihrer Firmenadresse selbst registrieren. Sie genehmigen Anliegen, die ihre Zustimmung brauchen, durchsuchen die Wissensbasis im Portal und stimmen auf einer öffentlichen Roadmap ab und kommentieren sie; Agents sehen, wer abgestimmt hat, Kunden nur die Anzahl. Eine fertige Service-Desk-Vorlage richtet Status, Anliegen-Formulare, Queues und SLA-Policies ein. Für Dashboards gibt es SLA-, Queue- und Vote-Gadgets, Tickets und Kunden lassen sich exportieren. Ein Ticket kann auch aus einer Mail entstehen. Eine Administratorin oder ein Administrator gibt die App an Gruppen, und sie läuft mit oder ohne Projects. [Mehr erfahren](/service-management/overview) Service Management startet als Beta: Schalte es für dich unter **Einstellungen** → **Profil** → **Benutzereinstellungen** → **Collabase Lab** ein. Ein Betreiber schaltet es für die ganze Instanz ein, siehe [Update-Hinweis](#update-hinweis-fuer-self-hoster).
+  - **Studio:** baue Abläufe (Flows), die auf Ereignisse in Collabase und anderen Systemen reagieren, nach Zeitplan laufen, Menschen um Freigabe bitten und KI nutzen, jeder Lauf nachvollziehbar. Studio ist der neue Name von Collabase Automation und Teil dieses Releases. Eigene Integrationen entstehen mit dem Open-Source-[Plug SDK](https://github.com/Collabase/plug-sdk) und den [Plug-Beispielen](https://github.com/Collabase/plug-examples). [Mehr erfahren](/automation/overview)
+  - **Agents in Studio (Beta):** definiere einen Assistenten einmal, mit Anweisung, Werkzeugen und optionalem Wissen, und nutze ihn in Chats, Flows und Jobs. Agents sind eine Beta-Funktion von Collabase Lab und bleiben aus, bis du sie einschaltest. [Mehr erfahren](/automation/agents)
+  - **Popups behalten deine Eingaben:** Bearbeitungs- und Einstellungs-Popups schliessen sich nicht mehr, wenn du daneben klickst. Escape und die Schliessen-Schaltfläche schliessen sie weiterhin.
+
+  ### <span aria-hidden="true"><img src="/images/apps/docs-light.png" alt="Docs-App-Icon" width="24" noZoom className="inline-block dark:hidden m-0 mr-2 align-text-bottom" /><img src="/images/apps/docs-dark.png" alt="Docs-App-Icon" width="24" noZoom className="hidden dark:inline-block m-0 mr-2 align-text-bottom" /></span>Docs
+
+  **Neue Funktionen**
+
+  - **Seitenbaum:** Seiten und Ordner lassen sich über ein Menü oben im Baum oder an jeder Zeile anlegen. Die neue Seite erscheint unter der geöffneten Seite, die übergeordneten Einträge klappen auf, und ein neuer Ordner öffnet sich im Umbenennen-Modus.
+  - **Suche im Seitenbaum:** Ein Suchfeld über dem Baum filtert Seiten nach Titel. Mit Escape ist der volle Baum genau so wieder da, wie er war.
+  - **Ein Seitenmenü überall:** Dieselben Aktionen stehen an der Baumzeile, im Rechtsklick, im Seitenkopf und in der Ordneransicht bereit: verschieben, archivieren, löschen (mit der Zahl betroffener Seiten), Link kopieren und mehr. Seiten lassen sich auch per Menüschritt verschieben, nicht nur durch Ziehen.
+  - **Einfügen-Menü:** Das Slash-Menü und die **+**-Schaltfläche teilen sich jetzt einen Katalog und bieten dieselben Blöcke in derselben Reihenfolge an.
+  - **Kopfzeile in Tabellen:** Tabellen haben einen Schalter **Kopfzeile**. Die Kopfzeile wird fett auf getöntem Hintergrund dargestellt.
+  - **Markdown-Kürzel:** Markdown, das du beim Schreiben tippst, wird zu Formatierung, zum Beispiel Überschriften, Listen, Zitate, Code und Emoji per Name.
+  - **Callout-Varianten:** Ein Callout lässt sich mit einer neuen Schaltfläche zwischen Varianten wechseln. Der PDF-Export behält die Variante bei.
+  - **Auf dieser Seite:** Auf breiten Bildschirmen listet eine Spalte neben der Seite ihre Überschriften auf (ab zwei Überschriften), und eine Leiste darunter zeigt, wo du gerade bist.
+  - **Inline-Kommentare:** Text markieren und kommentieren, auch im Lesemodus. Threads bleiben nach dem Speichern und Veröffentlichen an ihrer Stelle, Antworten und @Erwähnungen benachrichtigen die Beteiligten, und neue Kommentare anderer erscheinen ohne Neuladen. [Mehr erfahren](/docs/comments)
+  - **Öffentliche API:** Seiten lassen sich über die API anlegen und lesen, in allen vier Seitentypen. [Mehr erfahren](/api/pages/create-page)
+  - **Export und Import:** PDF- und Markdown-Export erscheinen mit ihren Logos im Seitenmenü und im Menü **Mehr** der Toolbar. Der Import steht ebenfalls im Menü **Mehr**.
+  - **Speichern und Teilen:** Die Toolbar hat eine Schaltfläche **Änderungen speichern**, und die Schaltfläche zum Link-Kopieren im Seitenkopf heisst jetzt **Teilen**.
+  - **Roadmap in eine Seite einbetten:** Das Einfügen-Menü hat einen Block **Roadmap**, der eine Roadmap als Zeitachse in einer Seite zeigt. Leserinnen und Leser sehen sie mit ihren eigenen Rechten, wer keinen Zugriff auf die Roadmap hat, sieht stattdessen einen Hinweis. [Mehr erfahren](/planning/roadmaps#embed-in-page)
+
+  **Verbesserungen**
+
+  - Die Toolbar passt in eine Zeile und verschiebt seltener genutzte Aktionen (Suchen und Ersetzen, Einzug, Zeilenhöhe, Export, Import) ins Menü **Mehr**.
+  - Toolbars, Menüs und Beschriftungen des Editors sind auf Deutsch, Französisch, Italienisch und Englisch übersetzt, und der Editor sieht aus wie der Rest von Collabase.
+  - Tabellen, Listen, Medien, Links, Erwähnungen, Daten, Formeln, Spalten, Toggles und Codeblöcke verhalten sich einheitlicher. Daten erscheinen im Schweizer Format, zum Beispiel 30.10.2026.
+  - Der Seitenbaum lädt in fester Reihenfolge und springt nicht mehr herum.
+  - Menüs in der ganzen App (App-Drawer, Dateien, Mindmap, Aufgaben-Graph, Automation, Registry-Designer und weitere) sehen gleich aus und verhalten sich gleich, im Dropdown und im Rechtsklick.
+  - Hover und aktive Seite in der Seitenleiste füllen die ganze Zeile, ohne Balken am Rand.
+  - Der Abstand zwischen Toolbar und Seiteninhalt ist gleichmässiger.
+  - Eine kopierte Seite steht direkt unter dem Original.
+
+  **Fehlerbehebungen**
+
+  - Das Menü **Umwandeln in** in der Toolbar stürzt nicht mehr ab.
+  - Der Bild-Upload über die Bild-Schaltfläche der Toolbar funktioniert wieder. Die gewählte Datei ging bisher verloren.
+  - Enter auf einem Bild, einem Diagramm oder einem Makro öffnet eine neue Zeile darunter.
+  - Das Slash-Menü schliesst sich nicht mehr, wenn du auf seine Bildlaufleiste klickst.
+  - Zeilenaktionen im Seitenbaum überdecken den Seitentitel nicht mehr.
+  - Auf einer Seite mit Live-Zusammenarbeit wurden der Eintrag **AI** im Slash-Menü, **Ask AI** an einem Block und **AI commands** in der Toolbar angezeigt, taten aber nichts. Dort sind sie jetzt ausgeblendet; der Collabase-AI-Assistent liest und ändert die Seite weiterhin. [Mehr erfahren](/docs/collaboration#ai)
+
+  ### <span aria-hidden="true"><img src="/images/apps/projects-light.png" alt="Projects-App-Icon" width="24" noZoom className="inline-block dark:hidden m-0 mr-2 align-text-bottom" /><img src="/images/apps/projects-dark.png" alt="Projects-App-Icon" width="24" noZoom className="hidden dark:inline-block m-0 mr-2 align-text-bottom" /></span>Projects
+
+  **Neue Funktionen**
+
+  - Mit `I` in einem Work Item weist du es dir selbst zu, im Work-Item-Popup und auf seiner Seite. Beim Tippen in einem Feld löst es nicht aus.
+  - **Mir zuweisen** steht ganz oben in jeder Assignee-Liste, im gleichen Zeilenstil wie die Personen darunter, und bleibt beim Scrollen der Liste an seinem Platz.
+  - **Zur Agenda hinzufügen:** Im Bereich **Meetings** eines Work Items fügst du es der Agenda eines bestehenden Meetings hinzu, neben dem Anlegen eines neuen Meetings. Meetings, die das Work Item schon führen, sind ausgegraut.
+  - **Kritischer Pfad:** Der Schalter **Kritischer Pfad** in der Timeline-Toolbar hebt die Work Items und Abhängigkeiten hervor, die den Endtermin bestimmen, und zeigt den Puffer jedes Work Items in Tagen.
+  - **Baselines:** Das Menü **Baseline** in der Timeline-Toolbar hält die aktuellen Termine eines Projekts als Baseline fest und vergleicht die Timeline damit, mit einem Schattenbalken unter jedem Work Item und seinem Verzug in Tagen.
+  - **Szenarien:** Das Menü **Szenario** in der Timeline-Toolbar spielt neue Termine, Schätzungen und Bearbeiter durch, ohne den Ist-Plan anzutasten. Die Änderungen werden gegen den Ist-Plan geprüft, und die gewünschten lassen sich übernehmen. [Mehr erfahren](/planning/baselines-and-scenarios#scenarios)
+  - **Programm-Ampel:** Ein Portfolio zeigt die schlechteste Ampel der zuletzt freigegebenen Statusberichte aller Projekte darunter. Die Portfolio-Owner übersteuern sie mit einer Begründung, der Vorschlag aus den Projekten bleibt daneben sichtbar.
+  - **Programmrisiken:** Ein Portfolio hat einen Tab **Risiken** mit eigenen Risiken, die im Risikoregister eines gewählten Spaces liegen, und daneben den offenen und kritischen Risiken der Projekte darunter.
+  - **Programmberichte:** Ein Portfolio hat einen Tab **Berichte** mit einem monatlichen Programmbericht, den die Portfolio-Owner schreiben, einreichen und freigeben lassen, mit einer Zeile pro Projekt und eingefrorenen Zahlen nach der Freigabe.
+  - **Erinnerung, wenn ein Statusbericht fällig ist:** Am fünften Arbeitstag des Monats erhalten Projektleitungen und Portfolio-Owner eine einzige Benachrichtigung mit den Berichten des Vormonats, die noch fehlen. [Mehr erfahren](/projects/reports#reminders)
+  - **PDF-Export für Statusberichte:** Ein Statusbericht und ein Programmbericht haben einen Knopf **Export**, der den Bericht als PDF im Hochformat A4 in deiner Sprache herunterlädt. Ein Programmbericht listet nur die Projekte, die du siehst. [Mehr erfahren](/projects/reports#export-pdf)
+  - **Gantt-Export (PDF und PNG):** Der Knopf **Export** in der Timeline-Toolbar eines Projekts und eines Portfolios lädt das Gantt als PDF im Querformat A4 oder A3 oder als PNG herunter. Es zeigt die Work Items, die du sehen darfst, mit der eingeschalteten Baseline, dem kritischen Pfad und dem Szenario. [Mehr erfahren](/projects/timeline#gantt-export)
+
+  **Verbesserungen**
+
+  - Links in Kommentaren und Beschreibungen öffnen in einem neuen Tab, damit das Work Item offen bleibt.
+  - Eine am Ende eines Kommentars getippte Webadresse ist jetzt anklickbar, ebenso ein Link ohne `https://`, etwa `www.example.ch`. Das behebt auch ältere Kommentare.
+  - Gantt: Jahresansicht. Die Timeline bietet neben **Quartal** auch **Jahr**, mit den Monaten unter jedem Jahr.
+
+  **Fehlerbehebungen**
+
+  - Beim Schreiben eines Kommentars gibt es jetzt **Abbrechen**, das den Entwurf verwirft.
+  - In Kommentaren und Beschreibungen nimmt **Backspace** am Anfang einer eingerückten Zeile den Einzug zurück, wie in einem Texteditor. Vorher ging das nur mit Shift+Tab.
+  - Ein Titel und eine Beschreibung, die dem Popup **Work Item erstellen** mitgegeben wurden, zum Beispiel vom Aufgaben-Makro auf einer Seite, gingen verloren. Sie bleiben jetzt erhalten.
+  - Das Synchronisieren von Repositories aus GitHub schlug bei einer über Collabase angelegten GitHub App fehl, deshalb liess sich kein Repository mit einem Projekt verknüpfen. Es funktioniert jetzt.
+
+  ### <span aria-hidden="true"><img src="/images/apps/meetings-dark.png" alt="Meetings-App-Icon" width="24" noZoom className="inline-block m-0 mr-2 align-text-bottom" /></span>Meetings
+
+  **Neue Funktionen**
+
+  - **Zusammenfassung beim Beenden:** ein Popup für die Person, die das Meeting beendet. Es zeigt, wer da war, wer nicht und bei wem die Anwesenheit nicht erfasst wurde, den Link zu den Meeting-Notizen (nur wo Docs aktiv ist, und solange die Notiz geschrieben wird, steht das da), die KI-Zusammenfassung, wenn die Notiz eine hat, die nicht besprochenen Themen und die erstellten Aufgaben.
+  - **Agenda-Punkte und Abschnitte duplizieren:** Ein Punkt lässt sich unter sich selbst duplizieren, ein ganzer Abschnitt mit seinen Punkten. Notizen, Verantwortliche, Schätzung und verknüpfte Work Items kommen mit, Beschlüsse und erfasste Ergebnisse nicht.
+  - **Vorheriges Thema:** Ein laufendes Meeting hat eine Schaltfläche, um zum Thema vor dem laufenden zurückzugehen. Das laufende Thema wird nicht als erledigt markiert.
+  - **Präsentationsmodus:** Er zeigt jetzt die Agenda mit ihren Abschnitten und zu jedem Thema, wer verantwortlich ist, mit Name und Foto. Aufgaben lassen sich im Präsentationsmodus erfassen, ohne ihn zu verlassen.
+  - **Work-Item-Formular für Aufgaben:** Eine im Meeting erfasste Aufgabe wird über dasselbe Popup wie überall zum Work Item, gefüllt mit Text, verantwortlicher Person und Fälligkeit, sodass sich alle Felder ausfüllen lassen, die das Projekt braucht.
+
+  **Verbesserungen**
+
+  - Neue Meetings starten mit eingeschaltetem **Teilnehmende dürfen die Agenda bearbeiten** und **Themen direkt auf die Agenda**. Bestehende Meetings behalten ihre Einstellungen.
+
+  **Geändertes Verhalten**
+
+  - Ein Meeting erfasst nur noch Aufgaben. Der Ergebnistyp **Information** entfällt, und die KI schlägt keine Information mehr vor. Vorhandene Informationsnotizen bleiben sichtbar.
+  - In einem Space, in dem Docs aus ist, bietet ein Meeting unter **Agenda-Punkt hinzufügen** und beim Verknüpfen keine Seiten an und schreibt, zeigt und veröffentlicht keine Meeting-Notiz. Eine Notiz, die bei aktivem Docs entstanden ist, bleibt ausgeblendet, bis Docs wieder aktiv ist.
+
+  **Fehlerbehebungen**
+
+  - Personen, die zu einem Termin einer Serie eingeladen wurden, fehlten bei den nächsten Terminen. Teilnehmende gehören jetzt zur ganzen Serie: Wen du einlädst, entfernst oder mit einer anderen Rolle versiehst, ändert sich bei allen kommenden Terminen, und neue Termine starten mit diesen Personen. Eine Serie, die vor diesem Update angelegt wurde, hat die Teilnehmenden vom Zeitpunkt ihrer Anlage. Lade einmal jemanden ein, damit die Liste wieder stimmt.
+
+  ### <span aria-hidden="true"><img src="/images/apps/time-tracking-light.png" alt="Time-Tracking-App-Icon" width="24" noZoom className="inline-block dark:hidden m-0 mr-2 align-text-bottom" /><img src="/images/apps/time-tracking-dark.png" alt="Time-Tracking-App-Icon" width="24" noZoom className="hidden dark:inline-block m-0 mr-2 align-text-bottom" /></span>Time Tracking
+
+  **Geändertes Verhalten**
+
+  - Der Eintrag **Times** in der Seitenleiste erscheint nur für Personen, deren Gruppe die App **Times** hat. Administratoren sehen ihn immer. Zeit auf Work Items buchen hängt nicht davon ab.
+  - In Times stehen **Meine Zeiten** und der Planner jeder Rolle der App offen, und **Time Reporting** braucht die Rolle Manager oder höher.
+
+  ### <span aria-hidden="true"><Icon icon="route" size={20} /></span> Roadmaps
+
+  **Neue Funktionen**
+
+  - **Roadmaps:** Die neue App **Roadmaps** listet alle Roadmaps, die du sehen darfst, mit der Anzahl Initiativen und dem Datum der letzten Änderung. Lege eine Roadmap mit Name und Beschreibung an, benenne sie um oder lösche sie. Gelöschte Roadmaps landen im Papierkorb der Systemverwaltung und lassen sich dort 30 Tage lang wiederherstellen. [Mehr erfahren](/planning/roadmaps)
+  - **Zeitachse mit Drag & Drop:** Öffne eine Roadmap und sieh ihre Initiativen auf einer Zeitachse, gruppiert in Swimlanes, mit Phasen als Bändern und Meilensteinen als Rauten. Ziehe einen Balken, um ihn zu verschieben, ziehe seine Enden, um die Länge zu ändern, und ziehe eine Zeile in eine andere Lane oder an eine andere Stelle. Zoome von Jahr bis Woche. Viewer sehen dieselbe Zeitachse ohne Ziehgriffe. [Mehr erfahren](/planning/roadmaps#timeline)
+  - **Swimlanes, Phasen und Meilensteine:** Editoren legen Swimlanes an, benennen, färben, sortieren und löschen sie (die Initiativen einer gelöschten Lane wechseln in eine andere), setzen farbige Phasen und Meilensteine per Rechtsklick auf die Zeitachse und ziehen einen Meilenstein auf einen anderen Tag. Viewer sehen sie ohne Menü und Ziehgriff. [Mehr erfahren](/planning/roadmaps#lanes)
+  - **Initiative-Details und Konflikthinweise:** Klicke auf einen Balken, um die Details einer Initiative zu öffnen. Bearbeite Name, Beschreibung, Status, Lane, Zeitraum, Farbe und Verantwortliche direkt dort und verknüpfe Projekte, Arbeitselemente, Portfolios und Seiten. Eine Verknüpfung auf etwas, das du nicht sehen darfst, zeigt nur, dass dir die Berechtigung fehlt. Liegt ein verknüpftes Projekt oder Portfolio ausserhalb des Zeitraums der Initiative, ist es abgeschlossen oder steht auf Rot, weist die Initiative darauf hin und bietet an, den Zeitraum der verknüpften Objekte zu übernehmen. [Mehr erfahren](/planning/roadmaps#edit-initiatives)
+  - **Roadmap teilen:** Teile eine Roadmap mit Personen und Gruppen als Editor oder Viewer. Gäste können nur ansehen, und der letzte Editor lässt sich nicht entfernen. Neue Viewer und Editoren erhalten eine Benachrichtigung.
+  - **Eigene Status und Beziehungstypen pro Roadmap:** Editoren benennen die Status einer Roadmap um, färben sie ein, sortieren sie, fügen welche hinzu oder entfernen sie und ordnen jeden als offen, aktiv oder abgeschlossen ein. Beziehungstypen erhalten Name, Farbe, Linienstil, Pfeil und Symbol. Ein Status oder Typ, der noch verwendet wird, wird beim Entfernen durch einen anderen ersetzt. [Mehr erfahren](/planning/roadmaps#statuses)
+  - **Beziehungen zwischen Initiativen:** Editoren verbinden zwei Initiativen mit einer typisierten Beziehung, entweder durch Ziehen von einem Balken auf einen anderen oder mit **Beziehung hinzufügen** in den Details. Die Linie zeigt Farbe, Linienstil, Pfeil und Symbol ihres Typs, beim Darüberfahren nennt sie Typ, Label und beide Initiativen, und mehrere Beziehungen zwischen denselben Initiativen werden nebeneinander gezeichnet. [Mehr erfahren](/planning/roadmaps#relations)
+  - **Verknüpfte Objekte auf der Zeitachse:** Eine Initiative mit Verknüpfungen klappt in schreibgeschützte Zeilen für ihre verknüpften Projekte, Arbeitselemente, Portfolios und Seiten auf, mit ihrem tatsächlichen Zeitraum, der Ampel und dem Status. Ein Portfolio klappt in seine Unterportfolios und Projekte auf. Ein Warnsymbol markiert eine Zeile, die vor der Initiative beginnt oder nach ihr endet, eine Schaltfläche klappt alles auf oder zu, und der PDF- und PNG-Export kann die Zeilen enthalten. [Mehr erfahren](/planning/roadmaps#linked-rows)
+  - **Collabase AI zu Roadmaps fragen:** Frage, welche Initiativen in einem Quartal geplant sind, wie der Stand einer Initiative ist oder welche überfällig sind. Collabase AI liest nur und nur Roadmaps, die du öffnen darfst. [Mehr erfahren](/planning/roadmaps#ai)
+  - **Suche und Gadget:** Finde Roadmaps und Initiativen in der Suche und zeige eine Roadmap als Dashboard-Gadget. Beides zeigt nur Roadmaps, die du öffnen darfst. [Mehr erfahren](/planning/roadmaps#search-gadget)
+  - **Roadmap als PDF oder PNG exportieren:** Der Knopf **Export** in der Roadmap-Toolbar lädt die Timeline mit Swimlanes, Phasen, Meilensteinen und Beziehungen als PDF im Querformat A4 oder A3 oder als PNG herunter, in deiner Sprache. Solange du mit einem Snapshot vergleichst oder ein Szenario ansiehst, zeigt die Datei diesen Vergleich bzw. das Szenario: Die Termine des Snapshots erscheinen als Schattenbalken unter den Initiativen. Eine Verknüpfung auf etwas, das du nicht sehen darfst, zeigt keinen Namen. [Mehr erfahren](/planning/roadmaps#export)
+  - **Erinnerungen an überfällige Initiativen und Konflikte:** Die Owner einer Initiative erhalten eine Benachrichtigung, wenn das geplante Ende verstrichen ist und wenn ein verknüpftes Projekt oder Portfolio neu ausserhalb des Zeitraums liegt, abgeschlossen ist oder auf Rot steht. Jeder Fall wird nur einmal gemeldet. [Mehr erfahren](/planning/roadmaps#reminders)
+  - **Snapshots: Roadmap einfrieren und mit heute vergleichen:** Editoren frieren eine Roadmap unter einem Namen ein, und alle, die sie öffnen dürfen, sehen den eingefrorenen Stand oder vergleichen ihn mit dem heutigen Plan, mit Schattenbalken unter den verschobenen Initiativen und der Anzahl neuer, entfernter, verschobener und im Status geänderter Initiativen. Ein Snapshot lässt sich nicht ändern. [Mehr erfahren](/planning/roadmaps#snapshots)
+  - **Szenarien: Änderungen durchspielen und übernehmen:** Editoren legen auf einer Roadmap ein Szenario an, ziehen Initiativen auf andere Termine, setzen sie in eine andere Swimlane oder geben ihnen einen anderen Status und sehen das Ergebnis neben dem Ist-Stand. **Änderungen prüfen** listet jede Änderung auf, und nur die gewählten gehen in die Roadmap, ganz oder gar nicht. Viewer sehen Szenarien, ändern sie aber nicht. [Mehr erfahren](/planning/roadmaps#scenarios)
+  - **Kommentare und Aktivität an Initiativen:** Öffne eine Initiative, um sie unter **Kommentare** zu besprechen, mit Antworten und @Erwähnungen von Personen, die die Roadmap öffnen dürfen, und unter **Aktivität** zu sehen, wer wann welches Feld geändert hat. Auch Viewer schreiben Kommentare. [Mehr erfahren](/planning/roadmaps#comments)
+  - **Initiative in ein Projekt umwandeln:** Editoren, die in einem Space Projekte anlegen dürfen, wandeln eine Initiative in den Details in ein Projekt um. Das Projekt übernimmt den Zeitraum der Initiative und deren Owner als Projektleitung, die Initiative verweist darauf, und verknüpfte Seiten erscheinen im Projekt als Weblinks. Ein bereits vergebener Schlüssel wird am Feld gemeldet. [Mehr erfahren](/planning/roadmaps#convert)
+
+  ### <span aria-hidden="true"><Icon icon="life-buoy" size={20} /></span> Service Management (Beta in Collabase Lab)
+
+  Service Management ist eine Beta-Funktion und erscheint im **Collabase Lab**. Es bleibt aus, ohne App in der Seitenleiste und ohne Service-Desk-Vorlage, bis du es unter **Einstellungen** → **Profil** → **Benutzereinstellungen** → **Collabase Lab** einschaltest. Der Schalter gilt nur für dich. Ein Betreiber kann es für die ganze Instanz einschalten, siehe [Update-Hinweis](#update-hinweis-fuer-self-hoster).
+
+  **Das bekommst du**
+
+  - **Service-Projekte:** ein Projekt wird zum Service-Projekt, oder du startest eines aus der Vorlage **Service Desk** mit Status, Anliegen-Formularen, Queues und SLA-Policies.
+  - **Kunden und Organisationen:** Kunden sind eine eigene Art von Konto, in Organisationen gruppiert. Administratorinnen und Administratoren laden sie ein, bearbeiten sie und geben ihnen Zugriff pro Projekt. Kunden können sich auch mit ihrer Firmenadresse selbst registrieren.
+  - **Anliegen-Formulare:** jede Anliegen-Art hat ein eigenes Formular mit den Feldern ihres Work-Item-Typs, eigenem Namen und einem Start-Status.
+  - **Kundenportal:** Kunden reichen Anliegen ein, verfolgen sie, antworten und teilen sie mit Kollegen oder ihrer Organisation. Organisations-Admins sehen alle Anliegen der Organisation und genehmigen bei Bedarf. `/portal` listet jedes Portal, das ein Kunde öffnen darf.
+  - **Queues und SLAs:** Queues zeigen die Tickets, die Aufmerksamkeit brauchen, mit Live-Zahlen. SLA-Policies lassen Uhren auf Arbeitskalendern laufen und warnen, bevor ein Ziel verpasst wird.
+  - **Antworten und Notizen:** Agents wählen pro Kommentar, ob er im Portal öffentlich oder privat ist. Antwortvorlagen beschleunigen die Antworten.
+  - **Genehmigungen:** Genehmigungen liegen an einem Workflow-Status. Ein Ticket, das in den Status kommt, wartet auf die Entscheidung der genannten Personen oder der Organisations-Admins des Kunden.
+  - **Wissensdatenbank und Suche:** ein Space oder eine Seite mit allem darunter ist die Wissensdatenbank im Portal. Kunden suchen Artikel und Anliegen-Formulare, während sie ein Anliegen schreiben.
+  - **Öffentliche Roadmap:** das Portal zeigt eine Roadmap der Work Items, die du wählst, mit Votes. Kunden sehen nur die Anzahl der Votes, nie wer abgestimmt hat.
+  - **Weiteres:** ein Ticket aus einer Kunden-Mail eröffnen, Dashboard-Gadgets für SLA, Queues und Votes, Export von Tickets und Kunden, optionale KI-Triage und Antwortentwürfe und ein Portal-Agent, der aus der Wissensdatenbank antwortet. Die KI-Funktionen bleiben aus, bis eine Administration sie pro Projekt einschaltet.
+
+  **Grenzen der Beta**
+
+  - Kunden und Hintergrundarbeit folgen dem Instanz-Schalter: ohne ihn sehen Kunden kein Portal, und SLA-Uhren, der Mail-Eingang und die Benachrichtigungen laufen nicht.
+  - Die Beta kann sich ändern, bevor sie allgemein verfügbar ist.
+
+  ### <span aria-hidden="true"><Icon icon="hand" size={20} /></span> Studio
+
+  **Neue Funktionen**
+
+  - **Flows:** ein Flow startet mit einem Auslöser, etwa einem neuen Work Item, einem Aufruf aus einem anderen System oder einer Uhrzeit, und führt seine Schritte nacheinander aus. Jeder Schritt ist eine Aktion eines Plugs: ein Work Item anlegen, eine Benachrichtigung senden und mehr. Ein Flow hat einen Entwurf, den du bearbeitest, und eine veröffentlichte Version, die läuft. [Mehr erfahren](/automation/building-flows)
+  - **Automation-Arbeitsbereiche:** ein Team besitzt eine Gruppe von Flows mit eigenen Mitgliedern, Verbindungen, Läufen, Audit-Spur und Auswertungen. Das Team sieht jeden Flow, jeden Lauf und jede Änderung in einer Liste, und ein fehlgeschlagener Lauf sagt, welcher Schritt scheiterte und warum. [Mehr erfahren](/automation/overview)
+  - **Läufe nachvollziehbar:** jeder Lauf behält das Protokoll jedes Schritts. Öffne einen Lauf, um zu sehen, was in einen Schritt hinein- und herausging und wo er stoppte. [Mehr erfahren](/automation/debugging-runs)
+  - **Plugs und Verbindungen:** Plugs fügen Auslöser und Aktionen für eine App oder einen Dienst hinzu. Collabase-Plugs gehören zum Produkt, Administratorinnen und Administratoren installieren Core- und Community-Plugs. Verbindungswerte werden verschlüsselt gespeichert und nie wieder angezeigt. [Mehr erfahren](/automation/plugs)
+  - **Plug-SDK und Plug-Beispiele (Open Source):** baue eigene Integrationen als Plugs. Das [Plug SDK](https://github.com/Collabase/plug-sdk) und die [Plug-Beispiele](https://github.com/Collabase/plug-examples) sind Open Source, und die [Entwicklerseite](https://collabase.ch/platform/developers/plug-sdk) zeigt den Einstieg. In dieser Dokumentation führt [Ein Plug bauen](/automation/build-a-plug) Schritt für Schritt durch.
+  - **Sicher gebaut:** ein Flow handelt mit den Rechten des Service-Kontos seines Arbeitsbereichs, nie mit mehr. Plugs, die Collabase nicht geschrieben hat, laufen in einer isolierten Sandbox ohne Weg zu deinen internen Systemen.
+  - **Menschen behalten die Kontrolle:** ein Schritt kann eine benannte Person um Freigabe bitten, bevor der Flow weiterläuft, und ein sensibler Space braucht eine zweite Administration, bevor ein Flow veröffentlicht oder eingeschaltet wird. [Mehr erfahren](/automation/flow-approvals)
+  - **Funktioniert ohne KI:** alles ausser den KI-Schritten, dem Bauen eines Schritts aus einem Satz und den Collabase-AI-Werkzeugen funktioniert ohne KI-Anbieter.
+
+  ### <span aria-hidden="true"><Icon icon="bot-message-square" size={20} /></span> Agents in Studio (Beta)
+
+  **Neue Funktionen**
+
+  - **Collabase Lab:** Agents sind eine Beta-Funktion. Sie bleiben aus, bis du sie unter **Einstellungen** → **Profil** → **Benutzereinstellungen** → **Collabase Lab** einschaltest, und der Schalter gilt nur für dich. Ein Betreiber kann die Funktion für alle ausgeschaltet lassen.
+  - **Einmal definieren:** ein Agent hat eine Anweisung, Werkzeuge, optionales Wissen und eigene Gesprächsanfänge. Beschreibe ihn in einem Satz, und Collabase schreibt den Entwurf. Dafür braucht deine Instanz ein KI-Modell. [Mehr erfahren](/automation/agent-editor)
+  - **Überall nutzbar:** sprich mit einem Agent im angedockten KI-Chat, führe ihn in einem Flow mit dem Schritt **Agent** aus oder lass ihn in Jobs unter eigener Identität selbstständig arbeiten. Ein Agent kann für jedes Werkzeug an die Freigaberegel gebunden werden. [Mehr erfahren](/automation/agents)
+  - **Teilen und begrenzen:** teile einen Agent mit Personen und Gruppen, setze ein monatliches Token-Limit und lies seine Nutzung ab.
+  - **Grenzen der Beta:** Gäste können keine Agents nutzen. Die Beta kann sich ändern, bevor sie allgemein verfügbar ist.
+
+  ### <span aria-hidden="true"><Icon icon="sparkles" size={20} /></span> Collabase AI
+
+  **Fehlerbehebungen**
+
+  - Mit Infomaniak oder Ollama als KI-Anbieter hat der Anbieter Anfragen abgelehnt, die Collabase AI ihre Werkzeuge mitgaben, und der Assistent antwortete mit einem Fehler. Das funktioniert wieder.
+
+  ### Administration
+
+  - **Times-App:** Unter **Admin** → **Roles & App Access** werden die Apps **Time Reports** und **Planner** durch eine App ersetzt, **Times**, mit den Rollen User, Manager und Admin. User öffnet Meine Zeiten, Prüfungen und den Planner, Manager ergänzt Time Reporting für die Spaces, die die Person verwaltet, und Admin ergänzt alle Berichte und die Abrechnungseinstellungen. [Mehr erfahren](/admin/users-groups)
+  - Das Zeitsummen-Gadget in Dashboards braucht eine Rolle auf **Times**.
+  - Gelöschte Roadmaps werden nach 30 Tagen endgültig entfernt. Wird ein Benutzer gelöscht, verschwinden auch die Roadmaps, die nur diese Person öffnen konnte.
+
+  ### Update-Hinweis für Self-Hoster {#update-hinweis-fuer-self-hoster}
+
+  **Breaking Changes**
+
+  - **Times-Zugriff.** Eine Gruppe, die Time Reports oder Planner hatte, behält den Zugriff unter **Times**: Sie bekommt die höchste Rolle, die sie dort hatte. Eine Gruppe, die keines von beiden hatte, sieht Times in der Seitenleiste nicht mehr, obwohl es vorher alle gesehen haben. Zeit auf Work Items zu buchen funktioniert für sie weiter.
+  - Eine Gruppe mit der Rolle Manager auf Time Reports sieht jetzt auch den Planner, der die Auslastung anderer Personen zeigt.
+  - **Service-Desk-Portal.** Das alte Kundenportal der Service-Projekte wird durch das neue Portal unter derselben Adresse ersetzt. Die Anliegen-Formulare werden automatisch umgestellt. Portal-Einstellungen, die Projekteinstellung `serviceDesk` und die alte Portal-API (`config`, `tickets`, `submit`, `categories`) entfallen; Integrationen, die sie aufrufen, müssen das neue Portal nutzen. Nach dem Update zeigt die Anmeldeseite Logo und Banner jedes eingeschalteten Portals.
+  - **Meeting-Ergebnisse in der API.** Ein Meeting-Ergebnis vom Typ `INFORMATION` über die API oder ein KI-Werkzeug anzulegen wird mit einem Validierungsfehler abgelehnt; sende `TASK` oder lass `type` weg. Vorhandene Informationsergebnisse bleiben lesbar.
+
+  **Vor dem Update**
+
+  - Studio ist ab dieser Version an. Damit alle deiner Instanz **Agents** und **Service Management** nutzen, setze vor dem Update `FEATURE_FLAG_OVERRIDES="SERVICE_MANAGEMENT=true"` (und das passende Flag für Agents). Ohne das schalten Personen es für sich in Collabase Lab ein. Kundinnen und Kunden erreichen das Portal von Service Management nur, wenn der Instanz-Schalter an ist.
+  - Entscheide, welche Gruppen, die weder Time Reports noch Planner hatten, Times trotzdem nutzen sollen, und gib ihnen die App **Times** unter **Admin** → **Roles & App Access**, vor dem Update oder direkt danach.
+
+  **Was das Update macht**
+
+  - Ergänzt die Benutzertabelle um eine Spalte, die festhält, welchen Versionshinweis eine Person geschlossen hat. Die Migration läuft beim Start und braucht keinen Schritt von dir.
+  - Alle, die Collabase schon vor dem Update genutzt haben, sehen den Update-Hinweis einmal.
+  - Ergänzt die Kommentartabelle um eine Spalte, die festhält, wo ein Inline-Kommentar sitzt. Die Migration läuft beim Start.
+  - Ergänzt die App **Times** in der Liste der Apps und kopiert die Rechte jeder Gruppe auf Time Reports und Planner dorthin. Die alten Zeilen bleiben ein Release lang, damit ein Rollback keinen Zugriff verliert. Beide Migrationen laufen beim Start.
+
+  - Instanzen mit dem Standard-Farbschema zeigen jetzt Lime statt der bisherigen Markenfarbe. Die anderen Farbschemata behalten Namen und Farbfamilie.
+  - Instanzen, die die Anmeldedesigns Liquid Glass oder Standard genutzt haben, zeigen jetzt das zweispaltige Design. Die zentrierte Karte wählst du unter **Einstellungen** → **Anmeldeseite**, wenn du sie lieber hast.
+  - Die Schrift Outfit wird nicht mehr genutzt. Überschriften verwenden Inter.
+  - Kommentieren auf einer Seite braucht neu das Kommentarrecht statt des Bearbeitungsrechts. Wer lesen und kommentieren darf, kann jetzt also kommentieren. Gäste können nicht mehr kommentieren.
+</Update>
+
+<Update
   label="v1.0.1"
   description="November 2026 · Rigi"
   tags={["Sicherheit"]}
@@ -62,7 +293,7 @@ Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet 
 
   ### Stabilität
 
-  - **Standardwerte für den Produktivbetrieb:** Datenbank und Verbindungspool der Anwendung sind ab Werk für den organisationsweiten Einsatz ausgelegt. Auf kleineren Hosts lassen sich die Werte senken.
+  - **Standardwerte für den Produktivbetrieb:** Datenbank und Verbindungspool der Anwendung sind standardmässig für den organisationsweiten Einsatz ausgelegt. Auf kleineren Hosts lassen sich die Werte senken.
   - **Sichere Updates:** Bevor ein Update die Datenbank ändert, prüft es die Daten und erstellt ein Backup. Schlägt einer der Schritte fehl, wird nichts geändert und du kehrst zur vorherigen Version zurück.
   - **Geprüfte Images:** Die Images der Anwendung und des Collaboration-Dienstes werden gestartet und auf ihren Zustand geprüft, bevor eine Version veröffentlicht wird.
   - **Laufzeit mit Langzeitsupport:** Die Anwendung läuft auf einer Plattform mit Langzeitsupport, die über Jahre Sicherheitskorrekturen erhält.

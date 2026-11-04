@@ -11,7 +11,7 @@ Each run keeps a record of what every step received and returned. When a flow do
 
 <Steps>
   <Step title="Open the Runs tab">
-    Open the automation workspace and select **Runs**. The list shows the newest run first. Filter by flow, by status or by date.
+    Open the Automation workspace and select **Runs**. The list shows the newest run first. Filter by flow, by status or by date.
   </Step>
   <Step title="Open the run">
     Select a run. The page shows each step with its status: started, succeeded, failed or waiting.
@@ -60,13 +60,13 @@ Select **Cancel run** on a run that is going. It stops at its next step. Steps t
 | What you see | Likely cause |
 |---|---|
 | A step failed with a message that names a reference | An earlier step returned nothing under that name. Open that step and look at its output. |
-| A step failed with a `FORBIDDEN` message | The service account of the workspace has no right to the object. Give it the right in the space or project. |
-| A step failed with a message about a variable | The variable was deleted or never created in this workspace. See [Variables](/automation/variables). |
+| A step failed with a `FORBIDDEN` message | The service account of the Space has no right to the object. Give it the right in the space or project. |
+| A step failed with a message about a variable | The variable was deleted or never created in this Space. See [Variables](/automation/variables). |
 | A connection step fails and the connection is **Invalid** | The credentials no longer work. Replace the connection. |
 | The run stays **Paused** | It waits for a delay, a call to the resume address or an approval. |
 | The log of a run is gone | [Retention](/automation/workspaces#run-retention) removed it. The status of the run is still correct. |
 
-A flow that fails 10 times in a row is switched off, and the editors and admins of the workspace are told.
+A flow that fails 10 times in a row is switched off, and the editors and admins of the Space are told.
 
 ## Related
 

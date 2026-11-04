@@ -24,6 +24,8 @@ The center shows your newest 50 notifications and checks for new ones every minu
 | Event | Notification | Also by email |
 |---|---|---|
 | Someone mentions you in a [comment on a page](/docs/comments#mentions) | "mentioned you in a discussion" | Yes |
+| Someone starts a [discussion](/docs/comments#inline-comments) on a page you wrote and does not mention you in it | "commented on" the page | No |
+| Someone replies in a [discussion](/docs/comments#discussions) you took part in, and does not mention you in the reply | "replied in a discussion" on the page | No |
 | Someone assigns you a to-do in a page by mentioning you in it, see [Assign a to-do](/docs/comments#to-dos) | **Task Assigned** | No |
 | Someone adds you to the access list of a [private folder](/docs/page-restrictions#make-private) | **Page shared with you** | No |
 | Someone suggests a change to a page you wrote, see [Suggestions](/docs/suggestions) | A new suggestion | No |
@@ -34,11 +36,33 @@ The center shows your newest 50 notifications and checks for new ones every minu
 | Slack or Teams stops working | **The Slack connection stopped working** (administrators), **Check your Slack connection** (the person) | Administrators |
 | A test run is assigned to you | **Test run assigned** | Yes |
 | A test run you are assigned to is complete and cases failed | **Test run finished with failures** | Yes |
-| Someone adds you to an automation workspace | **You were added to the automation workspace** | No |
-| The last admin of an automation workspace leaves the instance | **Automation workspace without an admin** (system administrators) | No |
+| Someone adds you to an Automation workspace | **You were added to the Automation workspace** | No |
+| The last admin of an Automation workspace leaves the instance | **Automation workspace without an admin** (system administrators) | No |
+| Someone shares a roadmap with you or a group you are in | **Roadmap shared with you** | No |
+| Someone makes you the owner of an initiative | **You own the initiative** | Yes |
+| The planned end of an initiative you own has passed | **The initiative is overdue** | Yes |
+| A project or portfolio linked to your initiative falls outside its period, is closed or shows a red light | **The plan of the initiative has a conflict** | Yes |
+| Status reports of your projects are due | **Status reports due**, one notice with the count and up to five project names | Yes |
+| Portfolio reports you own are due | **Portfolio reports due**, one notice with the count and up to five portfolio names | Yes |
+| A portfolio report is submitted and you can review it | **Portfolio report awaits review** | Yes |
+| Your portfolio report is approved or returned | **Portfolio report approved** or **returned** | Yes |
+| A plan export you requested is ready | **Your plan export is ready**, with the download link | No |
+| A customer replies to a ticket of a [service project](/service-management/replies) assigned to you, or to an unassigned ticket of a queue you watch | **The customer replied** | Yes |
+| A new ticket lands in a [queue](/service-management/queues) you watch | **New ticket in a queue**, with **Assign to me** in the inbox | No |
+| As a customer: you submit a request in the [portal](/service-management/portal) | **We received your request**, with its key (email only) | Yes |
+| As a customer: a colleague or the service team shares a request with you by name (not when it is shared with your whole organization) | **A request was shared with you**, with its key (email only) | Yes |
+| As a customer: the team gives a public reply to your request, or resolves or closes it. Internal notes never reach you | **New reply to your request**, **Your request is resolved** (email only) | Yes |
+| The SLA clock of a ticket in a [service project](/service-management/sla) is about to run out. It reaches the assignee, or the people who watch a queue of the project while nobody is assigned | **SLA for the ticket is about to run out** | Yes |
+| The SLA clock of a ticket runs out. The people who manage the project are told as well | **SLA for the ticket breached** | Yes |
+| A ticket waits for your [approval](/service-management/approvals) as an internal approver | **Approval needed**, with **Approve** and **Reject** in the inbox | Yes |
+| The approval of a ticket assigned to you is decided | **The ticket was approved** or **rejected** | No |
+| As a customer admin of an organization: a colleague's request waits for your approval | **Approval needed**, decided in the [portal](/service-management/portal) | Yes |
+| As a customer: the approval of your request is decided | **Your request was approved** or **rejected** | Yes |
 | Events in projects, such as a work item assigned to you or a comment on it | See [Tasks](/projects/tasks) | Depends on the event |
 
 Mentions in the running text of a page do not notify anyone. Use a comment or a to-do item when the person should react.
+
+A notification about a comment opens the page at the discussion. You are never notified about your own comments, about a discussion that is resolved or reopened, or about a page in the trash. The notification center groups notifications about the same page.
 
 ## Emails about your pages {#page-emails}
 

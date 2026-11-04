@@ -7,13 +7,14 @@ keywords: ["macros", "slash commands", "insert menu", "table of contents", "chil
 
 Everything you add to a page beyond plain text is an editor element: a heading, a table, a diagram or a macro that shows live data from Collabase. This page lists every element the Collabase Docs editor offers and how to find it.
 
-## Three ways to insert an element {#insert}
+## Two ways to insert an element {#insert}
+
+Both ways show the same menu in two columns, grouped into **Suggestions**, **Text**, **Lists**, **Media**, **Collabase** and **Advanced**. Point at an entry to see what it does.
 
 | Way | How |
 |---|---|
 | **Slash command** | Type `/` in an empty line or after a space, then type part of the element name, for example `/table`. Pick the element with the arrow keys and **Enter**. |
-| **Insert menu** | In the toolbar, click the arrow next to the **+** button. The menu groups every element as in the tables below. |
-| **Macro search** | Click the **+** button itself (tooltip **Insert Macro...**). A dialog opens where you type in **Search macros...**. |
+| **Insert menu** | In the toolbar, click **+** (tooltip **Insert**). |
 
 The editor toolbar is shown while you edit a page. Click **Edit** first, see [Pages](/docs/pages#edit-and-save).
 
@@ -31,7 +32,7 @@ The editor toolbar is shown while you edit a page. Click **Edit** first, see [Pa
 | **Numbered list** | `/numbered list` | A numbered list |
 | **To-do list** | `/to-do`, `/checklist` | A list with check boxes. A to-do item that mentions a person assigns a task to that person, see [Comments and mentions](/docs/comments#to-dos). |
 | **Toggle** | `/toggle` | A block that readers expand and collapse |
-| **Code Block** | `/code` | Code with syntax highlighting |
+| **Code Block** | `/code` | Code with syntax highlighting. Pick the language in the block; readers see it as a label. |
 | **Table** | `/table` | A table. Rows and columns are added and removed from the table itself. |
 | **Blockquote** | `/quote` | A quotation |
 | **Callout** | `/callout`, `/note` | A highlighted box for a note or a warning |
@@ -52,7 +53,7 @@ Uploaded files can be up to 25 MB each. They are visible only to signed-in membe
 | Element | Slash command | What it does |
 |---|---|---|
 | **Table of contents** | `/toc` | Lists the headings of the page. Click an entry to jump to it. |
-| **3 columns** | `/columns` | Splits the content into three columns side by side |
+| **3 columns** | `/columns` | Splits the content into three columns side by side. Drag a column by its handle to change the order. |
 | **Equation** | `/equation` | A formula in LaTeX notation, as its own block |
 | **Draw.io** | `/drawio`, `/diagram` | A diagram drawn in the draw.io editor |
 | **Subpages** | `/subpages`, `/child` | Lists the pages below this one in the tree. The list updates when pages are added or moved. |
@@ -99,9 +100,34 @@ Select text to open the floating toolbar, or use the toolbar at the top of the e
 | **Superscript** | `⌘ .` | `Ctrl .` |
 | **Subscript** | `⌘ ,` | `Ctrl ,` |
 
-The top toolbar also has **Text color**, **Background color**, font size, alignment, indent and outdent, and **Turn into**, which changes the type of the selected block. It also has undo and redo, and a find and replace for the page.
+The toolbar at the top fits on one line: Collabase AI, **Turn into** (changes the type of the selected block), bold, italic, underline, **More formats** (strikethrough, code, highlight, keyboard input, superscript, subscript), lists, alignment, **Text color**, to-do, image, emoji, table, **+**, link, undo and redo. **More** on the right holds find and replace, indent and outdent, line height, the export and the imports.
 
 The editor replaces some character sequences as you type: `->` becomes →, `=>` becomes ⇒, `(c)` becomes © and `1/2` becomes ½. Inside a code block nothing is replaced.
+
+### Markdown while you type {#markdown}
+
+If you know Markdown, you can format without the toolbar. Type the characters at the start of an empty line, followed by a space, or around a word.
+
+| You type | You get |
+|---|---|
+| `#`, `##` … `######` and a space | Heading 1 to 6 |
+| `-` or `*` and a space | Bulleted list |
+| `1.` or `1)` and a space | Numbered list |
+| `[]` and a space, or `[x]` and a space | To-do item, open or checked |
+| `>` and a space | Quote |
+| `---` or `___` | Divider |
+| `**text**` | **Bold** |
+| `*text*` or `_text_` | *Italic* |
+| `~~text~~` | Strikethrough |
+| `^text^` | Superscript |
+| `~text~` | Subscript |
+| `` `text` `` | Code |
+| `==text==` | Highlight |
+| `[text](https://…)` | Link |
+| `$x^2$` | Inline equation |
+| `$$` and Enter | Equation block |
+
+A web address that you paste or type followed by a space or Enter becomes a link. To undo a conversion, press `⌘ Z` (macOS) or `Ctrl Z` (Windows and Linux) right after it.
 
 ## Import a Word document {#import-word}
 
@@ -110,7 +136,7 @@ The editor replaces some character sequences as you type: `->` becomes →, `=>`
     Click **Edit**. Put the cursor where the content should go.
   </Step>
   <Step title="Choose the file">
-    In the toolbar, click **Import**, then **Import from Word**, and pick a `.docx` file.
+    In the toolbar, click **More** (the three dots on the right), then **Import from Word**, and pick a `.docx` file.
   </Step>
   <Step title="Check the result">
     The content of the document is inserted at the cursor and the message **Word document imported successfully** appears.

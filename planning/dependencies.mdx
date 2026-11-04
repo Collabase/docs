@@ -28,7 +28,7 @@ Dependencies created in Collabase are **Finish to start**: the blocked work star
 
 <Tabs>
   <Tab title="On the Timeline">
-    Drag from the dot at the end of one bar to another bar. See [Timeline dependencies](/projects/roadmap#dependencies).
+    Drag from the dot at the end of one bar to another bar. See [Timeline dependencies](/projects/timeline#dependencies).
   </Tab>
   <Tab title="In the work item">
     Open the work item, click **Add** under **Relations**, choose **Blocks** or **Is blocked by** as the **Relation type**, find the other work item and confirm with **Link work item**. The other work item can be in any project you can see.
@@ -54,14 +54,17 @@ Both ways need the **Link task** permission.
 
 - It does not move dependent work items when you reschedule the blocking one.
 - It does not warn when a blocked work item starts before its blocker ends.
-- It has no critical path.
 
 Check dependencies yourself after moving dates, for example with the **Relation Graph**.
+
+## Critical path {#critical-path}
+
+Switch on **Critical path** in the Timeline toolbar to highlight the work items and arrows that set the finish date of the project. Hover a bar to see its slack in working days. Collabase reads the **Blocks** relations and their type and lag; work items without start or due date are left out. If the dependencies form a cycle, a note names the work items involved.
 
 ## Related
 
 <CardGroup cols={2}>
-  <Card title="Timeline" icon="calendar" href="/projects/roadmap">
+  <Card title="Timeline" icon="calendar" href="/projects/timeline">
     Draw and see dependencies in one project.
   </Card>
   <Card title="Work items" icon="circle-check" href="/projects/tasks#relations">

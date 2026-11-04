@@ -1,0 +1,113 @@
+---
+title: "Baselines and scenarios"
+sidebarTitle: "Baselines and scenarios"
+description: "Freeze the dates of a project as a baseline and compare the timeline with it, or try out changes in a scenario and adopt the ones you want."
+keywords: ["baseline", "scenario", "what-if", "plan versus actual", "schedule variance", "slippage", "Gantt", "timeline", "Plans"]
+---
+
+A baseline is a frozen copy of the plan of one project: the start and due dates of its work items and the due dates of its milestones, on the day you capture it. Later you switch the Timeline to **Compare with baseline** and see how far each date has moved.
+
+## Capture a baseline {#capture}
+
+<Steps>
+  <Step title="Open the Timeline">
+    Open the project and choose the **Timeline** view.
+  </Step>
+  <Step title="Open the Baseline menu">
+    Click **Baseline** in the Timeline toolbar and choose **Capture baseline**.
+  </Step>
+  <Step title="Name it">
+    Enter a name, for example "Approved plan", and confirm with **Capture baseline**.
+  </Step>
+</Steps>
+
+Capturing needs the **Manage project settings** permission in the Space. The first baseline of a project becomes its active baseline. A project holds up to 20 baselines, and a project with more than 5000 work items is refused.
+
+## Compare the Timeline with a baseline {#compare}
+
+Open the **Baseline** menu and switch on **Compare with baseline**. The Timeline compares against the active baseline unless you pick another one in the list.
+
+| What you see | Meaning |
+|---|---|
+| A thin shadow bar under a work item | The dates of that work item in the baseline |
+| **Baseline: +3 d** in the bar title | The work item now ends three days later than planned. A negative number means earlier |
+| **Baseline: +3 d** on a milestone | The milestone due date moved by three days |
+| A line under the toolbar | The name of the baseline and how many work items are new since then |
+
+Work items created after the baseline have no shadow bar. People who manage the project also see how many work items and milestones of the baseline no longer exist.
+
+<Note>
+  The comparison shows only the work items you can see on the Timeline. A work item you cannot see never appears in the comparison, not even as a count.
+</Note>
+
+## Choose, activate, rename and delete {#manage}
+
+| Action | Who | How |
+|---|---|---|
+| Compare with another baseline | Everyone who can open the project | Pick it in the **Baselines** list |
+| **Make active** | Project managers | Choose it in the list, then **Make active** |
+| **Rename** | Project managers | Choose it in the list, then **Rename** |
+| **Delete** | Project managers | Choose it in the list, then **Delete**. Work items and milestones are not affected |
+
+## Limits {#limits}
+
+- A baseline does not change when you move work items afterwards; capture a new one to freeze the new plan.
+- Work items without start or due date have no shadow bar.
+- A very large project is compared only in part, and the line under the toolbar says so.
+
+## Plan in a scenario {#scenarios}
+
+A scenario is a what-if plan of one project. It holds the dates, estimates and assignees you try out. The work items stay as they are until you adopt changes, nobody is notified, and capacity and reports do not change.
+
+### Create and choose a scenario {#scenarios-create}
+
+<Steps>
+  <Step title="Open the Scenario menu">
+    Click **Scenario** in the Timeline toolbar and choose **New scenario**.
+  </Step>
+  <Step title="Name it">
+    Enter a name, for example "Launch two weeks earlier", and confirm.
+  </Step>
+</Steps>
+
+The Timeline then shows the scenario. A band under the toolbar names it and counts its changes. Choose **Live plan** in the menu, or **Back to live plan** in the band, to see the real plan again. The choice is not saved, so the Timeline opens on the live plan the next time.
+
+Creating and changing a scenario needs the right to edit work items in the Space. A project holds up to 10 open scenarios. **Discard scenario** drops it with its changes.
+
+### Change dates, estimate and assignee {#scenarios-change}
+
+| What you do | Result |
+|---|---|
+| Drag a bar or one of its ends | The new start and due date are saved in the scenario |
+| Click a bar | **Change in scenario** opens: pick **Estimate (h)** or **Assignee** and enter the value. The assignee must be a member of the project |
+| Drag a milestone diamond, or click it | The due date of the milestone moves in the scenario. A click opens **Move milestone in scenario** with a date field. The diamond is only shown when phase gates are on |
+
+A bar or milestone the scenario has changed carries a coloured ring, and a shadow shows the live dates. The critical path and the baseline comparison use the dates of the scenario. In a scenario you cannot change anything else: status, assignment in the list, dependencies and new work items stay disabled, and a hint says so.
+
+### Review and adopt changes {#scenarios-adopt}
+
+Click **Review changes** in the band. The dialog lists every change with the live value, the value in the scenario and its state.
+
+| State | Meaning |
+|---|---|
+| **Applicable** | The live value is the one the scenario started from. Chosen by default |
+| **Live value changed** | Someone changed the live plan since. Not chosen by default; choose it to overwrite the live value |
+| **No longer applicable** | The work item or milestone is gone. Cannot be chosen |
+| **No permission** | You may not change this work item. Cannot be chosen |
+
+Choose the changes you want and click **Adopt**. Start and due date of a work item are adopted together, so choosing one chooses the other. Adopting writes the work items like any other edit and is all or nothing: if one change is refused, none is written. Changes you did not choose stay in the scenario. When the last change is adopted, the Timeline returns to the live plan.
+
+### Scenarios on a roadmap {#scenarios-roadmap}
+
+A roadmap has scenarios of its own. They change the dates, swimlane and status of initiatives, use the same review dialog and follow the same rules. [Learn more](/planning/roadmaps#scenarios)
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Timeline" icon="calendar" href="/projects/timeline">
+    The project Gantt chart.
+  </Card>
+  <Card title="Dependencies" icon="link" href="/planning/dependencies">
+    Dependencies and the critical path.
+  </Card>
+</CardGroup>

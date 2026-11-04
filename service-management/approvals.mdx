@@ -1,0 +1,54 @@
+---
+title: "Approvals"
+sidebarTitle: "Approvals"
+description: "Let a ticket wait in a workflow status until approvers decide, and decide approvals from the inbox or the portal."
+icon: "badge-check"
+---
+
+Some requests need a yes before anyone works on them: a new laptop, access to a finance system, a change to production. You set an approval on a status of the workflow. Every ticket that enters that status waits there until the approvers decide, and then moves on by itself.
+
+## Set up an approval
+
+An approval belongs to a status of the workflow that the service project uses. You set it in the workflow editor under **System Settings → Content & Organization → Workflows**, see [Workflows](/admin/workflows). You need to be a system administrator. The **Approval** section only appears for workflows that a service project uses.
+
+<Steps>
+  <Step title="Open the status">
+    Open the workflow in the editor and click the status the ticket should wait in, for example **Approval**. The status itself is the waiting status.
+  </Step>
+  <Step title="Choose who approves">
+    Under **Approval**, choose **Internal** to name people or groups of your organization, or **At the customer** to ask the organization admins of the person who sent the request. **At the customer** needs a service project with a customer portal.
+  </Step>
+  <Step title="Choose the rule">
+    **One person is enough** closes the approval with the first decision. **Everyone must approve** waits for every approver. One rejection always rejects the request.
+  </Step>
+  <Step title="Choose the statuses">
+    Pick the status the ticket moves to when it is approved and the one for a rejection. Both must be other statuses of the same workflow, and they must differ.
+  </Step>
+  <Step title="Save">
+    Click **Save** in the panel. The approval applies to every ticket that enters the status from then on.
+  </Step>
+</Steps>
+
+## When an approval starts
+
+An approval starts when a ticket enters the status: when an agent or an automatic transition moves it there, or when a request form creates the ticket in that status. To send every request of one form through an approval, set the form's **Start status** to the waiting status, see [Request forms](/service-management/request-forms).
+
+The approvers are fixed when the approval starts. Adding someone to a group later does not change a running approval. Only people who can open the project are asked.
+
+While an approval is open, moving the ticket out of the status and back starts no second one. After a decision, the next time the ticket enters the status starts a new approval. If an agent moves the ticket out of the status before the approval closes, the decision no longer moves it.
+
+<Warning>
+  A customer approval falls back to the internal people and groups when the requester has no organization or the organization has no admin. If you name none, such a ticket waits in the status without an approval, and an agent moves it on by hand.
+</Warning>
+
+## Decide an approval
+
+Internal approvers get an inbox entry and a mail. They decide right in the inbox with **Approve** or **Reject**, or in the ticket, where the **Approval** section beside the ticket shows the buttons. A rejection needs a reason.
+
+Every decision stays visible in the ticket with the person and the time, and it cannot be changed. Someone who is not an approver sees no buttons. When the approval closes, the ticket moves to the status set for the outcome and the assignee is told.
+
+## Approve in the portal
+
+For a customer approval, the organization admins get a mail with a link to the request in the portal. The portal shows them a **To approve** tab with every request that waits for their decision. In the request they choose **Approve** or **Reject**; a rejection needs a reason. The person who sent the request gets a mail when the approval closes and sees the decision on the request. The reason is shown only to that person and to the approvers, never to other colleagues the request is shared with. An admin of another organization cannot decide.
+
+The audit log records each decision and the resulting state of the approval, never the reason text.

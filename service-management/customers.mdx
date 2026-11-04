@@ -1,0 +1,67 @@
+---
+title: "Customers"
+sidebarTitle: "Customers"
+description: "Manage the organizations and people who use the service portal: invite, lock and anonymize customers."
+icon: "building"
+---
+
+Customers are people outside your organization who send requests through a service portal. They sign in to the portal only. They never see projects, pages or colleagues, and they do not count as users of your installation.
+
+Administrators manage customers under **Administration → Customers**. The page has two tabs, **Customers** and **Organizations**.
+
+## Organizations
+
+An organization groups the customers of one company. Customers of an organization see the requests of their colleagues if the portal allows it.
+
+<Steps>
+  <Step title="Add the organization">
+    Open the **Organizations** tab and select **Add organization**.
+  </Step>
+  <Step title="Enter the name and the mail domains">
+    Type the name. Add the mail domains of the company, one per line, for example `example.ch`. A domain belongs to exactly one organization.
+  </Step>
+</Steps>
+
+To change a name or its domains, open the menu of the row and select **Edit**. Deleting an organization leaves its customers in place, without an organization.
+
+## Invite a customer
+
+<Steps>
+  <Step title="Open the invitation">
+    Open the **Customers** tab and select **Invite customer**.
+  </Step>
+  <Step title="Enter the details">
+    Enter the email address and the name. Pick an organization if the customer belongs to one.
+  </Step>
+  <Step title="Send">
+    Save. Collabase sends the customer a link to set a password. The link works once and expires after a few days.
+  </Step>
+</Steps>
+
+<Note>
+  An address of a colleague or a guest cannot be used for a customer. Collabase does not say which of the two it is.
+</Note>
+
+The customer opens the link, chooses a password and lands in the portal. The page speaks of the portal, not of a project.
+
+## Lock a customer
+
+Locking stops a customer from signing in. Their requests and comments stay. Open the menu of the row and select **Lock**; **Unlock** reverses it. Only system administrators can lock customers.
+
+## Anonymize a customer
+
+Anonymizing removes the personal data of a customer for good: name, address and sign-in. Requests and comments stay, without a name. Collabase asks for confirmation first.
+
+<Warning>
+  Anonymizing cannot be undone. Only system administrators can do it.
+</Warning>
+
+## Who sees what
+
+- System administrators manage all customers and organizations.
+- Administrators of a service project add customers to their own portal and see the customers of their projects.
+- Customers who were switched to a different kind of account cannot be changed into users or administrators. Create a separate account for a colleague instead.
+
+<Info>
+  Free fields in request forms may hold personal data. Tell your customers what they should not enter.
+</Info>

@@ -1,13 +1,13 @@
 ---
 title: "Create page"
-description: "Create a new document or blog page within a space."
+description: "Create a page, blog post, folder or whiteboard within a space."
 api: "POST /api/v1/pages"
 ---
 
-Creates a new page inside a space. The page type determines whether it appears in the space's document tree (`STANDARD`) or the intranet blog feed (`BLOG`).
+Creates a page inside a space. The page type decides where it appears: `STANDARD` in the space's document tree, `BLOG` in the intranet blog feed, `FOLDER` as a folder in the tree and `SCRIBBLE` as a whiteboard.
 
 <Info>
-  You must hold write access to the target space. Pass your API key as a Bearer token in the `Authorization` header.
+  Your API key needs the `docs:write` scope, and its owner needs the right to create pages in the space (the right to create blog posts for `BLOG`). The scope only narrows what the owner may do, it never adds rights. Pass your API key as a Bearer token in the `Authorization` header.
 </Info>
 
 ## Request body
@@ -21,29 +21,65 @@ Creates a new page inside a space. The page type determines whether it appears i
 </ParamField>
 
 <ParamField body="type" type="string" required>
-  The type of page. Must be `STANDARD` (document tree) or `BLOG` (intranet blog post).
+  The type of page: `STANDARD`, `BLOG`, `FOLDER` or `SCRIBBLE`.
 </ParamField>
 
 <ParamField body="parentId" type="string">
-  UUID of the parent page to nest this page under. Omit to create a top-level page.
+  UUID of the parent page to nest this page under. The parent must be in the same space. Omit to create a top-level page.
 </ParamField>
+
+<ParamField body="content" type="array">
+  The body as Plate JSON (an array of nodes). Only for `STANDARD` and `BLOG`; the maximum size is 1 MB. Omit to create an empty page.
+</ParamField>
+
+Unknown fields are rejected with `422`.
+
+## Idempotency
+
+Send an `Idempotency-Key` header to retry safely. The same key with the same body within 24 hours returns the first answer with status `200` and the header `Idempotency-Status: replayed`, and creates no second page. The same key with a different body returns `422` with the code `IDEMPOTENCY_MISMATCH`. Without a key, every call creates a page.
 
 ## Response
 
-<ResponseField name="id" type="string" required>
+The response is wrapped in `data`.
+
+<ResponseField name="data.id" type="string" required>
   Unique identifier (UUID) of the newly created page.
 </ResponseField>
 
-<ResponseField name="title" type="string" required>
+<ResponseField name="data.title" type="string" required>
   The title of the page as stored.
 </ResponseField>
 
-<ResponseField name="type" type="string" required>
-  The page type: `STANDARD` or `BLOG`.
+<ResponseField name="data.type" type="string" required>
+  The page type: `STANDARD`, `BLOG`, `FOLDER` or `SCRIBBLE`.
 </ResponseField>
 
-<ResponseField name="url" type="string" required>
+<ResponseField name="data.status" type="string" required>
+  The workflow status. A new page starts as `DRAFT`.
+</ResponseField>
+
+<ResponseField name="data.url" type="string" required>
   The full URL to view the page in Collabase.
+</ResponseField>
+
+<ResponseField name="data.spaceSlug" type="string" required>
+  The slug of the space the page lives in.
+</ResponseField>
+
+<ResponseField name="data.parentId" type="string | null" required>
+  The parent page, or `null` for a top-level page.
+</ResponseField>
+
+<ResponseField name="data.icon" type="string | null" required>
+  The emoji shown in the tree, or `null`.
+</ResponseField>
+
+<ResponseField name="data.createdAt" type="string" required>
+  Creation time as an ISO 8601 timestamp.
+</ResponseField>
+
+<ResponseField name="data.updatedAt" type="string" required>
+  Time of the last change as an ISO 8601 timestamp.
 </ResponseField>
 
 <RequestExample>
@@ -52,6 +88,7 @@ Creates a new page inside a space. The page type determines whether it appears i
 curl -X POST "https://your-collabase.ch/api/v1/pages" \
   -H "Authorization: Bearer cb_xYz123ABCD..." \
   -H "Content-Type: application/json" \
+  -H "Idempotency-Key: 6f1c2b1e-0d1a-4c55-9a43-1f3b1d0d7a10" \
   -d '{
     "spaceSlug": "my-space",
     "title": "My Page",
@@ -65,28 +102,42 @@ curl -X POST "https://your-collabase.ch/api/v1/pages" \
 
 ```json 201
 {
-  "id": "e45b4129-650a-4a6c-9226-9d33261ea2a0",
-  "title": "My Page",
-  "type": "STANDARD",
-  "url": "https://collabase.ch/my-space/e45b4129-650a-4a6c-9226-9d33261ea2a0"
-}
-```
-
-```json 400
-{
-  "error": "Validation failed: title must be at least 1 character"
+  "data": {
+    "id": "e45b4129-650a-4a6c-9226-9d33261ea2a0",
+    "title": "My Page",
+    "type": "STANDARD",
+    "status": "DRAFT",
+    "url": "https://your-collabase.ch/my-space/e45b4129-650a-4a6c-9226-9d33261ea2a0",
+    "spaceSlug": "my-space",
+    "parentId": null,
+    "icon": null,
+    "createdAt": "2026-10-30T09:12:44.000Z",
+    "updatedAt": "2026-10-30T09:12:44.000Z"
+  }
 }
 ```
 
 ```json 401
 {
-  "error": "Invalid or expired API Key"
+  "error": { "code": "UNAUTHENTICATED", "message": "Invalid, expired or missing credentials." }
 }
 ```
 
 ```json 403
 {
-  "error": "Forbidden"
+  "error": { "code": "FORBIDDEN", "message": "Forbidden access" }
+}
+```
+
+```json 404
+{
+  "error": { "code": "NOT_FOUND", "message": "Space not found" }
+}
+```
+
+```json 422
+{
+  "error": { "code": "VALIDATION_ERROR", "message": "Invalid option: expected one of STANDARD, BLOG, FOLDER, SCRIBBLE" }
 }
 ```
 

@@ -2,7 +2,7 @@
 title: "Audit events"
 sidebarTitle: "Audit events"
 icon: "scroll-text"
-description: "Every Studio event the audit trail records, from workspace and flow changes to approvals, connections, variables, Git and plugs, and who may read them."
+description: "Every Studio event the audit trail records, from Space and flow changes to approvals, connections, variables, Git and plugs, and who may read them."
 ---
 
 Studio writes an entry to the audit trail for each change that matters. An entry names who did it, what it was about and when. It never contains a secret, a connection value, a variable value or the content of a flow.
@@ -11,19 +11,19 @@ Studio writes an entry to the audit trail for each change that matters. An entry
 
 | Who | Where |
 |---|---|
-| Admins of a workspace | The **Audit** tab of the workspace, for that workspace only. |
+| Admins of a Space | The **Audit** tab of the Space, for that Space only. |
 | People with the audit right | **Administration, Audit log**, for the whole instance. |
 
-Changes that a flow makes in Collabase, such as a new work item, are recorded as made by the service account of the workspace. Each entry also carries the flow and the run as its origin.
+Changes that a flow makes in Collabase, such as a new work item, are recorded as made by the service account of the Space. Each entry also carries the flow and the run as its origin.
 
-## Workspaces and members
+## Spaces and members
 
 | Event | Recorded when |
 |---|---|
-| **Automation workspace created, updated, deleted** | A workspace is created, changed or deleted. |
+| **Automation workspace created, updated, deleted** | A Space is created, changed or deleted. |
 | **Automation workspace members changed** | Members or roles are replaced. |
 | **Automation concurrency limit changed** | The number of runs at the same time is changed. |
-| **Automation AI provider changed** | The workspace provider or its budget is set or removed. |
+| **Automation AI provider changed** | The Space provider or its budget is set or removed. |
 
 ## Agents {#agents}
 
@@ -53,7 +53,7 @@ The jobs of an agent are flows. Adding a job is recorded as **Automation flow cr
 
 | Event | Recorded when |
 |---|---|
-| **Flow approval requested, granted, rejected, request withdrawn** | The four-eyes steps of a sensitive workspace. |
+| **Flow approval requested, granted, rejected, request withdrawn** | The four-eyes steps of a sensitive Space. |
 | **Automation approval decided** | A person decides an approval step of a run. |
 | **Automation approvers reassigned** | The approvers of a waiting approval are replaced. |
 
@@ -68,8 +68,8 @@ The jobs of an agent are flows. Adding a job is recorded as **Automation flow cr
 
 | Event | Recorded when |
 |---|---|
-| **Automation connection created, replaced, deleted** | A connection of a workspace changes. |
-| **Automation connection releases changed** | An instance connection is released for a workspace or withdrawn. |
+| **Automation connection created, replaced, deleted** | A connection of a Space changes. |
+| **Automation connection releases changed** | An instance connection is released for a Space or withdrawn. |
 | **Automation OAuth app changed** | An administrator changes an OAuth app. |
 | **Automation variable created, value replaced, deleted** | A variable changes. |
 | **Automation variable value shown** | Someone selects **Show value**. |
@@ -78,7 +78,7 @@ The jobs of an agent are flows. Adding a job is recorded as **Automation flow cr
 
 | Event | Recorded when |
 |---|---|
-| **Git repository connected, disconnected** | The Git connection of a workspace changes. |
+| **Git repository connected, disconnected** | The Git connection of a Space changes. |
 | **Flows pushed to Git** | A push finishes. |
 | **Release applied, rolled back** | A release or a rollback changes the flows. |
 

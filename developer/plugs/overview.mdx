@@ -27,7 +27,7 @@ A plug that Collabase did not write runs in the **sandbox service**, never in th
 
 - Each call runs in a locked-down process with its own memory and time limits. A process that failed is discarded.
 - The process has no route to your database or other internal services. It can reach the internet, and an address filter blocks private ranges.
-- The process gets one token for one workspace and the connection of the step that is running. It never sees application secrets or the connections of another workspace.
+- The process gets one token for one Space and the connection of the step that is running. It never sees application secrets or the connections of another Space.
 - A step may run for up to 10 minutes.
 
 ## The path to a running plug

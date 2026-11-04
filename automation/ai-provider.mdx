@@ -2,7 +2,7 @@
 title: "AI provider"
 sidebarTitle: "AI provider"
 icon: "brain"
-description: "Choose which model AI steps use: the model of your instance or a provider that the workspace brings, with a key kept encrypted and an optional token budget."
+description: "Choose which model AI steps use: the model of your instance or a provider that the Space brings, with a key kept encrypted and an optional token budget."
 ---
 
 AI in Studio is optional. Without an AI model, flows that use AI cannot be published, and everything else keeps working.
@@ -12,13 +12,13 @@ AI in Studio is optional. Without an AI model, flows that use AI cannot be publi
 | Source | Used when |
 |---|---|
 | **Model of the instance** | The step is set to the instance model, which an administrator configured under [AI configuration](/admin/ai-configuration). This is the default. |
-| **Provider of this workspace** | The step is set to the workspace's own provider. |
+| **Provider of this Space** | The step is set to the Space's own provider. |
 
-Each AI step, the **Agent** and **Ask the model**, has its own **Model** setting. If the workspace's provider is removed, steps that chose it fail. They never switch to the instance model on their own.
+Each AI step, the **Agent** and **Ask the model**, has its own **Model** setting. If the Space's provider is removed, steps that chose it fail. They never switch to the instance model on their own.
 
-## Set up a provider for the workspace
+## Set up a provider for the Space
 
-Workspace admins find the provider under **Settings**.
+Space admins find the provider under **Settings**.
 
 <Steps>
   <Step title="Choose the provider and the model">
@@ -28,7 +28,7 @@ Workspace admins find the provider under **Settings**.
     Add the API key and, where the provider needs it, an `https` address. The key is stored encrypted and never shown again.
   </Step>
   <Step title="Set a budget">
-    Optionally enter a monthly token budget. When the workspace has used it, AI steps of the workspace stop with a message that says so.
+    Optionally enter a monthly token budget. When the Space has used it, AI steps of the Space stop with a message that says so.
   </Step>
 </Steps>
 
@@ -38,7 +38,7 @@ A plug of the sandbox cannot call a model on its own. AI steps run in Collabase,
 
 ## Where the cost shows
 
-The analytics page of the workspace shows agent steps and AI tokens. System administrators see all workspaces under **Administration, Studio analytics**.
+The analytics page of the Space shows agent steps and AI tokens. System administrators see all Spaces under **Administration, Studio analytics**.
 
 ## Related
 

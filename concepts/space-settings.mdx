@@ -96,7 +96,7 @@ A new work item takes its values in this order:
 
 The defaults apply wherever work items are created: the create form, quick add, subtasks, the API, mail, meetings, automations, the service portal and plugins. They do not apply when you copy or restore a work item, or when you change the type of an existing one.
 
-A default that no longer fits is skipped and the work item is still created: an assignee who cannot reach the project, a deleted label or a removed option. Dates need a fixed day such as `2026-12-31`; a relative value such as `+7d` is not accepted. A service portal request goes to the default assignee when the Space has one, and to the person who filed it otherwise.
+A default that no longer fits is skipped and the work item is still created: an assignee who cannot reach the project, a deleted label or a removed option. Dates need a fixed day such as `2026-12-31`; a relative value such as `+7d` is not accepted. A service portal request goes to the default assignee when the Space has one, and stays unassigned otherwise.
 
 Only people who can manage the custom fields of the Space may change the defaults; everyone else sees the saved values. Every change is recorded in the audit log.
 

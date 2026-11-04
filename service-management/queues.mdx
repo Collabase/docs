@@ -1,0 +1,44 @@
+---
+title: "Work a queue"
+sidebarTitle: "Queues"
+description: "Open a queue of a service project, take tickets, change their status and get told when a new ticket arrives."
+icon: "inbox"
+---
+
+A queue is a saved filter over the tickets of a service project. Project admins create queues in the project settings; everyone who can read the work items of the space works in them.
+
+## Open a queue
+
+Open the service project and select **Queues**. Each queue shows the number of tickets it holds. Select a queue to see its tickets, 50 to a page.
+
+| Column | Shows |
+|---|---|
+| **Key** | The ticket key; select it to open the ticket |
+| **Title** | The subject of the request |
+| **Request type** | The form the customer used |
+| **Customer** | The person who asked |
+| **Organization** | The organization of the customer when the ticket was created |
+| **Status** | The current status |
+| **Assignee** | Who works on it |
+| **Priority** | The priority of the ticket |
+
+A queue that names columns in its settings shows only those. The remaining time of the SLA is added to the list with the SLA display.
+
+## Work in the row
+
+You don't need to open a ticket for the two most common changes:
+
+- **Assign to me** takes the ticket. The button disappears once it is yours.
+- Select the **status** to move the ticket along. The workflow decides which statuses are offered, and a transition that asks for fields opens its dialog first.
+
+The list asks again every 30 seconds while the tab is open, so new tickets and changes by colleagues appear without reloading. A ticket that leaves the queue while you work on it disappears at the next refresh.
+
+## Get told about new tickets
+
+Select the bell of a queue in the project settings to watch it. When a new ticket matches the filter of a queue you watch, you get a notice in your inbox with **Assign to me**, unless you created the ticket yourself. A person who watches several matching queues is told once. Notices of tickets that arrive in bulk are limited so your inbox is not flooded.
+
+See [Notifications](/concepts/notifications) to switch the category off or send it to a daily summary.
+
+## Who can see queues
+
+Queues are for your team. You need access to Service Management and permission to read the work items of the space. Customers and guests never see a queue, and the address answers as if it did not exist.

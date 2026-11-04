@@ -18,7 +18,7 @@ runs; otherwise the call returns `409 MEETING_NOT_RUNNING`. A meeting holds up t
 
 ## Request body
 
-<ParamField body="type" type="string" required>`INFORMATION` or `TASK`.</ParamField>
+<ParamField body="type" type="string">`TASK`, the default. `INFORMATION` is no longer accepted and returns a validation error; outcomes of that kind that already exist stay readable.</ParamField>
 <ParamField body="text" type="string" required>Up to 2,000 characters.</ParamField>
 <ParamField body="responsibleId" type="string | null" default="null">The member responsible. Must be invited to the meeting.</ParamField>
 <ParamField body="dueDate" type="string | null" default="null">`YYYY-MM-DD`.</ParamField>

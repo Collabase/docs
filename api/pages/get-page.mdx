@@ -1,0 +1,74 @@
+---
+title: "Get page"
+description: "Read a page's metadata and content."
+api: "GET /api/v1/pages/{id}"
+---
+
+Returns one page with its metadata and its content.
+
+<Info>
+  Your API key needs the `docs:read` scope. You see the page only if its owner may see it in Collabase. A page the owner may not see answers `404`, the same as a page that does not exist.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  UUID of the page.
+</ParamField>
+
+## Response
+
+The response is wrapped in `data` and has the fields of [Create page](/api/pages/create-page) plus the content.
+
+<ResponseField name="data.content" type="array | null" required>
+  The body of the page as Plate JSON. If the page has unsaved draft work, that is what you get, as in the editor. `null` for an empty page, a folder or a whiteboard without content.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/pages/e45b4129-650a-4a6c-9226-9d33261ea2a0" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "id": "e45b4129-650a-4a6c-9226-9d33261ea2a0",
+    "title": "My Page",
+    "type": "STANDARD",
+    "status": "DRAFT",
+    "url": "https://your-collabase.ch/my-space/e45b4129-650a-4a6c-9226-9d33261ea2a0",
+    "spaceSlug": "my-space",
+    "parentId": null,
+    "icon": null,
+    "createdAt": "2026-10-30T09:12:44.000Z",
+    "updatedAt": "2026-10-30T09:12:44.000Z",
+    "content": [{ "type": "p", "children": [{ "text": "Hello" }] }]
+  }
+}
+```
+
+```json 401
+{
+  "error": { "code": "UNAUTHENTICATED", "message": "Invalid, expired or missing credentials." }
+}
+```
+
+```json 403
+{
+  "error": { "code": "INSUFFICIENT_SCOPE", "message": "This token lacks the scope \"docs:read\"." }
+}
+```
+
+```json 404
+{
+  "error": { "code": "NOT_FOUND", "message": "Page not found" }
+}
+```
+
+</ResponseExample>

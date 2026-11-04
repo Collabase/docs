@@ -1,0 +1,35 @@
+---
+title: "Service Management"
+sidebarTitle: "Overview"
+description: "Handle requests from customers in service projects, with queues, SLAs and a customer portal, separately from project management."
+icon: "life-ring"
+---
+
+Service Management is its own app next to Projects. A team works customer requests in a **service project**: the requests arrive as work items, the team picks them up from queues, and customers follow their requests in a portal.
+
+## Who can use it
+
+An administrator gives the app to groups in **Administration → Groups → App access**, like any other app:
+
+| Role | Can do |
+|---|---|
+| User | Open the app, work the requests of the service projects they belong to |
+| Admin | Also manage customers, organizations and the service settings of the whole installation |
+
+A person without the app does not see it in the app drawer, and its pages answer "not found". What a person may see inside a service project still follows the project's own rights.
+
+## Service projects
+
+A project is either a normal project or a service project.
+
+- **When you create a project**, choose **Service project** under **Project kind**. The choice appears only when you hold the app.
+- **An existing project** becomes a service project in **Project settings → General → Project kind**. Its work items stay as they are.
+- **Turning a service project back** into a normal project closes its portal and its customers lose access. Collabase asks before it does this.
+
+A service project shows **Queues** first in its navigation and a **Service** group in its settings: customers, request forms, queues, SLAs, portal and reply templates. Approvals are set on the statuses of the workflow.
+
+The start page of the app lists the service projects you may open, with their space.
+
+## Projects and Service Management are separate
+
+An installation can run both apps, or only one of them. Without Projects, a service project shows no timeline, backlog, mind map, cycles, phases, costs or risks. Without Service Management, no project shows queues, service settings or portal links.

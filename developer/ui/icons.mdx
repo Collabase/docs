@@ -1,0 +1,67 @@
+---
+title: "Icon layer"
+sidebarTitle: "Icon layer"
+icon: "shapes"
+description: "Import icons from @/shared/icons under semantic names, how the Solar set and the two extra packs fit together, and how to add an icon."
+---
+
+All icons come from one layer, `@/shared/icons`. A component imports an icon by its semantic name and never from `lucide-react`, Phosphor or Heroicons.
+
+```tsx title="Import an icon"
+import { SearchIcon } from "@/shared/icons";
+
+<SearchIcon size={16} />
+```
+
+## Where the glyphs come from {#sources}
+
+| Source | Folder | Used for |
+|---|---|---|
+| **Solar, Bold Duotone** | `src/shared/icons/solar/` | The default set. Licensed CC BY 4.0, named in `THIRD-PARTY-NOTICES` and on the About page |
+| **Duo Icons** | `src/shared/icons/duo/` | A glyph Solar does not have, where Duo Icons has a faithful one (MIT) |
+| **Phosphor Duotone** | `src/shared/icons/phosphor/` | The next fallback (MIT) |
+| **Own drawings** | `src/shared/icons/own/` | A glyph none of them has, drawn in the same style |
+
+Icons use `currentColor` and draw the second tone at half opacity. Give a status icon an explicit colour such as `text-success`, everything else inherits the text colour.
+
+Sizes: 14px in dense chrome and tabs, 16px inline with text, 20px in dialog headers.
+
+## The map {#map}
+
+`scripts/codemods/icon-map.json` maps every old icon name to a semantic name and a glyph. An entry looks like this:
+
+```json title="icon-map.json"
+{
+  "lucide-react": {
+    "Trash2": { "semantic": "DeleteIcon", "solar": "trash-bin-trash-bold-duotone", "confidence": "high", "uses": 148 }
+  }
+}
+```
+
+The `solar` value is a Solar name, `duo:<name>` for Duo Icons, `ph:<name>-duotone` for Phosphor or `own` for a drawing. Several old names may share one semantic name.
+
+## Add an icon {#add}
+
+<Steps>
+  <Step title="Find the glyph">
+    Search the Solar set first, then Duo Icons, then Phosphor. Use a glyph from a later source only when an earlier one has no faithful match.
+  </Step>
+  <Step title="Add a map entry">
+    Add the entry to `icon-map.json` with a semantic name that ends in `Icon`. For an own drawing, set `"solar": "own"` and add `src/shared/icons/own/<Name>.tsx` in the style of the existing files.
+  </Step>
+  <Step title="Generate the layer">
+    Run `node scripts/generate-icons.mjs`. It writes the components and `src/shared/icons/index.ts`.
+  </Step>
+  <Step title="Verify">
+    Run `node scripts/generate-icons.mjs --check`. It fails when a generated file differs from what it would write, so never edit the generated files by hand.
+  </Step>
+</Steps>
+
+<Note>
+  The lint check `icon-imports` reports any import from `lucide-react`, `@phosphor-icons/react` or `@heroicons/react`. Icon names stored in data keep their keys and are read through the layer.
+</Note>
+
+## Related {#related}
+
+- [Design tokens and roles](/developer/ui/tokens-and-roles)
+- [Lint ratchet](/developer/ui/lint-ratchet)

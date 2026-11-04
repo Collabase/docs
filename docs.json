@@ -161,7 +161,7 @@
                       "projects/board",
                       "projects/backlog",
                       "projects/sprints",
-                      "projects/roadmap",
+                      "projects/timeline",
                       "projects/reports",
                       "projects/approvals",
                       "projects/risks",
@@ -177,8 +177,10 @@
                     "pages": [
                       "planning/overview",
                       "planning/portfolios",
+                      "planning/roadmaps",
                       "planning/planner-capacity",
-                      "planning/dependencies"
+                      "planning/dependencies",
+                      "planning/baselines-and-scenarios"
                     ],
                     "icon": "/images/apps/planning-dark.png"
                   },
@@ -246,6 +248,22 @@
                       "registry/csv-import"
                     ],
                     "icon": "/images/apps/registry-dark.png"
+                  },
+                  {
+                    "group": "Service Management",
+                    "pages": [
+                      "service-management/overview",
+                      "service-management/customers",
+                      "service-management/request-forms",
+                      "service-management/portal",
+                      "service-management/replies",
+                      "service-management/queues",
+                      "service-management/sla",
+                      "service-management/approvals",
+                      "service-management/roadmap",
+                      "service-management/dashboards"
+                    ],
+                    "icon": "life-ring"
                   }
                 ]
               }
@@ -484,6 +502,18 @@
                   "developer/plug-sdk",
                   "developer/agentkit"
                 ]
+              },
+              {
+                "group": "UI system",
+                "icon": "swatch-book",
+                "pages": [
+                  "developer/ui/tokens-and-roles",
+                  "developer/ui/building-blocks",
+                  "developer/ui/compose-a-page",
+                  "developer/ui/icons",
+                  "developer/ui/lint-ratchet",
+                  "developer/ui/collakit-tokens"
+                ]
               }
             ]
           },
@@ -501,7 +531,8 @@
               {
                 "group": "Pages",
                 "pages": [
-                  "api/pages/create-page"
+                  "api/pages/create-page",
+                  "api/pages/get-page"
                 ]
               },
               {
@@ -904,7 +935,7 @@
                       "projects/board",
                       "projects/backlog",
                       "projects/sprints",
-                      "projects/roadmap",
+                      "projects/timeline",
                       "projects/reports",
                       "projects/approvals",
                       "projects/risks",
@@ -920,8 +951,10 @@
                     "pages": [
                       "planning/overview",
                       "planning/portfolios",
+                      "planning/roadmaps",
                       "planning/planner-capacity",
-                      "planning/dependencies"
+                      "planning/dependencies",
+                      "planning/baselines-and-scenarios"
                     ],
                     "icon": "/images/apps/planning-dark.png"
                   },
@@ -989,6 +1022,22 @@
                       "registry/csv-import"
                     ],
                     "icon": "/images/apps/registry-dark.png"
+                  },
+                  {
+                    "group": "Service Management",
+                    "pages": [
+                      "service-management/overview",
+                      "service-management/customers",
+                      "service-management/request-forms",
+                      "service-management/portal",
+                      "service-management/replies",
+                      "service-management/queues",
+                      "service-management/sla",
+                      "service-management/approvals",
+                      "service-management/roadmap",
+                      "service-management/dashboards"
+                    ],
+                    "icon": "life-ring"
                   }
                 ]
               }
@@ -1227,6 +1276,18 @@
                   "developer/plug-sdk",
                   "developer/agentkit"
                 ]
+              },
+              {
+                "group": "UI-System",
+                "icon": "swatch-book",
+                "pages": [
+                  "developer/ui/tokens-and-roles",
+                  "developer/ui/building-blocks",
+                  "developer/ui/compose-a-page",
+                  "developer/ui/icons",
+                  "developer/ui/lint-ratchet",
+                  "developer/ui/collakit-tokens"
+                ]
               }
             ]
           },
@@ -1244,7 +1305,8 @@
               {
                 "group": "Seiten",
                 "pages": [
-                  "api/pages/create-page"
+                  "api/pages/create-page",
+                  "api/pages/get-page"
                 ]
               },
               {
@@ -1530,6 +1592,10 @@
     }
   },
   "redirects": [
+    {
+      "source": "/projects/roadmap",
+      "destination": "/projects/timeline"
+    },
     {
       "source": "/projects/queues",
       "destination": "/projects/overview"

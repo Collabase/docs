@@ -39,5 +39,5 @@ if (process.argv[1] === fileURLToPath(import.meta.url) && process.argv.includes(
   const docsJson = JSON.parse(readFileSync(DOCS_JSON, "utf8"));
   docsJson.navigation.languages = expectedLanguages(docsJson);
   writeFileSync(DOCS_JSON, `${JSON.stringify(docsJson, null, 2)}\n`);
-  console.log("build-de-navigation: docs.json updated");
+  process.stdout.write("build-de-navigation: docs.json updated\n");
 }

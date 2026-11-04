@@ -1,0 +1,49 @@
+---
+title: "Replies and internal notes"
+sidebarTitle: "Replies"
+description: "Answer the customer or leave an internal note on a ticket, and take a reply back out of the portal."
+icon: "reply"
+---
+
+Every ticket of a service project has two kinds of comment. An **internal note** is for your team. A **reply to the customer** is public: the customer sees it in the portal and gets it by email.
+
+## Write a note or a reply
+
+Below the activity of a ticket, choose what you are writing:
+
+| Choice | Who sees it | Email to the customer |
+|---|---|---|
+| **Internal note** (preset) | Your team | No |
+| **Reply to customer** | Your team and the customer, in the portal | Yes |
+
+The internal note is always preset, and the choice goes back to it after each send, so nothing reaches the customer by accident. Public replies carry the **Public** label in the activity.
+
+Comments that customers write, in the portal or by email, are always public.
+
+## Take a reply back
+
+A public reply can be taken back out of the portal: select the eye icon next to **Public**. The reply becomes an internal note again and the customer no longer sees it in the portal. An email that already went out stays sent.
+
+A note can't be made public after it was saved. Write a new reply to the customer instead.
+
+Who can take a reply back: the person who wrote it, and anyone who may edit every work item of the space.
+
+## Reply templates
+
+Recurring answers can be kept as templates. Project administrators write them in the project settings under Service, Reply templates. In the ticket, the **Template** button next to the choice between note and reply opens a list with search; the chosen text goes into the editor, where you can still change it.
+
+Three placeholders are filled in for the ticket: `{{customer.name}}` (the requester), `{{ticket.key}}` and `{{agent.name}}` (you). Any other text in double braces stays as it is, and the settings page names it when you save the template.
+
+## Roadmap items in the portal
+
+Comments of your team on work items that appear on a portal's roadmap are private as well, unless they are marked public. Only public comments and comments of customers appear in the portal.
+
+## What the customer is told
+
+| Event | The customer gets |
+|---|---|
+| The team sends a reply to the customer | An email with the reply, to the requester and the people the ticket is shared with |
+| The ticket is resolved or closed | An email with the new status |
+| An internal note | Nothing |
+
+Several replies on one ticket within a short time arrive as one email. Your team hears of a customer's reply through the [notifications](/concepts/notifications): the assignee, or, while nobody is assigned, the people watching a queue of the project.

@@ -1,0 +1,91 @@
+---
+title: "Design tokens and roles"
+sidebarTitle: "Tokens and roles"
+icon: "palette"
+description: "How the look of Collabase is defined once: tokens for colour, radius and shadow, roles for rows, menus and text, and accent presets for the instance."
+---
+
+The look of Collabase lives in three stylesheets. A component names a token or a role and never a raw value, so one change moves every place that uses it.
+
+| File | Holds |
+|---|---|
+| `src/app/tokens.css` | Tokens: surface, ink, line, accent, status, radius, shadow and motion, each with a light and a dark value |
+| `src/app/roles.css` | Roles: named bundles of tokens, declared with Tailwind's `@utility` |
+| `src/app/themes.css` | Accent presets, applied as `theme-{name}` on the `<body>` element |
+
+## Two axes {#two-axes}
+
+Light and dark mode belong to the person. The accent preset belongs to the instance, and an administrator picks it under **Settings** → **System Theme**. The two never depend on each other, so a component does not branch on the accent.
+
+The default preset `collabase` is Lime. The accent is the interactive colour in light and dark: primary actions, selection, active rows and the focus ring. Inter is the only typeface.
+
+## Tokens {#tokens}
+
+| Group | Tokens | Utilities |
+|---|---|---|
+| **Surface** | `surface-page`, `surface-panel`, `surface-sunken`, `surface-raised`, `surface-hover`, `surface-active`, `surface-strong` | `bg-surface-panel` |
+| **Ink** | `ink`, `ink-muted`, `ink-subtle`, `ink-disabled` | `text-ink-muted` |
+| **Line** | `line-faint`, `line-soft`, `line-control`, `line-strong` | `border-line-soft` |
+| **Accent** | `accent-soft`, `accent-page`, `accent-ink`, derived from the preset | `bg-accent-soft`, `text-accent-ink` |
+| **Control** | `--control-height` is 32px, used by the roles and controls | none, read through `ui-row` and the control primitives |
+
+Pick a fill by naming the surface underneath it. A sunken fill on a panel reads clearly, the same fill on the page surface nearly disappears.
+
+<Warning>
+  Never write `text-white` on an accent fill, never use a raw palette class such as `bg-gray-100`, and never use the `collabase-*` colour steps in a component. The lint ratchet reports each of them. See [Lint ratchet](/developer/ui/lint-ratchet).
+</Warning>
+
+## Roles {#roles}
+
+A role is one class for a bundle of tokens. Names carry the prefix `ui-`, text roles are `type-*`.
+
+| Role | Contents |
+|---|---|
+| **`type-title`** | 26/32, weight 600, for page and detail titles |
+| **`type-section`** | 16/24, weight 600, for section titles |
+| **`type-body`** | 14/20, weight 400 |
+| **`type-control`** | 13, weight 500, for buttons, menus, sidebar rows and tabs |
+| **`type-meta`** | 13, weight 400, in the subtle ink, for dates and counters |
+| **`ui-row`** | Minimum height 32, `rounded-row`, `type-control`, hover fill |
+| **`ui-row-active`** | `bg-accent-soft` and `text-ink` |
+| **`ui-menu`** | Raised surface, line, `rounded-menu`, `shadow-menu`, padding 4 |
+| **`ui-dialog`** | Panel surface, line, `rounded-dialog`, `shadow-dialog` |
+| **`ui-backdrop`** | Dark veil with a 4px blur |
+| **`ui-callout-warning`**, **`-danger`**, **`-info`**, **`-success`** | Tinted fill and border from the status colour, `rounded-card` |
+| **`ui-status`** | 22 high pill with a fill of 14 percent of the status colour |
+| **`ui-tag`** | 24 high pill with a control border |
+| **`ui-group-head`** | 36 high group header with a hover fill |
+| **`ui-mesh`** | Mesh gradient of the sign-in page, derived from the accent |
+
+Combine a role with an override through `cn(role, override)`. The later class wins, so an override replaces the height, radius or font of a role cleanly.
+
+```tsx title="Row with an override"
+<div className={cn("ui-row", isActive && "ui-row-active", "h-10")} />
+```
+
+## Change a token or add a role {#change}
+
+<Steps>
+  <Step title="Edit the stylesheet">
+    Change the value in `tokens.css`, or add a `@utility` to `roles.css`. A role reads tokens only and never holds a raw value that a token could hold.
+  </Step>
+  <Step title="Update the rule">
+    Describe the change in `.claude/rules/design-system.md` in the same pull request. A role needs two places that use it; a single use stays a class string.
+  </Step>
+  <Step title="Regenerate the token package">
+    Run `npm run generate:collakit-tokens`. See [Collakit token package](/developer/ui/collakit-tokens).
+  </Step>
+</Steps>
+
+The reference page `research/final.html` fixes the declared values, and a parity test compares the running app with it. A value that differs is changed in the code, never in the test.
+
+## Next steps {#next-steps}
+
+<CardGroup cols={2}>
+  <Card title="Building blocks" icon="blocks" href="/developer/ui/building-blocks">
+    The shared components to reuse before you write a new one.
+  </Card>
+  <Card title="Icon layer" icon="shapes" href="/developer/ui/icons">
+    Import icons under semantic names.
+  </Card>
+</CardGroup>

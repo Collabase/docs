@@ -1,34 +1,52 @@
 ---
 title: "Comments and mentions"
-description: "Comment on a passage of a Collabase Docs page, mention colleagues so they are notified, and assign a to-do to a person right in the page."
-keywords: ["inline comments", "comment on page", "discussion", "mention", "@mention", "notify colleague", "assign task in page", "to-do", "action item", "page comments", "footer comments"]
+description: "Comment on a passage of a Collabase Docs page, even while only reading it, mention colleagues so they are notified, and assign a to-do to a person."
+keywords: ["inline comments", "reply", "resolve discussion", "retry", "comment on page", "discussion", "mention", "@mention", "notify colleague", "assign task in page", "to-do", "action item", "page comments", "footer comments"]
 ---
 
 Comments keep the discussion about a page next to the text it is about. Mentions bring the right person into it. This page shows how to comment on a passage, how mentions notify people, and how a to-do in a page becomes a task for someone.
 
 ## Comment on a passage {#inline-comments}
 
-An inline comment is attached to the text you select. The text is highlighted, and the comment appears next to its block.
+An inline comment is attached to the text you select. The text is highlighted, and the discussion opens next to its block.
 
 <Steps>
-  <Step title="Open the page in edit mode">
-    Open the page and click **Edit**.
-  </Step>
   <Step title="Select the text">
-    Select the words the comment is about. A floating toolbar appears above the selection.
+    Open the page and select the words the comment is about. You do not need to click **Edit**: a floating toolbar appears above the selection, and in a page you only read it offers **Comment** alone.
   </Step>
   <Step title="Write the comment">
-    Click **Comment** in the floating toolbar, type your comment and send it. Type `@` to mention someone.
+    Click **Comment** in the floating toolbar, type your comment and send it with **Enter** or the arrow button. Type `@` to mention someone.
+  </Step>
+  <Step title="Continue the discussion">
+    A number next to the block shows how many discussions it holds. Click the highlighted text or the number to open them. Type in **Reply...** to answer.
   </Step>
 </Steps>
 
-The highlight is part of the page content, so it is kept with the next save of the page. Adding a comment needs the right to edit pages in the Space, see [Permissions](/concepts/permissions).
+You need the **Write comments** permission in the Space, see [Permissions](/concepts/permissions). Guests do not see **Comment** and cannot reply.
 
-<Warning>
-  In this version only the first comment of a thread is stored. Replies, edits, resolving a thread and deleting a comment show on your screen but are gone after the page is reloaded. Start a new comment for a new point instead of replying.
-</Warning>
+A comment is saved on its own. It does not change the page, does not appear in the [version history](/docs/version-history) and does not need **Save changes**. Everyone who opens the page sees it, also when the page is open in live collaboration, see [Live collaboration](/docs/collaboration).
 
-Collabase Docs pages have no comment section at the end of the page. To propose a change to the text instead of commenting on it, use [Suggestions](/docs/suggestions).
+### Work with a discussion {#discussions}
+
+Hover over a comment you wrote to see its actions.
+
+| Action | What it does |
+|---|---|
+| **Resolve** (check mark on the first comment of a discussion) | Closes the discussion and removes its highlight from the text |
+| **Edit comment** | Changes the text of your comment. The comment then shows **(edited)** |
+| **Delete comment** | Removes your comment. Deleting the first comment of a discussion removes the whole discussion |
+
+### Who sees the highlight {#versions}
+
+A comment belongs to the text it was written on. People who can edit the page see and comment on the draft. Everyone else sees the published text. A comment written on the draft appears for readers as soon as the draft is published, and only if the commented text is part of it.
+
+If the commented text is edited, the highlight follows it as long as the words are still there. When the text is removed, the discussion is no longer shown on the page.
+
+### When a comment cannot be saved {#troubleshooting}
+
+If the connection or the server fails, the comment stays on your screen with **The comment could not be saved.** and a **Try again** button. Sending it again does not create a second comment, also when the first attempt did arrive. Changes to a comment you already sent, resolving and deleting show **The change could not be saved. Please try again.** and keep the earlier state.
+
+An open page checks for new comments every 30 seconds while its tab is visible, and again when you return to the tab. Comments of other people show up without reloading the page.
 
 ## Mention a colleague {#mentions}
 
@@ -36,11 +54,13 @@ Type `@` followed by a name, in the page text or in a comment, and pick the pers
 
 | Where you mention | What the person gets |
 |---|---|
-| **In a comment** | A notification "mentioned you in a discussion" in the notification center, and an email in their own language |
+| **In a comment or a reply** | A notification "mentioned you in a discussion" in the notification center, and an email in their own language. The notification opens the page at that discussion. |
 | **In a to-do item** | A notification **Task Assigned**, see [Assign a to-do](#to-dos) |
 | **In the page text** | No notification. The mention is a link to the person only. |
 
-A project guest who cannot read the page is not notified, even when mentioned.
+When you edit a comment and add a mention, only the person you added is notified. A person who cannot open the page is shown greyed out as **No access** in the list and cannot be picked. A project guest who cannot read the page is not notified, even when mentioned.
+
+Beyond mentions, a comment also notifies the author of the page, and a reply notifies everyone who wrote in the discussion, see [Notifications](/concepts/notifications#triggers).
 
 ## Assign a to-do to a person {#to-dos}
 

@@ -1,0 +1,43 @@
+---
+title: "Collakit token package"
+sidebarTitle: "Token package"
+icon: "package-check"
+description: "How the tokens, presets and role names of Collabase are generated into the packages/collakit package, and the contract that keeps the names stable."
+---
+
+The package `packages/collakit` carries the design tokens of the core for apps. It is generated, so an app that reads it looks like Collabase. For the product behind it, see [Collakit](/developer/collakit).
+
+| File | Content |
+|---|---|
+| `tokens.css` | Light and dark token values and every accent preset |
+| `tokens.json` | The same data for tools |
+| `CONTRACT.md` | The list of role, preset and token names |
+
+## Generate it {#generate}
+
+The generator reads `src/app/tokens.css`, `src/app/themes.css` and the role names from `src/app/roles.css`.
+
+```bash title="Write the package"
+npm run generate:collakit-tokens
+```
+
+```bash title="Check that the package is current"
+node scripts/generate-collakit-tokens.mjs --check
+```
+
+The check fails when a file differs from what the generator would write. It is part of `npm run check`, so a token change without a regenerated package does not pass.
+
+The generator stops when the core stylesheet lacks a required token, such as `--surface-page`, `--ink`, `--accent-brand` or `--control-height`, or when a preset has no dark block.
+
+## The contract {#contract}
+
+A name in `CONTRACT.md` is a promise. It keeps its meaning until a major release of Collakit. Do not edit the file by hand.
+
+- Apply a preset as `theme-{name}` on the body.
+- Add a token or role to the core first, then regenerate. The package never defines names of its own.
+- The package imports nothing from the app.
+
+## Related {#related}
+
+- [Design tokens and roles](/developer/ui/tokens-and-roles)
+- [Collakit](/developer/collakit)

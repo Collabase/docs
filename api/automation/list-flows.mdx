@@ -1,19 +1,19 @@
 ---
 title: "List flows"
-description: "Page through the flows of one automation workspace, filtered by status or name."
+description: "Page through the flows of one Automation workspace, filtered by status or name."
 api: "GET /api/v1/automation/flows"
 ---
 
-Returns one page of the flows of a workspace.
+Returns one page of the flows of a Space.
 
 <Info>
-  Scope `automation:read`. The token owner needs any role in the workspace.
+  Scope `automation:read`. The token owner needs any role in the Space.
 </Info>
 
 ## Query parameters
 
 <ParamField query="workspaceId" type="string" required>
-  The workspace.
+  The Space.
 </ParamField>
 
 <ParamField query="status" type="string">

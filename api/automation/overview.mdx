@@ -1,10 +1,10 @@
 ---
 title: "Studio API"
 sidebarTitle: "Overview"
-description: "Read and control automation workspaces, flows and runs with an API token: scopes, pagination, idempotent starts and what the API does not expose."
+description: "Read and control each Automation workspace, its flows and runs with an API token: scopes, pagination, idempotent starts and what the API does not expose."
 ---
 
-The Studio API lets an integration list workspaces, manage flows and start and follow runs. It is part of `/api/v1`, so it uses the same tokens, the same envelope and the same errors as the rest of the API.
+The Studio API lets an integration list Spaces, manage flows and start and follow runs. It is part of `/api/v1`, so it uses the same tokens, the same envelope and the same errors as the rest of the API.
 
 ## Authentication and scopes
 
@@ -12,7 +12,7 @@ Send the token as `Authorization: Bearer cb_...`. A token acts as the person who
 
 | Scope | Allows |
 |---|---|
-| `automation:read` | List workspaces, flows and runs, and read one of each. |
+| `automation:read` | List Spaces, flows and runs, and read one of each. |
 | `automation:write` | Create, rename, delete, publish and switch flows, start runs and retry runs. |
 
 Without a scope the answer is `403 INSUFFICIENT_SCOPE`. An unknown or expired token gets `401`. A person with the viewer role gets `403` on every change, whatever the token's scope.
@@ -33,7 +33,7 @@ Connection values, secret store settings, OAuth apps, members, the Git connectio
 
 <CardGroup cols={2}>
   <Card title="List workspaces" href="/api/automation/list-workspaces">
-    The workspaces the token owner may see.
+    The Spaces the token owner may see.
   </Card>
   <Card title="Start a run" href="/api/automation/start-run">
     Start a published flow with a payload.

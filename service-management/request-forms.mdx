@@ -1,0 +1,48 @@
+---
+title: "Request forms"
+sidebarTitle: "Request forms"
+description: "Define what customers can request in the portal: name, group, work item type, start status, fields and defaults."
+icon: "clipboard-list"
+---
+
+A **request form** is one thing a customer can ask for in the portal, such as "VPN access" or "New laptop". Each form creates a ticket of the work item type you choose. You manage the forms in the project settings, in the **Service** group, under **Request forms**. You need the permission to manage the service project.
+
+## Create a form
+
+Choose **Add request form** and fill in:
+
+| Setting | What it does |
+|---|---|
+| **Name** and **Description** | Shown on the tile in the portal. |
+| **Icon** and **Group** | Forms with the same group name appear together in the portal. |
+| **Work item type** | Required. A form without a type cannot be saved. Only the types the project offers can be chosen. |
+| **Default priority** | The priority a ticket starts with. Leave it on **No default** to use the project's own. |
+| **Start status** | The status a ticket is created in. Leave it on **First status of the workflow** to start where the workflow starts. Changing the work item type clears it. |
+| **Fields** | The questions the customer answers, see below. |
+| **Active** | Only active forms appear in the portal. |
+
+Title and description are always asked. You add further questions from the custom fields of the work item type.
+
+## Fields
+
+Add a field with **Add a field**, then set for each one:
+
+- **Label shown to customers** and **Help text** replace the field's own texts in the portal. Leave them empty to keep the original.
+- **Required** makes the customer answer before sending.
+- The arrows change the order in which the fields appear.
+
+Changing the work item type clears the list, because the new type has other fields.
+
+## Order, hide and delete
+
+Drag a form by its handle to change its position; the portal shows the same order. The switch in each row hides a form without losing it. If a customer has a hidden form open, sending it tells them it is no longer available.
+
+Deleting a form does not change tickets that were already created from it.
+
+## Fields that were removed
+
+When a custom field is taken away from the work item type, it disappears from the forms that used it. Those forms show a **Field removed** label in the list, and the edit dialog says how many fields were dropped. Save the form once to clear the notice. Values customers already submitted stay on their tickets.
+
+## Approval
+
+A form has no approval settings of its own. An approval belongs to a status of the workflow, and a ticket waits for it when it enters that status. To send every request of a form through an approval, set the form's **Start status** to that status. See [Approvals](/service-management/approvals).

@@ -1,0 +1,110 @@
+---
+title: "Timeline"
+sidebarTitle: "Timeline"
+description: "Schedule work items as bars on a calendar, drag them to change dates, draw dependencies between them and mark project milestones."
+keywords: ["roadmap", "timeline", "Gantt", "dependencies", "blocks", "milestones", "schedule work", "Advanced Roadmaps"]
+---
+
+The **Timeline** tab shows each work item with dates as a bar on a calendar. Drag bars to reschedule, draw arrows to show what blocks what, and see cycles, phases and milestones in the same picture. Use it to plan dates and to explain the plan to others.
+
+## Timeline or roadmap? {#timeline-or-roadmap}
+
+The Timeline plans the work inside this one project: its bars are the work items, their dates are the dates of the work items, and the critical path is calculated from the links between them. A [roadmap](/planning/roadmaps) plans initiatives across projects, portfolios, work items and pages. Its dates are set by hand and nothing is calculated.
+
+Neither replaces the other. Use the Timeline with your delivery team, and a roadmap for management and stakeholders. For the full comparison, see [Roadmap or timeline?](/planning/roadmaps#roadmap-or-timeline). A project has no initiatives of its own: an initiative on a roadmap points at the project.
+
+## Read the timeline {#read}
+
+The left side lists the work items with the columns **Key**, **Work Item**, **Status**, **Assignee**, **Priority**, **Due** and **Start**. Click **Columns** to choose others, including custom fields, and to put them in your order. The title always stays. Drag the edge of a column header to resize it. You can edit **Status**, **Assignee** and **Priority** in place; other fields are read-only here. Sub-items sit under their parent and can be collapsed.
+
+The chips above the timeline narrow it as on the [Board](/projects/board#quick-filters). A work item that does not match but has a matching sub-item stays as a greyed row, so the sub-item keeps its place in the tree. See [Quick filters and columns](/concepts/quick-filters).
+
+The right side is the calendar:
+
+| Element | Meaning |
+|---|---|
+| Bar | From the start date to the due date of a work item |
+| Arrow | A dependency between two work items |
+| Bands in the header | Cycles and project phases |
+| Diamond | A project milestone |
+| **Today** line | The current date |
+
+Select a bar and press `Enter` or `Space` to open the work item.
+
+## Change the view {#view}
+
+| Control | What it does |
+|---|---|
+| **Day**, **Week**, **Month**, **Quarter**, **Year** | The zoom level. **Week** is the default. **Year** shows the whole year with the months under it |
+| **Show earlier dates**, **Show later dates** | Extend the visible range |
+| **Jump to today** | Scroll to the current date |
+| **Timeline settings** | **Start of week** (Monday, Sunday or Saturday), and **Dependencies → Show related links** to also draw "relates to" links |
+| **Enter fullscreen** | Use the whole screen. `Escape` leaves it |
+
+The filter pills **Status**, **Assignee**, **Label** and **Priority** work as on the [Board](/projects/board#quick-filters).
+
+## Reschedule work items {#reschedule}
+
+- **Drag a bar** to move both dates by the same amount.
+- **Drag the left or right end** to change the start or due date.
+
+Changes save at once. Type a title in **Add a work item…** at the bottom of the list to create a work item from the timeline.
+
+## Work items without dates {#no-dates}
+
+Work items with neither a start nor a due date are listed under **Work items without scheduled dates**. Set a start and due date there to bring them onto the timeline.
+
+## Dependencies {#dependencies}
+
+A dependency says that one work item blocks another. Collabase draws it as an arrow from the blocking bar to the blocked bar.
+
+```mermaid
+flowchart LR
+  A["PROJ-4 Design API"] -- blocks --> B["PROJ-7 Build client"]
+  B -- blocks --> C["PROJ-9 Release"]
+```
+
+<Steps>
+  <Step title="Start the arrow">
+    Hover a bar. Drag from the dot at its right end to make it block another work item, or from the dot at its left end to make it blocked by one.
+  </Step>
+  <Step title="Drop on the other bar">
+    Release over the other work item. Collabase creates a **Blocks** relation. Press `Escape` to cancel while dragging.
+  </Step>
+  <Step title="Check or remove it">
+    Click an arrow to see the dependencies between the two bars. Remove one with **Delete dependency from … to …**.
+  </Step>
+</Steps>
+
+Dependencies created on the timeline are **Finish to start**: the blocked work starts after the blocking work finishes. Creating them needs the **Link task** permission. The same relations appear in the **Relations** section of each [work item](/projects/tasks#relations).
+
+<Note>
+  Collabase does not move dependent bars for you. When you move a blocking bar, check the bars it points to. To see which bars decide the finish date, switch on **Critical path** in the toolbar: those bars and arrows are highlighted, and the bar tooltip shows the slack in working days.
+</Note>
+
+## Milestones {#milestones}
+
+Click **Milestones** to manage the project's milestones: give each a name (**Milestone**) and a **Due date**, **Mark as reached**, **Reopen**, or **Delete milestone**. Milestones appear as diamonds on the timeline.
+
+## Export the Gantt {#gantt-export}
+
+Click **Export** in the timeline toolbar, choose **PDF** or **PNG**, and for a PDF the page size **A4** or **A3** in landscape, and start the export. The file is prepared in the background, and you are notified when it is ready to download. The portfolio Gantt has the same button.
+
+- The file shows all work items, their dependencies, the sprints and phases as bands and the milestones, at the zoom level you have set. It lists only the work items you may see.
+- The **Baseline**, **Critical path** and **Scenario** that are switched on in the toolbar are drawn too, and a key names them. Switched off, they are left out.
+- The header shows the name, the date of the export and your name. Long names are shortened with an ellipsis.
+
+<Note>
+  The export needs the document processor. If **Export is not available** appears, ask your administrator.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Planning across projects" icon="chart-gantt" href="/planning/overview">
+    Portfolios, the Planner and dependencies beyond one project.
+  </Card>
+  <Card title="Cycles" icon="repeat" href="/projects/sprints">
+    Time boxes shown as bands on the timeline.
+  </Card>
+</CardGroup>

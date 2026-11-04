@@ -1,0 +1,54 @@
+---
+title: "Roadmap in the portal"
+sidebarTitle: "Roadmap"
+description: "Show customers what is planned as a board or a list, and let them vote for what matters to them."
+icon: "map"
+---
+
+The portal of a service project can show a roadmap: work items of one type from a project you choose, grouped into columns such as **Planned**, **In progress** and **Done**. Customers read it as a board or a list, search it and vote for the entries they want.
+
+## Set it up
+
+The roadmap has its own page in the settings of the service project: open **Settings** and choose **Roadmap**.
+
+<Steps>
+  <Step>Under **Scope**, pick the **Roadmap project** and the **Work item type** whose work items appear.</Step>
+  <Step>Under **Columns**, add a column for each stage you want to show. Open a column to give it a name, a subtitle, an icon and a colour, and to choose the statuses it gathers. A work item in a status without a column does not appear.</Step>
+  <Step>Drag the grip of a column to change the order in which the columns appear.</Step>
+  <Step>Optionally write a **Title** and **Subtitle** for the roadmap page. Without them the portal shows its standard texts.</Step>
+  <Step>Select **Save changes**. The bar appears as soon as you change a title, a subtitle or a column.</Step>
+</Steps>
+
+The portal shows a **Roadmap** tab once a project and a type are chosen.
+
+These settings save as soon as you change them, without the save bar:
+
+- **Card order** sets how the cards are ordered inside a column: **Most votes** (the default), **Newest**, or **Manual (board order)**, which follows the order of the work items on the board of the roadmap project.
+- **Visible by** sets who may open the roadmap: customers with portal access, or everyone, also without signing in.
+- **Public fields** releases fields of the work item type. Title and description are always shown; every other field stays hidden unless you release it here. The switch **Show the start of the description on the card** adds the first lines of the description to every card.
+
+<Note>
+  The roadmap shows nothing that is private elsewhere. A customer must have portal access (or the roadmap must be public) and can only see the entries, fields and descriptions released here.
+</Note>
+
+## Board and list
+
+- **Board** shows the columns side by side, each with its status icon, name, number of entries and subtitle. A column loads 50 entries and more on demand. When more columns wait to the right, a round arrow scrolls the board.
+- **List** shows all entries in one list, with the column of each entry.
+- The row under the page title filters by column: choose **All** or one column. The search field looks for words in the title only.
+
+Cards are ordered by the **Card order** you chose. Sorting and filtering never use a field, so a field you did not release cannot show up through them either. On a phone the board scrolls sideways inside the page.
+
+Selecting an entry opens it. The main column shows the title, the description, the released fields, a status line with the vote button and the comments; the side column shows the status (the column the entry sits in), the creation date and **Copy link**. Images and files in the description load from the portal for everyone who may read the roadmap; files only attached to the work item stay internal.
+
+## Voting
+
+- Every person has one vote per entry and can take it back.
+- The portal shows how many votes an entry has and whether you voted yourself. It never shows who voted, nor their organization.
+- Voting needs an account. On a public roadmap, visitors who are not signed in see the counts; the vote button leads them to sign in.
+- People of your team who can open the roadmap project may vote too.
+- Voting is limited to 30 votes or withdrawals per person and minute.
+
+## When someone is deleted
+
+Deleting a person in Collabase anonymizes the account. Their votes stay, so the counts on the roadmap do not change.
