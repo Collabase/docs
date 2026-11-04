@@ -40,7 +40,7 @@ Switching the summary on is the decision to send meeting content to that provide
 | Data | Sent to the AI provider |
 |---|---|
 | **Meeting title, date and time, agenda items, notes** | Yes |
-| **Decisions with details and rationale, tasks with due dates, information outcomes** | Yes |
+| **Decisions with details and rationale, tasks with due dates, information notes of older meetings** | Yes |
 | **Role and attendance of each participant** | Yes, under the code that replaces the name |
 | **Names of participants and responsible people** | No. Each name is replaced by a code such as `P1`, `P2` before sending, and put back in the summary afterwards. |
 | **Content of linked work items and pages** | No, not even their titles. |
@@ -104,7 +104,7 @@ The briefing is not saved. Leaving the page forgets it, and **Prepare again** wr
 
 ## Tasks and decisions found in the notes
 
-With **AI finds tasks and decisions in the notes** switched on, Collabase AI reads the notes of every meeting that ends with notes. Shortly after, the organizer and co-organizers see **Found in the notes** on the meeting page: tasks, decisions and information that the notes mention but nobody recorded.
+With **AI finds tasks and decisions in the notes** switched on, Collabase AI reads the notes of every meeting that ends with notes. Shortly after, the organizer and co-organizers see **Found in the notes** on the meeting page: tasks and decisions that the notes mention but nobody recorded.
 
 | Data | Sent to the AI provider |
 |---|---|
@@ -113,7 +113,7 @@ With **AI finds tasks and decisions in the notes** switched on, Collabase AI rea
 | **Names of participants** | No, replaced by codes and put back afterwards |
 | **Content of linked work items and pages** | No |
 
-Nothing is added on its own. **Add** turns a suggestion into a task or information on its agenda item, or into a decision. It completes the closed meeting without reopening it; this is recorded in the audit log, and the meeting note is updated, rewritten if nobody edited it, otherwise with an addendum. **Dismiss** removes a suggestion for good. A responsible person is only filled in when the notes name one of the participants. An added task becomes a task on the meeting; to turn it into a work item, reopen the meeting.
+Nothing is added on its own. **Add** turns a suggestion into a task on its agenda item, or into a decision. It completes the closed meeting without reopening it; this is recorded in the audit log, and the meeting note is updated, rewritten if nobody edited it, otherwise with an addendum. **Dismiss** removes a suggestion for good. A responsible person is only filled in when the notes name one of the participants. An added task becomes a task on the meeting; to turn it into a work item, reopen the meeting.
 
 The detection runs on the organizer's AI budget. If it cannot run, the meeting simply shows no suggestions.
 

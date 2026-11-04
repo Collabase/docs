@@ -1,0 +1,377 @@
+---
+title: "Roadmaps"
+sidebarTitle: "Roadmaps"
+description: "Plan initiatives on a timeline with swimlanes, phases and milestones, share a roadmap with people and groups, and restore a deleted roadmap within 30 days."
+keywords: ["roadmap", "initiatives", "strategy", "sharing", "editor", "viewer", "PPM", "Advanced Roadmaps"]
+---
+
+A roadmap plans initiatives over time, apart from any one project. Use separate roadmaps for strategy, product lines or departments. The **Roadmaps** page lists every roadmap you may see, with its number of initiatives and the date of its last change, newest change first.
+
+## Roadmap or timeline? {#roadmap-or-timeline}
+
+A project has its own [Timeline](/projects/timeline) tab. Both show bars on a calendar, but they answer different questions.
+
+| | Roadmap | Project timeline |
+|---|---|---|
+| **A bar is** | An initiative: a theme or goal you plan | A work item of the project |
+| **Dates** | Set by hand. They state the plan and nothing is calculated from them | Those of the work items. The critical path is calculated from the links between them |
+| **Dependencies** | Relations between initiatives with a type, colour and line. Conflicts are marked, nothing is calculated | Links between work items with lag, and the critical path |
+| **Earlier states** | [Snapshots](#snapshots) | [Baselines](/planning/baselines-and-scenarios) |
+| **What if** | [Scenarios](#scenarios) on initiatives | Scenarios on work items |
+| **Grouping** | Free swimlanes | The structure of the work items |
+| **Reach** | Across projects, portfolios, work items and pages | One project |
+| **Audience** | Management, product owners, stakeholders | The delivery team |
+
+The roadmap does not replace the timeline, and the timeline does not replace the roadmap. The timeline plans the work inside one project and can calculate the critical path. The roadmap is the overview across everything and calculates nothing.
+
+A project has no initiatives, because its bars are its work items. An initiative sits one level above and points at projects. An initiative that has no project yet can point at a page, and [Turn into project](#convert) creates the project from it.
+
+A portfolio or a programme is the level between the two. A programme is a portfolio under another portfolio, see [Portfolios](/planning/portfolios#hierarchy). An initiative can link a portfolio or a programme, and the roadmap then shows its projects below the initiative, see [Portfolios and programmes on a roadmap](/planning/portfolios#roadmap).
+
+## Create a roadmap {#create}
+
+<Steps>
+  <Step title="Open Roadmaps">
+    Open **Roadmaps** from the app drawer.
+  </Step>
+  <Step title="Create the roadmap">
+    Click **New roadmap**, enter a name of up to 120 characters and, if you like, a description. Click **Create**.
+  </Step>
+</Steps>
+
+You become the editor of the roadmap. Two roadmaps can have the same name. Guests cannot create roadmaps.
+
+A list without any roadmap shows **No roadmap yet** with the **New roadmap** button.
+
+To change the name or the description, click the pencil in the row of the roadmap. Only editors see it.
+
+## Timeline and zoom {#timeline}
+
+Click a roadmap in the list to open its timeline. Each lane is a swimlane header, and below it every initiative has its own row, in the order you set. A bar shows the name of the initiative and a dot in the colour of its status. Phases are coloured bands above the timeline, milestones are diamonds, and a line marks today.
+
+| What you see | What it tells you |
+|---|---|
+| **Red edge at the end of a bar** | The end date has passed and the status is not completed. |
+| **Warning symbol on a bar** | A linked project or portfolio does not fit the initiative, for example it lies outside the period. |
+| **Hover over a bar** | Name, status, owner, period, the number of links per kind and what is wrong. |
+
+Choose **Year**, **Quarter**, **Month** or **Week** above the timeline. Collabase remembers your zoom for each roadmap in this browser and opens a roadmap at **Year** the first time. **Today** scrolls to the current date, and the timeline grows when you scroll to either end. Click the arrow in front of a lane to fold it. The fold applies to you on this screen only.
+
+A roadmap without initiatives shows **No initiatives yet**. If a roadmap is larger than Collabase can show at once, a notice says that some initiatives, links or relations are left out.
+
+## Move initiatives {#move}
+
+Only editors see the handles below. A viewer sees the same timeline and can only look at it.
+
+<Steps>
+  <Step title="Move or resize a bar">
+    Drag a bar to move the initiative in time. Drag the left or right end to change its start or end. Dates snap to whole days.
+  </Step>
+  <Step title="Change the lane or the order">
+    Drag a row by its label onto another row to place it next to that row, in that row's lane. Drop it on a lane header to put it at the top of that lane.
+  </Step>
+  <Step title="Use the keyboard">
+    Open the menu in the row and choose **Move up**, **Move down** or **Move to lane**.
+  </Step>
+</Steps>
+
+Collabase shows each change at once and saves it. If saving fails, the initiative jumps back and a message says so. When two editors change the same initiative, the last change wins.
+
+To add an initiative, click **Add initiative** above the timeline, enter a name and a period, and click **Add**. It lands in the default lane.
+
+## Edit an initiative {#edit-initiatives}
+
+Click a bar or the name of an initiative to open its details in a popup. The address then carries `?initiative=` and a link to it opens the popup straight away. Closing the popup removes the parameter again.
+
+Editors change a value in place and Collabase saves it when they leave the field: name, description, status, lane, start, end, colour and owner. The end cannot be before the start, and Collabase says so instead of saving. If saving fails, the value jumps back and a message says so. Without a colour, the bar takes the colour of its status. The owner is picked with a search and shows the person's picture; hovering over a bar names the owner.
+
+Viewers see the same details as plain values, without any input. If the initiative no longer exists or you may not see it, the popup says **No access**.
+
+To delete an initiative, click **Delete initiative** and confirm. Its links and relations are removed with it.
+
+## Swimlanes {#lanes}
+
+Swimlanes group initiatives by topic. Everyone sees them; only editors change them.
+
+<Steps>
+  <Step title="Add a lane">
+    Click **Add** above the timeline and choose **Add lane**. The new lane lands at the end with the name **New lane**.
+  </Step>
+  <Step title="Name and colour it">
+    Click the name of the lane to rename it. Click the coloured dot to choose another colour.
+  </Step>
+  <Step title="Change the order">
+    Drag a lane by the handle at the left of its header and drop it on another lane header. Or open the menu of the lane and choose **Move lane up** or **Move lane down**.
+  </Step>
+  <Step title="Delete a lane">
+    Open the menu of the lane and choose **Delete lane**. A lane with initiatives asks which lane they move to. An empty lane only asks you to confirm.
+  </Step>
+</Steps>
+
+The last lane of a roadmap cannot be deleted. A roadmap holds up to 20 lanes.
+
+## Phases {#phases}
+
+A phase is a named, coloured band on the timeline, for example **Q1 focus** or **Black Friday**. Phases may overlap, and a name that does not fit in a narrow band shows when you hover over it.
+
+<Steps>
+  <Step title="Add a phase">
+    Right-click the header of the timeline, or press and hold on a touch screen, and choose **Add phase**. The start date is the day you clicked. You can also choose **Add** → **Add phase** above the timeline.
+  </Step>
+  <Step title="Edit a phase">
+    Click a band to open its popup. Change the name, the start, the end and the colour, and click **Save**. The end cannot be before the start.
+  </Step>
+  <Step title="Choose what lies on top">
+    Where phases overlap, open the popup and click **Bring to front** or **Send to back**.
+  </Step>
+</Steps>
+
+To delete a phase, click **Delete** in its popup. A roadmap holds up to 50 phases. Viewers see the bands and their names on hover, without any menu.
+
+## Milestones {#milestones}
+
+A milestone marks a date across all lanes: a diamond on the timeline with its name and a vertical line.
+
+- **Add:** right-click the header of the timeline and choose **Add milestone**, or choose **Add** → **Add milestone** above the timeline. Enter a name, a date and a colour. A milestone needs a date.
+- **Move:** drag the diamond to another day. It snaps to whole days, and if saving fails, it jumps back and a message says so.
+- **Edit or delete:** click the diamond to open its popup.
+
+Milestones on the same day stand on top of each other, each with its own name. Hover over one to see all of them. A roadmap holds up to 50 milestones. Viewers see the milestones without any handle.
+
+## Links {#links}
+
+An initiative can link projects, work items, portfolios and pages, up to 20 links. The popup shows what each object says about itself:
+
+| Kind | What you see |
+|---|---|
+| **Project** | Traffic light, progress, owner and budget used. |
+| **Work item** | Status, assignee and priority. |
+| **Portfolio** | Traffic light of the program and the number of projects. |
+| **Page** | Last change and author. |
+
+A click on the title opens the object. Editors add a link with the button of the kind, search by title and pick the object. You find only objects you may see yourself. Collabase refuses an object that is already linked, a twenty-first link, and a portfolio while the portfolio app is off, and says why.
+
+A link to an object you may not see shows **Link without permission** and nothing else, no title and no details. A link to an object that has been deleted shows **Deleted**. Editors can remove both with the cross.
+
+### Linked items on the timeline {#linked-rows}
+
+An initiative with links shows a small arrow next to its name. Click it to see the linked objects as quiet rows right below the initiative. Everything is folded at first, and Collabase remembers in this browser what you unfolded, for each roadmap. The button with the two arrows in the toolbar unfolds or folds all initiatives at once.
+
+<Steps>
+  <Step title="Unfold an initiative">
+    Click the arrow next to the name of an initiative.
+  </Step>
+  <Step title="Open a linked object">
+    Click the title of a row. The project, work item, portfolio or page opens in its own app.
+  </Step>
+</Steps>
+
+| Kind | What the row shows |
+|---|---|
+| **Project** | Name, its real period as a bar, traffic light and progress. A project without dates of its own takes the span of its work items. |
+| **Work item** | Key and title, start and due date as a bar and its status. A work item without dates shows the name and **No dates**, but no bar. |
+| **Portfolio or programme** | Name, period and traffic light. Click its arrow to see the sub-portfolios and projects you may see, down to the projects of a sub-portfolio. |
+| **Page** | Title and date of the last change, without a bar. |
+
+The rows are read-only: you cannot drag, resize or connect them. A link to something you may not see shows **Link without permission**, and a deleted object shows **Deleted**, both without name or dates. Each initiative shows at most 50 rows, and a roadmap at most 300. A last row such as **and 7 more** tells you what is left out.
+
+A warning symbol on a row means that its period lies partly outside the initiative: it starts before the initiative or ends after it. Hover over the symbol to see which side. The bar of the initiative itself never changes. Linked items appear only on the live roadmap, not while you look at a [snapshot](#snapshots) or a [scenario](#scenarios).
+
+## Conflicts {#conflicts}
+
+Collabase compares an initiative with the projects and portfolios it links and warns on the bar and in the popup in these cases:
+
+- **Period:** a linked object starts before the initiative or ends after it.
+- **Closed:** a linked object is closed while the initiative is active.
+- **Off track:** a linked object is red.
+
+The popup names each case with the title of the object. For a period conflict, editors click **Adopt period from linked projects**. Collabase then sets the start of the initiative to the earliest start and the end to the latest end of all linked projects and portfolios you may see. Work items and pages never cause a conflict.
+
+## Customize statuses {#statuses}
+
+Editors click **Settings** above the timeline and open the **Status** tab. A new roadmap starts with five statuses: Idea, Planned, In progress, Completed and Discarded.
+
+Each status has a name, a colour and a category. The category tells Collabase how an initiative counts:
+
+| Category | Meaning |
+|---|---|
+| **Open** | Not started yet. A new initiative takes the first open status. |
+| **Active** | Under way. |
+| **Completed** | Finished. A completed initiative is never marked as overdue. |
+
+Rename a status in its field, pick a colour, choose a category, and use the arrows to change the order. **Add status** creates one, up to 20. Every category keeps at least one status, so Collabase refuses a change that would empty one.
+
+To remove a status that initiatives still use, click **Remove** and choose the status they move to. Collabase moves them when you save. A status nobody uses is removed without a question. Click **Save** to apply all changes of the tab at once. As long as a default status keeps its original name, it appears in the language of each viewer. Once you rename it, everyone sees your name.
+
+## Customize relation types {#relation-types}
+
+The **Relation types** tab in the same dialog holds the types that describe how two initiatives depend on each other. A new roadmap has two: **Dependency** and **Risk**. You can rename and restyle both, but not remove them.
+
+Each type has a name, a colour, a line style (solid, dashed or dotted), an arrow (one direction or both) and an optional icon. The preview shows the line as it will be drawn. **Add relation type** creates your own, up to 20. Removing one of your own types that relations still use asks for the type they move to, just like a status.
+
+## Relations between initiatives {#relations}
+
+A relation joins two initiatives of the same roadmap and is drawn as a line between their bars, in the colour, line style, arrow and icon of its type. Relations are information: they do not move any date, and an initiative you move keeps its relations, which follow its bar.
+
+Editors draw a relation in two ways:
+
+- **Drag from a bar:** hover over a bar, grab the dot at its left or right end and drop it on another bar. A small list asks for the type, and **Dependency** comes first. Dragging from the right end makes the dragged initiative the source, dragging from the left end makes it the target.
+- **In the details:** open an initiative and click **Add relation** in the **Relations** section. Search the other initiative by name, choose the type and add an optional label of up to 120 characters.
+
+Hover over a line to see its type, its label and the two initiatives. Click a line to open a card with the same facts. Editors delete a relation from that card, from the context menu of the line (right click) or from the **Relations** section, where they can also change its type and label. Viewers see lines and hints but have no controls.
+
+Several lines between the same two initiatives are drawn side by side, so none hides another, and they stay single when you zoom out to the year view. Collabase refuses a relation of an initiative to itself, a second relation with the same source, target and type, and a roadmap with more than 300 relations, and says why.
+
+## Turn an initiative into a project {#convert}
+
+When an idea goes into delivery, you create its project straight from the initiative. Open the initiative and click **Turn into project**. The button appears for editors, and only while the initiative links no project yet.
+
+<Steps>
+  <Step title="Choose the space">
+    The list offers only spaces in which you may create projects. Without such a space the button in the popup stays off and the popup says why.
+  </Step>
+  <Step title="Check the name and the key">
+    The project name starts as the name of the initiative. The key follows the name the same way as in the new project dialog.
+  </Step>
+  <Step title="Choose a template">
+    This step is optional: choose a project template.
+  </Step>
+  <Step title="Create the project">
+    Click **Create project**.
+  </Step>
+</Steps>
+
+The project takes the start and end of the initiative as its period. The owner of the initiative becomes the project lead when they can see the space, otherwise the lead stays empty and the popup says so. The initiative links to the new project, and the pages it links to appear in the project as web links. **Open project** in the popup takes you there.
+
+If the key is already taken in the space, the key field shows it and you choose another one. If the project was created but the link from the initiative failed, the popup says so and the project stays. Add the link by hand under [Links](#links).
+
+## Comments and activity {#comments}
+
+Every initiative has two tabs under its fields.
+
+- **Comments:** write a comment, answer one, and mention people with `@`. Editors and viewers can comment. The list offers only people who may open the roadmap, and a mentioned person gets a notification, never the author. You edit your own comments, and you or an editor delete them. Collabase loads the newest comments first, and **Load more comments** shows the next ones.
+- **Activity:** lists when the initiative was created, changed or deleted, who did it and which of name, start, end, status, swimlane and owner changed. It shows no values and never the description. A person whose account was deleted appears as "(deleted)".
+
+Both tabs follow the access to the roadmap: whoever loses it no longer sees them, and a deleted roadmap takes no new comments.
+
+## Reminders {#reminders}
+
+Collabase checks every roadmap once a day, at 05:00, and notifies the owner of an initiative in two cases:
+
+- **Overdue:** the planned end has passed and the status is not in the **Done** category. Moving the end date or finishing the initiative stops the reminder. A new end date that passes again starts a new one.
+- **Conflict:** a linked project or portfolio newly falls outside the period, is closed while the initiative is active, or is red. Each case is reported once. When it is resolved and later returns, the owner is notified again.
+
+Only owners who can open the roadmap are told about conflicts, and only about linked objects they may see. Whether you also receive an email depends on your [notification settings](/concepts/notifications).
+
+## Snapshots {#snapshots}
+
+A snapshot freezes a roadmap as it is today: its initiatives with their periods, status, lane and owner, the lanes, phases, milestones and relations, and the names of statuses and relation types. Use it before a steering meeting or a replan, to show later what the plan was.
+
+Open **Snapshots** in the toolbar and choose a snapshot from the list. A roadmap holds up to 50.
+
+- **View snapshot** shows the frozen state on the same timeline, with a band that names the snapshot and its date. Nothing can be dragged or edited. **Back to today** returns to the current plan.
+- **Compare with today** keeps the current plan and draws the dates of the snapshot as shadow bars under the bars. The band counts the initiatives that are new, removed, moved or have a new status, and **Show details** lists them.
+- **Create snapshot** (editors only) asks for a name of up to 120 characters. **Delete snapshot** removes the chosen one after a confirmation.
+
+A snapshot cannot be changed or restored into the roadmap; to go back to an earlier plan, change the initiatives by hand. Everyone who may open the roadmap sees its snapshots, but only editors create and delete them.
+
+A snapshot keeps links to projects, work items, portfolios and pages as references only. Title and place are looked up when you open the snapshot, so a link to something you may not see shows no name, as on the roadmap itself.
+
+<Note>
+  A deleted roadmap cannot get new snapshots. Creating and deleting a snapshot appears in the audit log.
+</Note>
+
+## Scenarios {#scenarios}
+
+A scenario is a what-if plan of one roadmap. It holds the dates, swimlanes and statuses you try out. The initiatives stay as they are until you adopt changes, nobody is notified, and no project, linked or not, changes.
+
+Open **Scenario** in the toolbar and choose **New scenario**, or pick an open one. Snapshots and scenarios exclude each other: choosing one leaves the other. A band under the toolbar names the scenario and counts its changes. **Back to live plan** shows the real plan again. The choice is not saved, so the roadmap opens on the live plan the next time.
+
+| What you do | Result |
+|---|---|
+| Drag a bar or one of its ends | The new start and end are saved in the scenario, always as a pair |
+| Drop a row on another swimlane | The initiative moves to that swimlane in the scenario |
+| Choose another status in the details | The status is saved in the scenario |
+
+An initiative the scenario has changed carries a coloured ring, and a shadow bar shows its live dates. Everything else stays disabled in a scenario, and a hint says so: name, description, owner, colour, deleting, relations, links, swimlanes, phases, milestones, settings and new initiatives. A scenario never creates or deletes initiatives.
+
+Click **Review changes** in the band. The dialog lists every change with the live value, the value in the scenario and its state, and works as in the [project Timeline](/planning/baselines-and-scenarios#scenarios-adopt). Start and end of an initiative are adopted together. A change that would put the end before the start is marked. Adopting writes the initiatives like any other edit, all or nothing. When the last change is adopted, the roadmap returns to the live plan.
+
+Everyone who may open the roadmap sees its scenarios. Only editors create, change, adopt and discard them. A roadmap holds up to 10 open scenarios. **Discard scenario** drops one with its changes.
+
+## Share a roadmap {#share}
+
+Click the share icon in the row of a roadmap, search for a person or a group, and choose a role. Click **Save**. The people you add are notified.
+
+| Role | What the person can do |
+|---|---|
+| **Editor** | Open the roadmap, rename it, share it and delete it. |
+| **Viewer** | Open the roadmap. A viewer sees no rename, share or delete action. |
+
+- **Guests** can only be viewers. Collabase refuses a guest as editor.
+- **At least one editor** must remain. Collabase refuses a change that removes the last editor.
+- A person who is shared directly and through a group gets the higher role.
+- **Administrators** see all roadmaps, also those that are not shared with them, and can correct the sharing.
+- When you remove a person, the roadmap disappears from their list and shows **No access** if they open an old link.
+
+<Note>
+  A roadmap is shared with people and groups only. It cannot be shared with a Space, a project or everyone.
+</Note>
+
+## Export a roadmap {#export}
+
+Click **Export** in the toolbar of a roadmap, choose **PDF** or **PNG**, and for a PDF the page size **A4** or **A3**, and start the export. Tick **Include linked items** to draw the linked projects, work items, portfolios and pages as rows below every initiative. The option is offered on the live roadmap and shows only what you may see yourself. The file is prepared in the background, and you are notified when it is ready to download.
+
+- The picture shows what you may see: lanes, initiatives, phases, milestones and the relations between initiatives. It uses the zoom level you have set and the language of your profile.
+- While you compare with a [snapshot](#snapshots), the export draws the snapshot dates as shadow bars under the initiatives, and the key names the snapshot and its date. While you look at a [scenario](#scenarios), the export shows the roadmap with the dates of that scenario. Both apply only if you may see them.
+- Every lane is open, and long names are shortened with an ellipsis. A key explains the colours and the conflict mark.
+- A link to an object you may not see never shows a name.
+- Everyone who may open the roadmap can export it, including viewers.
+
+<Note>
+  The export needs the document processor. If **Export is not available** appears, ask your administrator.
+</Note>
+
+## Deleted roadmaps {#deleted}
+
+Click the bin icon in the row of a roadmap and confirm. The roadmap leaves the list, with everything in it, and moves to the trash of the system administration.
+
+An administrator restores a deleted roadmap there, under **Administration → Data & Backup → Trash**, or deletes it for good. Collabase removes a deleted roadmap for good after 30 days. When an administrator deletes a user, the roadmaps only that person could open are removed for good at once; roadmaps shared with others stay and lose their owner.
+
+## Collabase AI {#ai}
+
+Ask Collabase AI about your roadmaps, for example which initiatives are planned in the fourth quarter, what the status of an initiative is, which themes a lane holds in the second quarter or which initiatives are overdue. Collabase AI reads initiatives with status, period, owner and lane, plus phases, milestones, relations, and the title, traffic light and period of linked items you may see. It does not read initiative descriptions.
+
+Collabase AI only reads. It never changes a roadmap, and it answers only about roadmaps you may open. A linked item you may not see appears as **no permission**, without its title.
+
+## Search and gadget {#search-gadget}
+
+**Search:** type the name of a roadmap or an initiative into the search at the top. The results list **Roadmaps** and **Initiatives**. An initiative shows its roadmap and its status, and a click opens the roadmap on that initiative. Search also finds words in the description. You find only roadmaps you may open, so a roadmap that is not shared with you, a deleted roadmap and the initiatives in them never appear. A guest finds only roadmaps shared with them by name.
+
+**Gadget:** add the **Roadmap** gadget to a dashboard to show one roadmap as a timeline.
+
+<Steps>
+  <Step title="Add the gadget">
+    Open a dashboard, click **Add gadget** and choose **Roadmap** in the **Portfolios** group.
+  </Step>
+  <Step title="Choose the roadmap and the zoom">
+    Open the settings of the gadget, choose a roadmap from the ones you may see and choose a zoom from year to week.
+  </Step>
+</Steps>
+
+The gadget is read-only. A click on a bar opens the roadmap on that initiative. Everyone who opens the dashboard sees the roadmap with their own rights: a person without access to it sees **You have no access to this roadmap.** instead of the timeline. A snapshot of the dashboard shows no roadmap content.
+
+## Embed a roadmap in a page {#embed-in-page}
+
+Show a roadmap inside a page of Docs, for example in a status report.
+
+<Steps>
+  <Step title="Insert the block">
+    In the page editor, type `/` or click **+** and choose **Roadmap** in the Collabase section.
+  </Step>
+  <Step title="Choose the roadmap and the zoom">
+    Pick a zoom from year to week, then pick one of the roadmaps you may see.
+  </Step>
+</Steps>
+
+The block is read-only. To pick another roadmap, click **Change roadmap** below it. Everyone who opens the page sees the roadmap with their own rights: a person without access to it sees **You have no access to this roadmap.** instead of the timeline. The PDF export of the page shows a placeholder, and the Markdown export a reference to the roadmap.

@@ -1,25 +1,25 @@
 ---
 title: "Git sync and releases"
-description: "Connect a workspace to a Git repository to move published flows from development to production, review the differences and roll back."
+description: "Connect a Space to a Git repository to move published flows from development to production, review the differences and roll back."
 icon: "git-branch"
 ---
 
-Git sync moves flows between instances or workspaces: one **development** workspace pushes its published flows to a branch, and a **production** workspace pulls them. Only admins connect a repository.
+Git sync moves flows between instances or Spaces: one **development** Space pushes its published flows to a branch, and a **production** Space pulls them. Only admins connect a repository.
 
 ## Connect a repository
 
 <Steps>
   <Step title="Open the Git tab">
-    In the workspace, open **Git**.
+    In the Space, open **Git**.
   </Step>
   <Step title="Enter the repository">
-    Enter the https address, the branch and the role of this workspace, and an access token. Collabase stores the token encrypted and never shows it again. SSH addresses and plain http are not accepted.
+    Enter the https address, the branch and the role of this Space, and an access token. Collabase stores the token encrypted and never shows it again. SSH addresses and plain http are not accepted.
   </Step>
 </Steps>
 
 ## Push from development
 
-Write a commit message and select **Push published flows**. The push runs in the background. Only one push of a workspace runs at a time, and the tab shows the result of the last one. Only published flows are pushed, and connection values never are.
+Write a commit message and select **Push published flows**. The push runs in the background. Only one push of a Space runs at a time, and the tab shows the result of the last one. Only published flows are pushed, and connection values never are.
 
 ## Pull in production
 
@@ -32,7 +32,7 @@ Write a commit message and select **Push published flows**. The push runs in the
   </Step>
 </Steps>
 
-In a sensitive workspace nothing is published directly. Each changed flow becomes an approval request for a second admin.
+In a sensitive Space nothing is published directly. Each changed flow becomes an approval request for a second admin.
 
 ## Releases and rollback
 

@@ -13,8 +13,8 @@ This page is for the person who runs Collabase. It explains how Studio carries o
 |---|---|
 | **Application** | Serves the editor and the API, accepts triggers and starts runs. |
 | **Run worker** | Part of the application process. It takes runs from the queue and carries out their steps. |
-| **Queue and counters** | Redis. A queue holds runs that wait, and counters limit how many runs of a workspace go at once. |
-| **Database** | Workspaces, flows, versions, runs and the step journal. |
+| **Queue and counters** | Redis. A queue holds runs that wait, and counters limit how many runs of a Space go at once. |
+| **Database** | Spaces, flows, versions, runs and the step journal. |
 | **File storage** | Trigger data, large step results, step logs and files that plugs write. |
 | **Plug sandbox** | A separate service that runs every plug Collabase did not write. See [Studio sandbox](/admin/automation-sandbox). |
 
@@ -27,7 +27,7 @@ Collabase plugs run in the application. Plugs from the catalog and your own plug
     The run exists in the database before it is queued, with its trigger data kept in storage.
   </Step>
   <Step title="A worker takes it">
-    The worker takes a lease on the run and renews it every 10 seconds while a step runs. A workspace may have 10 runs going at once by default. A run that finds its workspace full goes back to the queue after two seconds.
+    The worker takes a lease on the run and renews it every 10 seconds while a step runs. A Space may have 10 runs going at once by default. A run that finds its Space full goes back to the queue after two seconds.
   </Step>
   <Step title="Steps run one after another">
     After every step the worker writes the result to the step journal. A step may run for up to 10 minutes.
@@ -52,11 +52,11 @@ A step in progress at the crash may run twice. Plugs must be safe to repeat. See
 
 ## Concurrency
 
-The limit for one workspace is 10 runs at once by default, and can be set between 1 and 200. It keeps one busy workspace from using all workers. The limit is a counter in Redis, so it holds across all replicas. A slot that a lost worker never gave back frees itself after 30 minutes.
+The limit for one Space is 10 runs at once by default, and can be set between 1 and 200. It keeps one busy Space from using all workers. The limit is a counter in Redis, so it holds across all replicas. A slot that a lost worker never gave back frees itself after 30 minutes.
 
 ## Retention
 
-A daily sweep deletes finished runs that are older than the retention of their workspace, together with their step logs and files. The retention is 30 days by default and can be set between 1 and 365 days in the workspace settings. Runs that are going are never removed. Back up the database and the file storage together, because the step logs and large results are in storage.
+A daily sweep deletes finished runs that are older than the retention of their Space, together with their step logs and files. The retention is 30 days by default and can be set between 1 and 365 days in the Space settings. Runs that are going are never removed. Back up the database and the file storage together, because the step logs and large results are in storage.
 
 ## Settings the services need
 
@@ -73,12 +73,12 @@ The installers create the secrets for a new installation, and the updater adds t
 
 | Where | What it tells you |
 |---|---|
-| **Runs** tab of a workspace | Failed runs, runs that stay paused, and retries. |
-| **Administration, Studio analytics** | Failed runs per day and the average duration, for all workspaces. See [Studio analytics](/admin/automation-analytics). |
+| **Runs** tab of a Space | Failed runs, runs that stay paused, and retries. |
+| **Administration, Studio analytics** | Failed runs per day and the average duration, for all Spaces. See [Studio analytics](/admin/automation-analytics). |
 | The sandbox health address | `ok` or `degraded`. See [Studio sandbox](/admin/automation-sandbox). |
 | **Audit log** | Who installed a plug, changed a limit or connected Git. See [Audit events](/automation/audit-events). |
 
-A flow that fails ten times in a row is switched off, and the editors and admins of its workspace are told.
+A flow that fails ten times in a row is switched off, and the editors and admins of its Space are told.
 
 ## Related
 

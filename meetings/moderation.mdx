@@ -28,6 +28,7 @@ The **Now** block shows the topic that is running and how long it has been runni
 |---|---|
 | **Start the first topic** | Click **Start first open topic**. |
 | **Move to the next topic** | Click **Next topic**. The current topic is marked done and the next open one in agenda order starts. |
+| **Go back one topic** | Click **Previous topic**. The running topic stays open, and the topic before it in agenda order runs again, even if it was already done. The button is greyed out at the first topic. |
 | **Pause** | Click **Pause**. The topic stays open; when you start it again, its time adds up. |
 | **Jump to a topic** | In the agenda list, use the start button next to the topic. A topic can be taken up several times; its times add up. |
 
@@ -37,11 +38,11 @@ The timer runs on the server, not in your browser. If the person running the mee
 
 ### Record while you talk
 
-Below the current topic you record its outcomes and links to work items and pages. Decisions are recorded in the **Decisions on this item** block below the current topic, or in the **Decisions of this meeting** panel, which preselects the current topic. See [Outcomes and decisions](/meetings/decisions).
+Below the current topic you record its tasks and links to work items and pages. Decisions are recorded in the **Decisions on this item** block below the current topic, or in the **Decisions of this meeting** panel, which preselects the current topic. See [Outcomes and decisions](/meetings/decisions).
 
 ### Presentation mode
 
-Click **Presentation** to show only the current topic and its clock in large type, for a shared screen or a projector. Click it again to return to the full view.
+Click **Presentation** for large type on a shared screen or a projector. It shows the current topic with its section, who is responsible (name and photo) and its clock, the tasks recorded for it, and below it the agenda with its sections, who is responsible for each topic and the time each took. You can record tasks in it without leaving. Decisions, links and the attendance list are in the full view. Click **Presentation** again to return.
 
 ## Attendance
 
@@ -74,10 +75,23 @@ If the connection drops, the page shows **Offline, as of** with the time of the 
 
 When the meeting ends:
 
+- A summary opens for the person who ended it. Other people do not see it. See [The summary](#the-summary).
 - A running timer stops.
 - Every linked work item and page is recorded as it stands at this moment. Later, the meeting shows **Changed since the meeting** next to a link whose target has changed.
-- The meeting note is written. See [Meeting note](/meetings/meeting-note).
+- The meeting note is written, where **Docs** is switched on in the meeting's space. See [Meeting note](/meetings/meeting-note).
 - The meeting becomes read-only.
+
+### The summary
+
+The summary shows, in this order:
+
+- **Who attended**, who did not, and whose attendance was not recorded.
+- A link to the meeting note, only where **Docs** is switched on in the meeting's space. While the note is being written, the summary says so.
+- The AI recap, when the note has one.
+- The topics that were not discussed.
+- The tasks that were created, with a link to their work item where there is one.
+
+Click **Done** to close it. It opens once, right after you end the meeting.
 
 ## Reopen a closed meeting {#reopen-a-closed-meeting}
 

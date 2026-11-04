@@ -1,0 +1,56 @@
+---
+title: "SLAs"
+sidebarTitle: "SLAs"
+description: "Define how fast your team answers and resolves requests: SLA policies with start, pause and stop conditions, goals per ticket filter and work calendars."
+icon: "stopwatch"
+---
+
+An **SLA policy** runs one clock per ticket. The clock counts working time only, so a request that arrives on Friday evening does not use up its target over the weekend. You manage policies in **Project settings → Service → SLAs**. You need the project settings right of the service project.
+
+## A policy
+
+A policy has a name, three lists of conditions and its goals.
+
+| Part | What it does |
+|---|---|
+| **Start** | The clock starts when one of these happens |
+| **Pause while** | The clock stands still as long as one of these is true |
+| **Stop** | The clock stops when one of these happens: the goal is met, or missed if time ran out first |
+| **Goals** | The target time, by ticket filter |
+
+A policy needs at least one start and one stop condition. Collabase does not save it without.
+
+### Conditions
+
+| Condition | Use in | Meaning |
+|---|---|---|
+| Ticket is created | Start, Stop | The ticket exists |
+| Status is entered, Status is left | Start, Stop | A named status |
+| Status category is entered | Start, Stop | To do, In progress, Done or Closed |
+| Agent replied to the customer | Start, Stop | A public reply from a colleague |
+| Customer replied | Start, Stop | A reply from the customer |
+| Ticket is assigned | Start, Stop | An assignee is set |
+| Ticket is in status, Ticket is in category | Pause while | The ticket currently sits there, for example "Waiting for customer" |
+
+### Goals
+
+A goal has a **filter**, a **duration in minutes** and a **work calendar**. The goals are read from the top, and **the first goal whose filter matches the ticket applies**. A goal without a filter matches every ticket, so put it last. A ticket that matches no goal gets no clock.
+
+The filter uses the same query language as the queues, for example `priority = highest`. Collabase checks it when you save and shows an error when it does not compile.
+
+## Templates
+
+When you create a policy you can start from a template and change what you need:
+
+- **First response** (named "Erste Antwort" in the Service Desk template) starts when the ticket is created and stops at the first reply from an agent. It comes with goals by priority.
+- **Resolution** starts when the ticket is created and stops when it reaches the Done category.
+
+The templates use the first work calendar of the list. Adjust the durations and calendars to your contract.
+
+## Work calendars
+
+A work calendar holds the working hours per weekday, a time zone and a holiday scheme. Calendars belong to the installation, not to one project, and a project can use several. The calendar **24/7** always exists. A calendar that a goal uses cannot be deleted. You manage calendars in the same tab, below the policies.
+
+## Changing and deleting
+
+A change of conditions or goals raises the version of the policy. Deleting a policy takes it out of the list and the evaluation; results that were reached stay in the history. Every change is written to the audit log with the goals' durations and calendars, but without the text of the filters.

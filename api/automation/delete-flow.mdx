@@ -1,13 +1,13 @@
 ---
 title: "Delete a flow"
-description: "Delete a flow with its versions and runs; the call is recorded in the audit trail of the workspace."
+description: "Delete a flow with its versions and runs; the call is recorded in the audit trail of the Space."
 api: "DELETE /api/v1/automation/flows/{flowId}"
 ---
 
 Deletes the flow, all its versions and its runs. This cannot be undone.
 
 <Info>
-  Scope `automation:write`. The token owner needs the editor role in the workspace of the flow.
+  Scope `automation:write`. The token owner needs the editor role in the Space of the flow.
 </Info>
 
 ```json

@@ -1,0 +1,69 @@
+---
+title: "Lint ratchet"
+sidebarTitle: "Lint ratchet"
+icon: "shield-check"
+description: "The design checks that reject raw colours, radii, shadows and old icons, how the baseline only goes down, and how to opt out of one line with a reason."
+---
+
+The design rules are enforced by `scripts/check-ui-consistency.mjs`. It runs every check of `eslint/ui-consistency-plugin.mjs` over `src/**/*.tsx` and compares the count per check and file with `scripts/ui-baseline.json`.
+
+| Result | Meaning |
+|---|---|
+| More findings than the baseline | The run fails in CI and in the commit hook |
+| The same or fewer | The run passes |
+| A file without a baseline entry | Every finding counts, so new code starts clean |
+
+## Commands {#commands}
+
+| Command | Does |
+|---|---|
+| `npm run lint:ui` | Prints a summary and the files with the most findings |
+| `npm run lint:ui:changed` | Lists every finding in the files of your working tree |
+| `npm run lint:ui:check` | The ratchet over all of `src`, as CI runs it |
+| `npm run lint:ui:update` | Writes the baseline. It refuses to raise a number |
+| `npm run lint:ui:selftest` | Proves each check against known good and bad classes |
+
+After a file is moved or renamed, `lint:ui:update` needs the flag `--allow-increase`, which is the only way a number may rise.
+
+## What a check reads {#checks}
+
+A string counts as a class string only in a class position: JSX `className`, the arguments of `cn`, `clsx` and `cva`, properties named like a class and constants named like one. The vendored editor, `ai-elements`, `magicui`, `animate-ui` and tests are not checked.
+
+| Checks | Enforce |
+|---|---|
+| `table-header`, `table-head-cell`, `table-primitive`, `record-table` | Header constants, no raw `<table>`, `RecordTable` for record lists |
+| `button-size`, `compact-action`, `icon-button`, `dialog-footer` | Button sizes by context, `IconButton` for icon-only actions, both footer buttons large |
+| `hardcoded-surface`, `hover-token`, `brand-legacy`, `raw-palette`, `palette-raw`, `hover-raw`, `status-tint` | Surface and status tokens, one hover fill, callout and status roles |
+| `radius-raw`, `shadow-raw`, `border-width`, `double-edge`, `popup-radius` | Radius and shadow roles, one border |
+| `duration-raw`, `font-heading`, `font-size-raw`, `font-black`, `arbitrary-value`, `z-index`, `inline-style` | Motion steps, Inter and the type roles, tokens instead of arbitrary values |
+| `centered-page`, `page-title`, `page-spinner`, `brand-logo` | Page layout, loading and logo rules |
+| `icon-imports` | Icons come from `@/shared/icons` |
+| `hover-actions`, `eyebrow-title`, `hand-kbd` | Reports of something shared (`RowActions`, `SectionHeader`, `Kbd`) |
+
+Every report names the role to use instead.
+
+## Fix findings in bulk {#fix}
+
+A finding with a safe replacement is fixed by ESLint:
+
+```bash title="Fix one check in a folder"
+npx eslint --fix --rule 'ui/class-strings: [error, {checks: [radius-raw]}]' src/features/tasks
+npx prettier --write src/features/tasks
+```
+
+The fix needs the element, such as a `Button`, a menu or a card, because the right role depends on it. It never changes a condition or a text. The rest is left for a person.
+
+## Opt out of one line {#design-ok}
+
+Put a comment with the check and a reason on the same line or the line before:
+
+```tsx title="Opt-out comment"
+{/* design-ok: raw-palette (status colour of a third-party logo) */}
+```
+
+Use it for a real exception, not to silence a finding. A new check needs cases in `scripts/ui-selftest.mjs`, and a `selftest` that misses a check fails.
+
+## Related {#related}
+
+- [Design tokens and roles](/developer/ui/tokens-and-roles)
+- [Shared building blocks](/developer/ui/building-blocks)

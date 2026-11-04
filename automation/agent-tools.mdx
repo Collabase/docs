@@ -15,24 +15,24 @@ An [agent](/automation/agents) holds its own tools. You pick them in the skill c
 |---|---|
 | **Search knowledge** | Search what the workspace's service account may read and get the best matches, with their titles. |
 | **Collabase AI skill** | Use a skill of Collabase AI, for example to find or change work items and pages. A skill that changes data always asks first. |
-| **Start a flow** | Start an enabled flow of the same workspace and get the run id back. |
+| **Start a flow** | Start an enabled flow of the same Space and get the run id back. |
 | **Plug action** | Run one action of a Collabase plug or of an installed plug. |
 | **MCP server** | Use the tools of an external MCP server. |
 
 ### Search knowledge {#search-knowledge}
 
-The tool searches pages and other content that the service account of the workspace may read, never more. It returns up to five matches with a short text. An administrator must have configured an embedding model under [AI configuration](/admin/ai-configuration), otherwise the tool reports that the search is not available.
+The tool searches pages and other content that the service account of the Space may read, never more. It returns up to five matches with a short text. An administrator must have configured an embedding model under [AI configuration](/admin/ai-configuration), otherwise the tool reports that the search is not available.
 
 ### Start a flow
 
-Use a flow tool for steps that must run the same way every time. The agent chooses *when* to run the flow and what data to give it, and the flow decides the steps. The flow must be switched on and in the same workspace.
+Use a flow tool for steps that must run the same way every time. The agent chooses *when* to run the flow and what data to give it, and the flow decides the steps. The flow must be switched on and in the same Space.
 
 ### Plug action
 
 Choose an action from the list of plugs. The agent sees what the action asks for, as the plug describes it, and fills in the inputs.
 
 - For a **Collabase plug**, the action runs with the rights of the workspace's service account.
-- For an **installed plug** that signs in to another system, choose a **connection**. Collabase reads the connection of this workspace when the tool is used. The agent never sees the credentials.
+- For an **installed plug** that signs in to another system, choose a **connection**. Collabase reads the connection of this Space when the tool is used. The agent never sees the credentials.
 - Inputs you set in **Fixed inputs** are hidden from the agent and cannot be changed by it.
 
 An action that waits, such as **Ask for approval**, cannot be a tool.
@@ -63,7 +63,7 @@ On the **Tools** card of an agent, **Add skills** opens the skill center instead
 | **Connected servers** | The [MCP servers](/admin/mcp-servers) that an administrator connected, with their single tools. |
 | **Custom MCP server** | A server that you name by its `https` address. |
 
-An agent is not tied to one automation workspace, so two things differ from a flow step. It has no connections to choose, which means a plug action that signs in to another system is not usable. And it cannot start a flow as a tool. Both stay possible in the **Tools** input of an Agent step. In a chat, an agent uses only search, Collabase AI skills and MCP servers without a login. See [The agent editor](/automation/agent-editor#tools).
+An agent is not tied to one Automation workspace, so two things differ from a flow step. It has no connections to choose, which means a plug action that signs in to another system is not usable. And it cannot start a flow as a tool. Both stay possible in the **Tools** input of an Agent step. In a chat, an agent uses only search, Collabase AI skills and MCP servers without a login. See [The agent editor](/automation/agent-editor#tools).
 
 ## Approval
 

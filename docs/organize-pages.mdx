@@ -1,19 +1,75 @@
 ---
 title: "Organize pages"
-description: "Nest and reorder pages in the page tree, move them to another Space, group them in folders, archive old content and delete pages."
-keywords: ["page tree", "move page", "reorder pages", "nest pages", "child page", "parent page", "folder", "archive", "archived pages", "restore archived page", "trash", "delete page", "space content", "content map"]
+description: "Create, search, reorder, move, rename, archive and delete pages in the page tree, and use the page menu on every row."
+keywords: ["page tree", "page menu", "right-click menu", "search page tree", "copy link", "move up", "move down", "duplicate page", "move page", "reorder pages", "nest pages", "child page", "parent page", "folder", "archive", "archived pages", "restore archived page", "trash", "delete page", "space content", "content map"]
 ---
 
-The page tree is the table of contents of a Space. This page shows how to arrange pages in it, how to move pages between Spaces, and what happens when you archive or delete a page.
+The page tree is the table of contents of a Space. This page shows how to create, find and arrange pages in it, how to move pages between Spaces, and what happens when you archive or delete a page.
 
 ## The page tree {#page-tree}
 
 Click **Docs** in the left rail. The panel **Documents** opens next to it with the page tree of the current Space.
 
 - Click the arrow in front of a page to show or hide its subpages.
-- Type in **Search...** at the top of the panel to filter the tree by title.
-- Click **Create Page** at the top of the panel to add a page at the top level.
-- A folder has an extra icon, **Open folder view**, that opens the folder as a page.
+- Type in **Search pages** at the top of the panel to filter the tree by title, see [Search the page tree](#search).
+- Click **+** at the top of the panel to create a page, a folder or a whiteboard, see [Create pages in the tree](#create).
+- Point at a row to show two buttons at its end: **+** (**Create below this page**) and **...** (**Page actions**). A folder also has **Open folder view**, which opens the folder as a page.
+- Right-click a row to open the same menu as **...**, see [The page menu](#page-menu).
+
+## Create pages in the tree {#create}
+
+The **+** buttons need the right to create pages in the Space, see [Permissions](/concepts/permissions). Without it they are not shown.
+
+<Steps>
+  <Step title="Choose where it goes">
+    Open the page that should hold the new one, or open none to work at the top level. Click **+** at the top of the panel to create below the open page. Click **+** (**Create below this page**) on a row to create below that page.
+  </Step>
+  <Step title="Choose the kind">
+    Click **Page**, **Folder** or **Whiteboard**. The branch of the parent page opens, and the new row appears in the tree.
+  </Step>
+  <Step title="Name it">
+    A page or whiteboard opens in edit mode with the title **Unnamed Page** or **Whiteboard**. A folder stays in the tree with its name field open: type the name and press **Enter**.
+  </Step>
+</Steps>
+
+If the page cannot be created, the row disappears again and a message says so.
+
+## Search the page tree {#search}
+
+Type in **Search pages** above the tree. The filter starts with the first character and runs in your browser, so it does not wait for the server.
+
+- The tree shows the pages whose title contains your text, together with all pages above them. The branches open so that every hit is visible, and the matching text is highlighted.
+- Upper and lower case and accents do not matter: **ubersicht** finds **Übersicht**, and **ecole** finds **École**.
+- Press **Escape** or click **Clear search** to leave the search. The tree is as you left it before, with the same branches open.
+- If no page matches, the panel says **No pages found**.
+
+The search covers the titles of the pages you can see. Pages you may not open are not listed, not even as a parent. To search the content of pages, use the global search, see [Search](/concepts/search).
+
+## The page menu {#page-menu}
+
+Every page row has one menu. Open it with **...** at the end of the row or by right-clicking the row. The same menu is in the **...** at the top right of an open page and in the list of pages inside a folder.
+
+| Entry | What it does |
+|---|---|
+| **Rename** | Edits the title in the row, see [Rename a page in the tree](#rename). Not shown in the menu of an open page or a folder view. |
+| **Copy link** | Copies the link to the page and confirms with **Link copied**. |
+| **Move…** | Opens the move dialog, see [Move a page to another place](#move). |
+| **Move up** / **Move down** | Swaps the page with its neighbour on the same level. Off for the first and the last page of a level. |
+| **Duplicate** | Copies the page next to the original with **(Copy)** after its title and the status **Draft**. Subpages are not copied. |
+| **Archive** | Opens the archive dialog, see [Archive a page](#archive). |
+| **Delete** | Asks for confirmation and moves the page and its subpages to the trash, see [Delete a page](#delete). |
+
+The menu of an open page also has **Share with guests** (when the page can be shared), **Attachments** and **Export**, between **Duplicate** and **Archive**.
+
+An entry you may not use stays in the menu but is dimmed. Point at it to see why.
+
+| Entry | You need |
+|---|---|
+| **Rename**, **Move up**, **Move down**, **Duplicate** | The right to edit the page |
+| **Move…** | The right to move pages in the Space, and to edit the page |
+| **Archive**, **Delete** | The right to delete pages in the Space |
+
+Guests see only **Copy link**. The rights come from your role in the Space, see [Permissions](/concepts/permissions). A page with its own access list can still refuse an action, and the page then returns to its place with a message.
 
 ## Reorder and nest pages {#reorder-and-nest}
 
@@ -25,19 +81,23 @@ Drag a page in the tree and drop it where it belongs.
 | On the middle of a page | The page becomes a subpage of it. Any page can hold subpages, not only folders. |
 | On the empty area below the tree | The page moves to the top level of the Space |
 
-Subpages move with their parent. Reordering and nesting need the right to move pages in the Space, see [Permissions](/concepts/permissions).
+Subpages move with their parent. Nesting a page under another one needs the right to move pages in the Space, see [Permissions](/concepts/permissions).
+
+To change the place of a page by one step, use **Move up** or **Move down** in the [page menu](#page-menu). A step among the pages of the same level needs only the right to edit the page.
 
 ## Rename a page in the tree {#rename}
 
-Double-click the page title in the tree, type the new title and press **Enter**. The right-click menu of a page also has a rename entry with a pencil icon. To rename a page you have open, see [Pages](/docs/pages#title-and-icon).
+Double-click the page title in the tree, or click **Rename** in the [page menu](#page-menu). Type the new title and press **Enter**. Press **Escape** to keep the old title.
+
+A title cannot be empty: the message **A page needs a title.** appears and the old title stays. If the save fails, the old title comes back with the message **The page could not be renamed.** To rename a page you have open, see [Pages](/docs/pages#title-and-icon).
 
 ## Move a page to another place {#move}
 
-Use **Move Page** to move a page to a parent far away in the tree, or to another Space.
+Use **Move…** to move a page to a parent far away in the tree, or to another Space.
 
 <Steps>
   <Step title="Open the move dialog">
-    Open the page, click the **...** menu at the top right and click **Move Page**. In the tree you can also right-click the page and click **Move**.
+    Open the page, click the **...** menu at the top right and click **Move…**. In the tree, click **...** on the row or right-click the page and click **Move…**.
   </Step>
   <Step title="Choose the Space">
     Under **Target Space**, pick the Space the page should go to. The current Space is selected by default.
@@ -62,17 +122,17 @@ A folder groups pages under one heading and can restrict who sees them.
 
 <Steps>
   <Step title="Create the folder">
-    Click **Create**, then **Folder**. A folder called **New Folder** appears at the top level of the page tree.
+    Click **+** above the tree, then **Folder**, as described in [Create pages in the tree](#create). Type the name and press **Enter**.
   </Step>
   <Step title="Name and describe it">
-    Click **Open folder view** next to the folder in the tree. Double-click the title to rename it, and click **Add description** to say what belongs in it.
+    Click **Open folder view** next to the folder in the tree. Click **Add description** to say what belongs in it. To rename the folder later, double-click it in the tree.
   </Step>
   <Step title="Add pages">
     Click **Create Page** in the folder view to create a page inside it, or drag existing pages onto the folder in the tree.
   </Step>
 </Steps>
 
-The folder view lists the pages inside the folder. It also has **Copy link**, a banner image and **Permissions**, which restricts the folder to selected people and groups, see [Restrict access to pages](/docs/page-restrictions).
+The folder view lists the pages inside the folder, each row with the same [page menu](#page-menu) except **Rename**. It also has **Copy link**, a banner image and **Permissions**, which restricts the folder to selected people and groups, see [Restrict access to pages](/docs/page-restrictions).
 
 ## Archive a page {#archive}
 
@@ -80,7 +140,7 @@ Archive a page when its content is outdated but should not be lost. An archived 
 
 <Steps>
   <Step title="Open the archive dialog">
-    Open the page, click the **...** menu at the top right and click **Archive**.
+    Open the page, click the **...** menu at the top right and click **Archive**. In the tree, use **...** on the row or right-click the page.
   </Step>
   <Step title="Give a reason">
     Enter a **Reason for archiving**, for example "Project completed". The reason is required and is shown later in the list of archived pages.
@@ -115,14 +175,14 @@ Archived pages are listed in the space settings. You need access to the space se
 
 <Steps>
   <Step title="Delete the page">
-    Open the page, click the **...** menu at the top right and click **Delete**. In the tree you can also right-click the page and click **Delete**.
+    Open the page, click the **...** menu at the top right and click **Delete**. In the tree, use **...** on the row or right-click the page.
   </Step>
   <Step title="Confirm">
-    From the **...** menu, the dialog **Delete Page?** opens: click **Move to Trash**. From the tree, the dialog **Delete page?** opens: click **Delete**. In both cases the page and all its subpages move to the trash.
+    The dialog **Delete page?** opens and names the page. If the page has subpages, it also gives their number. Click **Delete**: the page and all its subpages move to the trash. Click **Cancel** to keep them.
   </Step>
 </Steps>
 
-Deleted pages go to the trash of your Collabase instance. Only an administrator can restore a page from the trash or empty it. Ask your administrator if you deleted a page by mistake.
+If you delete the page you have open, or a page above it, Collabase takes you to your home page. Deleted pages go to the trash of your Collabase instance. Only an administrator can restore a page from the trash or empty it. Ask your administrator if you deleted a page by mistake.
 
 ## A page's way from draft to deletion {#lifecycle}
 

@@ -1,0 +1,73 @@
+---
+title: "Customer portal"
+sidebarTitle: "Portal"
+description: "Customers submit requests in the portal of a service project and get a confirmation by email."
+icon: "browser"
+---
+
+Every service project has a portal. Customers sign in there, choose what they need and submit a request. The request arrives in the service project as a work item, with the customer as its **requester**.
+
+## Who can submit
+
+- **Customers** with access to the portal, granted to them or to their organization.
+- **People of your team** who can open the service project. While the portal is off they see it as a preview, so you can try a request form before customers can.
+
+Anyone else, guests included, gets "not found". Submitting without signing in is not possible.
+
+## Portal home
+
+Customers who open `/portal` see **Your portals**: one tile for every portal they can enter, whether access was granted to them or to their organization. Each tile shows the logo (or the first letter of the name), the portal name and its greeting. Select a tile to open that portal.
+
+A customer without access to any portal sees a short note instead. Signed-out visitors are sent to the sign-in and come back to the overview. After signing in, customers always land on this overview, also when they have only one portal.
+
+## Submit a request
+
+<Steps>
+  <Step>Open the portal and choose **Submit a request**.</Step>
+  <Step>Pick what you need. The list shows the active request forms of the project.</Step>
+  <Step>Fill in a **Summary**, the **Details** and the fields of the form. Required fields are checked before the request is sent, and again by Collabase.</Step>
+  <Step>Add files with **Add files** if needed. Each file may be up to 25 MB, at most 10 files per request.</Step>
+  <Step>Choose **Submit request**.</Step>
+</Steps>
+
+The portal then opens the request with its key, and the customer gets an email **We received your request** with the key and a link back to the portal.
+
+Clicking **Submit request** twice creates one request, not two.
+
+## What the team sees
+
+The request is a work item of the service project:
+
+| Value | Comes from |
+|---|---|
+| Title and description | Summary and details of the customer |
+| Work item type, priority, preset field values | The request form |
+| Requester | The customer who submitted it |
+| Organization | The customer's organization at the time of the request |
+| Attachments | The files the customer added |
+
+Fields that point at people, related work items or registry objects are not shown in the portal, because customers cannot see those records. Agents fill them in on the work item.
+
+## Follow a request
+
+Open a request from **My requests** to read its timeline, reply to the team and see its status. Customers see the **portal name** of each status, which can differ from the name the team works with, and only the public replies of the team. Internal notes never reach the portal. **Share** gives colleagues you name, or your whole organization, access to the request. You can take a share back at any time.
+
+## Your organization
+
+A customer who is **organization admin** sees **Organization** in the portal header. There they invite colleagues from the mail domains of the organization, make a colleague organization admin, remove the role again or remove a colleague from the organization. An organization always keeps at least one organization admin.
+
+## Your profile
+
+Select your picture at the top right to open a menu with your name and email, **Profile and settings**, **Appearance** (light, dark or system), **Language** and **Sign out**. The profile page at `/portal/profile` has five sections:
+
+- **Profile**: change your display name. Your email address is your sign-in and is shown only.
+- **Appearance and language**: both apply to you alone.
+- **Password**: change your password. The password requirements of your administrator apply, and your other sessions end.
+- **Notifications**: switch emails about your requests on or off.
+- **Affiliation**: your organization and the portals you can open, shown for reference.
+
+## Good to know
+
+- A request form that is switched off while a customer fills it in can no longer be submitted. The portal says so and shows the other forms.
+- Requests from the earlier portal that were sent with only an email address keep that address and have no requester. They stay visible to your team only.
+- Request forms can hold any fields you define. Ask only for what you need to handle the request, and avoid sensitive personal data.

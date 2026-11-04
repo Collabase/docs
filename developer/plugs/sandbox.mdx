@@ -13,13 +13,13 @@ Plugs run in a separate service that is built to contain code that Collabase did
 |---|---|
 | The internet, to call the other system | Your database, your cache or other internal services of the instance |
 | Public addresses | Private addresses: the plug process blocks ranges such as `10.x`, `192.168.x`, `127.x` and the cloud metadata address |
-| The Collabase engine address, for its own calls such as the store, files and the connection of the step | Application secrets, the secrets of another workspace |
+| The Collabase engine address, for its own calls such as the store, files and the connection of the step | Application secrets, the secrets of another Space |
 
 A plug that has to reach a system in your own network cannot do it from the sandbox. Offer the system a public, protected address, or send events to a webhook flow from inside your network.
 
 ## What a plug receives
 
-Each call gets one short-lived token for one workspace and the connection of the step that is running. The token allows the store, files and the connections that the step names, and nothing else.
+Each call gets one short-lived token for one Space and the connection of the step that is running. The token allows the store, files and the connections that the step names, and nothing else.
 
 ## Time, memory and files
 

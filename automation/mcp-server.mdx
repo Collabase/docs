@@ -2,10 +2,10 @@
 title: "MCP server"
 sidebarTitle: "MCP server"
 icon: "plug"
-description: "Connect Claude, Cursor or your own agent to the flows of a workspace: the endpoint, the four tools, who may do what and how to release a flow for clients."
+description: "Connect Claude, Cursor or your own agent to the flows of a Space: the endpoint, the four tools, who may do what and how to release a flow for clients."
 ---
 
-Every automation workspace has an MCP endpoint. An AI client that speaks MCP can list the workspace's flows, start them, follow their runs and create drafts. It acts as the person who connected it.
+Every Automation workspace has an MCP endpoint. An AI client that speaks MCP can list the Space's flows, start them, follow their runs and create drafts. It acts as the person who connected it.
 
 <Note>
   This page is about clients that connect to Collabase. To let CollabaseAI and agents use the tools of another system, an administrator connects [MCP servers](/admin/mcp-servers). In an agent, you can add such a server in the skill center. See [Agent tools](/automation/agent-tools#tools-of-an-agent).
@@ -23,7 +23,7 @@ The endpoint uses the same sign-in as the main MCP endpoint of Collabase. On fir
 
 <Steps>
   <Step title="Copy the address">
-    Take the workspace id from the address of the workspace in Collabase and put it into the endpoint above.
+    Take the Space id from the address of the Space in Collabase and put it into the endpoint above.
   </Step>
   <Step title="Add it to the client">
     Add the address as an MCP server in the client's settings, such as `.cursor/mcp.json` for Cursor or the connector settings of Claude.
@@ -37,7 +37,7 @@ The endpoint uses the same sign-in as the main MCP endpoint of Collabase. On fir
 
 | Tool | What it does | Role needed |
 |---|---|---|
-| `list_flows` | Lists the flows of the workspace with their status. | Viewer |
+| `list_flows` | Lists the flows of the Space with their status. | Viewer |
 | `get_run` | Shows the status of one run and what its failed step reported. A run that is still going shows as running. | Viewer |
 | `start_flow` | Starts a published flow once. It returns the run id at once, and the run goes on after the call. | Editor |
 | `create_flow_draft` | Creates an unpublished draft from installed plug actions. | Editor |
@@ -52,7 +52,7 @@ A client may start only the flows you have released. Open a flow and switch on *
 
 - It cannot publish a flow or switch one on.
 - It cannot read the content of a connection or a variable.
-- It cannot reach another workspace than the one in the address.
+- It cannot reach another Space than the one in the address.
 
 ## Related
 

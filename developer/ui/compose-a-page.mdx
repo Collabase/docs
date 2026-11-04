@@ -1,0 +1,81 @@
+---
+title: "Compose a page"
+sidebarTitle: "Compose a page"
+icon: "layout-template"
+description: "Build a settings page, a record list, a detail dialog and an empty state from the shared parts so a new screen matches the rest of Collabase."
+---
+
+A new screen is assembled from shared parts. You write the data and the text, the parts carry the look.
+
+## Settings and admin pages {#settings}
+
+Everything under `/settings` and `/admin` is composed from `SettingsPage`, `SettingsSection`, `SettingsRows` and `SettingsRow`.
+
+| Part | Job |
+|---|---|
+| **`SettingsPage`** | Title, description, `actions`, `backLink` and `width`: `narrow` (728px), `wide` (1024px) or `full` |
+| **`SettingsSection`** | A titled block with an optional `action` |
+| **`SettingsRows`**, **`SettingsRow`** | Label and control per row |
+| **`SettingsSkeleton`** | The loading shape of the page |
+
+Tabs on these pages are underlined and carry a count badge. Edit and configuration forms open as a popup, never as a sheet.
+
+## Popups {#dialogs}
+
+Build a popup from the `SettingsDialog` parts.
+
+| Part | Job |
+|---|---|
+| **`SettingsDialogContent`** | The frame, with `size` of `sm`, `md` or `lg` |
+| **`SettingsDialogHeader`** | Title, description, an optional leading icon tile and a suffix badge |
+| **`SettingsDialogBody`** | The scrolling content with one padding |
+| **`SettingsDialogFooter`**, **`SettingsDialogSaveFooter`** | Both buttons at `size="lg"`, cancel as `outline` |
+
+A dialog is for a decision with consequences. Change a single value in place instead.
+
+## Lists of records {#lists}
+
+A list of registry objects, work items, projects or time entries is a `RecordTable` from `src/shared/components/record-table/`. It brings the header with field icons, the rows, the faint grid and the count under the list. Import its parts, not its class constants. The check `record-table` reports a hand-built `<Table>`. A table that is not a record list says so with `design-ok: record-table (reason)`.
+
+## Detail of one object {#detail}
+
+Open an object in a `DetailDialog` with `DetailMain` for the content and `DetailAside` for the properties. A full page uses the same two columns. The dialog gets `title`, `onClose`, optional `browse` controls and `actions` from the feature.
+
+## Empty states {#empty}
+
+```tsx title="An empty area and an empty result"
+<EmptyState
+  illustration="documents"
+  title={t("Features.Docs.emptyTitle")}
+  description={t("Features.Docs.emptyDescription")}
+  primaryAction={canCreate ? <BrandButton>{t("Common.create")}</BrandButton> : undefined}
+/>
+
+<EmptyState variant="result" title={t("Common.noResults")} />
+```
+
+Pass the action only where the person may use it today. The shell holds no rights check.
+
+## Checklist for a new page {#checklist}
+
+<Steps>
+  <Step title="Pick the template">
+    Settings, list, board, detail or dashboard. Reuse the part from the table above.
+  </Step>
+  <Step title="Show the three states">
+    Add a skeleton of the final shape, an empty state and an error state.
+  </Step>
+  <Step title="Check light, dark and a second preset">
+    Open the page in light and dark and in the default preset and one other.
+  </Step>
+  <Step title="Run the design check">
+    Run `npm run lint:ui:changed` and fix every finding. See [Lint ratchet](/developer/ui/lint-ratchet).
+  </Step>
+</Steps>
+
+`npm run list:pages` lists every page route with the template it most likely uses, for acceptance checklists.
+
+## Related {#related}
+
+- [Shared building blocks](/developer/ui/building-blocks)
+- [Design tokens and roles](/developer/ui/tokens-and-roles)

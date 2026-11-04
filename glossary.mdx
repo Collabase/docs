@@ -184,7 +184,7 @@ A gate ends a [phase](#phase) with a set of exit criteria that a person reviews 
 
 ### Global module
 
-A global module is an app that is not tied to a Space: Registry, Studio, Intranet and Time Reports. Access to a global module is granted to groups per module under **Admin → Roles & App Access**. [Read more about permissions](/concepts/permissions).
+A global module is an app that is not tied to a Space: Registry, Studio, Intranet and Times. Access to a global module is granted to groups per module under **Admin → Roles & App Access**. [Read more about permissions](/concepts/permissions).
 
 ### Governed workflow
 
@@ -209,6 +209,10 @@ A holiday scheme is a named list of non-working days for a country, region and c
 ### Identity provider {#identity-provider}
 
 An identity provider is the system your team already uses to sign in, such as Microsoft Entra ID, Okta, Keycloak or Google. Collabase connects to identity providers through OAuth, SAML, LDAP and SCIM, under **Admin → Identity Providers**. Email and password sign-in stays available as a fallback. [Read more about identity providers](/admin/identity-providers).
+
+### Initiative {#initiative}
+
+An initiative is a theme or goal on a [roadmap](#roadmap) that you plan with a period, a status and an owner. It can link projects, work items, portfolios and pages. A project has no initiatives: an initiative sits one level above and points at projects. [Read more about roadmaps](/planning/roadmaps).
 
 ### Inline comment {#inline-comment}
 
@@ -302,7 +306,7 @@ A phase is a stage a project runs through, such as initiation, concept or realis
 
 ### Planner {#planner}
 
-The Planner shows, for the next four weeks, how much time each person or team has and how much work is planned for them, across every project. It needs the app right **Planner** and opens under **Times → Planner**. [Read more about the Planner](/planning/planner-capacity).
+The Planner shows, for the next four weeks, how much time each person or team has and how much work is planned for them, across every project. It needs the app right **Times** and opens under **Times → Planner**. [Read more about the Planner](/planning/planner-capacity).
 
 ### Portfolio {#portfolio}
 
@@ -318,7 +322,7 @@ Your profile holds your name, job title, language, notification settings, passwo
 
 ### Programme {#programme}
 
-A programme is a [portfolio](#portfolio) that sits under another portfolio. Portfolios nest without a depth limit. [Read more about how portfolios are structured](/planning/portfolios#hierarchy).
+A programme is simply a [portfolio](#portfolio) that sits under another portfolio, with the same screen and the same features. Portfolios nest without a depth limit. [Read more about how portfolios are structured](/planning/portfolios#hierarchy).
 
 ### Project
 
@@ -357,6 +361,10 @@ A restricted zone is a folder or page with its own access restrictions. **Zones*
 The risk register lists what could go wrong in the projects of a Space, rated by probability and impact on a 3 by 3 matrix. Risks are Registry Objects, and each can name an owner, a project and the work item that handles it. [Read more about the risk register](/projects/risks).
 
 ## S {#s}
+
+### Roadmap {#roadmap}
+
+A roadmap plans [initiatives](#initiative) over time across projects, portfolios, work items and pages. Dates are set by hand and nothing is calculated. It does not replace the [Timeline](#timeline) of a project. [Read more about roadmaps](/planning/roadmaps#roadmap-or-timeline).
 
 ### SAML {#saml}
 
@@ -482,7 +490,7 @@ Time Tracking lets your team log hours against tasks and projects, submit monthl
 
 ### Timeline {#timeline}
 
-The Timeline tab of a project shows each work item with dates as a bar on a calendar. You drag bars to reschedule, draw arrows for what blocks what, and see cycles, phases and milestones in the same picture. [Read more about the Timeline](/projects/roadmap).
+The Timeline tab of a project shows each work item with dates as a bar on a calendar. You drag bars to reschedule, draw arrows for what blocks what, and see cycles, phases and milestones in the same picture. It plans one project and can calculate the critical path; a [roadmap](#roadmap) is the overview across projects. [Read more about the Timeline](/projects/timeline).
 
 ### Timesheet
 

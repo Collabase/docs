@@ -1,0 +1,38 @@
+---
+title: "Shared building blocks"
+sidebarTitle: "Building blocks"
+icon: "blocks"
+description: "The shared components of the Collabase interface, which one to use for a status, tag, date, empty state, detail view or list, and where each one lives."
+---
+
+Reuse before you write. A second copy of any component below is a review finding. Most live in `src/shared/components/`.
+
+| You need | Use | Notes |
+|---|---|---|
+| A state label such as a status or workflow colour | `StatusPill` | Uses the `ui-status` role and darkens its text to 4.5:1 contrast on its own fill. Never a hand-tinted badge |
+| A tag, a label chip or a priority | `TagPill` | Uses `ui-tag`. `PriorityChip` is built on top of it |
+| A date | `DateLabel` | Inline or field variant, and overdue is computed in the person's day |
+| A section title | `SectionHeader` | Also used inside `SettingsSection` |
+| Actions that appear on hover | `RowActions`, `RowActionsReveal` | Visible on hover and keyboard focus with a fine pointer, always visible on touch |
+| An action menu on a row | `ActionMenuDropdown` through `RowActions` | |
+| The detail of one object | `DetailDialog` with `DetailMain` and `DetailAside` | Close, browse and full page in the top right corner |
+| An empty list, board or tab | `EmptyState` | Variant `area` has an illustration, variant `result` is one line |
+| A person | `PersonPicker`, `PersonAvatar` | Avatar with the profile image |
+| A list of records | `RecordTable` | `src/shared/components/record-table/` |
+| A settings or admin page | `SettingsPage`, `SettingsSection`, `SettingsRows`, `SettingsSkeleton` | See [Compose a page](/developer/ui/compose-a-page) |
+
+## Rules that apply to all of them {#rules}
+
+- A block holds no rights logic. The page decides what to pass, for example the action of an `EmptyState`, and the block renders it.
+- Row actions appear on hover and on keyboard focus, so a person without a mouse reaches them. The lint check `hover-actions` reports a hand-built reveal.
+- Primitives from the shadcn registry live in `src/components/ui/`. A feature never redefines one. The class strings of an installed component may set tokens and roles, and its structure and behaviour stay as the registry has them.
+- Feature code never imports another feature. Code used by two features moves to `src/shared/` or `src/core/`.
+
+## Sign-in page {#sign-in}
+
+The sign-in page has two designs: a centred card on the mesh gradient (`ui-mesh`) and a two-column split with a wallpaper. Both read the same tokens and the same form.
+
+## Related {#related}
+
+- [Design tokens and roles](/developer/ui/tokens-and-roles)
+- [Lint ratchet](/developer/ui/lint-ratchet)

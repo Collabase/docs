@@ -48,10 +48,10 @@ An OAuth plug needs an **OAuth app** for its provider, which an administrator re
 
 ## Rules
 
-- A connection is the credential of the step that runs. A plug never sees the connections of another step or another workspace.
+- A connection is the credential of the step that runs. A plug never sees the connections of another step or another Space.
 - Credentials never appear in a run log: Collabase hides every value of the connection in the log of the step, even when the plug echoes it.
 - Do not put a credential into an error message. Error messages reach the run log.
-- A connection that stops working is marked **Invalid** and the admins of the workspace are told. Throw an error with a clear message when the other system refuses the credentials.
+- A connection that stops working is marked **Invalid** and the admins of the Space are told. Throw an error with a clear message when the other system refuses the credentials.
 
 ## Related
 

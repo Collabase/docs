@@ -1,10 +1,10 @@
 ---
 title: "Create a flow"
-description: "Create an empty flow, one from a template or one from an imported definition in an automation workspace."
+description: "Create an empty flow, one from a template or one from an imported definition in an Automation workspace."
 api: "POST /api/v1/automation/flows"
 ---
 
-Creates a flow with a draft. The token owner needs the editor role in the workspace.
+Creates a flow with a draft. The token owner needs the editor role in the Space.
 
 <Info>
   Scope `automation:write`.
@@ -13,7 +13,7 @@ Creates a flow with a draft. The token owner needs the editor role in the worksp
 ## Body
 
 <ParamField body="workspaceId" type="string" required>
-  The workspace.
+  The Space.
 </ParamField>
 
 <ParamField body="source" type="string" required>

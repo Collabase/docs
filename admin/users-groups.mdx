@@ -126,9 +126,13 @@ Some Collabase modules are instance-wide — not tied to any space. Access to th
 | **Collabase Core** | Admin, User | Admin: administers Collabase, that is users, groups, settings and every app. User: works in Collabase with the spaces and projects the person is given. The higher of the group role and the role on the account applies, so a group can raise a member to Administrator but never lowers one. Guests stay guests. |
 | **Registry** | Admin, User | Admin: create/delete schemas, global operations. User: access the Registry, with individual schema permissions controlling what they see. |
 | **Intranet** | Admin | Admin: create and manage content, configure settings. All logged-in users can read Intranet content without a group assignment. |
-| **Time Reports** | Admin, Manager | Admin: view all time across all users. Manager: view time from spaces where they are a space member. Without a group assignment, users see only their own time. |
+| **Times** | User, Manager, Admin | The roles build on each other. User: My times, Reviews as a reviewer and the Planner. Manager: also Time Reporting for the spaces they manage. Admin: also all time reports and the billing settings. Without a role on Times, the app does not appear in the sidebar. |
 
 Studio does not use group-based module roles yet.
+
+<Note>
+  Times replaces the two former apps **Time Reports** and **Planner**. After the upgrade, only groups that had one of them keep access to Times: a group with Time Reports becomes Manager or Admin, a group with only Planner becomes User, and the higher role applies when a group had both. Grant the **Times** app to every other group that should use it.
+</Note>
 
 ### Assigning module access to a group
 

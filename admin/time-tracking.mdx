@@ -24,10 +24,15 @@ This page covers all admin-level configuration for the Time Tracking module. All
 
 ## Permissions
 
-Time tracking access is divided across three levels:
+What a person can do depends on their role on the **Times** app. You grant the role to a group under **Admin → Roles & App Access** (see [Users and groups](/admin/users-groups)). A person holds the highest role of all their groups, and without a role the Times app does not appear in the sidebar. Booking time on a work item depends on the person's rights in that space, not on the Times app.
 
-| Role | What they can do |
+| Times role | What they can do |
 |---|---|
+| **User** | Log time, view and edit their own entries (while the period is in DRAFT), submit their monthly timesheet, view their own reports, and use the Planner. A user who is the **team lead** of a team (set under **Admin → Time Tracking → Teams**) also approves and rejects timesheets for the members of that team, and no others. |
+| **Manager** | Everything a User can do, plus Time Reporting for the spaces they manage. |
+| **Admin** | Full access: manage all admin settings, approve timesheets for any user, and view all entries in reports regardless of who logged them. |
+
+---|---|
 | **All users** | Log time, view and edit their own entries (while the period is in DRAFT), submit their monthly timesheet, and view their own reports. |
 | **Team Leads** | Everything a user can do, plus approve and reject timesheets for their own team members. Cannot approve timesheets outside their team. |
 | **Admins** | Full access — create and manage all admin settings, approve timesheets for any user, and view all entries in reports regardless of who logged them. |

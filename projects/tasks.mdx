@@ -16,7 +16,7 @@ A task represents a single unit of work — a feature request, bug report, suppo
 | **Status** | Current workflow state (e.g., Todo, In Progress, In Review, Done). Configured per project. |
 | **Type** | Task type: Task, Bug, Story, Epic, or custom types defined by your admin. Change it in the detail view; see [Change the type](#change-the-type). |
 | **Priority** | **Blocker**, **Highest**, **High**, **Medium** or **Low**. |
-| **Assignee** | The team member responsible for the task. |
+| **Assignee** | The team member responsible for the task. The picker lists **Assign to me** first, and `I` on an open work item does the same. |
 | **Reporter** | Who created or submitted the task. Set automatically on creation. |
 | **Parent** | Links this task as a subtask under a parent task. |
 | **Cycle** | The [cycle](/projects/sprints) this task belongs to. Empty means it is in the backlog. |
@@ -24,7 +24,7 @@ A task represents a single unit of work — a feature request, bug report, suppo
 | **Story Points** | Numeric effort estimate used for sprint velocity tracking. |
 | **T-shirt Size** | Relative size estimate: XS, S, M, L, XL, XXL. |
 | **Time Estimate** | Planned effort in hours. |
-| **Start Date** | When work on the task is expected to begin. Used on the [Timeline](/projects/roadmap). |
+| **Start Date** | When work on the task is expected to begin. Used on the [Timeline](/projects/timeline). |
 | **Due Date** | Deadline. Overdue tasks are flagged in all views. |
 | **Labels** | Free-form tags for filtering and grouping. |
 | **Description** | Full rich-text body — supports headings, code blocks, images, tables, callouts, and mentions. |
@@ -115,7 +115,7 @@ Relations show how work items depend on each other. Open a work item, go to **Re
 | **Relates to** | Related context, no dependency | **Relates to** |
 | **Duplicates** | This work item repeats the other | **Is duplicated by** |
 
-**Blocks** relations appear as arrows on the [Timeline](/projects/roadmap#dependencies), where you can also draw them. Adding relations needs the **Link task** permission.
+**Blocks** relations appear as arrows on the [Timeline](/projects/timeline#dependencies), where you can also draw them. Adding relations needs the **Link task** permission.
 
 ### Relation graph {#relation-graph}
 

@@ -3,7 +3,7 @@ title: "Outcomes and decisions"
 description: "Record what a meeting settled, turn tasks into work items, link work items and pages, and find every decision again in the register."
 ---
 
-A meeting produces two kinds of results. **Outcomes** belong to an agenda item: an information that was shared, or a task someone takes on. **Decisions** are recorded separately, with rationale and the people who made them, and stay findable in the decision register long after the meeting.
+A meeting produces two kinds of results. **Outcomes** belong to an agenda item: a task someone takes on. Meetings from before version 1.1 can also hold information notes, which stay visible. **Decisions** are recorded separately, with rationale and the people who made them, and stay findable in the decision register long after the meeting.
 
 Outcomes and decisions are recorded while the meeting is **Running**. Organizers and co-organizers can always record them; invited participants can when **Participants may edit the agenda** is turned on for the meeting.
 
@@ -11,31 +11,30 @@ Outcomes and decisions are recorded while the meeting is **Running**. Organizers
 
 | Field | Description |
 |---|---|
-| **Kind of outcome** | **Information** for something that was settled or shared, **Task** for something someone has to do. |
-| **Text** | What was settled, or who does what. |
-| **Responsible** | A participant of the meeting. Tasks only. |
-| **Due** | A due date. Tasks only. |
+| **Text** | What someone has to do. |
+| **Responsible** | A participant of the meeting. |
+| **Due** | A due date. |
 
-Add an outcome in the **Outcomes** block of an agenda item with **Add outcome**. In the live view, the block sits right below the current topic.
+Add a task in the **Outcomes** block of an agenda item with **Add outcome**. In the live view, the block sits right below the current topic.
 
 ### Create a work item from an outcome
 
 <Steps>
-  <Step title="Open the dialog">
-    On an outcome that has no work item yet, click **Create work item**. An information outcome becomes a task by it.
+  <Step title="Open the form">
+    On an outcome that has no work item yet, click **Create work item**. It opens the same form as **Create work item** everywhere else in Collabase, already filled with the outcome's text, its responsible person and its due date, and with a line that points back to the meeting.
   </Step>
   <Step title="Choose where it goes">
-    Choose the **Space** and **Project**. You can only pick projects in which you may create work items.
+    Choose the **Space** and **Project**, and the type of work item. You can only pick projects in which you may create work items.
   </Step>
-  <Step title="Check responsible and due date">
-    They are taken from the outcome, and can stay empty. If the responsible person cannot open the chosen project, the dialog says so; pick someone else or nobody.
+  <Step title="Fill in the rest">
+    Fill in every field the project and the type need, such as priority, labels or custom fields. The responsible person is only preselected when they are a member of the chosen project.
   </Step>
   <Step title="Create">
-    Click **Create work item**. The work item is created and linked to the outcome. Members who cannot open the project see **Not accessible** instead of the link.
+    Click **Create**. The work item is created and linked to the outcome. Members who cannot open the project see **Not accessible** instead of the link.
   </Step>
 </Steps>
 
-If the work item cannot be created, the dialog stays open and says why in the dialog itself, for example that the chosen project has no workflow with statuses. Pick another project or have the workflow set up.
+If the work item cannot be created, the form stays open and says why, for example that the chosen project has no workflow with statuses. Pick another project or have the workflow set up.
 
 ## Link work items and pages
 
