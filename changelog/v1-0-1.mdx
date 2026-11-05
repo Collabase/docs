@@ -1,0 +1,18 @@
+---
+title: "Collabase 1.0.1 release notes"
+sidebarTitle: "v1.0.1"
+description: "What is new, improved and changed in Collabase 1.0.1, released in November 2026."
+---
+
+Collabase 1.0.1 closes several security advisories in components of the platform. We recommend
+this update for every instance.
+
+**Supported until:** October 2027. Collabase 1 gets fixes and security updates for one year after its release, in its newest minor version.
+
+## Security
+
+| Vulnerability / CVE | Severity | Affected component / Description |
+|---|---|---|
+| CVE-2026-119203, CVE-2026-119204, CVE-2026-119205 | High | Document processing: a specially crafted PDF could keep the text extraction of PDF files in an endless loop or use a very large amount of memory. Fixed by updating the PDF component. |
+| CVE-2026-116689 | High | Translation connection (DeepL): updated a component that handles web requests, which could pass on a custom credential header to another site after a redirect. Updated as a precaution. |
+| CVE-2026-45249 | Medium | Charts: fixed a cross-site scripting vulnerability in chart tooltips of the charting component. |
