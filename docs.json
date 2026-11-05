@@ -740,7 +740,16 @@
               {
                 "group": "Releases",
                 "pages": [
-                  "changelog/overview"
+                  "changelog/overview",
+                  {
+                    "group": "Collabase 1",
+                    "expanded": false,
+                    "pages": [
+                      "changelog/v1-1-0",
+                      "changelog/v1-0-1",
+                      "changelog/v1-0-0"
+                    ]
+                  }
                 ]
               }
             ]
@@ -1517,7 +1526,16 @@
               {
                 "group": "Versionen",
                 "pages": [
-                  "de/changelog/overview"
+                  "de/changelog/overview",
+                  {
+                    "group": "Collabase 1",
+                    "expanded": false,
+                    "pages": [
+                      "de/changelog/v1-1-0",
+                      "de/changelog/v1-0-1",
+                      "de/changelog/v1-0-0"
+                    ]
+                  }
                 ]
               }
             ]
