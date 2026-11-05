@@ -1,0 +1,441 @@
+---
+title: "Installation auf Kubernetes"
+description: "Installiere Collabase mit dem Helm-Chart auf Kubernetes: Ressourcen, Speicher, Ingress, Zertifikate, eigene Registry und Datenbank, Skalierung und Backups."
+keywords: ["Kubernetes", "Helm", "Chart", "Ingress", "cert-manager", "StatefulSet", "Namespace", "values.yaml", "Pods"]
+icon: "ship"
+---
+
+Betreibe Collabase mit dem Helm-Chart aus dem Release-Paket in einem Kubernetes-Cluster. Dieser Leitfaden führt dich von einem leeren Namespace zu einer laufenden Installation. Danach behandelt er die Entscheidungen, die ein Cluster-Betreiber trifft: Zertifikate, eigene Image-Registry, externe Datenbank, Skalierung und Backups.
+
+Hast du einen einzelnen Linux-Server, ist die [Installation mit Docker](/installation) einfacher und vollständig unterstützt. Für Collabase brauchst du Kubernetes nicht.
+
+## Auf einen Blick {#auf-einen-blick}
+
+| | |
+|---|---|
+| **Ergebnis** | Collabase läuft in einem eigenen Namespace und ist über HTTPS unter deiner Adresse erreichbar. |
+| **Dauer** | Die Installation selbst dauert einige Minuten. Der erste Start dauert länger, weil die Images geladen und die Datenbank vorbereitet werden. |
+| **Du brauchst** | Cluster-Zugriff mit `kubectl` und Helm, einen DNS-Namen für Collabase und das Release-Paket. |
+| **Edition** | Alle Editionen. Aktiviere einen Enterprise-Lizenzschlüssel nach der Installation. |
+
+## Voraussetzungen {#voraussetzungen}
+
+| | Anforderung |
+|---|---|
+| **Cluster** | Kubernetes 1.26 oder neuer auf `amd64`-Nodes |
+| **Werkzeuge** | `kubectl` und Helm 3.10 oder neuer auf dem Rechner, der installiert |
+| **Kapazität** | Für ein kleines Team mindestens 4 GB RAM und 2 vCPU frei im Namespace. Siehe [Systemvoraussetzungen](/de/admin/system-requirements#cpu-und-arbeitsspeicher). |
+| **Speicher** | Eine Standard-Storage-Klasse mit `ReadWriteOnce`-Volumes, insgesamt etwa 45 GB |
+| **Ingress** | Ein Ingress-Controller. Das Chart ist für nginx geschrieben und setzt nginx-Annotationen. |
+| **Pod Security** | Ein Namespace auf der Stufe `privileged` oder `baseline`. Die Stufe `restricted` wird nicht unterstützt, siehe [Pod Security](#pod-security). |
+| **Zertifikate** | cert-manager mit einem ClusterIssuer oder dein eigenes TLS-Zertifikat als Secret |
+| **Images** | Zugriff auf `ghcr.io` oder eine eigene Registry mit Kopien der Images |
+| **Adresse** | Ein DNS-Name, der auf deinen Ingress zeigt, zum Beispiel `collabase.yourcompany.com` |
+
+Die vollständige Liste der Ports, ausgehenden Verbindungen und Images steht unter [Systemvoraussetzungen](/de/admin/system-requirements). Gib diese Seite an das Team weiter, das deinen Cluster betreibt.
+
+## Was im Cluster läuft {#was-im-cluster-laeuft}
+
+Das Chart erstellt sechs Workloads mit je einer Instanz und zwei einmalige Jobs.
+
+| Workload | Art | Zweck | Speicherlimit | CPU-Limit | Volume |
+|---|---|---|---|---|---|
+| **App** | Deployment | Weboberfläche, API und Hintergrundjobs | 2,75 GB | 2 | 10 GB Uploads, 10 GB gemeinsames Home, 1 GB Dokumente |
+| **PostgreSQL** | StatefulSet | Datenbank mit `pgvector` | 4 GB | keines | 20 GB |
+| **Redis** | StatefulSet | Queue für Hintergrundjobs | keines, Daten auf 256 MB begrenzt | keines | 2 GB |
+| **Dokument-Prozessor** | Deployment | Dateikonvertierung und PDF-Export | 1,5 GB | 1 | keines |
+| **Kollaborations-Relay** | Deployment | Live-Bearbeitung, abschaltbar | 768 MB | 1 | keines |
+| **Plug-Sandbox** | Deployment | Isolierte Ausführung von Automation-Plugs, abschaltbar | 2 GB | 2 | 2 GB |
+| **Migration** | Job | Datenbankänderungen, läuft bei der Installation und vor jedem Upgrade | | | |
+| **Seed** | Job | Legt den ersten Administrator an, läuft nur bei der Installation | | | |
+
+Der Scheduler reserviert 512 MB für die App, 1 GB für die Datenbank und 256 MB für die Sandbox. Das Chart setzt keine CPU-Requests. Verlangt ein Resource Quota oder ein Limit Range in deinem Namespace welche, trägst du sie in deiner Werte-Datei ein, siehe [Ressourcen anpassen](#ressourcen-anpassen).
+
+<Note>
+  Mit den Standardeinstellungen laufen die App und ihre Volumes als einzelne Instanz. Für mehr als eine Instanz siehe [Skalieren](#skalieren).
+</Note>
+
+## Installieren {#installieren}
+
+*Phase 1 von 3. Weiter: [Installation prüfen](#pruefen).*
+
+<Steps>
+  <Step title="Release-Paket entpacken">
+    Lade `collabase-deployment-<version>.zip` von der [Download-Seite](https://collabase.ch/en/download) herunter und entpacke es. Das Chart liegt in `deployment/helm`.
+  </Step>
+  <Step title="Werte-Datei schreiben">
+    Halte deine Einstellungen in einer Datei fest, nicht in einem langen Befehl. Erstelle `collabase-values.yaml`:
+
+    ```yaml title="collabase-values.yaml"
+    app:
+      url: https://collabase.yourcompany.com
+      adminEmail: admin@yourcompany.com
+
+    ingress:
+      host: collabase.yourcompany.com
+      className: nginx
+      tls:
+        clusterIssuer: letsencrypt-prod
+    ```
+
+    `app.url` ist die öffentliche Adresse, die die Leute öffnen. Sie muss zu `ingress.host` passen.
+  </Step>
+  <Step title="Chart installieren">
+    ```bash
+    helm install collabase ./deployment/helm \
+      --namespace collabase --create-namespace \
+      -f collabase-values.yaml
+    ```
+
+    Das Chart installiert die Images des Releases, zu dem es gehört. Alle Passwörter und Schlüssel werden bei der ersten Installation erzeugt.
+  </Step>
+  <Step title="Ersten Start abwarten">
+    Die Datenbank wird von einem einmaligen Job vorbereitet. Bis er fertig ist, kann die Anwendung mit Fehlern antworten.
+
+    ```bash
+    kubectl get jobs -n collabase --watch
+    ```
+  </Step>
+  <Step title="Administrator-Passwort auslesen">
+    ```bash
+    kubectl get secret collabase -n collabase \
+      -o jsonpath='{.data.adminPassword}' | base64 -d
+    ```
+
+    Melde dich unter deiner Adresse mit der Administrator-E-Mail aus deiner Werte-Datei und diesem Passwort an. Du wirst aufgefordert, ein neues Passwort zu wählen.
+  </Step>
+</Steps>
+
+## Installation prüfen {#pruefen}
+
+*Phase 2 von 3. Zurück: [Installieren](#installieren). Weiter: [Lizenz aktivieren und Personen hinzufügen](#naechste-schritte).*
+
+<Check>
+  **Kontrollpunkt.** Alle Pods sind `Running` und bereit, beide Jobs sind `Complete`, und die Adresse antwortet mit `"status":"ok"`.
+
+  ```bash
+  kubectl get pods,jobs -n collabase
+  curl https://collabase.yourcompany.com/api/health
+  ```
+
+  Ist etwas nicht bereit, siehe [Fehlersuche](#fehlersuche).
+</Check>
+
+## Zertifikate {#zertifikate}
+
+Der Ingress terminiert HTTPS. Wähle einen Weg zum Zertifikat.
+
+| Option | Wann | Einstellungen |
+|---|---|---|
+| **cert-manager** | Du betreibst cert-manager und hast einen ClusterIssuer | `ingress.tls.clusterIssuer: <name>`. Das Zertifikat liegt im Secret `collabase-tls`. |
+| **Eigenes Zertifikat** | Deine Organisation stellt Zertifikate aus | Lege ein TLS-Secret namens `collabase-tls` im Namespace an und lass `clusterIssuer` leer. Den Namen änderst du mit `ingress.tls.secretName`. |
+| **TLS endet vor dem Cluster** | Ein Load Balancer oder Gateway davor hält das Zertifikat bereits | `ingress.tls.enabled: false` |
+
+```bash title="Eigenes Zertifikat verwenden"
+kubectl create secret tls collabase-tls -n collabase \
+  --cert=fullchain.pem --key=privkey.pem
+```
+
+Lege das Secret vor der Installation an, damit der Ingress es von Anfang an findet.
+
+## Anderen Ingress-Controller verwenden {#anderer-ingress-controller}
+
+Das Chart setzt nginx-Annotationen und nutzt standardmässig die Klasse `nginx`. Für einen anderen Controller setzt du `ingress.className` und prüfst diese drei Punkte:
+
+- **Upload-Grösse.** Erlaube Request-Bodies von mindestens 32 MB. Das Chart setzt die nginx-Annotation `proxy-body-size` aus `ingress.maxBodySize`. Andere Controller brauchen dasselbe Limit auf ihre Weise, über `ingress.annotations`.
+- **WebSockets.** Die Live-Zusammenarbeit verbindet sich mit `/collab` auf derselben Adresse. Der Controller muss WebSocket-Upgrades durchreichen.
+- **Limit für Anmeldungen.** Das Chart ergänzt einen zweiten Ingress, der Anmeldeversuche mit einer nginx-Annotation begrenzt. Setze `ingress.authRateLimit.enabled: false` für einen Controller, der sie ignoriert, und begrenze `/api/auth/callback` in deinem eigenen Gateway.
+
+Die Docker-Installation begrenzt ausserdem alle anderen Anfragen pro Client-Adresse. Das Chart tut das nicht. Setze bei Bedarf ein allgemeines Anfragelimit in deinem Gateway oder Ingress.
+
+Willst du die Routen selbst verwalten, setze `ingress.enabled: false`. Leite `/` an den Service `collabase-app` auf Port 3000 und `/collab` an den Service `collabase-collab` auf Port 1234. Die Servicenamen beginnen mit deinem Release-Namen.
+
+## Eigene Image-Registry nutzen {#eigene-registry}
+
+Viele Cluster können nicht von `ghcr.io` laden. Kopiere die Images in deine Registry und richte das Chart darauf aus.
+
+<Steps>
+  <Step title="Images kopieren">
+    Kopiere diese Images in der Version deines Release-Pakets. Der Tag ist die Versionsnummer ohne führendes `v`.
+
+    ```text
+    ghcr.io/collabase/collabase
+    ghcr.io/collabase/collabase-document-processor
+    ghcr.io/collabase/collabase-collab
+    ghcr.io/collabase/collabase-sandbox
+    pgvector/pgvector:pg16
+    redis:7-alpine
+    ```
+  </Step>
+  <Step title="Repositories setzen">
+    ```yaml title="collabase-values.yaml"
+    image:
+      repository: registry.yourcompany.com/collabase/collabase
+    documentProcessor:
+      image:
+        repository: registry.yourcompany.com/collabase/collabase-document-processor
+    collab:
+      image:
+        repository: registry.yourcompany.com/collabase/collabase-collab
+    sandbox:
+      image:
+        repository: registry.yourcompany.com/collabase/collabase-sandbox
+    postgresql:
+      image: registry.yourcompany.com/library/pgvector:pg16
+    redis:
+      image: registry.yourcompany.com/library/redis:7-alpine
+    ```
+
+    Die Tags bleiben leer. Jedes Image nutzt die Version des Charts.
+  </Step>
+  <Step title="Dem Cluster das Laden erlauben">
+    Verlangt deine Registry eine Anmeldung, erstelle ein Pull-Secret und hänge es an den Default-Service-Account des Namespace. Das Chart hat keine Einstellung für Pull-Secrets.
+
+    ```bash
+    kubectl create secret docker-registry registry-login -n collabase \
+      --docker-server=registry.yourcompany.com \
+      --docker-username=<user> --docker-password=<token>
+    kubectl patch serviceaccount default -n collabase \
+      -p '{"imagePullSecrets":[{"name":"registry-login"}]}'
+    ```
+  </Step>
+</Steps>
+
+Ein Cluster ohne jeden Zugang zum Internet kann für die Images auch das Vorgehen der [Installation ohne Internet](/admin/airgapped-installation) nutzen.
+
+## Eigene Datenbank verwenden {#eigene-datenbank}
+
+Nutze eine verwaltete PostgreSQL, indem du die mitgelieferte ausschaltest:
+
+```yaml title="collabase-values.yaml"
+postgresql:
+  enabled: false
+  externalUrl: postgresql://collabase:<password>@db.yourcompany.com:5432/collabase
+```
+
+Die Datenbank muss PostgreSQL 16 oder neuer sein und die Erweiterung `vector` enthalten. Der Migrations-Job führt `CREATE EXTENSION IF NOT EXISTS vector` aus, wofür ein privilegierter Benutzer nötig ist. Schränkt dein Anbieter das ein, aktiviere die Erweiterung einmalig in der Konsole des Anbieters. Siehe [Systemvoraussetzungen](/de/admin/system-requirements#datenbank).
+
+Der Connection Pool wird für dich dimensioniert. Jeder App-Prozess erhält 80 % von `max_connections`, geteilt durch die Zahl der Prozesse, höchstens 100 pro Prozess. Überschreibe das mit `database.connectionLimit`.
+
+## Secrets verwalten {#secrets-verwalten}
+
+Bei der ersten Installation erzeugt das Chart alle Passwörter und Schlüssel und legt sie im Secret `collabase` ab. Spätere Upgrades behalten die bestehenden Werte.
+
+<Warning>
+  Lösche das Secret `collabase` nie. Es enthält den Schlüssel, der gespeicherte Zugangsdaten wie Mail- und Integrations-Logins verschlüsselt. Geht er verloren, lassen sich diese Zugangsdaten nicht wiederherstellen und müssen neu erfasst werden. `helm uninstall` entfernt das Secret ebenfalls. Nimm es in dein Backup auf.
+</Warning>
+
+Werkzeuge, die das Chart ohne Verbindung zum Cluster rendern, etwa `helm template` in einer GitOps-Pipeline, können das bestehende Secret nicht lesen. Sie würden bei jedem Rendern neue Schlüssel erzeugen. Lege das Secret in diesem Fall selbst an und verweise darauf:
+
+```yaml title="collabase-values.yaml"
+secrets:
+  existingSecret: collabase-secrets
+```
+
+Das Secret braucht diese Schlüssel: `postgresPassword`, `nextauthSecret`, `adminPassword`, `pdfPrintToken`, `automationEncryptionKey`, `encryptionKey`, `mailEncryptionKey`, `databaseUrl`, `collabSharedSecret`, `sandboxSharedSecret` und `engineTokenSecret`. Bei S3-Speicher kommen `s3AccessKeyId` und `s3SecretAccessKey` dazu. Erzeuge jeden Wert als Zufallszeichenfolge von mindestens 32 Zeichen.
+
+Ziehst du eine bestehende Docker-Installation auf Kubernetes um, kopierst du `ENCRYPTION_KEY`, `MAIL_ENCRYPTION_KEY`, `AUTOMATION_ENCRYPTION_KEY`, `NEXTAUTH_SECRET`, `PDF_PRINT_TOKEN` und `POSTGRES_PASSWORD` bei der ersten Installation aus der Datei `.env` in den Abschnitt `secrets` deiner Werte-Datei.
+
+## Ressourcen anpassen {#ressourcen-anpassen}
+
+Jeder Workload bezieht seine Limits aus der Werte-Datei. Erhöhe sie am selben Ort:
+
+```yaml title="collabase-values.yaml"
+app:
+  resources:
+    requests:
+      cpu: "500m"
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 2816Mi
+```
+
+Denselben Block `resources` gibt es für `documentProcessor`, `collab`, `sandbox` und `postgresql`. Wie du die gesamte Installation für dein Team dimensionierst, steht unter [Dimensionierung und Skalierung](/de/admin/scaling). Die Datenbankeinstellungen unter `postgresql.tuning` gehen von einem Node mit mindestens 8 GB RAM aus. Senke `shared_buffers` und `effective_cache_size` auf einem kleineren.
+
+## Plug-Sandbox {#plug-sandbox}
+
+Die Sandbox führt Automation-Plugs von Dritten isoliert aus. Sie startet bei jeder Installation. Für die vollständige Isolation braucht sie ein Sicherheitsprofil auf dem Node. Ohne das Profil startet sie trotzdem, meldet bei ihrer Health-Prüfung `degraded` und führt keine Plugs von Dritten aus. Alles andere funktioniert wie gewohnt.
+
+| Wahl | Einstellungen |
+|---|---|
+| **Keine Plugs von Dritten** | `sandbox.enabled: false`, oder die Standardwerte belassen und `degraded` akzeptieren. |
+| **Volle Isolation, das Chart lädt die Profile** | `sandbox.loadProfiles: true`, `sandbox.apparmorProfile: Localhost`, `sandbox.seccompProfile: Localhost`. Das Laden startet auf jedem Node einen privilegierten Pod und ist deshalb standardmässig aus. |
+| **Volle Isolation, du installierst die Profile** | Die Profildateien liegen in `deployment/helm/files`. Installiere sie auf jedem Node und setze dann beide Profilwerte auf `Localhost`. |
+
+`Localhost` für AppArmor braucht Kubernetes 1.30 oder neuer. Network Policies halten die Sandbox von Datenbank und Queue fern. Dein Cluster muss sie durchsetzen.
+
+## Pod Security {#pod-security}
+
+Viele Plattformen erzwingen die Kubernetes Pod Security Standards auf einem Namespace oder betreiben eine Policy-Engine wie Kyverno oder OPA Gatekeeper. Was das Chart unter den einzelnen Stufen tut, ergibt sich aus seinen Pod-Definitionen. Auf einem Cluster, der sie durchsetzt, ist es nicht bestätigt.
+
+| Stufe | Ergebnis |
+|---|---|
+| **Privileged** | Alles startet. |
+| **Baseline** | App, Datenbank, Queue, Kollaborations-Relay und Dokument-Prozessor setzen nichts, was Baseline verbietet. Die Plug-Sandbox startet mit ihrem Standard `apparmorProfile: Unconfined` nicht, weil Baseline nur das Standardprofil oder ein `Localhost`-Profil erlaubt. Installiere die Profile auf den Nodes und setze `Localhost`, oder schalte die Sandbox aus. `sandbox.loadProfiles: true` startet einen privilegierten Pod und wird abgelehnt, installiere die Profile also selbst. |
+| **Restricted** | Wird von dieser Version des Charts nicht unterstützt. Nur die Sandbox setzt einen Security Context. App, Datenbank, Queue, Relay und Prozessor setzen weder `runAsNonRoot`, noch entfernen sie alle Capabilities, noch setzen sie ein Seccomp-Profil. Ein Namespace, der `restricted` erzwingt, lehnt sie ab. |
+
+Verlangt deine Richtlinie `restricted`, betreibe Collabase in einem Namespace auf `baseline`, oder bitte dein Plattformteam um eine Ausnahme für diesen Namespace. Sag uns Bescheid, falls das nicht möglich ist.
+
+Eine Policy-Engine kann ausserdem Resource Requests und Limits, Images aus freigegebenen Registries oder festgelegte Versionen verlangen. Das Chart legt jedes Image standardmässig auf das Release fest und setzt Speicher-Requests. CPU-Requests setzt es nur, wenn du sie ergänzt, siehe [Ressourcen anpassen](#ressourcen-anpassen).
+
+## Netzwerkverbindungen {#netzwerkverbindungen}
+
+Das Chart liefert eine einzige Network Policy mit, für die Plug-Sandbox. Verweigert dein Cluster Verkehr standardmässig, erlaube diese Verbindungen. Alle Ports sind TCP.
+
+| Von | Nach | Port | Zweck |
+|---|---|---|---|
+| Ingress-Controller | App | 3000 | Weboberfläche und API |
+| Ingress-Controller | Kollaborations-Relay | 1234 | Live-Bearbeitung auf `/collab` |
+| App | Datenbank | 5432 | Daten |
+| App | Queue | 6379 | Hintergrundjobs |
+| App | Dokument-Prozessor | 8000 | Dateikonvertierung und PDF-Export |
+| App | Plug-Sandbox | 8100 | Ausführung von Plugs |
+| Plug-Sandbox | App | 3000 | Plugs rufen Collabase zurück auf |
+| Kollaborations-Relay | App | 3000 | Dokumente speichern |
+| Migrations- und Seed-Jobs | Datenbank | 5432 | Datenbank einrichten |
+| App | Ausserhalb des Clusters | 443 und wie konfiguriert | Anmeldeanbieter, Mail, S3, KI-Anbieter, verbundene Dienste |
+
+Die App-Pods und der Worker-Pod brauchen dieselben Verbindungen. Die Sandbox darf das Internet erreichen, ausser privaten Adressbereichen, sowie DNS. Ergänze dein Pod-Netz in `sandbox.networkPolicy.internetExceptCidrs`, falls es nicht in einem privaten Bereich liegt.
+
+## Scheduling und Plattformeinstellungen {#scheduling-und-plattformeinstellungen}
+
+Diese Version des Charts hat keine Einstellungen für `nodeSelector`, `tolerations`, `affinity`, Topology Spread, Priority Class, Pod-Annotationen, zusätzliche Umgebungsvariablen oder Pull-Secrets. Nutze stattdessen diese Wege:
+
+- **Pull-Secrets:** hänge das Secret an den Default-Service-Account des Namespace, siehe [Eigene Image-Registry nutzen](#eigene-registry).
+- **Scheduling und Annotationen:** lass Helm die gerenderten Manifeste mit `helm install --post-renderer` an einen Post-Renderer wie Kustomize übergeben. Der Post-Renderer ergänzt die Felder, die du an den Pods brauchst.
+- **Node-Pools:** weist deine Plattform Nodes pro Namespace zu, setze das am Namespace.
+
+## Überwachung {#ueberwachung}
+
+Collabase hat keinen Metrics-Endpunkt für Prometheus. Überwache es mit Probes, Cluster-Metriken und der Health-Adresse.
+
+| Prüfung | Adresse oder Quelle | Bedeutung |
+|---|---|---|
+| **App-Liveness** | `/api/health` auf Port 3000 | Der Prozess läuft. Der Status bleibt `200`, mit `"status":"degraded"` und einer Liste, wenn eine Hintergrundfunktion Aufmerksamkeit braucht. |
+| **App-Readiness** | `/api/health/ready` auf Port 3000 | Die App erreicht ihre Datenbank. Ein Pod, der das nicht besteht, wird aus dem Service genommen. |
+| **Dokument-Prozessor** | `/health` auf Port 8000 | Der Dienst läuft. |
+| **Plug-Sandbox** | `/health` auf Port 8100 | Antwortet `200`, und `degraded`, wenn die Isolation nicht startet. |
+| **Logs** | Ausgabe jedes Pods, als JSON | Das Level setzt du mit `app.logLevel`. |
+
+Richte Alarme ein für Pods, die neu starten oder nicht bereit bleiben, für fehlgeschlagene Jobs, für volllaufende Volumes, für ein Zertifikat kurz vor dem Ablauf und für `degraded` in der Health-Antwort. Siehe [Health-Check](/api/health).
+
+## Verfügbarkeit {#verfuegbarkeit}
+
+Mit den Standardeinstellungen läuft jeder Teil einmal. Ein Neustart von App, Datenbank oder Queue unterbricht den Dienst für die Zeit, die der Pod zum Starten braucht, und nichts springt auf eine andere Kopie um.
+
+| Teil | Was du tun kannst |
+|---|---|
+| **App** | Mehrere Instanzen mit S3-Dateispeicher und dem eigenen Worker betreiben, siehe [Skalieren](#skalieren). |
+| **Datenbank** | Eine externe PostgreSQL mit Failover nutzen, siehe [Eigene Datenbank verwenden](#eigene-datenbank). Die mitgelieferte Datenbank ist ein einzelner Pod. |
+| **Uploads** | In S3 ablegen und im Bucket Versionen aufbewahren. |
+| **Queue** | Ein einzelner Pod mit den Daten auf einem Volume. Jobs überstehen einen Neustart. |
+
+## Skalieren {#skalieren}
+
+Mehr als eine App-Instanz zu betreiben, braucht zwei Dinge. Das Chart verweigert das Rendern ohne sie.
+
+1. **S3-Dateispeicher.** Mit Cluster-Volumes sieht eine zweite Instanz die Dateien der ersten nicht. Richte zuerst einen privaten Bucket ein, siehe [Dateispeicher](/admin/file-storage).
+2. **Ein eigener Worker.** Hintergrundjobs wandern in eine eigene einzelne Instanz, damit sie genau einmal laufen.
+
+```yaml title="collabase-values.yaml"
+replicaCount: 3
+workers:
+  separate: true
+storage:
+  driver: s3
+  s3:
+    bucket: collabase
+    endpoint: https://your-s3-endpoint
+    accessKeyId: <key>
+    secretAccessKey: <secret>
+```
+
+Mit S3-Speicher tragen die App-Pods keine Volumes und werden ohne Ausfall aktualisiert. Zur Datenbank und zu den übrigen Teilen siehe [Dimensionierung und Skalierung](/de/admin/scaling#ueber-einen-server-hinaus-skalieren).
+
+## Aktualisieren {#aktualisieren}
+
+Entpacke das neue Release-Paket und führe das Upgrade mit derselben Werte-Datei aus:
+
+```bash
+helm upgrade collabase ./deployment/helm -n collabase -f collabase-values.yaml
+```
+
+Das Chart installiert die Version, zu der es gehört, das neue Paket hebt also jedes Image auf das neue Release. Die Migrationen laufen, bevor die neue Version startet. Das vollständige Vorgehen mit Backup, Prüfungen und Rollback steht unter [Updates](/admin/updates#kubernetes).
+
+## Backup und Wiederherstellung {#backup-und-wiederherstellung}
+
+Sichere drei Dinge: die Datenbank, die hochgeladenen Dateien und das Secret `collabase`. Das Chart kann zusätzlich vor jedem Upgrade einen Datenbank-Dump erstellen:
+
+```yaml title="collabase-values.yaml"
+backup:
+  enabled: true
+```
+
+Der Dump landet auf einem eigenen Volume, die letzten sieben Tage bleiben erhalten. Schalte die Option ein Upgrade vor dem ein, das du absichern willst, denn das Volume entsteht erst nach den Prüfungen dieses ersten Upgrades. Dein reguläres Backup ersetzt das nicht. Siehe [Backup und Wiederherstellung](/admin/backup).
+
+Unterstützt dein Speicher Volume Snapshots, erstelle Snapshots der Volumes für Uploads, Dokumente und das gemeinsame Home-Verzeichnis. Ein Snapshot der laufenden Datenbank ist nur absturzkonsistent. Verlasse dich für die Datenbank auf einen Dump. Schalte bei S3-Speicher die Versionierung im Bucket ein. Teste eine Wiederherstellung auf deinem Testsystem, bevor du sie brauchst.
+
+Spiele einen Datenbank-Dump in die bestehende Installation zurück und führe dann `helm upgrade` aus. Spiele nicht in eine neue `helm install` zurück. Eine frische Installation führt ihr Ersteinrichtung aus und würde über deine wiederhergestellten Daten schreiben.
+
+## Collabase entfernen {#entfernen}
+
+```bash
+helm uninstall collabase -n collabase
+```
+
+Das entfernt die Workloads, das Secret und die Volumes für Uploads, Dokumente und die Sandbox. Die Volumes von Datenbank und Queue bleiben erhalten. Sichere vorher das Secret und deine Daten. Lösche die übrigen Volumes nur dann mit `kubectl delete pvc`, wenn die Daten endgültig weg sein sollen. Das lässt sich nicht rückgängig machen.
+
+## Kubernetes-Versionen {#kubernetes-versionen}
+
+Das Chart ist für Kubernetes 1.26 oder neuer geschrieben. Eine Liste der Versionen, gegen die wir jedes Release getestet haben, ist noch nicht veröffentlicht. Frag uns nach dem aktuellen Stand, bevor du planst.
+
+| Benötigt | Kubernetes-Version |
+|---|---|
+| Das Chart | 1.26 oder neuer |
+| AppArmor-Profil über das Pod-Feld `appArmorProfile` (`sandbox.apparmorProfile: Localhost`) | 1.30 oder neuer |
+
+Helm 3.10 oder neuer ist erforderlich. Eine neuere Minor-Version von Kubernetes braucht keine Änderung am Chart, solange die genutzten APIs verfügbar bleiben: `apps/v1`, `batch/v1` und `networking.k8s.io/v1`.
+
+## OpenShift und andere Distributionen {#openshift-und-andere-distributionen}
+
+Verwaltete Kubernetes-Dienste und hybride Plattformen auf Basis von Upstream-Kubernetes brauchen nichts über die [Voraussetzungen](#voraussetzungen) hinaus. Das Chart wurde auf OpenShift nicht getestet. In diesen Punkten unterscheidet es sich dort. Sag uns Bescheid, wenn du es einsetzt, dann prüfen wir die Installation gemeinsam mit dir.
+
+| Thema | Standard-Kubernetes | Auf OpenShift |
+|---|---|---|
+| **Routing** | Ingress | Nutze eine Route. Setze `ingress.enabled: false` und leite `/` an den Service `collabase-app` auf Port 3000 und `/collab` an `collabase-collab` auf Port 1234, mit erlaubten WebSockets. |
+| **Volume-Gruppe** | `app.fsGroup: 1001` | Die Plattform vergibt die Gruppe, ein fester Wert wird abgelehnt. Setze `app.fsGroup: null`. |
+| **Benutzer-IDs** | Die Images laufen mit festen IDs | Die Standardrichtlinie startet Pods mit einer ID aus dem Bereich des Namespace. Ob die Images unter einer beliebigen ID starten, ist nicht geprüft. Dein Sicherheitsteam entscheidet, ob der Service-Account eine Richtlinie mit festen IDs nutzen darf. |
+| **Plug-Sandbox** | Profile für Seccomp und AppArmor | OpenShift nutzt SELinux statt AppArmor. Setze `sandbox.enabled: false`. Plugs von Dritten laufen dann nicht. |
+| **Images** | Registry deiner Wahl | Kopiere die Images in deine Registry, siehe [Eigene Image-Registry nutzen](#eigene-registry). |
+
+## Fehlersuche {#fehlersuche}
+
+| Was du siehst | Ursache | Was du tust |
+|---|---|---|
+| Die Installation scheitert mit einem Job-Fehler | Der Migrations-Job konnte die Datenbank nicht vorbereiten | Lies das Log: `kubectl logs job/collabase-migrate -n collabase`. Häufigste Ursache ist eine fehlende Erweiterung `vector` auf einer externen Datenbank. |
+| Fehler in der ersten oder zweiten Minute nach der Installation | Die Einrichtungs-Jobs laufen noch | Warte und prüfe dann `kubectl get jobs -n collabase`. |
+| Ein Pod bleibt in `ImagePullBackOff` | Der Cluster kann das Image nicht laden | Prüfe Repository, Tag und Pull-Secret. Siehe [Eigene Image-Registry nutzen](#eigene-registry). |
+| Ein Pod bleibt `Pending` | Kein Node hat genug Speicher oder Platz, oder es gibt keine Storage-Klasse | `kubectl describe pod <name> -n collabase` nennt den Grund. |
+| Uploads scheitern mit einem Berechtigungsfehler | Die Storage-Klasse ignoriert die Gruppeneinstellung des Pods | Prüfe, ob deine Volumes `fsGroup` beachten, oder mach sie für den Benutzer mit der ID 1001 beschreibbar. Die Gruppe änderst du mit `app.fsGroup`. |
+| Die Live-Bearbeitung verbindet sich nicht | Der Ingress blockiert WebSocket-Upgrades auf `/collab` | Siehe [Anderen Ingress-Controller verwenden](#anderer-ingress-controller). |
+| Die Sandbox meldet `degraded` | Das Sicherheitsprofil ist auf dem Node nicht geladen | Siehe [Plug-Sandbox](#plug-sandbox). Der Rest von Collabase ist nicht betroffen. |
+| Das Rendern des Helm-Charts scheitert mit einer Meldung zu Replikaten | Mehr als eine Instanz ohne S3 und Worker | Siehe [Skalieren](#skalieren). |
+
+Sammle `kubectl get pods -n collabase` und das Log des fehlgeschlagenen Pods oder Jobs, bevor du den Support unter [collabase.featurebase.app](https://collabase.featurebase.app/en) kontaktierst.
+
+## Nächste Schritte {#naechste-schritte}
+
+*Phase 3 von 3. Zurück: [Installation prüfen](#pruefen).*
+
+<CardGroup cols={3}>
+  <Card title="Lizenz aktivieren" icon="key-round" href="/admin/editions-and-license#activate">
+    Die Enterprise-Funktionen freischalten.
+  </Card>
+  <Card title="Erster Start" icon="rocket" href="/first-run">
+    Dein Team einladen und einen Space erstellen.
+  </Card>
+  <Card title="Updates" icon="refresh-cw" href="/admin/updates">
+    Planen, wie du Collabase aktuell hältst.
+  </Card>
+</CardGroup>

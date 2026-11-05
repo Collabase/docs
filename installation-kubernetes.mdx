@@ -27,6 +27,7 @@ If you have a single Linux server, the [installation with Docker](/installation)
 | **Capacity** | At least 4 GB RAM and 2 vCPU free in the namespace for a small team. See [System requirements](/admin/system-requirements#cpu-and-memory). |
 | **Storage** | A default storage class with `ReadWriteOnce` volumes, about 45 GB in total |
 | **Ingress** | An ingress controller. The chart is written for nginx and sets nginx annotations. |
+| **Pod security** | A namespace at the `privileged` or `baseline` level. The `restricted` level is not supported, see [Pod security](#pod-security). |
 | **Certificates** | cert-manager with a ClusterIssuer, or your own TLS certificate as a secret |
 | **Images** | Access to `ghcr.io`, or your own registry that holds copies of the images |
 | **Address** | A DNS name that points at your ingress, for example `collabase.yourcompany.com` |
@@ -144,6 +145,8 @@ The chart sets nginx annotations and defaults to the class `nginx`. For another 
 - **Upload size.** Allow request bodies of at least 32 MB. The chart sets the nginx annotation `proxy-body-size` from `ingress.maxBodySize`. Other controllers need the same limit in their own way, through `ingress.annotations`.
 - **WebSockets.** Live collaboration connects to `/collab` on the same address. The controller must pass WebSocket upgrades through.
 - **Sign-in rate limit.** The chart adds a second ingress that limits sign-in attempts with an nginx annotation. Set `ingress.authRateLimit.enabled: false` for a controller that ignores it, and limit `/api/auth/callback` in your own gateway.
+
+The Docker installation also limits all other requests per client address. The chart does not. Set a general request limit in your gateway or ingress if you need one.
 
 To manage the routes yourself, set `ingress.enabled: false`. Route `/` to the service `collabase-app` on port 3000, and `/collab` to the service `collabase-collab` on port 1234. The service names start with your release name.
 
@@ -284,6 +287,72 @@ storage:
 
 With S3 storage the app pods carry no volumes and update without downtime. For the database and the other parts, see [Sizing & scaling](/admin/scaling#scaling-beyond-one-server).
 
+## Pod security {#pod-security}
+
+Many platforms enforce the Kubernetes Pod Security Standards on a namespace, or run a policy engine such as Kyverno or OPA Gatekeeper. What the chart does under each level follows from its pod definitions. It has not been confirmed on a cluster that enforces them.
+
+| Level | Result |
+|---|---|
+| **Privileged** | Everything starts. |
+| **Baseline** | The app, database, queue, collaboration relay and document processor set nothing that baseline forbids. The plug sandbox does not start with its default `apparmorProfile: Unconfined`, because baseline allows only the default or a `Localhost` profile. Install the profiles on the nodes and set `Localhost`, or turn the sandbox off. `sandbox.loadProfiles: true` starts a privileged pod and is rejected, so install the profiles yourself. |
+| **Restricted** | Not supported by this version of the chart. Only the sandbox sets a security context. The app, database, queue, relay and processor do not set `runAsNonRoot`, do not drop all capabilities and do not set a seccomp profile, so a namespace that enforces `restricted` rejects them. |
+
+If your policy requires `restricted`, run Collabase in a namespace at `baseline`, or ask your platform team for an exemption for this namespace. Tell us if that is not possible.
+
+A policy engine may also require resource requests and limits, images from approved registries or pinned versions. The chart pins every image to the release by default and sets memory requests, but sets CPU requests only if you add them, see [Adjust resources](#adjust-resources).
+
+## Network connections {#network-connections}
+
+The chart ships one network policy, for the plug sandbox. If your cluster denies traffic by default, allow these connections. All ports are TCP.
+
+| From | To | Port | Purpose |
+|---|---|---|---|
+| Ingress controller | App | 3000 | Web interface and API |
+| Ingress controller | Collaboration relay | 1234 | Live editing on `/collab` |
+| App | Database | 5432 | Data |
+| App | Queue | 6379 | Background jobs |
+| App | Document processor | 8000 | File conversion and PDF export |
+| App | Plug sandbox | 8100 | Plug execution |
+| Plug sandbox | App | 3000 | Plug calls back into Collabase |
+| Collaboration relay | App | 3000 | Saving documents |
+| Migration and seed jobs | Database | 5432 | Database setup |
+| App | Outside the cluster | 443 and as configured | Sign-in provider, mail, S3, AI provider, connected services |
+
+The app pods and the worker pod need the same connections. The sandbox may reach the internet except private address ranges, and DNS. Add your pod network to `sandbox.networkPolicy.internetExceptCidrs` if it is not in a private range.
+
+## Scheduling and platform settings {#scheduling}
+
+This version of the chart has no settings for `nodeSelector`, `tolerations`, `affinity`, topology spread, priority class, pod annotations, extra environment variables or pull secrets. Use these ways instead:
+
+- **Pull secrets:** attach the secret to the default service account of the namespace, see [Use your own image registry](#own-registry).
+- **Scheduling and annotations:** let Helm pass the rendered manifests to a post-renderer such as Kustomize with `helm install --post-renderer`. The post-renderer adds the fields you need to the pods.
+- **Node pools:** if your platform assigns nodes per namespace, set it on the namespace.
+
+## Monitoring {#monitoring}
+
+Collabase has no metrics endpoint for Prometheus. Monitor it with probes, cluster metrics and the health address.
+
+| Check | Address or source | Meaning |
+|---|---|---|
+| **App liveness** | `/api/health` on port 3000 | The process runs. The status stays `200`, with `"status":"degraded"` and a list when a background feature needs attention. |
+| **App readiness** | `/api/health/ready` on port 3000 | The app can reach its database. A pod that fails it is taken out of the service. |
+| **Document processor** | `/health` on port 8000 | The service runs. |
+| **Plug sandbox** | `/health` on port 8100 | Answers `200`, and `degraded` when the jail cannot start. |
+| **Logs** | Output of each pod, in JSON | Set the level with `app.logLevel`. |
+
+Alert on pods that restart or stay unready, on failed jobs, on volumes that fill up, on a certificate close to expiry and on `degraded` in the health response. See [Health check](/api/health).
+
+## Availability {#availability}
+
+With the default settings every part runs once. A restart of the app, the database or the queue interrupts the service for the time the pod needs to start, and nothing fails over to another copy.
+
+| Part | What you can do |
+|---|---|
+| **App** | Run more instances with S3 file storage and the dedicated worker, see [Scale out](#scaling-out). |
+| **Database** | Use an external PostgreSQL with failover, see [Use your own database](#own-database). The bundled database is a single pod. |
+| **Uploads** | Store them in S3 and keep versions in the bucket. |
+| **Queue** | A single pod with its data on a volume. Jobs survive a restart. |
+
 ## Update {#update}
 
 Unpack the new release package and upgrade with the same values file:
@@ -305,6 +374,8 @@ backup:
 
 The dump goes to its own volume and the last seven days are kept. Turn the option on one upgrade before the one you want protected, because the volume is created after the checks of that first upgrade. This does not replace your regular backup. See [Backup & Restore](/admin/backup).
 
+If your storage supports volume snapshots, snapshot the volumes for uploads, documents and the shared home directory. A snapshot of the running database is only crash-consistent. For the database, rely on a dump. With S3 storage, turn on versioning in the bucket. Test a restore on your test system before you need it.
+
 Restore a database dump into the existing installation, then run `helm upgrade`. Do not restore into a new `helm install`. A fresh install runs its first-time setup and would write on top of your restored data.
 
 ## Remove Collabase {#uninstall}
@@ -315,6 +386,29 @@ helm uninstall collabase -n collabase
 
 This removes the workloads, the secret and the volumes for uploads, documents and the sandbox. The volumes of the database and the queue are kept. Back up the secret and your data first. Delete the remaining volumes with `kubectl delete pvc` only when you want the data gone for good. This cannot be undone.
 
+## Kubernetes versions {#kubernetes-versions}
+
+The chart is written for Kubernetes 1.26 or later. A list of the versions we tested against each release is not published yet. Ask us for the current state before you plan.
+
+| Needs | Kubernetes version |
+|---|---|
+| The chart | 1.26 or later |
+| AppArmor profile set through the pod field `appArmorProfile` (`sandbox.apparmorProfile: Localhost`) | 1.30 or later |
+
+Helm 3.10 or later is required. A newer minor version of Kubernetes needs no change to the chart as long as the APIs it uses stay available: `apps/v1`, `batch/v1` and `networking.k8s.io/v1`.
+
+## OpenShift and other distributions {#openshift}
+
+Managed Kubernetes services and hybrid platforms built on upstream Kubernetes need nothing beyond the [requirements](#requirements). The chart has not been tested on OpenShift. These are the points that differ there. Tell us if you use it, and we verify the installation with you.
+
+| Topic | Standard Kubernetes | On OpenShift |
+|---|---|---|
+| **Routing** | Ingress | Use a Route. Set `ingress.enabled: false` and route `/` to the service `collabase-app` on port 3000 and `/collab` to `collabase-collab` on port 1234, with WebSockets allowed. |
+| **Volume group** | `app.fsGroup: 1001` | The platform assigns the group, and a fixed value is rejected. Set `app.fsGroup: null`. |
+| **User IDs** | The images run as fixed IDs | The default policy runs pods with an ID from the namespace range. Whether the images start under an arbitrary ID is not verified. Your security team decides whether the service account may use a policy with fixed IDs. |
+| **Plug sandbox** | Profiles for seccomp and AppArmor | OpenShift uses SELinux instead of AppArmor. Set `sandbox.enabled: false`. Third-party plugs then do not run. |
+| **Images** | Registry of your choice | Copy the images into your registry, see [Use your own image registry](#own-registry). |
+
 ## Troubleshooting {#troubleshooting}
 
 | What you see | Cause | What to do |
@@ -323,7 +417,7 @@ This removes the workloads, the secret and the volumes for uploads, documents an
 | Errors for the first minute or two after install | The setup jobs are still running | Wait, then check `kubectl get jobs -n collabase`. |
 | A pod stays in `ImagePullBackOff` | The cluster cannot pull the image | Check the repository and tag, and the pull secret. See [Use your own image registry](#own-registry). |
 | A pod stays `Pending` | No node has the memory or storage, or no storage class exists | `kubectl describe pod <name> -n collabase` names the reason. |
-| Uploads fail with a permission error | The storage class ignores the group setting of the pod | Check that your volumes honor `fsGroup`, or make them writable for the user with ID 1001. |
+| Uploads fail with a permission error | The storage class ignores the group setting of the pod | Check that your volumes honor `fsGroup`, or make them writable for the user with ID 1001. Change the group with `app.fsGroup`. |
 | Live editing does not connect | The ingress blocks WebSocket upgrades on `/collab` | See [Use another ingress controller](#other-ingress). |
 | The sandbox reports `degraded` | The security profile is not loaded on the node | See [Plug sandbox](#plug-sandbox). The rest of Collabase is not affected. |
 | The helm render fails with a message about replicas | More than one instance without S3 and a worker | See [Scale out](#scaling-out). |

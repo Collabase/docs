@@ -5,6 +5,8 @@ description: "How much RAM and CPU Collabase needs for your team, and how to spr
 icon: "scaling"
 ---
 
+import { SizingCalculator } from "/snippets/sizing-calculator.jsx";
+
 Collabase runs on a single server by default — the application, database, queue, document processor, collaboration relay, and reverse proxy all on one machine. This page explains how to size that server for your team, and how to move parts of it onto separate machines when one server is no longer enough.
 
 ## What drives resource use
@@ -20,6 +22,12 @@ Three different numbers matter, and they are easy to confuse:
 Size for peak **concurrent activity**, not for the total member count.
 
 ## Sizing a single server {#sizing-a-single-server}
+
+Choose your edition and the number of users to see what we recommend for production.
+
+<SizingCalculator lang="en" />
+
+The calculator recommends by licence and user count. The table below sizes by people working at the same moment, which is what the load depends on. Use it to fine-tune the recommendation.
 
 These are starting points for the default single-server install. Begin here, then adjust from what [monitoring](/admin/hosting#monitoring-your-installation) actually shows — a document-heavy team with constant PDF exports needs more than a team that mostly reads.
 

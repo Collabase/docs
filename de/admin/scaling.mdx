@@ -1,0 +1,91 @@
+---
+title: "Dimensionierung und Skalierung"
+sidebarTitle: "Dimensionierung und Skalierung"
+description: "Wie viel Arbeitsspeicher und CPU Collabase für dein Team braucht und wie du die Dienste auf mehrere Server verteilst, wenn die Last wächst."
+icon: "scaling"
+---
+
+import { SizingCalculator } from "/snippets/sizing-calculator.jsx";
+
+Collabase läuft standardmässig auf einem einzelnen Server. Anwendung, Datenbank, Queue, Dokument-Prozessor, Kollaborations-Relay und Reverse Proxy teilen sich eine Maschine. Diese Seite zeigt, wie du diesen Server für dein Team dimensionierst und wie du einzelne Teile auf separate Maschinen verlagerst, wenn ein Server nicht mehr reicht.
+
+## Was den Ressourcenbedarf bestimmt {#was-den-ressourcenbedarf-bestimmt}
+
+Drei Zahlen sind wichtig, und man verwechselt sie leicht:
+
+| Zahl | Was sie kostet |
+|---|---|
+| **Registrierte Members** | Grösse der Datenbank und ein wenig Speicherplatz. Einige tausend Konten sind unproblematisch, die Datenbank verwaltet sie auch mit der Mindestausstattung. |
+| **Gleichzeitig aktive Members** | CPU und Arbeitsspeicher der Anwendung. Das ist der wichtigste Faktor, und er liegt weit unter der Gesamtzahl der Members, weil nicht alle gleichzeitig arbeiten. |
+| **Personen, die gemeinsam eine Seite bearbeiten** | Das Kollaborations-Relay. Jedes geteilte Dokument ist günstig. Der Aufwand wächst mit der Zahl der Personen, die dieselbe Seite gleichzeitig bearbeiten, nicht mit der Gesamtzahl. |
+
+Dimensioniere für die Spitze der **gleichzeitigen Aktivität**, nicht für die Gesamtzahl der Members.
+
+## Einen einzelnen Server dimensionieren {#einen-einzelnen-server-dimensionieren}
+
+Wähle deine Edition und die Zahl der Benutzer, dann siehst du, was wir für den Produktivbetrieb empfehlen.
+
+<SizingCalculator lang="de" />
+
+Der Rechner empfiehlt nach Lizenz und Benutzerzahl. Die Tabelle darunter dimensioniert nach den Personen, die gleichzeitig arbeiten, und davon hängt die Last ab. Nutze sie, um die Empfehlung fein abzustimmen.
+
+Das sind Ausgangswerte für die Standardinstallation auf einem Server. Beginne hier und passe die Werte an, sobald das [Monitoring](/admin/hosting#monitoring-your-installation) zeigt, was wirklich gebraucht wird. Ein dokumentenlastiges Team mit ständigen PDF-Exporten braucht mehr als ein Team, das hauptsächlich liest.
+
+| Gleichzeitig aktive Members | RAM | CPU | Speicher |
+|---|---|---|---|
+| bis ca. 25 | 4 GB | 2 vCPU | 20 GB |
+| ca. 25 bis 100 | 8 GB | 4 vCPU | 40 GB |
+| ca. 100 bis 250 | 16 GB | 8 vCPU | 80 GB und mehr |
+| ab ca. 250 | Horizontal skalieren (siehe unten) | | |
+
+<Note>
+  Die 4 GB Minimum gelten bei eingeschalteter Live-Zusammenarbeit. Schaltest du sie [aus](/docs/collaboration#turning-it-off), entfällt das Relay und die Untergrenze sinkt bei einer kleinen Installation auf 2 GB.
+</Note>
+
+Der Speicherplatz wächst mit Uploads, Datenbank und täglichen Backups. Behalte ihn im Blick und vergrössere das Volume, bevor es voll ist. Siehe [Speicherbedarf](/admin/hosting#disk-usage).
+
+## Über einen Server hinaus skalieren {#ueber-einen-server-hinaus-skalieren}
+
+Reicht ein einzelner Server nicht mehr, verteilst du Collabase auf mehrere Maschinen. Das ist der Fall bei dauerhaft hoher CPU-Last, bei Speicherdruck, den eine grössere Maschine nur hinausschieben würde, oder wenn du Redundanz brauchst. Geh in dieser Reihenfolge vor. Jeder Schritt nimmt dem Anwendungsserver einen Grund, gross zu sein.
+
+| Signal | Was du änderst |
+|---|---|
+| Der Speicher füllt sich mit Uploads, oder du willst dauerhaften Dateispeicher | Uploads in einen **Objektspeicher (S3)** verlagern |
+| Die Datenbank konkurriert mit der Anwendung um Arbeitsspeicher und CPU | Die **Datenbank auf einen eigenen Server** verlagern |
+| Ein Anwendungsserver schafft die Spitzenlast nicht, oder du brauchst Updates ohne Ausfall | **Mehrere Anwendungs-Replikate** betreiben |
+
+Horizontale Skalierung mit mehreren Anwendungs-Replikaten gibt es mit **Kubernetes (Helm)** und **Docker Swarm**. Die Docker-Installation auf einem Server skaliert *nach oben* (eine grössere Maschine), nicht *nach aussen*.
+
+### Uploads in einen Objektspeicher verlagern {#uploads-in-einen-objektspeicher-verlagern}
+
+Richte den Dateispeicher auf einen S3-kompatiblen Bucket aus statt auf die lokale Platte. Uploads liegen dann im Bucket und nicht auf dem Server. Der Anwendungsserver braucht kaum noch Datenplatte, und beliebig viele Replikate teilen sich dieselben Dateien. Setze `STORAGE_DRIVER=s3` (Docker) oder `storage.driver: s3` (Helm). Die vollständigen Schritte stehen unter [Dateispeicher](/admin/file-storage).
+
+Ein Objektspeicher ist auch Voraussetzung für mehr als ein Anwendungs-Replikat, weil nicht jedes Replikat eine eigene Kopie der Uploads halten darf.
+
+### Die Datenbank auf einen eigenen Server verlagern {#die-datenbank-auf-einen-eigenen-server-verlagern}
+
+Betreibe PostgreSQL auf einem eigenen oder verwalteten Server und richte Collabase darauf aus. Das entlastet Arbeitsspeicher und CPU des Anwendungsservers, und du kannst die Datenbank unabhängig dimensionieren und sichern.
+
+- **Kubernetes:** setze `postgresql.enabled: false` und `postgresql.externalUrl` auf die Verbindungs-URL deiner Datenbank.
+- **Docker Swarm:** richte `DATABASE_URL` auf die externe Datenbank aus und entferne den Postgres-Dienst aus dem Stack.
+
+Die Datenbank muss PostgreSQL 16 oder neuer sein und die Erweiterung `pgvector` enthalten (für die KI-Suche).
+
+### Mehrere Anwendungs-Replikate betreiben {#mehrere-anwendungs-replikate-betreiben}
+
+Liegen die Uploads in S3 und läuft die Datenbank extern, hat der Anwendungsserver keinen eigenen Zustand mehr. Dann kannst du ihn als mehrere identische Replikate hinter dem Reverse Proxy betreiben. Sie teilen sich die Last, und der Ausfall eines Replikats bleibt ohne Folgen.
+
+<Steps>
+  <Step title="Voraussetzungen erfüllen">
+    Du brauchst einen Objektspeicher (`storage.driver: s3`) und einen eigenen Worker, damit Hintergrundjobs an genau einer Stelle laufen. Setze bei Helm `workers.separate: true`.
+  </Step>
+  <Step title="Replikatzahl erhöhen">
+    Setze bei Helm `replicaCount` auf die gewünschte Zahl von Anwendungsinstanzen. Docker Swarm nutzt die Einstellung `replicas` des Dienstes. Das Chart verweigert `replicaCount > 1` ohne Objektspeicher, weil lokale Uploads nicht geteilt werden können.
+  </Step>
+</Steps>
+
+## Das Kollaborations-Relay im grossen Massstab {#das-kollaborations-relay-im-grossen-massstab}
+
+Das Relay ist ein einzelner Prozess und verarbeitet auf einer Instanz sehr viele Verbindungen über alle Dokumente hinweg. Für typische Installationen braucht es weder einen Cluster noch Redis. Die praktische Grenze liegt pro *Dokument*: Eine Seite mit Dutzenden gleichzeitigen Bearbeitenden ist unproblematisch. Erst sehr grosse Sitzungen auf einer einzigen Seite (etwa hundert Personen gleichzeitig) erreichen den Punkt, an dem der Cursor-Verkehr überwiegt.
+
+Brauchst du mehr als eine Relay-Instanz, zur Redundanz oder bei extremer Last, braucht das Relay ein gemeinsames Redis zur Abstimmung. Das ist ein Setup für eine Skalierungsberatung und keine Standardeinstellung.

@@ -1054,9 +1054,9 @@
                 "icon": "rocket",
                 "pages": [
                   "installation",
-                  "installation-kubernetes",
+                  "de/installation-kubernetes",
                   "installation-swarm",
-                  "admin/system-requirements",
+                  "de/admin/system-requirements",
                   "first-run",
                   "desktop-app",
                   "admin/editions-and-license"
@@ -1131,7 +1131,7 @@
                 "icon": "server",
                 "pages": [
                   "admin/hosting",
-                  "admin/scaling",
+                  "de/admin/scaling",
                   "admin/file-storage",
                   "admin/backup",
                   "admin/restore-runbook",

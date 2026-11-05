@@ -1,0 +1,175 @@
+---
+title: "Systemvoraussetzungen"
+sidebarTitle: "Systemvoraussetzungen"
+description: "Betriebssystem, CPU, RAM, Speicher, Netzwerk und Images, die Collabase auf Docker oder Kubernetes braucht. Gib diese Seite an dein Betriebsteam weiter."
+keywords: ["Voraussetzungen", "Linux", "Windows", "Kubernetes", "Docker", "RAM", "CPU", "Ports", "Firewall", "Images", "Betriebsübergabe"]
+icon: "clipboard-list"
+---
+
+Diese Seite listet auf, was deine Infrastruktur bereitstellen muss, bevor du Collabase installierst. Sie richtet sich an das Team, das die Server oder den Cluster betreibt, und du kannst sie unverändert weitergeben. Sie deckt Docker auf einem einzelnen Server, Kubernetes und Docker Swarm ab.
+
+## Betriebsart wählen {#betriebsart-waehlen}
+
+Alle drei Varianten betreiben dieselbe Software. Sie unterscheiden sich darin, wie sie gestartet, aktualisiert und skaliert wird.
+
+| | **Docker, ein Server** | **Kubernetes** | **Docker Swarm** |
+|---|---|---|---|
+| **Passt für** | Einen Linux-Server, kleine bis mittlere Teams | Eine bestehende Kubernetes-Plattform | Einen bestehenden Swarm-Cluster |
+| **Anwendungsinstanzen** | 1 | Standard 1, mehr mit S3-Speicher | 1 |
+| **Installation mit** | `install.sh` | Helm-Chart | `docker stack deploy` |
+| **Aktualisierung mit** | `update.sh` | `helm upgrade` | `docker stack deploy` |
+| **Automatisches HTTPS** | Ja, mit öffentlicher Domain | Über Ingress und cert-manager | Ja, mit öffentlicher Domain |
+| **Anleitung** | [Installation mit Docker](/installation) | [Installation auf Kubernetes](/de/installation-kubernetes) | [Installation auf Docker Swarm](/installation-swarm) |
+
+Hast du keinen Grund, anders zu entscheiden, wähle Docker auf einem Server. Betreibt dein Betriebsteam bereits eine Kubernetes-Plattform und will Collabase mit denselben Werkzeugen betreiben wie alles andere, wähle Kubernetes. Beides wird vollständig unterstützt.
+
+## Betriebssystem und Plattform {#betriebssystem-und-plattform}
+
+| | Anforderung |
+|---|---|
+| **Betriebssystem** | Linux. Collabase läuft nur als Linux-Container. Windows Server wird für den Betrieb nicht unterstützt. |
+| **Distributionen (Docker-Installation)** | Ubuntu 22.04 oder neuer, Debian 12 oder neuer, RHEL 9 oder neuer |
+| **CPU-Architektur** | `amd64` (x86-64). Die Images werden nicht für ARM gebaut. |
+| **Docker (Docker-Installation)** | Version 24 oder neuer mit Docker Compose v2 |
+| **Kubernetes** | Version 1.26 oder neuer und Helm 3.10 oder neuer auf dem Rechner, der installiert |
+
+<Note>
+  macOS und Windows mit Docker Desktop (WSL2) eignen sich für Tests und lokale Versuche. Eine Produktionsplattform sind sie nicht.
+</Note>
+
+## CPU und Arbeitsspeicher {#cpu-und-arbeitsspeicher}
+
+Dimensioniere für die Personen, die gleichzeitig arbeiten, nicht für die Zahl der Konten. [Dimensionierung und Skalierung](/de/admin/scaling#einen-einzelnen-server-dimensionieren) ordnet gleichzeitige Benutzer den Ressourcen zu. Das sind die Ausgangswerte:
+
+| | Minimum | Empfohlen |
+|---|---|---|
+| **CPU** | 2 vCPU | 4 vCPU |
+| **RAM** | 4 GB | 8 GB |
+
+Bei Docker bricht der Installer unter 2 GB RAM oder 10 GB freiem Speicher ab. Unter 4 GB schaltest du die [Live-Zusammenarbeit](/docs/collaboration#turning-it-off) aus.
+
+Bei Kubernetes reservierst du dieselbe Kapazität im Namespace. Was die einzelnen Teile von Collabase höchstens nutzen dürfen, steht unter [Was im Cluster läuft](/de/installation-kubernetes#was-im-cluster-laeuft). Die Speicherlimits aller Teile ergeben zusammen gut 11 GB, und der Speicher, den der Scheduler dafür reserviert, liegt bei etwa 1,75 GB. Im Normalbetrieb liegt der Verbrauch weit unter den Limits. Die Limits schützen den Cluster vor einem ausser Kontrolle geratenen Prozess.
+
+Betreibe Test- und Produktivsystem als getrennte Installationen mit je eigener Datenbank. Ein Testsystem kommt mit dem Minimum aus.
+
+## Speicher {#speicher}
+
+| Was | Einzuplanende Grösse | Hinweise |
+|---|---|---|
+| **Datenbank** | 20 GB zum Start | Wächst mit deinen Inhalten. Braucht schnellen, persistenten Blockspeicher. |
+| **Hochgeladene Dateien** | 10 GB zum Start | Wächst mit Anhängen. Kann stattdessen in einem S3-kompatiblen Bucket liegen. |
+| **Queue (Redis)** | 2 GB | Hält Hintergrundjobs. Muss einen Neustart überstehen. |
+| **Weitere Volumes** | ca. 13 GB bei Kubernetes | Gemeinsames Home-Verzeichnis, Dokumentablage und Cache der Plug-Sandbox. |
+| **Backups** | mindestens so gross wie die Datenbank | Backups vor Updates bleiben 7 Tage erhalten. |
+
+Insgesamt sind es etwa **45 GB** bei Kubernetes und **20 GB** bei einem einzelnen Docker-Server, dazu die Backups. Bei Kubernetes brauchst du eine Standard-Storage-Klasse mit `ReadWriteOnce`-Volumes, oder du setzt die Klasse pro Volume. Behalte den Speicher im Auge und vergrössere ihn, bevor er voll ist. [Hosting und Architektur](/admin/hosting#disk-usage) listet auf, was Platz braucht.
+
+## Datenbank {#datenbank}
+
+Collabase bringt eine eigene PostgreSQL mit. Betreibt deine Organisation stattdessen einen verwalteten oder zentralen Datenbankdienst, muss er Folgendes bieten:
+
+- PostgreSQL 16 oder neuer
+- Die Erweiterung `pgvector`, die Collabase bei der Installation mit `CREATE EXTENSION vector` aktiviert. Der Datenbankbenutzer, der installiert, braucht das Recht dazu, oder dein Datenbankteam aktiviert die Erweiterung vorab einmalig.
+- Eine Datenbank und einen Benutzer, dem sie gehört
+
+Ohne `pgvector` startet Collabase nicht. Kläre das mit deinem Datenbankteam, bevor du dich für eine externe Datenbank entscheidest.
+
+## Netzwerk {#netzwerk}
+
+### Eingehend {#eingehend}
+
+| Port | Protokoll | Zweck |
+|---|---|---|
+| 443 | HTTPS | Gesamter Verkehr aus den Browsern, einschliesslich der Verbindung für die Live-Zusammenarbeit |
+| 80 | HTTP | Leitet auf HTTPS um. Bei Kubernetes optional, dort entscheidet der Ingress. |
+
+Von aussen ist sonst nichts erreichbar. Die Teile von Collabase sprechen über ein internes Netzwerk miteinander.
+
+Die Live-Zusammenarbeit nutzt eine WebSocket-Verbindung auf derselben Adresse unter `/collab`. Ein Load Balancer oder Proxy vor Collabase muss WebSocket-Upgrades durchreichen und Uploads von mindestens 32 MB erlauben.
+
+### Ausgehend {#ausgehend}
+
+Collabase baut nur die Verbindungen auf, die du einrichtest. Erlaube die, die du nutzt:
+
+| Ziel | Wofür | Port |
+|---|---|---|
+| Container-Registry | Installation und Updates. Entfällt, wenn du die Images intern spiegelst oder die [Installation ohne Internet](/admin/airgapped-installation) nutzt. | 443 |
+| Identity Provider, zum Beispiel Microsoft Entra ID | [Single Sign-on](/admin/identity-providers) und [Benutzerprovisionierung](/admin/user-provisioning) | 443 |
+| Mailserver | Benachrichtigungen und Passwort-Zurücksetzen, siehe [E-Mail](/admin/email) | wie konfiguriert |
+| Postfach (IMAP) | [Eingehende E-Mails](/admin/inbound-mail), falls du sie nutzt | wie konfiguriert |
+| KI-Anbieter | KI-Funktionen, falls du sie einschaltest. Kann ein Server in deinem Netzwerk sein, siehe [KI-Konfiguration](/admin/ai-configuration). | wie konfiguriert |
+| Microsoft oder andere verbundene Dienste | Nur die Integrationen, die du aktivierst | 443 |
+
+<Note>
+  Collabase prüft den Lizenzschlüssel auf dem Server und braucht dafür keine Verbindung zu Collabase. Nutzungstelemetrie ist ausgeschaltet, bis ein Administrator zustimmt, und ein Administrator kann sie wieder ausschalten.
+</Note>
+
+### Zertifikate {#zertifikate}
+
+| Betriebsart | So funktioniert HTTPS |
+|---|---|
+| **Docker, ein Server** | Mit öffentlicher Domain wird ein kostenloses Let's-Encrypt-Zertifikat ausgestellt und automatisch erneuert. Mit einer IP-Adresse oder einem internen Namen kommt ein selbstsigniertes Zertifikat zum Einsatz, und Browser warnen. Siehe [Hosting und Architektur](/admin/hosting#https-certificates). |
+| **Kubernetes** | Dein Ingress terminiert TLS. Nutze cert-manager, oder lege dein eigenes Zertifikat als TLS-Secret ab und verweise darauf, siehe [Zertifikate](/de/installation-kubernetes#zertifikate). |
+
+Eine interne Adresse wie `collabase.company.local` braucht ein Zertifikat deiner eigenen Zertifizierungsstelle, und jeder Browser muss dieser Stelle vertrauen.
+
+## Container-Images {#container-images}
+
+| Image | Verwendung |
+|---|---|
+| `ghcr.io/collabase/collabase` | Die Anwendung |
+| `ghcr.io/collabase/collabase-document-processor` | Dateikonvertierung und PDF-Export |
+| `ghcr.io/collabase/collabase-collab` | Live-Zusammenarbeit |
+| `ghcr.io/collabase/collabase-sandbox` | Isolierte Ausführung von Automation-Plugs |
+| `ghcr.io/collabase/collabase-caddy` | Der Reverse Proxy bei Docker und Swarm. Bei Kubernetes nicht im Einsatz. |
+| `pgvector/pgvector:pg16` | Die Datenbank |
+| `redis:7-alpine` | Die Queue |
+
+Die Collabase-Images teilen sich eine Versionsnummer und sind öffentlich, das Laden braucht also keine Anmeldung. Viele Organisationen kopieren die Images zuerst in eine interne Registry. Bei Kubernetes setzt du das Repository jedes Images in deiner Werte-Datei, siehe [Eigene Image-Registry nutzen](/de/installation-kubernetes#eigene-registry).
+
+## Optionale Integrationen {#optionale-integrationen}
+
+Diese richtest du nach der Installation in Collabase ein. Plane sie vorab mit deinen Identitäts- und Mail-Teams.
+
+| Integration | Was deine Teams bereitstellen müssen |
+|---|---|
+| **Single Sign-on** | Eine Anwendungsregistrierung in deinem Identity Provider, siehe [Identity Provider](/admin/identity-providers) |
+| **Benutzerprovisionierung (SCIM)** | Eine Provisionierungsverbindung deines Identity Providers |
+| **E-Mail** | Ein SMTP-Konto oder Relay, siehe [E-Mail](/admin/email) |
+| **KI-Funktionen** | Ein Anbieter für Sprachmodelle und sein Zugriffsschlüssel |
+
+## Informationen für dein Betriebsteam {#informationen-fuer-den-betrieb}
+
+Installiert und wartet ein anderes Team als deines Collabase, klärt diese Punkte vorher gemeinsam.
+
+| Thema | Festlegen |
+|---|---|
+| **Plattform** | Docker-Server, Kubernetes oder Swarm. Welche Kubernetes-Distribution und Version. |
+| **Umgebungen** | Test und Produktion, jeweils als eigene Installation. Wer auf das Testsystem zugreifen darf. |
+| **Images** | Von `ghcr.io` laden oder in eine interne Registry spiegeln. |
+| **Datenbank** | Die mitgelieferte PostgreSQL oder ein interner Dienst mit `pgvector`. |
+| **Speicher** | Die Storage-Klasse für die Datenbank, lokale Volumes oder S3 für Uploads. |
+| **Adresse und TLS** | Der öffentliche Name, wer das Zertifikat ausstellt und welcher Ingress-Controller. |
+| **Anmeldung** | Single Sign-on und Provisionierung oder lokale Konten. |
+| **Backups** | Wer Datenbank, Volumes und das Kubernetes-Secret sichert und wie oft. Siehe [Backup und Wiederherstellung](/admin/backup). |
+| **Updates** | Wer Updates durchführt, wer eine neue Version zuerst auf dem Testsystem prüft und in welchem Zeitfenster. Siehe [Updates](/admin/updates). |
+| **Überwachung** | Welche Prüfung `/api/health` überwacht, siehe [Health-Check](/api/health). |
+| **Secrets** | Wer die Verschlüsselungsschlüssel sicher aufbewahrt. Ein verlorener Schlüssel lässt sich nicht wiederherstellen. |
+
+<Warning>
+  Collabase speichert Integrations- und Mail-Zugangsdaten verschlüsselt mit Schlüsseln, die bei der Installation erzeugt werden. Nimm diese Schlüssel in dein Backup auf. Bei Kubernetes liegen sie im Secret `collabase`, bei Docker in der Datei `.env`. Ohne sie kann eine wiederhergestellte Datenbank diese Zugangsdaten nicht entschlüsseln, und du erfasst sie neu.
+</Warning>
+
+## Weiterführende Seiten
+
+<CardGroup cols={3}>
+  <Card title="Installation mit Docker" icon="download" href="/installation">
+    Auf einem Linux-Server installieren.
+  </Card>
+  <Card title="Installation auf Kubernetes" icon="ship" href="/de/installation-kubernetes">
+    Mit dem Helm-Chart installieren.
+  </Card>
+  <Card title="Dimensionierung und Skalierung" icon="scaling" href="/de/admin/scaling">
+    Ressourcen auf dein Team abstimmen.
+  </Card>
+</CardGroup>
