@@ -1,30 +1,42 @@
 ---
-title: "Installation"
-description: "Set up Collabase on your server in a few minutes. You need Docker and a Linux server — the installer handles the rest."
+title: "Installation with Docker"
+sidebarTitle: "Install with Docker"
+description: "Install Collabase on one Linux server with Docker. The installer checks your server, sets up HTTPS and starts everything in a few minutes."
+keywords: ["install", "Docker", "Docker Compose", "Linux", "install.sh", "single server", "HTTPS"]
 icon: "download"
 ---
 
-## Before you start
+Install Collabase on one Linux server with Docker. You run one script, answer four questions and open Collabase in your browser. HTTPS, the database and all services are set up for you.
 
-Make sure your server meets these requirements before running the installer.
+## Choose how to run Collabase {#choose-a-deployment}
+
+| | Use it when |
+|---|---|
+| **Docker on one server** (this page) | You have a Linux server and want the simplest setup. This is the default choice. |
+| [**Kubernetes**](/installation-kubernetes) | Your organization runs a Kubernetes platform, or your operations team installs and maintains Collabase. |
+| [**Docker Swarm**](/installation-swarm) | You already run a Swarm cluster. |
+
+All three run the same software. Hand [System requirements](/admin/system-requirements) to the team that provides the infrastructure.
+
+## Before you start {#before-you-start}
 
 | | Minimum |
 |---|---|
-| **Operating system** | Ubuntu 22.04+, Debian 12+, or RHEL 9+ |
-| **CPU** | 2 vCPU minimum — 4 vCPU recommended |
-| **RAM** | 4 GB minimum — 8 GB recommended |
+| **Operating system** | Linux: Ubuntu 22.04+, Debian 12+, or RHEL 9+ |
+| **CPU and RAM** | 2 vCPU and 4 GB RAM, 4 vCPU and 8 GB recommended |
 | **Disk space** | 20 GB free |
-| **Docker** | Version 24 or later |
+| **Docker** | Version 24 or later with Docker Compose v2 |
 | **Ports** | 80 and 443 must not be in use by another service |
+| **Address** | A DNS name that points at the server, for HTTPS with a free certificate |
 
-The installer checks all of these automatically and will tell you if something is missing.
+The installer checks the server and tells you if something is missing. The details, including network and outbound connections, are on [System requirements](/admin/system-requirements).
 
 <Note>
-  The 4 GB minimum assumes live collaboration is on (the default). It runs one extra service, the collaboration relay. If you [turn collaboration off](/docs/collaboration#turning-it-off), 2 GB is enough for a small install. See [Sizing & scaling](/admin/scaling) to match resources to your team.
+  The 4 GB minimum assumes live collaboration is on (the default). If you [turn collaboration off](/docs/collaboration#turning-it-off), 2 GB is enough for a small install. See [Sizing & scaling](/admin/scaling) to match resources to your team.
 </Note>
 
 <Note>
-  **macOS and Windows** are supported for testing and local use. On Windows, use Docker Desktop with WSL2.
+  **macOS and Windows** are supported for testing and local use. On Windows, use Docker Desktop with WSL2. Production runs on Linux.
 </Note>
 
 ---
@@ -50,13 +62,13 @@ Collabase ships with tuned defaults. You do not need to tune anything for the nu
 
 ---
 
-## Installation
+## Installation {#installation}
 
 You will have received a deployment ZIP from Collabase. Copy it to your server and unzip it.
 
 ```bash
 unzip collabase-deployment.zip
-cd deployment
+cd deployment/docker
 ```
 
 Then run the installer:
@@ -96,7 +108,7 @@ Once it finishes, you will see a confirmation message with your URL. Open it in 
 
 ---
 
-## First login
+## First login {#first-login}
 
 Log in with the admin email and password you set during installation. You will be asked to choose a new password on first login.
 
@@ -107,7 +119,7 @@ After that, you can:
 
 ---
 
-## Updating Collabase
+## Updating Collabase {#updating-collabase}
 
 To update to a new version, run:
 
@@ -115,7 +127,7 @@ To update to a new version, run:
 bash deployment/docker/update.sh
 ```
 
-The update script backs up your database, downloads the latest version, and restarts everything automatically. You do not need to touch any configuration files.
+The script backs up your database, checks it against the new version, downloads the new version and restarts everything. You do not touch any configuration file. The steps, the options and the rollback are on [Updates](/admin/updates#docker).
 
 <Warning>
   Do not run `install.sh` again on an existing installation. Use `update.sh` for all updates.
@@ -123,7 +135,7 @@ The update script backs up your database, downloads the latest version, and rest
 
 ---
 
-## Changing your URL or admin settings
+## Changing your URL or admin settings {#reconfigure}
 
 If you need to change the URL or other settings configured during installation:
 
@@ -135,7 +147,7 @@ Your data is not affected — only the configuration is updated.
 
 ---
 
-## Managing your installation
+## Managing your installation {#managing-your-installation}
 
 The install script doubles as a management tool. Run it with a command:
 
@@ -150,22 +162,11 @@ The install script doubles as a management tool. Run it with a command:
 | `bash deployment/docker/install.sh support-bundle` | Packs logs and status into an archive for support — never your passwords |
 | `bash deployment/docker/install.sh --help` | Lists every command and option |
 
-Before an update you can preview what would happen without changing anything:
-
-```bash
-bash deployment/docker/update.sh --dry-run
-```
-
-Updates can be pinned to a specific version and undone:
-
-```bash
-bash deployment/docker/update.sh --version v0.12.0   # stay on this version
-bash deployment/docker/update.sh rollback            # return to the previous one
-```
+Options for updates, such as a dry run, a pinned version and a rollback, are on [Updates](/admin/updates#docker).
 
 ---
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
 ### Collabase did not start
 

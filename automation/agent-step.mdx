@@ -43,7 +43,7 @@ If you can write the rule in one sentence without saying "depends", it is a cond
 |---|---|
 | **Agent** | Optional. An [agent](/automation/agents) of the instance. Its instruction, skills, tools, knowledge and model apply to this step. |
 | **Goal** | What the agent should achieve. The goal always comes from the step. |
-| **Data** | What started the flow, for example `{{trigger}}`. The agent reads it as outside text and never as instructions. |
+| **Data** | What started the flow, for example `{{trigger.output}}`. The agent reads it as outside text and never as instructions. |
 | **Tools** | What the agent may call. |
 | **Fixed inputs** | JSON with values the agent must not change, such as the project of a new work item. For example `{"collabase-tasks.create_task": {"projectId": "..."}}`. The key is the plug and the action. |
 | **Approvers** | People and groups who approve tool calls that ask first. |

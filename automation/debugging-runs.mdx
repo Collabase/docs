@@ -11,7 +11,7 @@ Each run keeps a record of what every step received and returned. When a flow do
 
 <Steps>
   <Step title="Open the Runs tab">
-    Open the Automation workspace and select **Runs**. The list shows the newest run first. Filter by flow, by status or by date.
+    Open the Automation workspace and select **Runs**. The list shows the newest run first. Filter by status group, by flow, by period or by the name of a failed step. See [Runs and approvals](/automation/runs#filter-the-list).
   </Step>
   <Step title="Open the run">
     Select a run. The page shows each step with its status: started, succeeded, failed or waiting.
@@ -20,6 +20,18 @@ Each run keeps a record of what every step received and returned. When a flow do
     Select a step to see what it received and what it returned. A step that ran more than once shows each attempt. A failed step shows its message, and the run shows which step failed.
   </Step>
 </Steps>
+
+## Read the output
+
+The output of a step opens as a tree. Open an object or a list to see what is inside it. Use **Search names and values** to find a field, **Copy path** to copy the path of a field inside the output, and **Copy value** to copy its text. A long list shows the first entries and says how many more are not shown.
+
+## Read the error
+
+A failed step shows an error block with the error code, the message, the step and the time. Select **Copy for AI** to copy a cleaned report that you can paste into a chat with an AI. Secrets are hidden in it, but check the text before you share it.
+
+## Debug in the editor
+
+You do not have to leave the editor to see what a test did. After **Test flow**, each card shows **Succeeded**, **Failed**, **Skipped** or **Running** and the time the step took, and the bar under the canvas lists the **Latest runs** with **View run**. See [The flow editor](/automation/editor#see-a-run-in-the-editor).
 
 From the run, **Open the flow** takes you to the flow. Runs that started from the editor are marked **Test**, runs of the live flow **Production**.
 
@@ -33,10 +45,10 @@ From the run, **Open the flow** takes you to the flow. Runs that started from th
 | **Succeeded** | All steps finished. |
 | **Failed** | A step failed. |
 | **Cancelled** | An editor cancelled the run. |
-| **Timed out** | A wait or an approval ran out, or the run took too long. A single step may run for up to 10 minutes. |
+| **Timed out** | A wait or an approval ran out, or the run used up its compute time. A single step may run for up to 10 minutes. See [Limits](/automation/limits#runs). |
 | **Internal error** | Collabase could not carry the run out, for example because the plug sandbox was not available. Retry it. |
 | **Out of memory** | A step used more memory than it may. |
-| **Log too large** | The log of the run grew beyond what Collabase keeps. |
+| **Log too large** | The log of the run grew beyond what Collabase keeps. The run shows its steps without their outputs. |
 
 ## Test one step again
 

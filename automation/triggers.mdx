@@ -2,7 +2,7 @@
 title: "Triggers"
 sidebarTitle: "Triggers"
 icon: "zap"
-description: "Start a flow from an event in Collabase, a webhook call, a schedule, a chat message or a trigger of an installed plug, and see the data each one hands over."
+description: "Start a flow from an event in Collabase, a webhook call, a schedule, a chat message or a trigger of an installed plug, test it and see why a trigger fails."
 ---
 
 The trigger is the first step of a flow. Open the **Trigger** tab of the start step, search the list and choose what starts the flow. The flow starts a run each time the trigger fires, but only while the flow is **published** and switched **on**.
@@ -25,7 +25,7 @@ The [plug reference](/automation/plug-reference) lists every trigger with the da
 
 ## Webhook
 
-**Webhook received** starts a run when another system calls the flow's webhook address. The address is on the **Trigger** tab. [Webhooks](/automation/webhooks) explains the address, the answer and the limits.
+**Webhook received** starts a run when another system calls the flow's webhook address. The address is on the **Trigger** tab. You can require a login, accept files and test the call. [Webhooks](/automation/webhooks) explains all of it.
 
 ## Schedule
 
@@ -45,9 +45,14 @@ A pattern that cannot be read, an unknown time zone or a pattern that fires more
 
 **Called by another flow** starts a flow when another flow of the same Space runs the **Run another flow** step. The data the first flow passes becomes the trigger data. Use it to split a long flow into parts that several flows share. The called flow must be published and switched on.
 
-## A flow run failed
+## Another flow ended
 
-**A flow run failed** starts a flow when a production run of another flow in the same Space fails. Use it as an error flow that tells people or cleans up.
+Two triggers react to the production runs of the other flows in the same Space. Test runs do not start them.
+
+| Trigger | Starts when |
+|---|---|
+| **A flow run failed** | A run of another flow failed. Use it as an error flow that tells people or cleans up. |
+| **A flow run finished** | A run of another flow ended, whether it succeeded or failed. The data names the flow, the run, the status, the failed step, the duration and the environment. Use it to chain flows or to keep a record of runs. |
 
 ## Chat message
 
@@ -55,18 +60,57 @@ A pattern that cannot be read, an unknown time zone or a pattern that fires more
 
 ## Triggers of other plugs
 
-Installed core and community plugs bring their own triggers. They come in two kinds:
+Installed core and community plugs bring their own triggers. They come in three kinds:
 
 | Kind | How it starts runs |
 |---|---|
-| **Polling** | Collabase asks the plug every 5 minutes for new items and starts one run for each. One poll starts at most 100 runs. |
-| **Webhook** | The plug registers the flow's webhook address with the other system when you switch the flow on, and removes it when you switch the flow off. Each call to the address goes to the plug, which turns it into one run per item. |
+| **Polling** | Collabase asks the plug for new items and starts one run for each. The default is every 5 minutes. A plug can ask for another interval or a cron pattern with a time zone, but not for less than one minute. |
+| **Webhook** | The plug registers the flow's webhook address with the other system when you switch the flow on, and removes it when you switch the flow off. Each call to the address goes to the plug, which turns it into one run per item. A check call from the other system is answered by the plug and starts no run. |
+| **App webhook** | The app sends its events to one fixed address that all flows listening to that app share. See [App webhooks](#app-webhooks). |
 
 Plug triggers run in the sandbox. A flow with a plug trigger needs the sandbox to be available. Republishing the flow runs the trigger's enable step again. Switch a flow off before you delete it, so that the other system forgets the address.
 
+A poll starts runs for up to 5,000 new items. Items beyond that are skipped and the flow shows a trigger error that says how many. Items with identical content that arrive within 30 seconds start one run.
+
+### App webhooks
+
+Some plugs deliver the events of an app, for example a chat app, to one address of your instance:
+
+```text
+https://your-instance/api/v1/automation/app-events/<app>
+```
+
+`<app>` is the short name of the plug. The **Trigger** tab shows the full address with a copy button. Enter it in the app as the place it sends its events to. Then create a [variable](/automation/variables) in the Space named `APP_EVENT_SECRET_<APP>` in capital letters, for example `APP_EVENT_SECRET_SLACK`, that holds the signing key of the app. The tab names the variable too. The trigger checks every event against it. A flow whose variable is missing receives no event and shows a trigger error that names the variable.
+
+The address answers with what the app expects, such as an address check, whatever the flows do. A call that fails the signature check starts no run.
+
 ## Test a trigger
 
-A trigger shows sample data until a real event has happened. Test the steps after it with the sample data, or switch the flow on and cause a real event. Webhook triggers of plugs cannot be tested before they are published, because the other system sends the data.
+A trigger shows sample data until a real event has happened. The data picker and **Test flow** use it. Under the trigger you can:
+
+| Action | What it does |
+|---|---|
+| **Use a recent event** | For Collabase events, lists the last events of that kind, and **Use** makes one the sample data. |
+| **Wait for an event** | Waits up to a minute for the next matching event. Cause it now in the product, and it becomes the sample data. **Stop waiting** ends the wait. |
+| **Own sample data as JSON** | Paste your own example event and select **Save sample data**. It can hold up to 256 KB. |
+| **Load sample data** | For a plug trigger, asks the plug for example items. Nothing is registered at the other system and no run starts. The first example becomes the sample data. |
+| **Test address** | For a webhook trigger, a separate address for your tests. See [Webhooks](/automation/webhooks#test-a-webhook). |
+
+A plug trigger that has no way to deliver examples has nothing to load, and the page says so.
+
+## When a trigger fails
+
+If the trigger of a switched-on flow cannot work, the flow shows a **Trigger error** with the plug's own message, the code and the time. The same marker appears in the flow list. Typical causes are a plug that asks the other system for items and gets a refusal, a webhook that the other system did not accept, a registration that could not be renewed, and a missing app signing key.
+
+The creator of the flow is notified once when a series of failures starts, and the error disappears when the trigger works again. A flow that Collabase switched off after repeated run failures is reported separately. See [Runs and approvals](/automation/runs#failing-flows).
+
+| Code | Meaning |
+|---|---|
+| `TRIGGER_POLL_FAILED` | Asking the other system for new items failed. |
+| `TRIGGER_POLL_OVERFLOW` | A poll found more items than it starts runs for. |
+| `TRIGGER_WEBHOOK_FAILED` | A call to the webhook could not be handled, or the signing key of an app is missing. |
+| `TRIGGER_ACTIVATION_FAILED` | Switching the trigger on failed. |
+| `TRIGGER_RENEW_FAILED` | The registration at the other system could not be renewed. |
 
 ## Related
 

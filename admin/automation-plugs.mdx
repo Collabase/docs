@@ -17,11 +17,11 @@ Plugs are managed by system administrators under **Administration, Plugs**. The 
   </Step>
 </Steps>
 
-Every version is checked for its licences first. A plug whose dependencies carry a licence that Collabase may not ship shows **Not installable: a licence is not allowed**, and it is left out of the editor's step picker.
+Every version is checked for its licences first. A plug whose dependencies carry a licence that Collabase may not ship shows **Not installable: a licence is not allowed**, and it is left out of the editor's step picker. A plug or an action that the sandbox cannot run is left out of the picker too.
 
 ## Update and remove
 
-An available update shows **Version x is available**. Select **Update** to replace the installed version. Flows that use the plug run with the new version after their next publish. **Remove** deletes the plug with all its versions, and flows that use it are switched off.
+An available update shows **Version x is available**. Select **Update** to replace the installed version. Flows whose steps were saved on the same major version run with the new version at once, and nobody has to publish again. A step that was saved on an older version offers **Update to version x** in the editor. A new major version does not move steps on its own, so check the flows that use the plug. See [Plugs](/automation/plugs#plug-versions). **Remove** deletes the plug with all its versions, and flows that use it are switched off.
 
 ## Upload your own plug
 
@@ -29,5 +29,10 @@ Plugs your developers build are uploaded with the command line tool, see [Build 
 
 ## Sandbox needed
 
-Every plug that is not a Collabase plug needs the sandbox service. Without it the install fails with a message that the plug sandbox is not configured. See [Studio sandbox](/admin/automation-sandbox).
+Every plug that is not a Collabase plug, and the Collabase plugs S3 storage and Crypto, need the sandbox service. Without it the install fails with a message that the plug sandbox is not configured. See [Studio sandbox](/admin/automation-sandbox).
+
+## Related
+
+- [Plugs](/automation/plugs)
 - [Studio overview](/automation/overview)
+- [Studio sandbox](/admin/automation-sandbox)

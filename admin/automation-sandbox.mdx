@@ -19,6 +19,12 @@ The sandbox still starts and reports **degraded**. Collabase plugs keep working 
 1. Update the host so that AppArmor 4 is available, then run the installer or updater again.
 2. As a fallback, set `kernel.apparmor_restrict_unprivileged_userns=0` in `/etc/sysctl.d/60-collabase-sandbox.conf` and apply it. This opens user namespaces for every process on the host, so prefer the first choice.
 
+## The image and the licence check
+
+The sandbox image installs the plugs that come with Collabase while it is built. A plug that depends on other packages, such as the S3 plug, gets them installed without running their install scripts. Each package is checked against the licences Collabase may ship. A plug with a package outside that list stops the build, so such a plug never reaches your instance. Plugs you install later are checked the same way when they are installed or uploaded.
+
+The sandbox limits the memory of a plug process to 512 MB. Set `SANDBOX_MEMORY_MB` on the sandbox, between 64 and 8192, to change it. A run that goes over ends as **Out of memory**.
+
 ## Check that it works
 
 On a Docker host run this from the install folder:

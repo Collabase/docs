@@ -13,16 +13,31 @@ A connection holds the credentials a plug uses to reach another system. Create c
     In **Connections**, select **New connection** and choose the plug.
   </Step>
   <Step title="Enter the credentials">
-    The form depends on the plug: a secret text such as an API key, a user name and password, several values, or **Connect with the provider** for OAuth.
+    The form depends on the plug and the **Type**: **Secret text** such as an API key, **Username and password**, **Several values** (one `name=value` per line), **No credentials**, or **OAuth2**.
   </Step>
   <Step title="Save">
-    Collabase stores the values encrypted. They are never shown again. To change a value, replace the connection.
+    Collabase stores the values encrypted. They are never shown again.
   </Step>
 </Steps>
 
+Before it saves, Collabase asks the plug whether the credentials work. A refusal shows the plug's own words, for example **The plug refused these credentials**, and nothing is saved. When the plug can tell whose account the credentials belong to, the list shows **Signed in as** and the name, so you can tell two connections of one plug apart. The check does not run for a Collabase plug, for **No credentials**, or while the sandbox is not available. The connection is then saved as it is.
+
 ## OAuth
 
-For OAuth plugs, select **Connect with the provider** and sign in with your own account. Your instance needs an OAuth app registered for the plug first, which an administrator sets up. See [OAuth apps](/admin/automation-oauth-apps).
+For an OAuth2 connection, select **Connect with the provider** and sign in with your own account. Your instance needs an OAuth app registered for the plug first, which an administrator sets up. See [OAuth apps](/admin/automation-oauth-apps).
+
+Some plugs ask for extra values before they connect, such as a subdomain or a tenant. Enter them first. A plug that supports both ways lets you choose under **Sign-in method**. A plug that supports only the second connects without a sign-in page:
+
+| Method | How it connects |
+|---|---|
+| **Sign in with the provider** | You sign in on the provider's page and allow access. |
+| **Connect without a sign-in page** | The app of your instance connects with its own client ID and secret, with no person signing in. Use it for a service account. |
+
+## Rename and reconnect
+
+Open the menu of a connection to **Rename** it. Only the name changes, and flows that use it keep working.
+
+**Reconnect** replaces the credentials of a connection and keeps the connection, so no flow needs another choice. Enter the new values. The type stays the same. An OAuth2 connection signs in again and keeps its extra values. A connection whose access has run out shows **Expired, reconnect**.
 
 ## Secret stores
 
@@ -30,8 +45,14 @@ An administrator can connect HashiCorp Vault or Azure Key Vault. A connection th
 
 ## When a connection stops working
 
-A connection that fails is marked **Invalid**. The admins of the Space get a notification, and flows that use it fail until you replace it or fix the store.
+A connection that fails is marked **Invalid, replace the value**. The admins of the Space get a notification, and flows that use it fail until you reconnect it or fix the store.
 
 ## Connections and exports
 
 An export, a template or a Git push never contains connection values. Steps that need a connection come back empty, and you choose one again.
+
+## Related
+
+- [Studio plugs](/automation/plugs)
+- [OAuth apps](/admin/automation-oauth-apps)
+- [Variables](/automation/variables)

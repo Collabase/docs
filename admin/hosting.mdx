@@ -81,7 +81,7 @@ Collabase listens on two ports:
 
 No other ports are exposed to the network. All internal communication between services happens inside an isolated network on your server — nothing is accessible from outside.
 
-### HTTPS certificates
+### HTTPS certificates {#https-certificates}
 
 If you enter a real domain name during installation (e.g. `https://collabase.yourcompany.com`), Collabase provisions a free TLS certificate automatically using Let's Encrypt. The certificate renews itself before it expires — no manual action required.
 
@@ -196,10 +196,10 @@ in their profile. To keep a feature off for everyone, name it in `FEATURE_FLAG_O
 `.env` file of your installation and restart the app:
 
 ```bash
-FEATURE_FLAG_OVERRIDES="STUDIO=false,INTRANET=false"
+FEATURE_FLAG_OVERRIDES="INTRANET=false,DOCTOR=false"
 ```
 
-The names are `STUDIO`, `INTRANET`, `DOCTOR`, `MIGRATION_TOOLS` and `CONFLUENCE_DC_MIGRATION`. A
+The names are `INTRANET`, `DOCTOR`, `MIGRATION_TOOLS` and `CONFLUENCE_DC_MIGRATION`. A
 feature switched off this way shows a locked switch in Collabase Lab. Setting a name to `true`
 switches the feature on for everyone instead.
 

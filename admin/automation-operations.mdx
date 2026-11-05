@@ -69,6 +69,18 @@ A daily sweep deletes finished runs that are older than the retention of their S
 
 The installers create the secrets for a new installation, and the updater adds them to an existing one. Set them by hand only for an installation that you assemble yourself. If one is missing, plugs from the catalog and your own plugs are not available, and the application says so. Collabase plugs keep working.
 
+## Limits of a run
+
+Three limits end a run on purpose, so that one flow cannot hold the workers for good:
+
+| Limit | Value | Ends the run as |
+|---|---|---|
+| Compute time of one run in all | 24 hours. Waiting does not count: a paused run, a wait step, the queue and a full Space. | **Timed out** |
+| Log of one run | 16 MB. The run keeps its step list without the outputs. | **Log too large** |
+| Memory of a plug process | 512 MB by default, set with `SANDBOX_MEMORY_MB` on the sandbox, between 64 and 8192. | **Out of memory** |
+
+A step may still run for up to 10 minutes. See [Limits](/automation/limits#runs).
+
 ## What to watch
 
 | Where | What it tells you |
@@ -76,9 +88,25 @@ The installers create the secrets for a new installation, and the updater adds t
 | **Runs** tab of a Space | Failed runs, runs that stay paused, and retries. |
 | **Administration, Studio analytics** | Failed runs per day and the average duration, for all Spaces. See [Studio analytics](/admin/automation-analytics). |
 | The sandbox health address | `ok` or `degraded`. See [Studio sandbox](/admin/automation-sandbox). |
+| The health address of the application, `/api/health` | Reports **degraded** with `automation-queue` in its list when a run has waited in the queue for more than 5 minutes. See [Runs that stay queued](#runs-that-stay-queued). |
 | **Audit log** | Who installed a plug, changed a limit or connected Git. See [Audit events](/automation/audit-events). |
 
 A flow that fails ten times in a row is switched off, and the editors and admins of its Space are told.
+
+## Runs that stay queued
+
+The health address of the application, `GET /api/health`, answers `status: "degraded"` with `degraded: ["automation-queue"]` when a run has waited in the queue for more than 5 minutes. The field `reasons` says why:
+
+| Reason | Cause and fix |
+|---|---|
+| `REDIS_NOT_CONFIGURED` | The application has no Redis, so no worker takes runs. Set up Redis. |
+| `RUNS_NOT_TAKEN` | Redis is there, but no worker takes the runs. Check that `WORKERS_ENABLED` is not `false` on every replica and that a worker is running. |
+
+The answer stays `200`, because restarting the application would not fix it. An instance that runs no flows reads as healthy.
+
+## After an update
+
+A release that changes Studio can add migrations. They are additive and run when the application starts. This release adds columns for the latest trigger error of a flow and for the account a connection belongs to, and a table that routes the events of apps to flows. The sandbox image of a release installs the packages that the Collabase plugs need, such as the S3 plug, and refuses a plug whose packages carry a licence that is not allowed. Update the sandbox together with the application. The secrets stay as they are, and no new variable is needed.
 
 ## Related
 

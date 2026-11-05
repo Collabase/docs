@@ -34,7 +34,7 @@ Date, date and time, and number inputs have a switch next to the label. Use it t
 
 | Input | What you see | Notes |
 |---|---|---|
-| **Dropdown** | A list of fixed values | One choice. |
+| **Dropdown** | A list of fixed values | One choice. The switch **Dynamic value** takes the choice from an earlier step instead. |
 | **Dynamic dropdown** | A list the plug loads while you fill in the step | The list can depend on other inputs, for example a project that depends on an account. If the list cannot be loaded, the field becomes a text field and says why. |
 | **Multiple choice** | A list of boxes | Several choices. |
 
@@ -67,9 +67,19 @@ The **Search** action asks for a **kind of object** and **filters**. Build the f
 | **Names and values** | Two fields per row, with **Add entry** | An object, for example HTTP headers or the field values of a registry object. |
 | **Tools** | One row per tool of an AI agent | See [Agent tools](/automation/agent-tools). |
 
+## Secrets
+
+An input that holds a secret, such as a password or an API key, shows dots. Select **Show value** to read what you typed and **Hide value** to hide it again. Under the field, **Insert a variable reference** puts a reference to a [variable](/automation/variables) in the field, which is the better home for a secret: you replace it in one place and the flow never holds it.
+
+People who may only read the flow see `********` instead of the value, and an export or a Git push leaves the input empty. A reference to a variable, a connection or a vault entry is not a secret itself and stays readable.
+
 ## Files
 
-A file input takes the address of a file or data from an earlier step that holds a file.
+A file input takes a file from an earlier step, or one that you upload. Select **Upload a file** to attach a file of up to 10 MB. The input then shows **File attached** with the name. To use a file that an earlier step produced, insert its reference with the data picker.
+
+Collabase checks what the file contains. It accepts PDF, PNG, JPEG, GIF, WebP, ZIP and Office files, gzip and text such as CSV, JSON or XML. Another kind of file is refused with **This kind of file is not accepted.** A larger file is refused with **The file is too large. The limit is 10 MB.**
+
+A step that produces a file, such as a download, keeps it with the run, and later steps can use it as a file input. Whoever may read the run may read its files.
 
 ## What a failed input looks like
 

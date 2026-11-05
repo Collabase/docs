@@ -1,152 +1,209 @@
 ---
 title: "Updates"
 sidebarTitle: "Updates"
-description: "How to update Collabase to a new version. The update script handles everything automatically."
+description: "Update Collabase on Docker, Kubernetes or Docker Swarm: what to check first, the update command for each, how to verify it and how to roll back."
+keywords: ["update", "upgrade", "helm upgrade", "update.sh", "rollback", "release notes", "migration", "version"]
 icon: "refresh-cw"
 ---
 
-Collabase updates are applied with a single command. The update script creates a database backup, downloads the latest version, runs any required changes, and restarts everything.
+A Collabase update replaces the application with a new version and applies the database changes that version needs. Every deployment takes a backup or a safety check first, so a failed update leaves your data as it was. This page covers the three deployments and what they share: preparation, verification and rollback.
+
+## Before you update {#before-you-update}
+
+- [ ] Read the [release notes](/changelog/overview) of every version between yours and the new one. A change that needs a step from you is listed first, under **Breaking changes**.
+- [ ] Update the test system first, if you have one, and check the features your team relies on.
+- [ ] Schedule the update for a quiet time. The application restarts and is unavailable for a few minutes.
+- [ ] Tell your team in advance if the downtime matters.
+- [ ] Check that you have a current backup you can restore, see [Backup & Restore](/admin/backup). The update takes its own backup, but a second copy elsewhere is safer.
+- [ ] Docker only: at least 2 GB of free disk space for the download.
 
 <Warning>
-  Do not run `install.sh` on an existing installation. Use `update.sh` for all updates. Running the installer again on a live system will overwrite your configuration.
+  Do not run `install.sh` on an existing installation. It would overwrite your configuration. Use the update command of your deployment.
 </Warning>
+
+## Update with Docker {#docker}
+
+Connect to your server and run the update script from the deployment folder:
+
+```bash
+cd /path/to/deployment/docker
+bash update.sh
+```
+
+The script works through these stages:
+
+- Creates a database backup in `deployment/docker/backups/`. If the backup fails, the update stops and nothing is changed.
+- Downloads the new version.
+- Checks your database against the new version before switching. If the check finds something the new version cannot convert, the update stops, prints what to fix, and your current version keeps running.
+- Restarts all services. When the new version brings database changes, it takes a second backup right before applying them.
+- Waits for the application to come back and confirms it is healthy.
+
+This typically takes 2 to 5 minutes, depending on your connection. Pre-update backups are kept for 7 days and older ones are removed after a successful backup.
+
+| Command | What it does |
+|---|---|
+| `bash update.sh --dry-run` | Shows what would happen without changing anything |
+| `bash update.sh --version <version>` | Updates to a specific version and stays on it |
+| `bash update.sh --yes` | Runs without asking for confirmation, for scripted updates |
+| `bash update.sh rollback` | Returns to the previous version, see [Roll back](#rolling-back-an-update) |
 
 <Tip>
   Your server has no internet access? Update with an image bundle, see the [air-gapped installation and upgrade guide](/admin/airgapped-installation#phase-4-upgrade).
 </Tip>
 
----
+### Configuration keys {#configuration-keys}
 
-## Before you update
+New versions occasionally need new configuration. The update script adds missing keys to `.env` and generates new secrets itself. If the output warns about new configuration, review `.env` afterwards.
 
-- [ ] Make sure you have at least 2 GB of free disk space for the download
-- [ ] Schedule the update during a low-traffic window — the application restarts and is briefly unavailable
-- [ ] Notify users in advance if the downtime matters for your team
-- [ ] Read the [release notes](/changelog/overview) of every version between yours and the new one. Any monthly version can include a change that needs a step from you; it is listed first, under **Breaking changes**
+## Update on Kubernetes {#kubernetes}
 
----
+Unpack the new release package and run an upgrade with the values file you used for the install. The chart installs the version it belongs to, so the new package moves every image to the new release.
 
-## Running the update
+<Steps>
+  <Step title="Preview the change">
+    ```bash
+    helm diff upgrade collabase ./deployment/helm -n collabase -f collabase-values.yaml
+    ```
 
-Connect to your server and run:
+    This needs the `helm-diff` plugin. Without it, `helm upgrade --dry-run` shows the rendered result.
+  </Step>
+  <Step title="Upgrade">
+    ```bash
+    helm upgrade collabase ./deployment/helm -n collabase -f collabase-values.yaml
+    ```
+
+    A migration job applies the database changes before the new version starts. It first checks that your data can be converted. If the check fails, the upgrade stops and your database stays as it was.
+  </Step>
+  <Step title="Watch the rollout">
+    ```bash
+    kubectl rollout status deployment/collabase-app -n collabase
+    kubectl get pods -n collabase
+    ```
+  </Step>
+</Steps>
+
+Use your values file and not `--reuse-values`. A new chart can add settings, and `--reuse-values` hides their defaults.
+
+With the default single instance, the application restarts and is unavailable for a short time. With S3 file storage and several instances the pods roll without downtime, see [Scale out](/installation-kubernetes#scaling-out).
+
+To get a database dump before every upgrade, turn on `backup.enabled` in your values file one upgrade ahead, see [Back up and restore](/installation-kubernetes#backup). Without it, the upgrade takes no automatic backup, so take one yourself first.
+
+## Update on Docker Swarm {#swarm}
+
+Unpack the new release package on a manager node and deploy the stack again. Swarm rolls the services and rolls back automatically if a service fails to start.
 
 ```bash
-cd /path/to/your/deployment
-bash update.sh
+docker stack deploy -c swarm/docker-compose.swarm.yml collabase
 ```
 
-The script will:
+Take a database backup before you start. The Swarm deployment takes none by itself.
 
-- Create a database backup in `deployment/backups/` before making any changes. If the backup fails, the update stops there and nothing is changed.
-- Download the latest version
-- Check your database with the new version before switching to it. If the check finds something the new version cannot convert, the update stops, prints what to fix, and your current version keeps running.
-- Restart all services with the new version. When the new version brings database changes, it takes a second backup of its own right before applying them.
-- Wait for the application to come back online and confirm it is healthy
+## After the update {#after-the-update}
 
-The whole process typically takes **2–5 minutes** depending on your server's internet connection.
+Open Collabase in a browser and confirm it loads. Check the health address, which reports the version:
 
-<Note>
-  The update script keeps the last 7 days of pre-update backups automatically. Older backup files are removed after a successful backup.
-</Note>
+```bash
+curl https://collabase.yourcompany.com/api/health
+```
 
----
-
-## After the update
-
-Open Collabase in a browser and confirm it loads correctly. As an administrator you see a notice with the new version once, together with a short update report: when the update happened, whether the services of the installation are running, and how many apps are installed. Other people see no notice. Anyone can check the version later by clicking the version number at the bottom of the **Feedback & help** menu or of the sign-in page.
+As an administrator you see a notice with the new version once, together with a short update report: when the update happened, whether the services are running, and how many apps are installed. Other people see no notice. Anyone can read the version later at the bottom of the **Feedback & help** menu or on the sign-in page.
 
 An update can bring new apps or new versions of installed apps. They appear in the [App Store](/admin/app-store).
 
-### Rebuild the semantic search index
+### Rebuild the semantic search index {#rebuild-the-semantic-search-index}
 
-If you use semantic search, it stops returning results immediately after this upgrade. Entries made by the previous configuration are no longer comparable with the ones the current setup produces, so they are ignored rather than mixed into the results. Keyword search is unaffected, and so is everything else the assistant does.
+If you use semantic search, it can stop returning results after an update that changes the search setup. Entries made by the previous configuration are no longer comparable with the ones the current setup produces, so they are ignored rather than mixed into the results. Keyword search and everything else the assistant does are unaffected.
 
 The nightly maintenance pass repairs the index on its own. To have it back the same day, go to **Admin → Settings → AI settings → RAG model & pipeline** and click **Rebuild** next to the status panel. It queues everything the index is missing and reports how many items went into the queue. On a large instance the queue takes a while to drain, and search improves as it does.
 
----
+## If the update fails {#if-the-update-fails}
 
-## If the update fails
+| Deployment | Where to look |
+|---|---|
+| **Docker** | `docker compose -f deployment/docker/docker-compose.release.yml logs collabase-app --tail 50` |
+| **Kubernetes** | `kubectl logs job/collabase-migrate -n collabase` for a failed upgrade, `kubectl logs deployment/collabase-app -n collabase` for a failed start |
+| **Swarm** | `docker service ps collabase_collabase-app --no-trunc` |
 
-If the script exits with an error, the most likely cause is a database connectivity issue. Check the logs:
-
-```bash
-docker compose -f deployment/docker/docker-compose.release.yml logs collabase-app --tail 50
-```
-
-If the application fails to start after the update, the pre-update backup created in step 1 is still in `deployment/backups/`. See [Backup & Restore](/admin/backup) for restore instructions.
-
-If the log says the pre-migration check or the pre-migration backup failed, your database was not changed. Start the previous version again (`bash update.sh rollback`), fix what the log names, and run the update again. Where the backups taken right before database changes are kept, and how to restore one, is described in [Backup & Restore](/admin/backup#backups-before-database-changes).
+If the log says the pre-migration check or the pre-migration backup failed, your database was not changed. Return to the previous version, fix what the log names and run the update again. Where the backups taken right before database changes are kept, and how to restore one, is described in [Backup & Restore](/admin/backup#backups-before-database-changes).
 
 <Warning>
-  If your hosting already snapshots the database before every update, you can turn the pre-migration backup off with `COLLABASE_PRE_MIGRATION_BACKUP=off` in `.env`. The check still runs. Without a snapshot, keep it on: it is the only backup the automatic nightly update takes.
+  If your hosting already snapshots the database before every update, you can turn the pre-migration backup off with `COLLABASE_PRE_MIGRATION_BACKUP=off` in `.env`. This applies to Docker. The check still runs. Without a snapshot, keep it on: it is the only backup the automatic nightly update takes.
 </Warning>
 
----
+## Roll back an update {#rolling-back-an-update}
 
-## Checking for database password issues
-
-If your installation was set up before version 0.9.1, the update script will stop and show an error if your database password is set to the default value. Follow the on-screen instructions to change it:
+A rollback returns to the previous version. If the update applied database changes, the data of the previous version may not match the new schema, so the safest rollback restores the backup taken before the update. Anything entered after the update started is lost in that case.
 
 <Steps>
-  <Step title="Choose a new secure database password">
-    Pick a strong password and store it in a secure location (password manager recommended).
+  <Step title="Return to the previous version">
+    **Docker:**
+
+    ```bash
+    cd /path/to/deployment/docker
+    bash update.sh rollback
+    ```
+
+    **Kubernetes:**
+
+    ```bash
+    helm history collabase -n collabase
+    helm rollback collabase <revision> -n collabase
+    ```
+
+    **Swarm:** deploy the stack again from the previous release package.
   </Step>
-  <Step title="Update the password in the database">
+  <Step title="Restore the database if the update changed it">
+    If the update applied database changes, restore the backup taken before it. For Docker, find it in `deployment/docker/backups/`, named with the time of the update, and restore it:
+
+    ```bash
+    bash install.sh restore backups/collabase-YYYYMMDD-HHMMSS.sql.gz
+    ```
+
+    For Kubernetes and Swarm, restore the dump you took before the update. See [Backup & Restore](/admin/backup).
+  </Step>
+  <Step title="Check the result">
+    Open Collabase and check `/api/health`. The version must be the previous one.
+  </Step>
+</Steps>
+
+<Note>
+  On Kubernetes, `helm rollback` returns the chart and the images. It does not undo database changes. After an upgrade that migrated the database, restore the dump as well.
+</Note>
+
+## Database password on old installations {#database-password}
+
+If your installation was set up before version 0.9.1, the update script stops with an error when the database password is still the default value. Change it:
+
+<Steps>
+  <Step title="Choose a new password">
+    Pick a strong password and store it in a password manager.
+  </Step>
+  <Step title="Change it in the database">
     ```bash
     docker exec -it collabase-postgres psql -U collabase -c "ALTER USER collabase PASSWORD 'your-new-password';"
     ```
     Replace `your-new-password` with the password you chose.
   </Step>
-  <Step title="Update the password in your configuration file">
-    Open `deployment/.env` in a text editor and change the `POSTGRES_PASSWORD` line to your new password.
+  <Step title="Change it in the configuration">
+    Open `deployment/docker/.env` and change the `POSTGRES_PASSWORD` line to your new password.
   </Step>
-  <Step title="Re-run the update">
+  <Step title="Run the update again">
     ```bash
     bash update.sh
     ```
   </Step>
 </Steps>
 
----
-
-## Keeping your configuration current
-
-New versions occasionally add required configuration options. The update script adds missing options automatically. After an update, review `deployment/.env` if you see any warnings about new configuration in the output.
-
----
-
-## Rolling back an update {#rolling-back-an-update}
-
-If the new version has a critical problem, restore the database backup created before the update and restart the previous version.
-
-<Steps>
-  <Step title="Stop the application">
-    ```bash
-    docker compose -f deployment/docker/docker-compose.release.yml stop collabase-app
-    ```
-  </Step>
-  <Step title="Restore the pre-update database backup">
-    Find your backup file in `deployment/backups/` — it is named with the timestamp of when the update ran:
-    ```bash
-    gunzip -c deployment/backups/collabase-YYYYMMDD-HHMMSS.sql.gz | \
-      docker exec -i collabase-postgres psql -U collabase collabase
-    ```
-  </Step>
-  <Step title="Start the application">
-    ```bash
-    docker compose -f deployment/docker/docker-compose.release.yml up -d
-    ```
-  </Step>
-</Steps>
-
-<Note>
-  This rollback procedure restores your data to the state it was in immediately before the update. Any data entered after the update started will not be present after the rollback.
-</Note>
-
----
-
 ## Related pages
 
-- [Backup & Restore](/admin/backup) — how backups work and how to restore them
-- [Hosting & Architecture](/admin/hosting) — overview of what runs on your server
-- [Troubleshooting](/admin/troubleshooting) — what to do if something fails
+<CardGroup cols={3}>
+  <Card title="Backup & Restore" icon="database-backup" href="/admin/backup">
+    How backups work and how to restore them.
+  </Card>
+  <Card title="System requirements" icon="clipboard-list" href="/admin/system-requirements">
+    What your servers or cluster must provide.
+  </Card>
+  <Card title="Troubleshooting" icon="life-buoy" href="/admin/troubleshooting">
+    What to do if something fails.
+  </Card>
+</CardGroup>

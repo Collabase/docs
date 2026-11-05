@@ -35,7 +35,7 @@ Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet 
   - **Times-Zugriff:** Times ist jetzt eine App mit einer Zugriffseinstellung für Gruppen und ersetzt Time Reports und Planner. Siehe [Update-Hinweis](#update-hinweis-fuer-self-hoster).
   - **Service Management:** eine neue App neben Projects für Teams, die Anfragen von Kundinnen und Kunden bearbeiten. Ein Service-Projekt hat Anliegen-Formulare, Queues mit den Tickets, die Aufmerksamkeit brauchen, SLA-Policies mit Uhren, die warnen, bevor ein Ziel verpasst wird, Genehmigungen, die starten, wenn ein Ticket einen Workflow-Status erreicht, öffentliche Antworten und interne Notizen sowie ein Kundenportal, in dem Kundinnen und Kunden Anfragen einreichen, verfolgen und mit Kolleginnen und Kollegen teilen. Kunden sind eine eigene Art von Konto, in Organisationen gruppiert, und können sich mit ihrer Firmenadresse selbst registrieren. Sie genehmigen Anliegen, die ihre Zustimmung brauchen, durchsuchen die Wissensbasis im Portal und stimmen auf einer öffentlichen Roadmap ab und kommentieren sie; Agents sehen, wer abgestimmt hat, Kunden nur die Anzahl. Eine fertige Service-Desk-Vorlage richtet Status, Anliegen-Formulare, Queues und SLA-Policies ein. Für Dashboards gibt es SLA-, Queue- und Vote-Gadgets, Tickets und Kunden lassen sich exportieren. Ein Ticket kann auch aus einer Mail entstehen. Eine Administratorin oder ein Administrator gibt die App an Gruppen, und sie läuft mit oder ohne Projects. [Mehr erfahren](/service-management/overview) Service Management startet als Beta: Schalte es für dich unter **Einstellungen** → **Profil** → **Benutzereinstellungen** → **Collabase Lab** ein. Ein Betreiber schaltet es für die ganze Instanz ein, siehe [Update-Hinweis](#update-hinweis-fuer-self-hoster).
   - **Studio:** baue Abläufe (Flows), die auf Ereignisse in Collabase und anderen Systemen reagieren, nach Zeitplan laufen, Menschen um Freigabe bitten und KI nutzen, jeder Lauf nachvollziehbar. Studio ist der neue Name von Collabase Automation und Teil dieses Releases. Eigene Integrationen entstehen mit dem Open-Source-[Plug SDK](https://github.com/Collabase/plug-sdk) und den [Plug-Beispielen](https://github.com/Collabase/plug-examples). [Mehr erfahren](/automation/overview)
-  - **Agents in Studio (Beta):** definiere einen Assistenten einmal, mit Anweisung, Werkzeugen und optionalem Wissen, und nutze ihn in Chats, Flows und Jobs. Agents sind eine Beta-Funktion von Collabase Lab und bleiben aus, bis du sie einschaltest. [Mehr erfahren](/automation/agents)
+  - **Agents in Studio:** definiere einen Assistenten einmal, mit Anweisung, Werkzeugen und optionalem Wissen, und nutze ihn in Chats, Flows und Jobs. [Mehr erfahren](/automation/agents)
   - **Popups behalten deine Eingaben:** Bearbeitungs- und Einstellungs-Popups schliessen sich nicht mehr, wenn du daneben klickst. Escape und die Schliessen-Schaltfläche schliessen sie weiterhin.
 
   ### <span aria-hidden="true"><img src="/images/apps/docs-light.png" alt="Docs-App-Icon" width="24" noZoom className="inline-block dark:hidden m-0 mr-2 align-text-bottom" /><img src="/images/apps/docs-dark.png" alt="Docs-App-Icon" width="24" noZoom className="hidden dark:inline-block m-0 mr-2 align-text-bottom" /></span>Docs
@@ -191,16 +191,28 @@ Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet 
   - **Sicher gebaut:** ein Flow handelt mit den Rechten des Service-Kontos seines Arbeitsbereichs, nie mit mehr. Plugs, die Collabase nicht geschrieben hat, laufen in einer isolierten Sandbox ohne Weg zu deinen internen Systemen.
   - **Menschen behalten die Kontrolle:** ein Schritt kann eine benannte Person um Freigabe bitten, bevor der Flow weiterläuft, und ein sensibler Space braucht eine zweite Administration, bevor ein Flow veröffentlicht oder eingeschaltet wird. [Mehr erfahren](/automation/flow-approvals)
   - **Funktioniert ohne KI:** alles ausser den KI-Schritten, dem Bauen eines Schritts aus einem Satz und den Collabase-AI-Werkzeugen funktioniert ohne KI-Anbieter.
+  - **Editor:** füge einen Schritt überall ein, mit dem Plus auf jeder Verbindung, wähle ihn in einer Schrittliste mit den Reitern **Explore**, **Apps** und **Utility** und einer Suche und nutze das Schrittmenü, um ihn zu ersetzen, zu kopieren, zu duplizieren, zu überspringen, zu verschieben oder zu löschen, mit Tastenkürzeln. Eine Leiste unten zoomt, passt die Ansicht ein, wechselt zwischen Auswahl und Hand und zeigt eine Minimap. Zweige zeigen ihre Namen, Schritte lassen sich umbenennen, und die Einstellungen eines Schritts speichern sich selbst. [Mehr erfahren](/automation/editor)
+  - **If / else:** teile einen Flow mit Regeln in Zweige. 22 Operatoren für Text, Zahlen, Daten und Listen und die Wahl zwischen dem ersten passenden Zweig und allen passenden Zweigen. [Mehr erfahren](/automation/editor#branch-the-flow)
+  - **Testen beim Bauen:** **Test flow** führt den Entwurf aus, jede Karte zeigt Zustand und Dauer, und die letzten Läufe stehen unter dem Canvas. Ein Auslöser kann ein jüngstes Ereignis verwenden, auf das nächste warten, deine eigenen Beispieldaten nehmen, für Webhooks eine Testadresse anbieten oder Beispiele von einem Plug laden. [Mehr erfahren](/automation/triggers#test-a-trigger)
+  - **Daten aus früheren Schritten:** der Schalter **Dynamic value** lässt Dropdowns, Checkboxen und Listen einen Wert aus einem früheren Schritt übernehmen, der Daten-Selektor bietet das aktuelle Element einer Schleife an, und `{{step.field}}` und `{{step.output.field}}` funktionieren beide. Das Veröffentlichen prüft Verweise und Werte, listet jedes Problem auf und öffnet den Schritt, wenn du es anwählst. [Mehr erfahren](/automation/passing-data)
+  - **Versionen und Listen:** sieh dir eine frühere Version an, bevor du sie wiederherstellst, bestätige, was eine Wiederherstellung ersetzt, und verwirf den Entwurf. Die Flow-Liste sucht, sortiert, benennt um und dupliziert, und **Approvals** listet die Entscheidungen, die auf dich warten. [Mehr erfahren](/automation/version-history)
+  - **Lesbare Läufe:** die Ausgabe eines Schritts öffnet sich als Baum mit Suche und Kopieren, ein fehlgeschlagener Schritt bietet **Copy for AI** mit versteckten Geheimnissen, und die Laufliste filtert nach Status, Flow, Zeitraum und fehlgeschlagenem Schritt. Mehrere Läufe lassen sich auf einmal abbrechen. [Mehr erfahren](/automation/debugging-runs)
+  - **Lauf-Grenzen:** ein Lauf darf insgesamt 24 Stunden rechnen, ein Protokoll von 16 MB führen und den Speicher nutzen, den die Sandbox erlaubt, und endet als **Timed out**, **Log too large** oder **Out of memory**, wenn er darüber geht. [Mehr erfahren](/automation/limits#runs)
+  - **Webhooks:** verlange eine Anmeldung (Basic, einen Header oder eine HMAC-Signatur), nimm bis zu 5 Dateien pro Aufruf an, sende einen `Idempotency-Key`, damit ein wiederholter Aufruf nur einen Lauf startet, und teste mit einer eigenen Adresse. Ein Flow nimmt 120 Aufrufe pro Minute an. [Mehr erfahren](/automation/webhooks)
+  - **Weitere Auslöser:** Cron-Muster mit Zeitzone, **A flow run finished**, App-Webhooks auf einer festen Adresse pro App und ein sichtbarer **Trigger error** mit Benachrichtigung, wenn ein Auslöser nicht arbeiten kann. [Mehr erfahren](/automation/triggers)
+  - **Plugs:** ein Plug-Update innerhalb derselben Hauptversion erreicht veröffentlichte Flows sofort, und ein Schritt bietet **Update to version x** mit einer Liste der geänderten Eingaben. Neu sind die Collabase-Plugs **S3 storage**, **Crypto** und **Email** (**Send email** über das Mailkonto deiner Instanz). Die Schrittliste zeigt nur, was deine Instanz ausführen kann. [Mehr erfahren](/automation/plugs)
+  - **Verbindungen:** OAuth2 verbindet auch ohne Anmeldeseite, nimmt zusätzliche Werte entgegen, verbindet neu, ohne die Flows zu ändern, und zeigt **Signed in as**. Collabase fragt den Plug, ob die Zugangsdaten funktionieren, bevor es sie speichert. In Datei-Eingaben lassen sich Dateien hochladen. [Mehr erfahren](/automation/connections)
+  - **Geheimnisse bleiben verborgen:** wer einen Flow nur lesen darf, sieht in geheimen Eingaben `********`, und ein Export oder ein Git-Push lässt sie leer. Mit `{{variables['NAME']}}` hältst du ein Geheimnis aus dem Flow heraus. [Mehr erfahren](/automation/step-inputs#secrets)
+  - **Studio-API:** die Laufliste blättert mit einem Cursor, neueste zuerst, und die Webhook-Adressen antworten mit `401`, `413`, `415` und `429`. Neu sind eine Testadresse und eine Adresse für App-Ereignisse. [Mehr erfahren](/api/automation/overview)
 
-  ### <span aria-hidden="true"><Icon icon="bot-message-square" size={20} /></span> Agents in Studio (Beta)
+  ### <span aria-hidden="true"><Icon icon="bot-message-square" size={20} /></span> Agents in Studio
 
   **Neue Funktionen**
 
-  - **Collabase Lab:** Agents sind eine Beta-Funktion. Sie bleiben aus, bis du sie unter **Einstellungen** → **Profil** → **Benutzereinstellungen** → **Collabase Lab** einschaltest, und der Schalter gilt nur für dich. Ein Betreiber kann die Funktion für alle ausgeschaltet lassen.
   - **Einmal definieren:** ein Agent hat eine Anweisung, Werkzeuge, optionales Wissen und eigene Gesprächsanfänge. Beschreibe ihn in einem Satz, und Collabase schreibt den Entwurf. Dafür braucht deine Instanz ein KI-Modell. [Mehr erfahren](/automation/agent-editor)
   - **Überall nutzbar:** sprich mit einem Agent im angedockten KI-Chat, führe ihn in einem Flow mit dem Schritt **Agent** aus oder lass ihn in Jobs unter eigener Identität selbstständig arbeiten. Ein Agent kann für jedes Werkzeug an die Freigaberegel gebunden werden. [Mehr erfahren](/automation/agents)
   - **Teilen und begrenzen:** teile einen Agent mit Personen und Gruppen, setze ein monatliches Token-Limit und lies seine Nutzung ab.
-  - **Grenzen der Beta:** Gäste können keine Agents nutzen. Die Beta kann sich ändern, bevor sie allgemein verfügbar ist.
+  - **Grenzen:** Gäste können keine Agents nutzen.
 
   ### <span aria-hidden="true"><Icon icon="sparkles" size={20} /></span> Collabase AI
 
@@ -213,6 +225,8 @@ Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet 
   - **Times-App:** Unter **Admin** → **Roles & App Access** werden die Apps **Time Reports** und **Planner** durch eine App ersetzt, **Times**, mit den Rollen User, Manager und Admin. User öffnet Meine Zeiten, Prüfungen und den Planner, Manager ergänzt Time Reporting für die Spaces, die die Person verwaltet, und Admin ergänzt alle Berichte und die Abrechnungseinstellungen. [Mehr erfahren](/admin/users-groups)
   - Das Zeitsummen-Gadget in Dashboards braucht eine Rolle auf **Times**.
   - Gelöschte Roadmaps werden nach 30 Tagen endgültig entfernt. Wird ein Benutzer gelöscht, verschwinden auch die Roadmaps, die nur diese Person öffnen konnte.
+  - **Studio-Zustand:** `/api/health` meldet `automation-queue` als degraded, mit dem Grund, wenn ein Lauf länger als 5 Minuten in der Warteschlange wartet. [Mehr erfahren](/admin/automation-operations#runs-that-stay-queued)
+  - **Studio-Sandbox:** das Sandbox-Image installiert die Pakete der Collabase-Plugs und prüft ihre Lizenzen, und `SANDBOX_MEMORY_MB` legt den Speicher eines Plug-Prozesses fest. [Mehr erfahren](/admin/automation-sandbox)
 
   ### Update-Hinweis für Self-Hoster {#update-hinweis-fuer-self-hoster}
 
@@ -225,7 +239,7 @@ Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet 
 
   **Vor dem Update**
 
-  - Studio ist ab dieser Version an. Damit alle deiner Instanz **Agents** und **Service Management** nutzen, setze vor dem Update `FEATURE_FLAG_OVERRIDES="SERVICE_MANAGEMENT=true"` (und das passende Flag für Agents). Ohne das schalten Personen es für sich in Collabase Lab ein. Kundinnen und Kunden erreichen das Portal von Service Management nur, wenn der Instanz-Schalter an ist.
+  - Studio und seine Agents sind ab dieser Version an. Damit alle deiner Instanz **Service Management** nutzen, setze vor dem Update `FEATURE_FLAG_OVERRIDES="SERVICE_MANAGEMENT=true"`. Ohne das schalten Personen es für sich in Collabase Lab ein. Kundinnen und Kunden erreichen das Portal von Service Management nur, wenn der Instanz-Schalter an ist.
   - Entscheide, welche Gruppen, die weder Time Reports noch Planner hatten, Times trotzdem nutzen sollen, und gib ihnen die App **Times** unter **Admin** → **Roles & App Access**, vor dem Update oder direkt danach.
 
   **Was das Update macht**
@@ -234,11 +248,17 @@ Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet 
   - Alle, die Collabase schon vor dem Update genutzt haben, sehen den Update-Hinweis einmal.
   - Ergänzt die Kommentartabelle um eine Spalte, die festhält, wo ein Inline-Kommentar sitzt. Die Migration läuft beim Start.
   - Ergänzt die App **Times** in der Liste der Apps und kopiert die Rechte jeder Gruppe auf Time Reports und Planner dorthin. Die alten Zeilen bleiben ein Release lang, damit ein Rollback keinen Zugriff verliert. Beide Migrationen laufen beim Start.
+  - Ergänzt drei additive Migrationen für Studio: Spalten für den letzten Auslöser-Fehler eines Flows und für das Konto hinter einer Verbindung sowie eine Tabelle, die die Ereignisse von Apps zu Flows leitet. Sie laufen beim Start und brauchen keinen Schritt von dir.
+  - Ersetzt das Sandbox-Image. Es enthält die Pakete der Collabase-Plugs **S3 storage** und **Crypto**, aktualisiere die Sandbox also zusammen mit der Anwendung. Die Secrets bleiben, wie sie sind.
 
   - Instanzen mit dem Standard-Farbschema zeigen jetzt Lime statt der bisherigen Markenfarbe. Die anderen Farbschemata behalten Namen und Farbfamilie.
   - Instanzen, die die Anmeldedesigns Liquid Glass oder Standard genutzt haben, zeigen jetzt das zweispaltige Design. Die zentrierte Karte wählst du unter **Einstellungen** → **Anmeldeseite**, wenn du sie lieber hast.
   - Die Schrift Outfit wird nicht mehr genutzt. Überschriften verwenden Inter.
   - Kommentieren auf einer Seite braucht neu das Kommentarrecht statt des Bearbeitungsrechts. Wer lesen und kommentieren darf, kann jetzt also kommentieren. Gäste können nicht mehr kommentieren.
+
+  **Konfiguration**
+
+  - Es muss keine neue Umgebungsvariable gesetzt werden. Die App-Ereignisse eines Plugs nutzen eine Arbeitsbereich-Variable namens `APP_EVENT_SECRET_<APP>`, die du in Studio anlegst, wenn du einen solchen Auslöser verwendest.
 </Update>
 
 <Update
@@ -288,7 +308,7 @@ Jede Version hat einen Eintrag mit Version und Monat, und ein Link darauf endet 
   - **Meetings und Dashboards:** Meetings mit Agenda und Ergebnissen, und Dashboards mit Gadgets über alle Module.
   - **Registry und Service Desk:** Objekte mit eigenen Typen und Beziehungen, und ein Anfrageportal pro Space.
   - **Suche:** eine Suche für die globale Suche, gespeicherte Filter, Listen und Collabase AI.
-  - **Collabase Lab:** Jede Person kann Funktionen einschalten, die noch in Entwicklung sind, darunter Studio für Automationen, unter Preferences im Profil. Ein Administrator kann eine Funktion für alle ausgeschaltet lassen.
+  - **Collabase Lab:** Jede Person kann Funktionen einschalten, die noch in Entwicklung sind, unter Preferences im Profil. Ein Administrator kann eine Funktion für alle ausgeschaltet lassen.
   - **Deployment:** Pakete für Docker Compose, Kubernetes (Helm) und Docker Swarm. Updates spielen Datenbankänderungen beim Start ein.
 
   ### Stabilität

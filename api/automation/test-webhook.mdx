@@ -1,0 +1,43 @@
+---
+title: "Test a webhook"
+description: "Send a call to the test address of a draft flow so that it becomes the trigger's sample data and starts no run."
+api: "POST /api/v1/automation/webhooks/{flowId}/test"
+authMethod: "none"
+---
+
+Saves a call as the sample data of the **Webhook received** trigger of the flow's draft. It starts no run and changes nothing in production, so you can build the steps behind the trigger with the real fields of your caller. `GET` works the same way.
+
+## Who may call it
+
+A signed-in editor or admin of the Space may call the address from the browser. Anybody else has to pass the login that the trigger asks for, and gets `401` otherwise. The flow does not have to be published or switched on.
+
+## Request
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/webhooks/cm1abc/test?ref=7" \
+  -H "Content-Type: application/json" \
+  -d '{"order": 4711}'
+```
+
+The body may be JSON or text, up to 5 MB. The sample keeps the method, the body and the query. Files are not kept.
+
+## Answers
+
+```json
+{ "data": { "saved": true, "sample": { "method": "POST", "body": { "order": 4711 }, "query": { "ref": "7" } } } }
+```
+
+| Status | Meaning |
+|---|---|
+| `200` | The call is the new sample data. |
+| `401` | The call does not pass the login of the trigger. |
+| `404` | The flow does not exist or its draft does not start from the built-in webhook. |
+| `413` | The body is larger than 5 MB. |
+| `422` | The sample data is larger than 256 KB. The code is `SAMPLE_TOO_LARGE`. |
+| `429` | Too many calls to the test address of this flow in a minute. `Retry-After` says when to try again. |
+
+## Related
+
+- [Webhooks](/automation/webhooks#test-a-webhook)
+- [Call a webhook](/api/automation/call-webhook)
+- [Studio API](/api/automation/overview)

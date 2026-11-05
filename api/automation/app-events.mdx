@@ -1,0 +1,56 @@
+---
+title: "Receive app events"
+description: "The fixed address of an app's events: what an app sends there, how the signing key is checked and what the address answers."
+api: "POST /api/v1/automation/app-events/{app}"
+authMethod: "none"
+---
+
+The shared address that an app, such as a chat app, sends its events to. Every flow in your instance that listens to the app uses it. The plug of the app reads each event, names the answer the app expects and decides which flows get it.
+
+<Warning>
+  No token is needed. Each flow checks every event against the signing key of the app, so a forged call starts no run. Keep the key in the Space variable `APP_EVENT_SECRET_<APP>`.
+</Warning>
+
+`{app}` is the short name of the plug, such as `slack`. The **Trigger** tab of a flow that listens to the app shows the full address.
+
+## Request
+
+The body is what the app sends, up to 1 MB. The app's own headers are handed to the plug, except credentials.
+
+## What happens
+
+<Steps>
+  <Step title="The plug reads the event">
+    It names the event, the account it belongs to and the answer for the sender, for example a reply to an address check.
+  </Step>
+  <Step title="Flows are chosen">
+    Flows that are switched on and listen to that event of that account are picked, up to 100 for one event.
+  </Step>
+  <Step title="Each flow checks the signature">
+    The check uses the Space variable `APP_EVENT_SECRET_<APP>`, for example `APP_EVENT_SECRET_SLACK`. A flow whose variable is missing shows a trigger error and starts nothing. A flow whose check fails starts nothing.
+  </Step>
+  <Step title="Runs start">
+    Each flow that accepts the event starts one run per item.
+  </Step>
+</Steps>
+
+## Answers
+
+When the plug asked for an answer, the address sends exactly that, so the app's address check passes. Otherwise:
+
+```json
+{ "data": { "runIds": ["cm1def"] } }
+```
+
+| Status | Meaning |
+|---|---|
+| `200` | The event was taken. `runIds` is empty when no flow started. |
+| `404` | No installed plug has this short name. |
+| `413` | The body is larger than 1 MB. |
+| `429` | Too many calls from this sender in a minute. `Retry-After` says when to try again. |
+
+## Related
+
+- [Triggers](/automation/triggers#app-webhooks)
+- [Variables](/automation/variables)
+- [Studio API](/api/automation/overview)

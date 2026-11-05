@@ -8,7 +8,9 @@ Returns the status of your Collabase instance. No authentication required. Use t
 
 ## Response
 
-<ResponseField name="status" type="string">Always `ok` when the service is running.</ResponseField>
+<ResponseField name="status" type="string">`ok` when the service is running and the background features work, `degraded` when one of them does not. The HTTP status stays `200`, because restarting the process would not fix it.</ResponseField>
+<ResponseField name="degraded" type="string[]">Only when `status` is `degraded`: the features that need attention, for example `sla-tick` or `automation-queue`.</ResponseField>
+<ResponseField name="reasons" type="object">Only for `automation-queue`: why Studio runs stay queued, `REDIS_NOT_CONFIGURED` or `RUNS_NOT_TAKEN`. See [Studio operations](/admin/automation-operations#runs-that-stay-queued).</ResponseField>
 <ResponseField name="version" type="string">The deployed version of Collabase.</ResponseField>
 <ResponseField name="timestamp" type="string">Current server time in ISO 8601 format.</ResponseField>
 

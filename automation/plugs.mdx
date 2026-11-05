@@ -4,26 +4,42 @@ description: "Understand where plugs come from, how they run in an isolated sand
 icon: "blocks"
 ---
 
-A plug adds triggers and actions to Studio. It also says what credentials it needs. Plug versions are installed per instance, and a flow keeps using the version it was published with until you publish again.
+A plug adds triggers and actions to Studio. It also says what credentials it needs. Plug versions are installed per instance. A flow keeps working when an administrator updates a plug within the same major version, see [Plug versions](#plug-versions).
 
 ## Where plugs come from
 
 | Origin | Description |
 |---|---|
-| **Collabase** | Plugs for the apps in your instance, such as work items, pages, meetings, comments, search, notifications and flow control. They run inside Collabase with the rights of the workspace's service account. |
+| **Collabase** | Plugs for the apps in your instance, such as work items, pages, meetings, comments, search, notifications, email and flow control. Most run inside Collabase with the rights of the workspace's service account. |
 | **Core** | Plugs for common tools and helpers that come with the catalog. |
 | **Community** | A large catalog of plugs for other services. An administrator installs the ones you need. |
 | **Own** | Plugs your own developers build and upload. See [Build a plug](/automation/build-a-plug). |
 
-The [plug reference](/automation/plug-reference) lists them.
+The [plug reference](/automation/plug-reference) lists them. **S3 storage** offers upload, download, delete, list objects and presigned URLs for Amazon S3 and S3-compatible services, with a connection that holds an access key, a secret key, a region and, for other services, an endpoint. **Crypto** offers hashes, HMAC signatures, random values, AES-GCM encryption and Base64.
 
 ## How plugs run
 
-Collabase plugs run in the application. Every other plug runs in an isolated sandbox service. The sandbox runs the plug in a locked-down process, with no route to your database or other internal services, and gives it only the connection of the step that is running. A plug cannot see another Space's connections or any application secret.
+Most Collabase plugs run in the application. Every other plug, and the Collabase plugs **S3 storage** and **Crypto**, run in an isolated sandbox service. The sandbox runs the plug in a locked-down process, with no route to your database or other internal services, and gives it only the connection of the step that is running. A plug cannot see another Space's connections or any application secret.
+
+## Email
+
+The **Email** plug has the action **Send email**. It sends a plain text mail through the mail account of your instance, once to each address, with up to 20 recipients, a subject of up to 200 characters and a text of up to 100 KB. Enter the recipients separated by commas or line breaks. The step needs no connection. See [Email](/admin/email) for the mail account.
+
+If the instance has no mail account, the step fails with **This instance has no mail account set up.** If a mail cannot be sent to any recipient, it fails with **No mail could be sent.** Otherwise it returns how many mails were sent and how many failed.
+
+## Plug versions
+
+A step remembers the version of the plug it was saved with. When an administrator updates a plug to a new version of the **same major** number, for example from 1.2 to 1.4, the published flows keep running and use the installed version, so nobody has to publish again. The inputs you saved stay valid inside a major version.
+
+In the editor, a step on an older version shows **This step was saved with an older version of the plug** and the button **Update to version x**. The update keeps your inputs and, where the new version has changed its inputs, first lists what was added as required or optional, what was removed and what changed its type, so you can look at those fields afterwards. A new major version is a deliberate step: a step does not move to it on its own.
+
+## Which plugs you see
+
+The step list offers only what your instance can run. A plug or an action that the sandbox cannot run is left out, and a plug with a licence that is not allowed is shown as not installable.
 
 ## Licences
 
-Collabase ships only software with licences it may redistribute. Each plug version is checked when it is installed or uploaded. A plug with a licence that is not allowed is shown as blocked and cannot be installed.
+Collabase ships only software with licences it may redistribute. Each plug version is checked when it is installed or uploaded, together with the packages it depends on. The plugs that come with Collabase are checked when the sandbox image is built. A plug with a licence that is not allowed is shown as blocked and cannot be installed.
 
 ## Install a plug
 
@@ -32,3 +48,5 @@ An administrator installs plugs. Anyone building a flow sees which plugs are mis
 ## Related
 
 - [Studio overview](/automation/overview)
+- [Studio plugs](/admin/automation-plugs)
+- [Connections](/automation/connections)

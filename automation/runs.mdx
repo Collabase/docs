@@ -4,7 +4,17 @@ description: "Follow every run of a flow, retry or cancel it, ask a person to ap
 icon: "activity"
 ---
 
-Every execution of a flow is a run. Open the **Runs** tab of a Space to see them newest first, filter by flow, status or date, and open one to see each step with its result.
+Every execution of a flow is a run. Open the **Runs** tab of a Space to see them newest first. The list shows the flow, the environment, when the run started, how long it took and, for a failed run, the step that failed. Open a run to see each step with its result.
+
+## Filter the list
+
+| Filter | What it does |
+|---|---|
+| **All**, **Running**, **Succeeded**, **Failed**, **Cancelled** | Shows a group of statuses. **Running** includes runs that wait and are paused. **Failed** includes every status that ends in a failure, such as **Timed out** and **Out of memory**. |
+| **Flow** | Shows the runs of one flow. |
+| **From**, **To** | Limits the list to a period. |
+| **Failed runs: flow name or failed step** | Searches the failed runs by the name of the flow or the step that failed. |
+| **Reset filters** | Clears all of them. |
 
 ## Run statuses
 
@@ -16,13 +26,18 @@ Every execution of a flow is a run. Open the **Runs** tab of a Space to see them
 | **Succeeded** | All steps finished. |
 | **Failed** | A step failed. The run shows which. |
 | **Cancelled** | An editor cancelled it. |
-| **Timed out** | A wait or an approval ran out, or the run took too long. |
+| **Timed out** | A wait or an approval ran out, or the steps of the run used up the time a run may compute in all. See [Limits](/automation/limits#runs). |
+| **Internal error** | Collabase could not carry the run out, for example because the plug sandbox was not available. Retry it. |
+| **Out of memory** | A step used more memory than it may. |
+| **Log too large** | The log of the run grew beyond what Collabase keeps. The run shows its steps without their outputs. |
 
 A step output that is too large to show can be downloaded. A log that has been removed by retention says so, and the state of the run stays correct.
 
 ## Retry and cancel
 
-Select **Retry** on a run, or on several, and choose where to start (at the failed step with the outputs of the earlier steps, or at the start with the same trigger data) and which version to use. The original run stays as it is. **Cancel run** stops a run at its next step.
+Select **Retry** on a run, or tick several runs and select **Retry n selected**, and choose where to start (at the failed step with the outputs of the earlier steps, or at the start with the same trigger data) and which version to use: the published version or the version the run used. The original run stays as it is.
+
+**Cancel run** stops a run at its next step. To stop many runs at once, tick them, or tick the box in the header to select all runs that can be stopped or retried, and select **Cancel n selected**. A dialog asks for confirmation, and a run that has finished meanwhile is skipped. Up to 100 runs can be cancelled in one go.
 
 ## Ask for approval
 

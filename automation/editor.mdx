@@ -1,7 +1,7 @@
 ---
 title: "The flow editor"
 sidebarTitle: "Editor"
-description: "Build a flow in the editor: choose a trigger, add steps, test them, publish the draft, switch the flow on and go back to an earlier version."
+description: "Build a flow in the editor: add steps anywhere, use the step menu, test the draft, publish it, switch the flow on and go back to an earlier version."
 icon: "pen-tool"
 ---
 
@@ -11,28 +11,120 @@ A flow has a draft and a published version. You change the draft in the editor. 
 
 <Steps>
   <Step title="Choose the trigger">
-    Open the **Trigger** tab of the start step and choose what starts the flow: an event in a Collabase app, a call to the flow's webhook address, a schedule, or a chat message. A schedule runs from every minute to every week. See [Triggers](/automation/triggers).
+    Select the start step and open its **Trigger** tab. Choose what starts the flow: an event in a Collabase app, a call to the flow's webhook address, a schedule, a chat message or another flow. See [Triggers](/automation/triggers).
   </Step>
   <Step title="Add steps">
-    Select **Add step** or press `+`, choose a plug and an action. Steps run in order. A loop repeats its steps for each item of a list.
+    Select **Add step**, press `+`, or select the plus on a connection between two steps. Choose a plug and an action. Steps run in order. A loop repeats its steps for each item of a list.
   </Step>
   <Step title="Fill in the inputs">
-    Each input is typed. Use the expression switch to take a value from an earlier step instead of typing it, or insert data with the data picker. See [Passing data](/automation/passing-data). Pickers list the spaces, projects, work items, pages, people and groups you may use. [Step inputs](/automation/step-inputs) describes every kind of input.
+    Each input is typed. Use the switch next to a field, such as **Dynamic value** on a dropdown, to take a value from an earlier step instead of typing it, or insert data with the data picker. See [Passing data](/automation/passing-data). [Step inputs](/automation/step-inputs) describes every kind of input.
   </Step>
   <Step title="Choose a connection">
     A step of a plug that needs credentials asks for a connection. See [Connections](/automation/connections).
   </Step>
   <Step title="Test">
-    Test a step with sample data, or the whole draft with a test run. The result shows what each step returned.
+    Test a step with the saved data of the steps before it, or select **Test flow** to run the whole draft. See [Test a flow](#test-a-flow).
   </Step>
   <Step title="Publish and switch on">
     Select **Publish**, then switch the flow on. See [Publishing flows](/automation/publishing-flows).
   </Step>
 </Steps>
 
+## Add a step
+
+There are three ways to add a step. Each opens the step list in a popover next to the place you chose:
+
+- **Add step** in the toolbar, or the `+` key, adds the step after the last one.
+- The plus on a connection between two steps inserts the step at exactly that place, in the middle of the flow.
+- The plus inside a loop or a branch adds the step there.
+
+Type in **Search steps** to find an action by the name of the plug or the action. Without a search, the list has three tabs:
+
+| Tab | What it shows |
+|---|---|
+| **Explore** | **Popular** plugs and **Highlights**, a short list of core steps. |
+| **Apps** | The plugs of your apps and other services. Open a plug to see its actions, grouped as **Read** and **Write**. |
+| **Utility** | Helpers such as flow control. |
+
+The control steps **Code**, **If / else** and **Loop** are under **Flow control**. A plug that is not installed is marked **Not installed**, and a system administrator can install it from the list. See [Plugs](/automation/plugs).
+
 ## The canvas
 
-The flow is drawn from top to bottom. Use the controls at the lower left to zoom in and out and to fit the whole flow on the screen, and drag the canvas to move around. Right-click a step to **Duplicate step** or **Delete step**. Select a step to open its settings.
+The flow is drawn from top to bottom and ends with an **End** node. The branches of an **If / else** step show their names as pills on the connections. Use the bar at the bottom of the canvas:
+
+| Control | What it does |
+|---|---|
+| **Zoom in**, **Zoom out** | Changes the zoom. |
+| **Fit view** | Fits the whole flow on the screen. |
+| **Select tool** | Selects steps. This is the default. |
+| **Hand tool (move canvas)** | Drags the canvas to move around. |
+| **Show or hide minimap** | The button at the lower left. Shows a small map of the flow. |
+
+Select a step to open its settings on the right.
+
+## The step menu
+
+Right-click a step, or open its menu, for the actions on that step. A viewer sees no menu, and the trigger offers only **Copy reference**.
+
+| Action | What it does | Shortcut |
+|---|---|---|
+| **Replace** | Swaps a plug step for another action. The step list opens. | |
+| **Copy** | Copies the step with everything inside it, such as a loop body or the branches. | `Ctrl` + `C`, `⌘` + `C` on a Mac |
+| **Duplicate step** | Adds a copy right after the step. | |
+| **Skip**, **Unskip** | A skipped step is marked **Skipped** and does not run. The flow goes on with the next step. | `Ctrl` + `E`, `⌘` + `E` |
+| **Copy reference** | Copies `{{step_1.output}}` for this step, to paste into an input. | |
+| **Move up**, **Move down** | Moves the step one place in its list. | |
+| **Paste after** | Pastes the copied step after this one. | `Ctrl` + `V`, `⌘` + `V` |
+| **Delete step** | Deletes the step. | `Shift` + `Delete` |
+
+A branch of **If / else** has its own menu on the pill with **Delete branch**.
+
+## Edit a step
+
+The settings panel has the tabs **Inputs**, **Test** and **Errors**. A loop has its list instead of inputs, and a code step has **Code**.
+
+- **Rename:** select the name at the top of the panel, type a new one and press `Enter`. The name is the label on the card. References keep the step's own name, such as `step_1`.
+- **Auto-save:** the panel saves your changes after a short pause and when you select another step. It shows **Saving...** and then **Saved**. You do not save steps by hand.
+- **Plug updates:** a step saved with an older version of its plug shows **Update to version x**. See [Plugs](/automation/plugs#plug-versions).
+
+## Branch the flow
+
+**If / else** splits the flow into branches. Each branch has rules, and each rule compares a value with an operator, for example `{{trigger.title}}` **contains** `urgent`. Rules inside a branch must all match (**Add rule (and)**). A second group is an alternative (**Add alternative (or)**). The **Otherwise** branch runs when no other branch matches.
+
+Choose which branches run with **Which branches run**:
+
+| Choice | Effect |
+|---|---|
+| **First match only** | The first branch whose rules match runs. |
+| **All matches** | Every branch whose rules match runs. |
+
+The operators depend on the kind of value:
+
+| Kind | Operators |
+|---|---|
+| Text | contains, does not contain, is exactly, is not exactly, starts with, does not start with, ends with, does not end with |
+| Number | is greater than, is less than, is equal to |
+| Date | is before, is the same date as, is after |
+| List | list contains, list does not contain, list is empty, list is not empty |
+| Any | exists, does not exist, is true, is false |
+
+Every branch except **Otherwise** needs at least one rule and at least one step before you can publish.
+
+## Test a flow
+
+Select **Test flow** to run the whole draft as a test run. A notice offers **View run**, and the run appears in the bar under the canvas. The first step receives the sample data of the trigger, which you can load or write on the **Trigger** tab. See [Test a trigger](/automation/triggers#test-a-trigger).
+
+<Warning>
+  A test run does what the steps do. It creates work items, sends notifications and calls other systems for real.
+</Warning>
+
+## See a run in the editor
+
+After a test, or while the flow is running, each card shows its state: **Running**, **Succeeded**, **Failed**, **Skipped**, **Tested** or **Changed since test**, with the time the step took. A step on a branch that was not taken reads **Skipped**. The bar under the canvas lists the **Latest runs** of the flow, with **View run** for each. See [Debugging runs](/automation/debugging-runs).
+
+## Publish problems
+
+The toolbar shows **Draft complete** or the number of open issues. Select the number to open **Fix these before publishing**. Each issue names the step and what is wrong, and selecting it opens that step. **Publish** stays off until the list is empty. See [Publishing flows](/automation/publishing-flows).
 
 ## Step by language
 
@@ -45,3 +137,17 @@ Every publish creates a version, and only one person edits a draft at a time. Se
 ## Move flows
 
 You can [export, import and start from templates](/automation/import-export-templates), browse the [template library](/automation/template-library) and [sync with Git](/automation/git-sync).
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Passing data" icon="arrow-right-left" href="/automation/passing-data">
+    Use the result of one step in the next.
+  </Card>
+  <Card title="Triggers" icon="zap" href="/automation/triggers">
+    Choose and test what starts the flow.
+  </Card>
+  <Card title="Publishing flows" icon="rocket" href="/automation/publishing-flows">
+    Make your changes live.
+  </Card>
+</CardGroup>

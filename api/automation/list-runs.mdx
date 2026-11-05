@@ -1,6 +1,6 @@
 ---
 title: "List runs"
-description: "Page through the runs of an Automation workspace, newest first, filtered by flow, status and time."
+description: "Page through the runs of an Automation workspace, newest first, with a cursor that stays stable while new runs start, filtered by flow, status and time."
 api: "GET /api/v1/automation/runs"
 ---
 
@@ -19,17 +19,53 @@ api: "GET /api/v1/automation/runs"
 </ParamField>
 
 <ParamField query="status" type="string">
-  One run status, such as `FAILED`.
+  One run status: `QUEUED`, `RUNNING`, `PAUSED`, `SUCCEEDED`, `FAILED`, `CANCELLED`, `TIMEOUT`, `INTERNAL_ERROR`, `MEMORY_LIMIT_EXCEEDED` or `LOG_SIZE_EXCEEDED`.
 </ParamField>
 
 <ParamField query="from" type="string">
-  Start of the period, an ISO date and time.
+  Start of the period, an ISO date and time, compared with the time the run was created.
 </ParamField>
 
 <ParamField query="to" type="string">
-  End of the period.
+  End of the period. It must not be before `from`.
 </ParamField>
 
 <ParamField query="cursor" type="string">
   The `nextCursor` of the previous page.
 </ParamField>
+
+<ParamField query="limit" type="integer" default="50">
+  Runs per page, at most 100.
+</ParamField>
+
+## Response
+
+The runs come newest first. The cursor holds the position of the last run of the page, so runs that start between two requests never shift a page. Send `nextCursor` as `cursor` to get the next page. `nextCursor` is `null` on the last page. A cursor that Collabase does not recognise answers `422`.
+
+```json
+{
+  "data": {
+    "items": [
+      {
+        "id": "cm1def",
+        "flowId": "cm1abc",
+        "flowName": "Orders",
+        "status": "FAILED",
+        "environment": "PRODUCTION",
+        "startedAt": "2026-11-05T08:00:01.000Z",
+        "finishedAt": "2026-11-05T08:00:04.000Z",
+        "createdAt": "2026-11-05T08:00:00.000Z",
+        "failedStepPath": "step_2",
+        "retryOfRunId": null
+      }
+    ],
+    "nextCursor": "eyJhdCI6..."
+  }
+}
+```
+
+## Related
+
+- [Get a run](/api/automation/get-run)
+- [Retry a run](/api/automation/retry-run)
+- [Studio API](/api/automation/overview)

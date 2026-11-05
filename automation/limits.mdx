@@ -18,9 +18,19 @@ These limits apply to every instance. They keep one flow from using up what ever
 | Tries of a step with **Try again on failure** | 4 in total, with growing pauses |
 | Output of a step kept with the run | 64 KB, larger output is kept as a file |
 | Files a plug writes | 25 MB each |
+| File an editor attaches to a step input | 10 MB |
 | A value a plug stores | 512 KB |
 | Editor lock | Lapses 10 minutes after the last change |
 | Flows that fail in a row before a flow is switched off | 10 |
+
+## Runs
+
+| Limit | Value |
+|---|---|
+| Compute time of one run in all | 24 hours. It counts the time the steps ran, retry pauses included. Waiting does not count: a paused run, a wait step, the queue and a full Space. Past it the run ends as **Timed out**. |
+| Log of one run | 16 MB. Past it the run ends as **Log too large** and keeps its step list without the outputs. |
+| Memory of a plug process | Set by the administrator for the sandbox, 512 MB by default. Past it the run ends as **Out of memory**. |
+| Runs retried or cancelled in one go | 100 |
 
 ## Spaces
 
@@ -40,11 +50,15 @@ These limits apply to every instance. They keep one flow from using up what ever
 | Limit | Value |
 |---|---|
 | Body of a webhook call | 5 MB |
+| Files of one webhook call | 5 files of 10 MB each |
+| Calls to the webhook address of one flow | 120 a minute, from all callers together |
+| Body of an app event call | 1 MB |
+| Sample data of a trigger | 256 KB |
 | Wait of the synchronous webhook address | 30 seconds |
 | Answer of a **Respond to webhook** step | 1 MB |
 | Body of a call that resumes a paused run | 512 KB |
 | Schedule | From every 1 minute to every 7 days |
-| Poll of a plug trigger | Every 5 minutes, at most 100 runs per poll |
+| Poll of a plug trigger | Every 5 minutes by default, never more often than every minute. Up to 5,000 runs per poll |
 
 ## Waiting and approvals
 

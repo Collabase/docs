@@ -1,14 +1,14 @@
 ---
 title: "Call a webhook"
-description: "Start a flow with a call from another system: the address, the data the run receives, the size limit and the answers."
+description: "Start a flow with a call from another system: the address, the optional login, files, the Idempotency-Key header, the rate limit and the answers."
 api: "POST /api/v1/automation/webhooks/{flowId}"
 authMethod: "none"
 ---
 
-Starts a run of a flow that begins with **Webhook received**. The call answers at once with the run id, before the run has finished. `GET` works the same way.
+Starts a run of a flow that begins with **Webhook received**. The call answers at once with the run id, before the run has finished. `GET` works the same way, and `HEAD` is accepted too.
 
 <Warning>
-  No token is needed. The flow id in the address is the only credential, so anyone who knows it can start the flow.
+  No token is needed. Unless the trigger asks for a login, the flow id in the address is the only credential, so anyone who knows it can start the flow.
 </Warning>
 
 ## Request
@@ -21,6 +21,24 @@ curl -X POST "https://your-instance/api/v1/automation/webhooks/cm1abc?ref=7" \
   -d '{"order": 4711}'
 ```
 
+### Login
+
+The trigger can require a login: Basic, a header with a fixed value or an HMAC signature of the body. Send what the trigger asks for. A call that fails the check answers `401` and starts nothing. See [Webhooks](/automation/webhooks#require-a-login).
+
+### Files
+
+A call with the type `multipart/form-data` can carry up to 5 files of 10 MB each. The text parts become fields of `body`, and the run receives `files` with the `name`, `size`, `type` and `url` of each file. Collabase checks the content of a file, not the type the caller declares.
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/webhooks/cm1abc" \
+  -F "order=4711" \
+  -F "invoice=@invoice.pdf"
+```
+
+### Idempotency-Key
+
+Send an `Idempotency-Key` header of up to 200 characters when a call may arrive twice. A repeat with the same key within 24 hours answers with the run of the first call and starts nothing. A longer key is ignored.
+
 ## Answers
 
 ```json
@@ -30,11 +48,19 @@ curl -X POST "https://your-instance/api/v1/automation/webhooks/cm1abc?ref=7" \
 | Status | Meaning |
 |---|---|
 | `200` | The run was started. |
+| `401` | The call does not pass the login of the trigger. The code is `WEBHOOK_UNAUTHORIZED`. |
 | `404` | The flow does not exist, is not published or does not start from a webhook. |
 | `410` | The flow is switched off. |
-| `413` | The body is larger than 5 MB. |
-| `429` | Too many calls from this address to this flow. `Retry-After` says when to try again. |
+| `413` | The body or a file is larger than allowed, or the call has more than 5 files. |
+| `415` | A file has a kind that Collabase does not accept: PDF, PNG, JPEG, GIF, WebP, ZIP and Office files, gzip and text are accepted. The code is `FILE_TYPE_NOT_ALLOWED`. |
+| `429` | The flow got more than 120 calls in a minute, from all callers together. `Retry-After` says how many seconds to wait. The code is `RATE_LIMITED`. |
 
-For a flow whose trigger belongs to a plug, the call goes to the plug, which returns zero or more items. The answer then holds the id of the first run, or `null` when no run started.
+For a flow whose trigger belongs to a plug, the call goes to the plug, which returns zero or more items. The answer then holds the id of the first run, or `null` when no run started. A plug can also answer a check call of the other system itself, for example a `HEAD` request or a challenge, and then no run starts.
 
-To wait for the result, use [the synchronous address](/api/automation/call-webhook-sync).
+To wait for the result, use [the synchronous address](/api/automation/call-webhook-sync). To try a call without starting a run, use [the test address](/api/automation/test-webhook).
+
+## Related
+
+- [Webhooks](/automation/webhooks)
+- [Call a webhook and wait](/api/automation/call-webhook-sync)
+- [Studio API](/api/automation/overview)

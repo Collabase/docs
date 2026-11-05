@@ -19,11 +19,22 @@ Without a scope the answer is `403 INSUFFICIENT_SCOPE`. An unknown or expired to
 
 ## Pagination
 
-Lists answer `{ "data": { "items": [...], "nextCursor": "..." } }`. Send `nextCursor` as `cursor` for the next page. `limit` is at most 100.
+Lists answer `{ "data": { "items": [...], "nextCursor": "..." } }`. Send `nextCursor` as `cursor` for the next page. `limit` is at most 100. The cursor holds the position of the last item, so items that arrive between two requests never shift a page. A cursor that Collabase does not recognise answers `422`. Runs come newest first.
 
 ## Idempotent starts
 
 Send an `Idempotency-Key` header, up to 200 printable characters, when you start a run. A repeat with the same key within 24 hours answers with the run of the first call and starts nothing. A call that arrives while the first is still being handled gets `409`.
+
+## Errors
+
+Errors use the envelope `{ "error": { "code": "...", "message": "..." } }`. Besides the common ones (`401`, `403`, `404`, `422`), these matter for Studio:
+
+| Status | Meaning |
+|---|---|
+| `409` | An `Idempotency-Key` is still being handled, or the flow is not published (`FLOW_NOT_RUNNABLE`). |
+| `413` | A body, a file or an upload is larger than allowed. |
+| `415` | A file sent to a webhook has a kind that Collabase does not accept. |
+| `429` | A webhook address got more than 120 calls a minute for one flow. `Retry-After` says how many seconds to wait. |
 
 ## What the API does not expose
 
@@ -41,6 +52,12 @@ Connection values, secret store settings, OAuth apps, members, the Git connectio
   <Card title="Call a webhook" href="/api/automation/call-webhook">
     Start a flow from another system, with or without waiting for the answer.
   </Card>
+  <Card title="Test a webhook" href="/api/automation/test-webhook">
+    Save a call as sample data without starting a run.
+  </Card>
+  <Card title="Receive app events" href="/api/automation/app-events">
+    The fixed address that an app sends its events to.
+  </Card>
   <Card title="Upload a plug" href="/api/automation/upload-plug">
     Install your own plug, as the plug command line tool does.
   </Card>
@@ -48,4 +65,4 @@ Connection values, secret store settings, OAuth apps, members, the Git connectio
 
 ## Addresses without a token
 
-Three addresses work without a token, because another system calls them: [the webhook address](/api/automation/call-webhook), [its synchronous variant](/api/automation/call-webhook-sync) and [the address of a waiting run](/api/automation/resume-run). The flow id or the token in the address is the credential.
+Five addresses work without a token, because another system calls them: [the webhook address](/api/automation/call-webhook), [its synchronous variant](/api/automation/call-webhook-sync), [its test address](/api/automation/test-webhook), [the address of an app's events](/api/automation/app-events) and [the address of a waiting run](/api/automation/resume-run). The flow id or the token in the address is the credential, and a webhook trigger can ask for a login on top.

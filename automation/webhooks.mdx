@@ -2,7 +2,7 @@
 title: "Webhooks"
 sidebarTitle: "Webhooks"
 icon: "webhook"
-description: "Start a flow with a call from another system, wait for the flow's answer with the synchronous address, and respond with your own status and body."
+description: "Start a flow with a call from another system, require a login, accept files, test the address and wait for the flow's answer with the synchronous address."
 ---
 
 Every flow that starts from **Webhook received** has a webhook address. Another system calls it with `POST` or `GET`, and the flow starts a run.
@@ -16,10 +16,23 @@ https://your-instance/api/v1/automation/webhooks/<flow id>
 ```
 
 <Warning>
-  The flow id in the address is the only credential. Anyone who knows the address can start the flow. Treat it like a password and keep it out of public places.
+  Without a login, the flow id in the address is the only credential. Anyone who knows the address can start the flow. Treat it like a password, keep it out of public places and add a login for anything that matters.
 </Warning>
 
-The flow must be published and switched on. An address of a flow that does not exist, or that does not start from a webhook, answers `404`. A flow that is switched off answers `410`.
+The flow must be published and switched on. An address of a flow that does not exist, or that does not start from a webhook, answers `404`. A flow that is switched off answers `410`. If the address is not reachable from the internet, the **Trigger** tab says so, because systems outside your network cannot call it.
+
+## Require a login
+
+Under **Authentication**, choose who may call the address. A call that fails the check is refused with `401` and starts nothing.
+
+| Choice | The caller must send |
+|---|---|
+| **None** | Nothing. This is the default. |
+| **Basic (user and password)** | An `Authorization: Basic` header with the user and the password you entered. |
+| **Header with a fixed value** | The header **Header: name** with exactly the value **Header: value**, for example `X-Api-Key`. |
+| **HMAC signature of the body** | A signature of the raw body in the header **HMAC: header with the signature**. The value may be hex or base64, with or without a prefix such as `sha256=`. Choose **SHA-256**, **SHA-1** or **SHA-512** as the algorithm. |
+
+Fill only the fields of the chosen type. A type with missing fields, or a secret that cannot be read, refuses every call. The secret fields are hidden from people who may only read the flow. Instead of typing a secret into the field, you can enter a reference to a [variable](/automation/variables), for example `{{variables['WEBHOOK_KEY']}}`, and replace the value in one place. A variable that does not exist refuses every call.
 
 ## What the flow receives
 
@@ -28,12 +41,36 @@ The run receives the call as trigger data:
 | Field | Content |
 |---|---|
 | `method` | `POST` or `GET` |
-| `body` | The body, read as JSON when it is JSON and as text otherwise |
+| `body` | The body, read as JSON when it is JSON and as text otherwise. For a call with files, the text fields. |
 | `query` | The query parameters as text |
+| `files` | Only for a call with files: a list with the `name`, `size`, `type` and `url` of each file |
 
 The body may be up to 5 MB. A larger body is refused with `413`. A call that starts a run answers `200` with `{ "data": { "runId": "..." } }` at once, before the run has finished.
 
-Calls to one address are limited per caller and flow. Above the limit the answer is `429` with a `Retry-After` header.
+### Send files
+
+A call with the type `multipart/form-data` can carry files. Text parts become fields of `body`, and a name that repeats becomes a list. File parts are stored with the run and handed over in `files`, where a step can take the `url` as a file input.
+
+| Limit | Value |
+|---|---|
+| Files per call | 5 |
+| Size of one file | 10 MB |
+
+Collabase reads what a file contains and ignores the type the caller declares. It accepts PDF, PNG, JPEG, GIF, WebP, ZIP and Office files, gzip and text such as CSV, JSON or XML. Another kind of file is refused with `415`, too many files or a file that is too large with `413`.
+
+```bash
+curl -X POST "https://your-instance/api/v1/automation/webhooks/<flow id>" \
+  -F "order=4711" \
+  -F "invoice=@invoice.pdf"
+```
+
+### Repeat a call safely
+
+Add an `Idempotency-Key` header, up to 200 characters, when the caller may send the same call twice. A repeated call with the same key answers with the run of the first call and starts nothing. The key is remembered for 24 hours. A longer key is ignored.
+
+### Rate limit
+
+One flow takes 120 calls a minute, from all callers together. Above that the answer is `429` with a `Retry-After` header that says how many seconds to wait.
 
 ## Wait for the answer
 
@@ -64,7 +101,27 @@ The step sets the answer. The flow can go on with more steps afterwards. The cal
 
 ## Test a webhook
 
-Switch the flow on and call the address, for example with `curl`:
+The **Trigger** tab has a second address for your tests, the **Test address**:
+
+```text
+https://your-instance/api/v1/automation/webhooks/<flow id>/test
+```
+
+A call to it starts no run and changes nothing in production. The call becomes the sample data of the trigger, so the data picker offers the real fields of your caller. An editor who is signed in to Collabase may call it from the browser. Any other caller passes the login you set.
+
+<Steps>
+  <Step title="Copy the address">
+    Select **Copy address**, or **Copy curl command** for a ready call.
+  </Step>
+  <Step title="Wait for the call">
+    Select **Wait for a call**, then let the other system call the test address. The editor waits up to two minutes. If no call arrives, it says so.
+  </Step>
+  <Step title="Check the data">
+    The data picker now lists the fields of your call. The sample keeps the method, the body and the query, but no files.
+  </Step>
+</Steps>
+
+To test the published flow, switch it on and call the real address, for example with `curl`:
 
 ```bash
 curl -X POST "https://your-instance/api/v1/automation/webhooks/<flow id>/sync" \
@@ -73,6 +130,17 @@ curl -X POST "https://your-instance/api/v1/automation/webhooks/<flow id>/sync" \
 ```
 
 Open the **Runs** tab to see the run and the data it received.
+
+## Troubleshooting
+
+| Answer | Cause |
+|---|---|
+| `401` | The call does not pass the login of the trigger. |
+| `404` | The flow does not exist, is not published or does not start from a webhook. |
+| `410` | The flow is switched off. |
+| `413` | The body or a file is too large, or the call has more than 5 files. |
+| `415` | A file has a kind that Collabase does not accept. |
+| `429` | The flow got more than 120 calls in a minute. |
 
 ## Related
 

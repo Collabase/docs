@@ -1,0 +1,175 @@
+---
+title: "System requirements"
+sidebarTitle: "System requirements"
+description: "Operating system, CPU, RAM, storage, network and container images Collabase needs on Docker or Kubernetes. Hand this page to the team that runs your servers."
+keywords: ["requirements", "Linux", "Windows", "Kubernetes", "Docker", "RAM", "CPU", "ports", "firewall", "images", "operations handover"]
+icon: "clipboard-list"
+---
+
+This page lists what your infrastructure must provide before you install Collabase. It is written for the team that runs the servers or the cluster, so you can send it to them as it is. It covers Docker on a single server, Kubernetes and Docker Swarm.
+
+## Choose a deployment {#choose-a-deployment}
+
+All three options run the same software. They differ in how it is started, updated and scaled.
+
+| | **Docker, one server** | **Kubernetes** | **Docker Swarm** |
+|---|---|---|---|
+| **Fits** | One Linux server, small to medium teams | An existing Kubernetes platform | An existing Swarm cluster |
+| **Application instances** | 1 | 1 by default, more with S3 storage | 1 |
+| **Installed with** | `install.sh` | Helm chart | `docker stack deploy` |
+| **Updated with** | `update.sh` | `helm upgrade` | `docker stack deploy` |
+| **Automatic HTTPS** | Yes, with a public domain | Through your ingress and cert-manager | Yes, with a public domain |
+| **Guide** | [Installation with Docker](/installation) | [Installation on Kubernetes](/installation-kubernetes) | [Installation on Docker Swarm](/installation-swarm) |
+
+If you have no reason to choose otherwise, pick Docker on one server. If your operations team already runs a Kubernetes platform and wants to operate Collabase with the tools it uses for everything else, pick Kubernetes. Both are fully supported.
+
+## Operating system and platform {#operating-system}
+
+| | Requirement |
+|---|---|
+| **Operating system** | Linux. Collabase runs as Linux containers only. Windows Server is not supported for running Collabase. |
+| **Distributions (Docker install)** | Ubuntu 22.04 or later, Debian 12 or later, RHEL 9 or later |
+| **CPU architecture** | `amd64` (x86-64). The images are not built for ARM. |
+| **Docker (Docker install)** | Version 24 or later with Docker Compose v2 |
+| **Kubernetes** | Version 1.26 or later, and Helm 3.10 or later on the machine that installs |
+
+<Note>
+  macOS and Windows with Docker Desktop (WSL2) work for testing and local trials. They are not a production platform.
+</Note>
+
+## CPU and memory {#cpu-and-memory}
+
+Size for the people who work at the same moment, not for the number of accounts. [Sizing & scaling](/admin/scaling#sizing-a-single-server) maps concurrent users to resources. These are the starting points:
+
+| | Minimum | Recommended |
+|---|---|---|
+| **CPU** | 2 vCPU | 4 vCPU |
+| **RAM** | 4 GB | 8 GB |
+
+On Docker the installer stops below 2 GB of RAM or 10 GB of free disk space. Below 4 GB, turn off [live collaboration](/docs/collaboration#turning-it-off).
+
+On Kubernetes, reserve the same capacity in the namespace. What each part of Collabase may use is listed in [What runs in your cluster](/installation-kubernetes#what-runs-in-your-cluster). The memory limits of all parts add up to a little more than 11 GB, and the memory the scheduler reserves for them is about 1.75 GB. Normal operation uses far less than the limits. The limits protect the cluster from a runaway process.
+
+Run a test system and a production system as separate installations, each with its own database. A test system can use the minimum.
+
+## Storage {#storage}
+
+| What | Size to plan | Notes |
+|---|---|---|
+| **Database** | 20 GB to start | Grows with your content. Needs fast, persistent block storage. |
+| **Uploaded files** | 10 GB to start | Grows with attachments. Can live in an S3-compatible bucket instead. |
+| **Queue (Redis)** | 2 GB | Holds background jobs. Must survive a restart. |
+| **Other volumes** | about 13 GB on Kubernetes | Shared home, document storage and the plug sandbox cache. |
+| **Backups** | at least as large as the database | Pre-update backups are kept for 7 days. |
+
+The total is about **45 GB** on Kubernetes and **20 GB** on a single Docker server, plus backups. On Kubernetes you need a default storage class that provides `ReadWriteOnce` volumes, or you set the class per volume. Watch the disk and grow it before it fills. [Hosting & Architecture](/admin/hosting#disk-usage) lists what takes space.
+
+## Database {#database}
+
+Collabase ships with its own PostgreSQL. If your organization runs a managed or central database service instead, it must provide:
+
+- PostgreSQL 16 or later
+- The `pgvector` extension, which Collabase enables with `CREATE EXTENSION vector` during installation. The database user that installs needs the right to do this, or your database team enables the extension once beforehand.
+- A database and a user that owns it
+
+Without `pgvector`, Collabase does not start. Check this with your database team before you decide to use an external database.
+
+## Network {#network}
+
+### Inbound {#inbound}
+
+| Port | Protocol | Purpose |
+|---|---|---|
+| 443 | HTTPS | All traffic from people's browsers, including the live collaboration connection |
+| 80 | HTTP | Redirects to HTTPS. Optional on Kubernetes, where the ingress decides. |
+
+Nothing else is reachable from outside. The parts of Collabase talk to each other on an internal network.
+
+Live collaboration uses a WebSocket connection on the same address under `/collab`. A load balancer or proxy in front of Collabase must pass WebSocket upgrades through, and must allow uploads of at least 32 MB.
+
+### Outbound {#outbound}
+
+Collabase makes only the connections you set up. Allow the ones you use:
+
+| Destination | Needed for | Port |
+|---|---|---|
+| Container registry | Installing and updating. Not needed if you mirror the images internally or use the [air-gapped installation](/admin/airgapped-installation). | 443 |
+| Identity provider, for example Microsoft Entra ID | [Single sign-on](/admin/identity-providers) and [user provisioning](/admin/user-provisioning) | 443 |
+| Mail server | Notifications and password resets, see [Email](/admin/email) | as configured |
+| Mailbox (IMAP) | [Inbound mail](/admin/inbound-mail), if you use it | as configured |
+| AI provider | AI features, if you turn them on. Can be a server inside your network, see [AI configuration](/admin/ai-configuration). | as configured |
+| Microsoft or other connected services | Only the integrations you enable | 443 |
+
+<Note>
+  Collabase verifies its licence key on the server and needs no connection to Collabase for it. Usage telemetry is off until an administrator agrees to it, and an administrator can switch it off again.
+</Note>
+
+### Certificates {#certificates}
+
+| Deployment | How HTTPS works |
+|---|---|
+| **Docker, one server** | With a public domain, a free Let's Encrypt certificate is issued and renewed automatically. With an IP address or an internal name, a self-signed certificate is used and browsers warn. See [Hosting & Architecture](/admin/hosting#https-certificates). |
+| **Kubernetes** | Your ingress terminates TLS. Use cert-manager, or store your own certificate as a TLS secret and reference it, see [Certificates](/installation-kubernetes#certificates). |
+
+An internal address such as `collabase.company.local` needs a certificate from your own certificate authority, and every browser must trust that authority.
+
+## Container images {#container-images}
+
+| Image | Used for |
+|---|---|
+| `ghcr.io/collabase/collabase` | The application |
+| `ghcr.io/collabase/collabase-document-processor` | File conversion and PDF export |
+| `ghcr.io/collabase/collabase-collab` | Live collaboration |
+| `ghcr.io/collabase/collabase-sandbox` | Isolated execution of automation plugs |
+| `ghcr.io/collabase/collabase-caddy` | The reverse proxy on Docker and Swarm. Not used on Kubernetes. |
+| `pgvector/pgvector:pg16` | The database |
+| `redis:7-alpine` | The queue |
+
+The Collabase images share one version number. Collabase gives you the access you need to pull them. Many organizations copy the images into an internal registry first. On Kubernetes, set the repository of each image in your values file, see [Use your own image registry](/installation-kubernetes#own-registry).
+
+## Optional integrations {#optional-integrations}
+
+These are set up in Collabase after installation. Plan them with your identity and mail teams in advance.
+
+| Integration | What your teams need to provide |
+|---|---|
+| **Single sign-on** | An application registration in your identity provider, see [Identity providers](/admin/identity-providers) |
+| **User provisioning (SCIM)** | A provisioning connection from your identity provider |
+| **Email** | An SMTP account or relay, see [Email](/admin/email) |
+| **AI features** | A language model provider and its access key |
+
+## Information for your operations team {#operations-handover}
+
+If a team other than yours installs and maintains Collabase, agree on these points first.
+
+| Topic | Decide |
+|---|---|
+| **Platform** | Docker server, Kubernetes or Swarm. Which Kubernetes distribution and version. |
+| **Environments** | Test and production, each as its own installation. Who may reach the test system. |
+| **Images** | Pull from `ghcr.io` or mirror to an internal registry. |
+| **Database** | The bundled PostgreSQL, or an internal service with `pgvector`. |
+| **Storage** | The storage class for the database, and local volumes or S3 for uploads. |
+| **Address and TLS** | The public name, who issues the certificate, and the ingress controller. |
+| **Sign-in** | Single sign-on and provisioning, or local accounts. |
+| **Backups** | Who backs up the database, the volumes and the Kubernetes secret, and how often. See [Backup & Restore](/admin/backup). |
+| **Updates** | Who runs updates, who tests a new version on the test system first, and in which window. See [Updates](/admin/updates). |
+| **Monitoring** | Which check watches `/api/health`, see [Health check](/api/health). |
+| **Secrets** | Who keeps the encryption keys safe. A lost key cannot be recovered. |
+
+<Warning>
+  Collabase stores integration and mail credentials encrypted with keys that are created at installation. Include these keys in your backup. On Kubernetes they live in the `collabase` secret. On Docker they are in the `.env` file. Without them, a restored database cannot decrypt those credentials, and you enter them again.
+</Warning>
+
+## Related pages
+
+<CardGroup cols={3}>
+  <Card title="Installation with Docker" icon="download" href="/installation">
+    Install on one Linux server.
+  </Card>
+  <Card title="Installation on Kubernetes" icon="ship" href="/installation-kubernetes">
+    Install with the Helm chart.
+  </Card>
+  <Card title="Sizing & scaling" icon="scaling" href="/admin/scaling">
+    Match resources to your team.
+  </Card>
+</CardGroup>

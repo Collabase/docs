@@ -29,6 +29,9 @@ Select an input and the **data picker** opens next to it.
 - A small arrow shows that a field has fields of its own.
 - Select a field to insert it at the cursor. You can mix typed text and data in one input, for example `New: {{trigger.title}}`.
 - A reference reads `{{step_1.field}}`. Collabase replaces it with the value when the step runs.
+- When the output of a step is a list or a single value, the reference reads `{{step_1.output}}`, and an item of a list reads `{{step_1.output[0]}}`.
+
+For a step whose output is an object, `{{step_1.field}}` and `{{step_1.output.field}}` are the same. Use whichever the picker inserts.
 
 <Note>
   The picker lists the fields of the **saved test result** of each step. Test every step before the one you are filling in. A step that has not been tested shows no fields.
@@ -50,15 +53,34 @@ If the field you need is not in the picker, type its path:
 {{step_1.customer.email}}
 ```
 
-Start from a field the picker offers and add the names of the fields inside it, separated by dots. The data of a webhook call sits under `body`, for example `{{trigger.body.order}}`. A reference that points to nothing fails the step with a message that names the reference.
+Start from a field the picker offers and add the names of the fields inside it, separated by dots. The data of a webhook call sits under `body`, for example `{{trigger.body.order}}`. A reference that points to nothing becomes an empty value, and so does a reference to a step that does not exist or has not run. If the step then needs that value, it fails with a message that names the field, for example `Invalid input: taskId`. Test the step so the picker offers the fields of the earlier steps.
+
+A step that failed has no output, only an error. `{{step_1.error.message}}` reads its message, which is useful after **Continue on failure**.
+
+### What publishing checks
+
+You do not have to find a wrong reference by running the flow. **Publish** is refused while a reference has one of these problems, and the issue list names the field:
+
+| Problem | Message |
+|---|---|
+| The step does not exist | The field points to a step that does not exist. |
+| The step comes later | The field points to a step that has not run yet at this point. |
+| The connection does not exist | The field names a connection that does not exist. |
+| The reference is a calculation | The field is not a plain reference. Use a formula for calculations. |
+
+A reference holds only a path. Under a field, small chips show the references it contains and whether the data of the earlier steps has that path. A path that is not found says to test the step first.
 
 ## Dropdowns and expressions
 
-An input with a fixed set of values is a dropdown, and a dropdown cannot take a reference by itself. Dates, numbers and many other inputs have a switch next to their label that changes the field into an expression field, where you can insert data. Pickers for spaces, projects, work items, pages and people have an input mode for a reference too.
+A dropdown, a multiple choice, a checkbox, a list of values, names and values and rows have the switch **Dynamic value** next to their label, a pair of braces. Turn it on to change the field into an expression field, where you type text and insert data from earlier steps. Turn it off to go back to the typed control. The value does not carry over in either direction, because a choice and an expression are not the same thing. Dates and numbers have a switch of their own next to the label, and pickers for spaces, projects, work items, pages and people have an input mode for a reference.
 
 ## Data inside a loop
 
-A **Loop** step repeats the steps inside it once for each item of a list. Inside the loop, the loop step's name followed by `item` is the current item, for example `{{loop_1.item}}`, and `index` is its position in the list, starting at 1. The loop's own result is the last item, the count and the number of iterations.
+A **Loop** step repeats the steps inside it once for each item of a list. Inside the loop, the loop step's name followed by `item` is the current item, for example `{{loop_1.item}}`, and `index` is its position in the list, starting at 1. In the data picker, a group named after the loop and labelled **current item** offers both. The loop's own result is the last item, the count and the number of iterations.
+
+## Formulas
+
+For a value you have to calculate, such as joining text, changing a date or counting a list, select **Formula** next to the data picker. Pick a function from the groups **Text**, **Number**, **Date**, **List** and **Logic**, adjust it with data from earlier steps and select **Insert formula**. The dialog shows the **Result with the sample data** before you insert it. The preview uses the saved test data, so test the steps before it.
 
 ## Data that is not part of a flow
 

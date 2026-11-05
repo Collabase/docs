@@ -34,7 +34,7 @@ Each release has one entry with its version and month, and a link to it ends in 
   - **Times access:** Times is now one app with one access setting for groups, replacing Time Reports and Planner. See the [update notice](#update-notice-for-self-hosters).
   - **Service Management:** a new app next to Projects for teams that work customer requests. A service project has request forms, queues with the tickets that need attention, SLA policies with clocks that warn before a target is missed, approvals that start when a ticket enters a workflow status, public replies and internal notes, and a customer portal where customers submit requests, follow them and share them with colleagues. Customers are their own kind of account, grouped in organizations, and can register themselves with their company address. They approve requests that need their say, search the knowledge base from the portal, and vote and comment on a public roadmap; agents see who voted, customers only the count. A ready-made Service Desk template sets up statuses, request forms, queues and SLA policies. SLA, queue and vote gadgets are available for dashboards, and tickets and customers can be exported. A ticket can also start from a mail. An administrator gives the app to groups, and it can run with or without Projects. [Learn more](/service-management/overview) Service Management starts as a beta: switch it on for yourself under **Settings** → **Profile** → **User settings** → **Collabase Lab**. An operator switches it on for the whole instance, see the [update notice](#update-notice-for-self-hosters).
   - **Studio:** build flows that react to events in Collabase and other systems, run on a schedule, ask people for approval and use AI, with every run on record. Studio is the new name of Collabase Automation and is part of this release. Own integrations are built with the open source [Plug SDK](https://github.com/Collabase/plug-sdk) and the [plug examples](https://github.com/Collabase/plug-examples). [Learn more](/automation/overview)
-  - **Agents in Studio (beta):** define an assistant once, with an instruction, tools and optional knowledge, and use it in chats, flows and jobs. Agents are a beta feature of Collabase Lab and off until you switch them on. [Learn more](/automation/agents)
+  - **Agents in Studio:** define an assistant once, with an instruction, tools and optional knowledge, and use it in chats, flows and jobs. [Learn more](/automation/agents)
   - **Popups keep what you typed:** edit and settings popups no longer close when you click beside them. Escape and the close button still close them.
 
   ### <span aria-hidden="true"><img src="/images/apps/docs-light.png" alt="Docs app icon" width="24" noZoom className="inline-block dark:hidden m-0 mr-2 align-text-bottom" /><img src="/images/apps/docs-dark.png" alt="Docs app icon" width="24" noZoom className="hidden dark:inline-block m-0 mr-2 align-text-bottom" /></span>Docs
@@ -190,16 +190,28 @@ Each release has one entry with its version and month, and a link to it ends in 
   - **Safe by design:** a flow acts with the rights of its workspace's service account, never with more. Plugs that Collabase did not write run in an isolated sandbox with no route to your internal systems.
   - **People stay in control:** a step can ask a named person to approve before the flow goes on, and a sensitive space needs a second administrator before a flow is published or switched on. [Learn more](/automation/flow-approvals)
   - **Works without AI:** everything except the AI steps, building a step from a sentence and the Collabase AI tools works without an AI provider.
+  - **Editor:** add a step anywhere with the plus on every connection, choose it in a step list with the tabs **Explore**, **Apps** and **Utility** and a search, and use the step menu to replace, copy, duplicate, skip, move or delete it, with shortcuts. A bar at the bottom zooms, fits the view, switches between select and hand and shows a minimap. Branches show their names, steps can be renamed, and the settings of a step save on their own. [Learn more](/automation/editor)
+  - **If / else:** split a flow into branches with rules. 22 operators for text, numbers, dates and lists, and a choice between the first matching branch and all matching branches. [Learn more](/automation/editor#branch-the-flow)
+  - **Test as you build:** **Test flow** runs the draft, each card shows its state and time, and the latest runs sit under the canvas. A trigger can use a recent event, wait for the next one, take your own sample data, offer a test address for webhooks or load examples from a plug. [Learn more](/automation/triggers#test-a-trigger)
+  - **Data from earlier steps:** the switch **Dynamic value** lets dropdowns, checkboxes and lists take a value from an earlier step, the data picker offers the current item of a loop, and `{{step.field}}` and `{{step.output.field}}` both work. Publishing checks references and values, lists every problem and opens the step when you select it. [Learn more](/automation/passing-data)
+  - **Versions and lists:** look at an earlier version before you restore it, confirm what a restore replaces and discard the draft. The flow list searches, sorts, renames and duplicates, and **Approvals** lists the decisions waiting for you. [Learn more](/automation/version-history)
+  - **Runs you can read:** the output of a step opens as a tree with search and copy, a failed step offers **Copy for AI** with secrets hidden, and the run list filters by status, flow, period and failed step. Several runs can be cancelled at once. [Learn more](/automation/debugging-runs)
+  - **Run limits:** a run may compute for 24 hours in all, keep a log of 16 MB and use the memory the sandbox allows, and ends as **Timed out**, **Log too large** or **Out of memory** when it goes over. [Learn more](/automation/limits#runs)
+  - **Webhooks:** require a login (Basic, a header or an HMAC signature), accept up to 5 files per call, send an `Idempotency-Key` so a repeated call starts one run, and test with a separate address. One flow takes 120 calls a minute. [Learn more](/automation/webhooks)
+  - **More triggers:** cron patterns with a time zone, **A flow run finished**, app webhooks on one fixed address per app, and a visible **Trigger error** with a notification when a trigger cannot work. [Learn more](/automation/triggers)
+  - **Plugs:** a plug update inside the same major version reaches published flows at once, and a step offers **Update to version x** with a list of changed inputs. New Collabase plugs **S3 storage**, **Crypto** and **Email** (**Send email** through your instance's mail account). The step list shows only what your instance can run. [Learn more](/automation/plugs)
+  - **Connections:** OAuth2 also connects without a sign-in page, takes extra values, reconnects without changing the flows and shows **Signed in as**. Collabase asks the plug whether the credentials work before it saves them. Files can be uploaded into file inputs. [Learn more](/automation/connections)
+  - **Secrets stay hidden:** people who may only read a flow see `********` in secret inputs, and an export or a Git push leaves them empty. Use `{{variables['NAME']}}` to keep a secret out of the flow. [Learn more](/automation/step-inputs#secrets)
+  - **Studio API:** the runs list pages with a cursor, newest first, and the webhook addresses answer `401`, `413`, `415` and `429`. A test address and an address for app events are new. [Learn more](/api/automation/overview)
 
-  ### <span aria-hidden="true"><Icon icon="bot-message-square" size={20} /></span> Agents in Studio (beta)
+  ### <span aria-hidden="true"><Icon icon="bot-message-square" size={20} /></span> Agents in Studio
 
   **New features**
 
-  - **Collabase Lab:** agents are a beta feature. They stay off until you switch them on under **Settings** → **Profile** → **User settings** → **Collabase Lab**, and the switch is yours alone. An operator can keep the feature off for everyone.
   - **Define an agent once:** an agent has an instruction, tools, optional knowledge and its own conversation starters. Describe it in a sentence and Collabase writes the draft, which needs an AI model on your instance. [Learn more](/automation/agent-editor)
   - **Use it everywhere:** chat with an agent in the docked AI chat, run it in a flow with the **Agent** step, or let it work on its own in jobs under its own identity. An agent can be held to the approval rule for each tool it uses. [Learn more](/automation/agents)
   - **Share it and set limits:** share an agent with people and groups, set a monthly token limit and read its usage.
-  - **Beta limits:** guests cannot use agents. The beta can change before it is generally available.
+  - **Limits:** guests cannot use agents.
 
   ### <span aria-hidden="true"><Icon icon="sparkles" size={20} /></span> Collabase AI
 
@@ -212,6 +224,8 @@ Each release has one entry with its version and month, and a link to it ends in 
   - **Times app:** under **Admin** → **Roles & App Access**, the apps **Time Reports** and **Planner** are replaced by one app, **Times**, with the roles User, Manager and Admin. User opens My times, reviews and the planner, Manager adds Time Reporting for the spaces the person manages, and Admin adds all reports and the billing settings. [Learn more](/admin/users-groups)
   - The time sum gadget on dashboards needs a role on **Times**.
   - Deleted roadmaps are removed for good after 30 days. Deleting a user also removes the roadmaps only that person could open.
+  - **Studio health:** `/api/health` reports `automation-queue` as degraded, with the reason, when a run has waited in the queue for more than 5 minutes. [Learn more](/admin/automation-operations#runs-that-stay-queued)
+  - **Studio sandbox:** the sandbox image installs the packages of the Collabase plugs and checks their licences, and `SANDBOX_MEMORY_MB` sets the memory of a plug process. [Learn more](/admin/automation-sandbox)
 
   ### Update notice for self-hosters
 
@@ -224,7 +238,7 @@ Each release has one entry with its version and month, and a link to it ends in 
 
   **Before you update**
 
-  - Studio is on from this version. To use **Agents** and **Service Management** for everyone on your instance, set `FEATURE_FLAG_OVERRIDES="SERVICE_MANAGEMENT=true"` (and the matching flag for agents) before you start the update. Without it, people switch them on for themselves in Collabase Lab. Customers reach the portal of Service Management only when the instance switch is on.
+  - Studio and its agents are on from this version. To use **Service Management** for everyone on your instance, set `FEATURE_FLAG_OVERRIDES="SERVICE_MANAGEMENT=true"` before you start the update. Without it, people switch it on for themselves in Collabase Lab. Customers reach the portal of Service Management only when the instance switch is on.
   - Decide which groups that had neither Time Reports nor Planner should still use Times, and give them the **Times** app under **Admin** → **Roles & App Access**, before the update or right after it.
 
   **What the update does**
@@ -233,11 +247,17 @@ Each release has one entry with its version and month, and a link to it ends in 
   - Everyone who used Collabase before the update sees the update notice once.
   - Adds one column to the comment table that remembers where an inline comment sits. The migration runs on start.
   - Adds the **Times** app to the list of apps and copies each group's rights on Time Reports and Planner to it. The old rows stay for one release, so a rollback loses no access. Both migrations run on start.
+  - Adds three additive migrations for Studio: columns for the latest trigger error of a flow and for the account behind a connection, and a table that routes the events of apps to flows. They run on start and need no step from you.
+  - Replaces the sandbox image. It carries the packages of the Collabase plugs **S3 storage** and **Crypto**, so update the sandbox together with the application. The secrets stay as they are.
 
   - Instances on the default colour preset now show Lime instead of the previous brand colour. Other presets keep their name and colour family.
   - Instances that used the sign-in designs Liquid Glass or Standard now show the two-column design. Pick the centred card under **Settings** → **Login screen** if you prefer it.
   - The Outfit typeface is no longer used. Headings use Inter.
   - Commenting on a page now needs the comment permission instead of the edit permission, so people who may only read and comment can now comment. Guests can no longer comment.
+
+  **Configuration**
+
+  - No new environment variable has to be set. The app events of a plug use a workspace variable named `APP_EVENT_SECRET_<APP>`, which you create in Studio when you use such a trigger.
 </Update>
 
 <Update
@@ -287,7 +307,7 @@ Each release has one entry with its version and month, and a link to it ends in 
   - **Meetings and dashboards:** meetings with agenda and outcomes, and dashboards with gadgets across modules.
   - **Registry and service desk:** objects with custom types and relations, and a request portal per space.
   - **Search:** one search for global search, saved filters, lists and Collabase AI.
-  - **Collabase Lab:** each person can switch on features that are still in development, Studio for automations among them, under Preferences in the profile. An administrator can keep a feature off for everyone.
+  - **Collabase Lab:** each person can switch on features that are still in development, under Preferences in the profile. An administrator can keep a feature off for everyone.
   - **Deployment:** packages for Docker Compose, Kubernetes (Helm) and Docker Swarm. Updates apply database changes on start.
 
   ### Stability

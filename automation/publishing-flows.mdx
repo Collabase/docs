@@ -11,7 +11,7 @@ Edits to a flow do not go live at once. Collabase keeps the draft you are editin
 
 <Steps>
   <Step title="Complete the draft">
-    The toolbar shows **Draft complete** or the number of open issues. Select a marked step and fill in what is missing.
+    The toolbar shows **Draft complete** or the number of open issues. Select the number to open the list **Fix these before publishing**. Each issue names the step and what is wrong, and selecting it opens that step. **Publish** stays off while issues are open. Select **Test flow** to try the draft before you publish. See [The flow editor](/automation/editor#test-a-flow).
   </Step>
   <Step title="Publish">
     Select **Publish**. The draft becomes a new version and is locked. Runs that start from now on use it. Runs that are already going finish with the version they started with.
@@ -26,6 +26,9 @@ Edits to a flow do not go live at once. Collabase keeps the draft you are editin
 | Reason | What to do |
 |---|---|
 | A required input is empty, a plug is not installed or a step has an input the action cannot use | Fix the steps marked **Incomplete**. The publish says how many issues are open. |
+| A value does not fit its input: a text in a number field, a date that cannot be read, a choice that is not in the list, JSON that is not valid, or something that is not a list where a list is needed | Correct the value or use a reference. A value with a reference or a formula is checked when the flow runs. |
+| A reference points to a step that does not exist or has not run yet, names a connection that does not exist, or is a calculation | Fix the reference. See [Passing data](/automation/passing-data#what-publishing-checks). |
+| A branch of **If / else** has no rule or no steps, or the trigger's plug is not installed or not active | Complete the branch or install the plug. |
 | Someone else changed the draft since you opened it | Select **Reload** and check the change. |
 | The Space is **Sensitive** | A second admin must approve. See [Flow approvals](/automation/flow-approvals). |
 

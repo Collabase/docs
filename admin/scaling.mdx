@@ -19,7 +19,7 @@ Three different numbers matter, and they are easy to confuse:
 
 Size for peak **concurrent activity**, not for the total member count.
 
-## Sizing a single server
+## Sizing a single server {#sizing-a-single-server}
 
 These are starting points for the default single-server install. Begin here, then adjust from what [monitoring](/admin/hosting#monitoring-your-installation) actually shows — a document-heavy team with constant PDF exports needs more than a team that mostly reads.
 
@@ -36,7 +36,7 @@ These are starting points for the default single-server install. Begin here, the
 
 Disk grows with uploaded files, the database, and daily backups. Watch it and expand the volume before it fills — see [Disk usage](/admin/hosting#disk-usage).
 
-## Scaling beyond one server
+## Scaling beyond one server {#scaling-beyond-one-server}
 
 When a single server can no longer keep up — sustained high CPU, memory pressure that a bigger box would only postpone, or a need for redundancy — spread Collabase across machines. Do it in this order; each step removes one reason the application server has to be big.
 

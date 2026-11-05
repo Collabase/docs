@@ -15,7 +15,7 @@ The trigger is the starting point of a flow. It sets how often the flow runs and
 - a call to the flow's webhook address,
 - a schedule,
 - a chat message from the flow's chat page,
-- another flow that calls it, or the failure of another flow,
+- another flow that calls it, or the failure or the end of another flow,
 - an event or a poll of a plug that was installed by an administrator.
 
 ## Steps
@@ -25,10 +25,11 @@ A step does one thing. You pick it from the step list, which is sorted by plug.
 | Step | What it does |
 |---|---|
 | **Plug action** | Runs one action of a plug: create a work item, send a notification, call another system, search, ask a person for approval or ask an AI agent. The [plug reference](/automation/plug-reference) lists them. |
+| **If / else** | Splits the flow into branches with rules. One branch runs, or every branch whose rules match, and an **Otherwise** branch catches the rest. See [The flow editor](/automation/editor#branch-the-flow). |
 | **Loop** | Runs the steps inside it once for each item of a list. A loop takes up to 10,000 items. |
 | **Code** | Runs a short function in the sandbox. The function receives the inputs you give it and returns a value. It cannot read files, the environment or the network. |
 
-Select **Add step** or the `+` between two steps, search the list and choose an action. A step whose plug is not installed is marked **Not installed**. A system administrator can install the plug from the step list.
+Select **Add step** or the plus on a connection between two steps, search the list and choose an action. A step can be renamed, copied, moved, skipped or replaced from its menu. See [The flow editor](/automation/editor#the-step-menu). A step whose plug is not installed is marked **Not installed**. A system administrator can install the plug from the step list.
 
 ## What a step needs
 
@@ -53,7 +54,7 @@ Only one person edits a draft at a time. The editor shows who holds it, and anot
 
 ## How a run works
 
-Each time the trigger fires, Collabase starts a run of the published version. The run walks through the steps in order, writes the result of every step to the run's log and finishes as **Succeeded**, **Failed**, **Cancelled** or **Timed out**. A run that waits for a delay, a call or an approval is **Paused** and holds no resources. See [Runs and approvals](/automation/runs).
+Each time the trigger fires, Collabase starts a run of the published version. The run walks through the steps in order, writes the result of every step to the run's log and finishes as **Succeeded**, **Failed**, **Cancelled** or **Timed out**. A run also ends early when it reaches a [limit](/automation/limits#runs). A run that waits for a delay, a call or an approval is **Paused** and holds no resources. See [Runs and approvals](/automation/runs).
 
 ## Next steps
 

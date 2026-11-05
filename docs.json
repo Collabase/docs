@@ -279,6 +279,7 @@
                   "installation",
                   "installation-kubernetes",
                   "installation-swarm",
+                  "admin/system-requirements",
                   "first-run",
                   "desktop-app",
                   "admin/editions-and-license"
@@ -710,6 +711,8 @@
                   "api/automation/delete-flow",
                   "api/automation/call-webhook",
                   "api/automation/call-webhook-sync",
+                  "api/automation/test-webhook",
+                  "api/automation/app-events",
                   "api/automation/resume-run",
                   "api/automation/upload-plug"
                 ]
@@ -1053,6 +1056,7 @@
                   "installation",
                   "installation-kubernetes",
                   "installation-swarm",
+                  "admin/system-requirements",
                   "first-run",
                   "desktop-app",
                   "admin/editions-and-license"
@@ -1484,6 +1488,8 @@
                   "api/automation/delete-flow",
                   "api/automation/call-webhook",
                   "api/automation/call-webhook-sync",
+                  "api/automation/test-webhook",
+                  "api/automation/app-events",
                   "api/automation/resume-run",
                   "api/automation/upload-plug"
                 ]

@@ -1,180 +1,347 @@
 ---
 title: "Installation on Kubernetes"
-description: "Run Collabase in your Kubernetes cluster with the official Helm chart."
+description: "Install Collabase in Kubernetes with the Helm chart: resources, storage, ingress, certificates, your own registry and database, scaling and backups."
+keywords: ["Kubernetes", "Helm", "chart", "ingress", "cert-manager", "StatefulSet", "namespace", "values.yaml", "pods"]
 icon: "ship"
 ---
 
-## Before you start
+Run Collabase in a Kubernetes cluster with the Helm chart that ships in the release package. This guide takes you from an empty namespace to a running installation, and then covers the choices a cluster operator makes: certificates, your own image registry, an external database, scaling and backups.
 
-This guide is for teams that already operate a Kubernetes cluster. If you have a
-single Linux server, the [standard installation](/installation) is simpler and
-fully supported — you do not need Kubernetes to run Collabase.
+If you have a single Linux server, the [installation with Docker](/installation) is simpler and fully supported. You do not need Kubernetes to run Collabase.
 
-You need:
+## At a glance {#at-a-glance}
+
+| | |
+|---|---|
+| **Result** | Collabase runs in its own namespace, reachable over HTTPS at your address. |
+| **Time** | The install itself takes a few minutes. The first start takes longer while the images download and the database is prepared. |
+| **You need** | Cluster access with `kubectl` and Helm, a DNS name for Collabase, and the release package. |
+| **Edition** | All editions. Activate an Enterprise licence key after the install. |
+
+## Requirements {#requirements}
 
 | | Requirement |
 |---|---|
-| **Cluster** | Kubernetes 1.26 or later |
-| **Tools** | `kubectl` and Helm 3.10+ on your machine |
-| **Ingress** | An ingress controller (the chart defaults to nginx) |
-| **Certificates** | cert-manager with a ClusterIssuer, if you want automatic HTTPS |
-| **Storage** | A default StorageClass (about 45 GB across all volumes) |
+| **Cluster** | Kubernetes 1.26 or later, on `amd64` nodes |
+| **Tools** | `kubectl` and Helm 3.10 or later on the machine that installs |
+| **Capacity** | At least 4 GB RAM and 2 vCPU free in the namespace for a small team. See [System requirements](/admin/system-requirements#cpu-and-memory). |
+| **Storage** | A default storage class with `ReadWriteOnce` volumes, about 45 GB in total |
+| **Ingress** | An ingress controller. The chart is written for nginx and sets nginx annotations. |
+| **Certificates** | cert-manager with a ClusterIssuer, or your own TLS certificate as a secret |
+| **Images** | Access to `ghcr.io`, or your own registry that holds copies of the images |
+| **Address** | A DNS name that points at your ingress, for example `collabase.yourcompany.com` |
+
+The full list of ports, outbound connections and images is on [System requirements](/admin/system-requirements). Send that page to the team that runs your cluster.
+
+## What runs in your cluster {#what-runs-in-your-cluster}
+
+The chart creates six workloads, each with one instance, and two one-time jobs.
+
+| Workload | Kind | Purpose | Memory limit | CPU limit | Volume |
+|---|---|---|---|---|---|
+| **App** | Deployment | Web interface, API and background jobs | 2.75 GB | 2 | 10 GB uploads, 10 GB shared home, 1 GB documents |
+| **PostgreSQL** | StatefulSet | Database with `pgvector` | 4 GB | none | 20 GB |
+| **Redis** | StatefulSet | Queue for background jobs | none, data capped at 256 MB | none | 2 GB |
+| **Document processor** | Deployment | File conversion and PDF export | 1.5 GB | 1 | none |
+| **Collaboration relay** | Deployment | Live editing, can be turned off | 768 MB | 1 | none |
+| **Plug sandbox** | Deployment | Isolated execution of automation plugs, can be turned off | 2 GB | 2 | 2 GB |
+| **Migration** | Job | Database changes, runs on install and before every upgrade | | | |
+| **Seed** | Job | Creates the first administrator, runs on install only | | | |
+
+The memory the scheduler reserves is 512 MB for the app, 1 GB for the database and 256 MB for the sandbox. The chart sets no CPU requests. If your namespace has a resource quota or a limit range that demands them, set them in your values file, see [Adjust resources](#adjust-resources).
 
 <Note>
-  By default the chart runs Collabase as a **single instance** with files on
-  cluster volumes. To run multiple instances, switch file storage to an
-  S3-compatible bucket and enable the dedicated worker — see
-  [Scaling out](#scaling-out) below.
+  With the default settings the app and its volumes run as a single instance. To run more than one instance, see [Scale out](#scaling-out).
 </Note>
 
----
+## Install {#install}
 
-## Install
-
-The chart ships inside the release package under `deployment/helm`.
+*Phase 1 of 3. Next: [Verify the installation](#verify).*
 
 <Steps>
-  <Step title="Download and unpack the release">
-    Download `collabase-deployment-<version>.zip` from the
-    [download page](https://collabase.ch/en/download) and unpack it.
+  <Step title="Unpack the release package">
+    Download `collabase-deployment-<version>.zip` from the [download page](https://collabase.ch/en/download) and unpack it. The chart is in `deployment/helm`.
+  </Step>
+  <Step title="Write a values file">
+    Keep your settings in a file, not in a long command. Create `collabase-values.yaml`:
+
+    ```yaml title="collabase-values.yaml"
+    app:
+      url: https://collabase.yourcompany.com
+      adminEmail: admin@yourcompany.com
+
+    ingress:
+      host: collabase.yourcompany.com
+      className: nginx
+      tls:
+        clusterIssuer: letsencrypt-prod
+    ```
+
+    `app.url` is the public address people open. It must match `ingress.host`.
   </Step>
   <Step title="Install the chart">
     ```bash
     helm install collabase ./deployment/helm \
       --namespace collabase --create-namespace \
-      --set app.url=https://collabase.yourcompany.com \
-      --set ingress.host=collabase.yourcompany.com \
-      --set ingress.tls.clusterIssuer=letsencrypt-prod
+      -f collabase-values.yaml
     ```
 
-    All passwords and keys are generated automatically on first install.
+    The chart installs the images of the release it belongs to. All passwords and keys are generated on the first install.
   </Step>
   <Step title="Wait for the first start">
-    The database setup runs as a one-time job right after install. The
-    application can answer with errors for a minute or two until it finishes.
-    Watch it complete:
+    The database is prepared by a one-time job. The application can answer with errors until it finishes.
 
     ```bash
     kubectl get jobs -n collabase --watch
     ```
   </Step>
-  <Step title="Read your admin password">
+  <Step title="Read the administrator password">
     ```bash
     kubectl get secret collabase -n collabase \
       -o jsonpath='{.data.adminPassword}' | base64 -d
     ```
 
-    Log in at your URL with `admin@collabase.local` (or the email you set via
-    `--set app.adminEmail=...`) and this password.
+    Sign in at your address with the administrator email from your values file and this password. You are asked to choose a new password.
   </Step>
 </Steps>
 
----
+## Verify the installation {#verify}
 
-## Updating
+*Phase 2 of 3. Previous: [Install](#install). Next: [Activate the licence and add people](#next-steps).*
 
-```bash
-helm upgrade collabase ./deployment/helm -n collabase --reuse-values
+<Check>
+  **Checkpoint.** All pods are `Running` and ready, both jobs are `Complete`, and the address answers with `"status":"ok"`.
+
+  ```bash
+  kubectl get pods,jobs -n collabase
+  curl https://collabase.yourcompany.com/api/health
+  ```
+
+  If something is not ready, see [Troubleshooting](#troubleshooting).
+</Check>
+
+## Certificates {#certificates}
+
+The ingress terminates HTTPS. Choose one way to get a certificate.
+
+| Option | When | Settings |
+|---|---|---|
+| **cert-manager** | You run cert-manager and have a ClusterIssuer | `ingress.tls.clusterIssuer: <name>`. The certificate is stored in the secret `collabase-tls`. |
+| **Your own certificate** | Your organization issues certificates | Create a TLS secret named `collabase-tls` in the namespace and leave `clusterIssuer` empty. Change the name with `ingress.tls.secretName`. |
+| **TLS ends before the cluster** | A load balancer or gateway in front already holds the certificate | `ingress.tls.enabled: false` |
+
+```bash title="Use your own certificate"
+kubectl create secret tls collabase-tls -n collabase \
+  --cert=fullchain.pem --key=privkey.pem
 ```
 
-Database migrations run automatically before the new version starts.
+Create the secret before the install so the ingress finds it at the start.
+
+## Use another ingress controller {#other-ingress}
+
+The chart sets nginx annotations and defaults to the class `nginx`. For another controller, set `ingress.className` and check these three points:
+
+- **Upload size.** Allow request bodies of at least 32 MB. The chart sets the nginx annotation `proxy-body-size` from `ingress.maxBodySize`. Other controllers need the same limit in their own way, through `ingress.annotations`.
+- **WebSockets.** Live collaboration connects to `/collab` on the same address. The controller must pass WebSocket upgrades through.
+- **Sign-in rate limit.** The chart adds a second ingress that limits sign-in attempts with an nginx annotation. Set `ingress.authRateLimit.enabled: false` for a controller that ignores it, and limit `/api/auth/callback` in your own gateway.
+
+To manage the routes yourself, set `ingress.enabled: false`. Route `/` to the service `collabase-app` on port 3000, and `/collab` to the service `collabase-collab` on port 1234. The service names start with your release name.
+
+## Use your own image registry {#own-registry}
+
+Many clusters cannot pull from `ghcr.io`. Copy the images into your registry, then point the chart at them.
+
+<Steps>
+  <Step title="Copy the images">
+    Copy these images at the version of your release package. The tag is the version number without a leading `v`.
+
+    ```text
+    ghcr.io/collabase/collabase
+    ghcr.io/collabase/collabase-document-processor
+    ghcr.io/collabase/collabase-collab
+    ghcr.io/collabase/collabase-sandbox
+    pgvector/pgvector:pg16
+    redis:7-alpine
+    ```
+  </Step>
+  <Step title="Set the repositories">
+    ```yaml title="collabase-values.yaml"
+    image:
+      repository: registry.yourcompany.com/collabase/collabase
+    documentProcessor:
+      image:
+        repository: registry.yourcompany.com/collabase/collabase-document-processor
+    collab:
+      image:
+        repository: registry.yourcompany.com/collabase/collabase-collab
+    sandbox:
+      image:
+        repository: registry.yourcompany.com/collabase/collabase-sandbox
+    postgresql:
+      image: registry.yourcompany.com/library/pgvector:pg16
+    redis:
+      image: registry.yourcompany.com/library/redis:7-alpine
+    ```
+
+    The tags stay empty. Each image uses the version of the chart.
+  </Step>
+  <Step title="Allow the cluster to pull">
+    If your registry needs a login, create a pull secret and attach it to the default service account of the namespace. The chart has no setting for pull secrets.
+
+    ```bash
+    kubectl create secret docker-registry registry-login -n collabase \
+      --docker-server=registry.yourcompany.com \
+      --docker-username=<user> --docker-password=<token>
+    kubectl patch serviceaccount default -n collabase \
+      -p '{"imagePullSecrets":[{"name":"registry-login"}]}'
+    ```
+  </Step>
+</Steps>
+
+A cluster with no route to the internet at all can also use the [air-gapped installation](/admin/airgapped-installation) approach for the images.
+
+## Use your own database {#own-database}
+
+Use a managed PostgreSQL by turning off the bundled one:
+
+```yaml title="collabase-values.yaml"
+postgresql:
+  enabled: false
+  externalUrl: postgresql://collabase:<password>@db.yourcompany.com:5432/collabase
+```
+
+The database must be PostgreSQL 16 or later with the `vector` extension. The migration job runs `CREATE EXTENSION IF NOT EXISTS vector`, which needs a privileged user. If your provider restricts it, enable the extension once in the provider's console. See [System requirements](/admin/system-requirements#database).
+
+The connection pool is sized for you. Each app process gets 80 % of `max_connections` divided by the number of processes, at most 100 each. Override it with `database.connectionLimit`.
+
+## Manage secrets {#secrets}
+
+On the first install the chart generates every password and key and stores them in the secret `collabase`. Later upgrades keep the existing values.
 
 <Warning>
-  **Never delete the `collabase` Secret in the namespace.** It holds the key
-  that encrypts stored credentials (for example mail and integration logins).
-  If that key is lost, those stored credentials cannot be recovered and must
-  be entered again. Upgrades always keep the existing keys — deleting the
-  Secret by hand is the only way to lose them.
+  Never delete the secret `collabase`. It holds the key that encrypts stored credentials such as mail and integration logins. If it is lost, those credentials cannot be recovered and must be entered again. `helm uninstall` removes the secret too. Include it in your backup.
 </Warning>
 
-To get an automatic database backup before every upgrade, enable the backup
-option once:
+Tools that render the chart without a live connection to the cluster, such as `helm template` in a GitOps pipeline, cannot read the existing secret. They would generate new keys on every render. In that case create the secret yourself and reference it:
 
-```bash
-helm upgrade collabase ./deployment/helm -n collabase \
-  --reuse-values --set backup.enabled=true
+```yaml title="collabase-values.yaml"
+secrets:
+  existingSecret: collabase-secrets
 ```
 
-With the option on, Collabase also backs up the database right before it applies
-database changes, and every upgrade first checks that your data can be converted.
-If the check fails, the upgrade stops and your database stays as it was. Turn the
-option on in an upgrade before the one you want protected: the storage for the
-backups only exists once that first upgrade has finished.
+The secret needs these keys: `postgresPassword`, `nextauthSecret`, `adminPassword`, `pdfPrintToken`, `automationEncryptionKey`, `encryptionKey`, `mailEncryptionKey`, `databaseUrl`, `collabSharedSecret`, `sandboxSharedSecret` and `engineTokenSecret`. With S3 storage add `s3AccessKeyId` and `s3SecretAccessKey`. Generate each value as a random string of at least 32 characters.
 
----
+If you move an existing Docker installation to Kubernetes, copy `ENCRYPTION_KEY`, `MAIL_ENCRYPTION_KEY`, `AUTOMATION_ENCRYPTION_KEY`, `NEXTAUTH_SECRET`, `PDF_PRINT_TOKEN` and `POSTGRES_PASSWORD` from the `.env` file into the `secrets` section of your values file on the first install.
 
-## Using your own database
+## Adjust resources {#adjust-resources}
 
-If you run a managed PostgreSQL (for example Cloud SQL or RDS):
+Every workload takes its limits from the values file. Raise them in the same place:
 
-```bash
---set postgresql.enabled=false \
---set postgresql.externalUrl="postgresql://user:password@your-db-host:5432/collabase"
+```yaml title="collabase-values.yaml"
+app:
+  resources:
+    requests:
+      cpu: "500m"
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 2816Mi
 ```
 
-<Note>
-  Collabase needs the `vector` extension in PostgreSQL. On managed databases
-  you may have to enable it explicitly in your provider's console before the
-  first install.
-</Note>
+The same `resources` block exists for `documentProcessor`, `collab`, `sandbox` and `postgresql`. To size the whole installation for your team, see [Sizing & scaling](/admin/scaling). The database settings under `postgresql.tuning` assume a node with at least 8 GB of RAM. Lower `shared_buffers` and `effective_cache_size` on a smaller one.
 
----
+## Plug sandbox {#plug-sandbox}
 
-## Scaling out {#scaling-out}
+The sandbox runs automation plugs from third parties in isolation. It starts with every install. It needs a security profile on the node to isolate plugs fully. Without the profile it still starts, reports `degraded` on its health check and runs no third-party plug. Everything else works as before.
 
-Running more than one application instance requires two things, and the chart
-refuses to render without them (with a message explaining why):
+| Choice | Settings |
+|---|---|
+| **No third-party plugs** | `sandbox.enabled: false`, or leave the defaults and accept `degraded`. |
+| **Full isolation, chart loads the profiles** | `sandbox.loadProfiles: true`, `sandbox.apparmorProfile: Localhost`, `sandbox.seccompProfile: Localhost`. Loading starts a privileged pod on every node, so it is off by default. |
+| **Full isolation, you install the profiles** | The profile files are in `deployment/helm/files`. Install them on each node, then set the two profile values to `Localhost`. |
 
-1. **S3 file storage** — with cluster volumes, a second instance cannot see
-   files the first one stored. Set up a private bucket first
-   ([File storage guide](/admin/file-storage) — providers, permissions, policy):
+`Localhost` for AppArmor needs Kubernetes 1.30 or later. Network policies keep the sandbox away from the database and the queue. Your cluster must enforce them.
 
-   ```bash
-   --set storage.driver=s3 \
-   --set storage.s3.bucket=collabase \
-   --set storage.s3.endpoint=https://your-s3-endpoint \
-   --set storage.s3.accessKeyId=... \
-   --set storage.s3.secretAccessKey=...
-   ```
+## Scale out {#scaling-out}
 
-2. **The dedicated worker** — background jobs (automations, indexing) move to
-   their own single instance so they run exactly once:
+Running more than one app instance needs two things. The chart refuses to render without them.
 
-   ```bash
-   --set workers.separate=true \
-   --set replicaCount=3
-   ```
+1. **S3 file storage.** With cluster volumes, a second instance cannot see files the first one stored. Set up a private bucket first, see [File storage](/admin/file-storage).
+2. **A dedicated worker.** Background jobs move to their own single instance so they run exactly once.
 
-The database connection pool is split across instances automatically.
-
-<Note>
-  If you migrate an existing single-instance installation to S3, copy the
-  files into the bucket first — the [File storage guide](/admin/file-storage)
-  has the step-by-step migration.
-</Note>
-
----
-
-## Restoring a backup
-
-Restore your database dump first, **then** run `helm upgrade`. Do not restore
-into a brand-new `helm install` — a fresh install runs its first-time setup,
-which would write on top of your restored data.
-
----
-
-## Troubleshooting
-
-**The install failed with a job error.** Read the job's log — it names the
-problem directly:
-
-```bash
-kubectl logs job/collabase-migrate -n collabase
+```yaml title="collabase-values.yaml"
+replicaCount: 3
+workers:
+  separate: true
+storage:
+  driver: s3
+  s3:
+    bucket: collabase
+    endpoint: https://your-s3-endpoint
+    accessKeyId: <key>
+    secretAccessKey: <secret>
 ```
 
-**The page shows errors right after install.** Normal for the first minute or
-two while the setup jobs finish. Check `kubectl get jobs -n collabase`.
+With S3 storage the app pods carry no volumes and update without downtime. For the database and the other parts, see [Sizing & scaling](/admin/scaling#scaling-beyond-one-server).
 
-**I need help.** Open a ticket at
-[collabase.featurebase.app](https://collabase.featurebase.app/en) and attach
-the output of `kubectl get pods -n collabase` and the job log above.
+## Update {#update}
+
+Unpack the new release package and upgrade with the same values file:
+
+```bash
+helm upgrade collabase ./deployment/helm -n collabase -f collabase-values.yaml
+```
+
+The chart installs the version it belongs to, so the new package moves every image to the new release. Migrations run before the new version starts. The full procedure, with backup, checks and rollback, is on [Updates](/admin/updates#kubernetes).
+
+## Back up and restore {#backup}
+
+Back up three things: the database, the uploaded files and the secret `collabase`. The chart can also take a database dump before each upgrade:
+
+```yaml title="collabase-values.yaml"
+backup:
+  enabled: true
+```
+
+The dump goes to its own volume and the last seven days are kept. Turn the option on one upgrade before the one you want protected, because the volume is created after the checks of that first upgrade. This does not replace your regular backup. See [Backup & Restore](/admin/backup).
+
+Restore a database dump into the existing installation, then run `helm upgrade`. Do not restore into a new `helm install`. A fresh install runs its first-time setup and would write on top of your restored data.
+
+## Remove Collabase {#uninstall}
+
+```bash
+helm uninstall collabase -n collabase
+```
+
+This removes the workloads, the secret and the volumes for uploads, documents and the sandbox. The volumes of the database and the queue are kept. Back up the secret and your data first. Delete the remaining volumes with `kubectl delete pvc` only when you want the data gone for good. This cannot be undone.
+
+## Troubleshooting {#troubleshooting}
+
+| What you see | Cause | What to do |
+|---|---|---|
+| The install fails with a job error | The migration job could not prepare the database | Read the log: `kubectl logs job/collabase-migrate -n collabase`. The most common cause is a missing `vector` extension on an external database. |
+| Errors for the first minute or two after install | The setup jobs are still running | Wait, then check `kubectl get jobs -n collabase`. |
+| A pod stays in `ImagePullBackOff` | The cluster cannot pull the image | Check the repository and tag, and the pull secret. See [Use your own image registry](#own-registry). |
+| A pod stays `Pending` | No node has the memory or storage, or no storage class exists | `kubectl describe pod <name> -n collabase` names the reason. |
+| Uploads fail with a permission error | The storage class ignores the group setting of the pod | Check that your volumes honor `fsGroup`, or make them writable for the user with ID 1001. |
+| Live editing does not connect | The ingress blocks WebSocket upgrades on `/collab` | See [Use another ingress controller](#other-ingress). |
+| The sandbox reports `degraded` | The security profile is not loaded on the node | See [Plug sandbox](#plug-sandbox). The rest of Collabase is not affected. |
+| The helm render fails with a message about replicas | More than one instance without S3 and a worker | See [Scale out](#scaling-out). |
+
+Collect `kubectl get pods -n collabase` and the log of the failing pod or job before you contact support at [collabase.featurebase.app](https://collabase.featurebase.app/en).
+
+## Next steps {#next-steps}
+
+*Phase 3 of 3. Previous: [Verify the installation](#verify).*
+
+<CardGroup cols={3}>
+  <Card title="Activate your licence" icon="key-round" href="/admin/editions-and-license#activate">
+    Unlock the Enterprise features.
+  </Card>
+  <Card title="First run" icon="rocket" href="/first-run">
+    Invite your team and create a Space.
+  </Card>
+  <Card title="Updates" icon="refresh-cw" href="/admin/updates">
+    Plan how you keep Collabase current.
+  </Card>
+</CardGroup>
