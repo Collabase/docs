@@ -11,7 +11,7 @@ A server that cannot reach a container registry can still run Collabase. You bui
 | | |
 |---|---|
 | **Result** | Collabase runs on a server with no route to the internet, and you can update it the same way. |
-| **Time** | Depends on how fast you can transfer about 1 GB. The scripts themselves take a few minutes. |
+| **Time** | Depends on how fast you can transfer about 1.5 GB. The scripts themselves take a few minutes. |
 | **You need** | Shell access on the target server and on one machine with Docker and internet access. |
 | **Edition** | All editions. The licence is a signed token that Collabase verifies locally. |
 
@@ -26,8 +26,7 @@ Two paths lead through this guide:
 
 - **Docker 27 or later.** Older versions cannot restrict the export to one architecture and fail on the multi-architecture PostgreSQL image.
 - **Internet access** to `ghcr.io` and Docker Hub.
-- **About 6 GB of free disk space** for intermediate layers. The finished bundle is about 1 GB.
-- A **sign-in to the GitHub container registry** if the download asks for it: `docker login ghcr.io`.
+- **About 6 GB of free disk space** for intermediate layers. The finished bundle is about 1.5 GB.
 
 An Apple Silicon Mac works as the connected machine. The bundle always contains `linux/amd64` images, which is what the server runs.
 
@@ -74,7 +73,7 @@ Run `bundle.sh` on the connected machine. It does not have to be the target serv
     The script downloads the images and exports them. This takes a few minutes. Use `--output <folder>` to write the files somewhere other than `./offline/`.
   </Step>
   <Step title="Note what the bundle contains">
-    The bundle holds the Collabase application, the document processor, the web server, PostgreSQL and Redis. It also holds the collaboration relay when the release has one. PostgreSQL and Redis are included on purpose, because an air-gapped server cannot reach Docker Hub either.
+    The bundle holds the Collabase application, the document processor, the web server, PostgreSQL and Redis. It also holds the collaboration relay and the plug sandbox when the release has them. PostgreSQL and Redis are included on purpose, because an air-gapped server cannot reach Docker Hub either.
   </Step>
 </Steps>
 
@@ -82,7 +81,7 @@ The script writes two files into `./offline/`:
 
 | File | Purpose |
 |---|---|
-| **`collabase-offline-<version>.tar.gz`** | All images, about 1 GB. |
+| **`collabase-offline-<version>.tar.gz`** | All images, about 1.5 GB. |
 | **`collabase-offline-<version>.tar.gz.sha256`** | Checksum. The install and update scripts verify it before loading. |
 
 <Check>
@@ -232,7 +231,7 @@ Database changes only move forward. If a release changed the database and the ap
 
 | What you see | Cause | What to do |
 |---|---|---|
-| `Could not pull <image>` while building | The machine is not signed in to the registry, or the release tag does not exist. | Run `docker login ghcr.io`. Check the release tag. It carries no leading `v`. |
+| `Could not pull <image>` while building | The machine cannot reach `ghcr.io` or Docker Hub, or the release tag does not exist. | Check the connection and any proxy. The images are public and need no sign-in. Check the release tag. It carries no leading `v`. |
 | An error with `content digest … not found` during the export | The Docker version is older than 27. | Upgrade Docker and run `bundle.sh` again. |
 | `Checksum mismatch` | The copy is incomplete or damaged. | Copy both files again from the connected machine. |
 | `The bundle contains no ghcr.io/collabase/collabase image` | The file is truncated or does not come from `bundle.sh`. | Build the bundle again. |
