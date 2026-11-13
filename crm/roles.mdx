@@ -1,0 +1,115 @@
+---
+title: "CRM roles and settings"
+description: "Create CRM roles, set what each role sees and changes per object type, assign people and groups, and manage the instance settings."
+icon: "shield"
+---
+
+The CRM decides what a person sees through **roles**. A role lists, for each object type, which of five rights it gives. A person holds the rights of every role they have, directly or through a group. A person without a role sees nothing, and the app answers "not found".
+
+Roles and settings are for people who hold the right to **administer the CRM**. For everyone else both pages answer "not found". A system administrator without that right has no access either: the global administrator role opens nothing inside the CRM. The person who first opens the CRM as system administrator becomes CRM admin.
+
+You find both in the system administration under **CRM**: the settings at `/admin/crm/settings` and the roles at `/admin/crm/roles`. Each page links to the other.
+
+## Roles
+
+A new CRM has five shipped roles. You can change their rights, field rules and members, but not their names, and you cannot delete them.
+
+| Role | Sees | Changes |
+|---|---|---|
+| **CRM admin** | Everything | Everything, and administers the CRM |
+| **Sales** | Everything | Everything, including opportunities |
+| **Staff** | Companies, people, notes, tasks, lists | Create and change companies, people, notes, tasks and lists, but not delete them and not opportunities |
+| **Management** | Everything | Nothing; can export |
+| **Readers** | Companies, people, notes, tasks, lists | Nothing |
+
+<Note>
+Only the **CRM admin** role starts with a member, the person who activated the CRM. The other roles start empty.
+</Note>
+
+### Create a role
+
+<Steps>
+  <Step title="Start a role">
+    Click **New role** and enter a name. Names are unique without regard to upper or lower case.
+  </Step>
+  <Step title="Set the rights">
+    Tick the rights per object type in the matrix. A new role has none.
+  </Step>
+  <Step title="Add members">
+    Add people or whole groups under **Members**.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The change applies from the next request of every member.
+  </Step>
+</Steps>
+
+### Rights per object type
+
+| Right | Gives |
+|---|---|
+| **See** | The type in the sidebar, the search, the timeline and the counts, and its records |
+| **Create** | New records of the type |
+| **Change** | Edit records of the type |
+| **Delete** | Delete records of the type |
+| **Export** | Export records of the type |
+
+Every right needs **See**. Ticking another right ticks **See** for you, and clearing **See** clears the rest. Opportunities are an ordinary type: remove **See** on them from a role and its members never meet an opportunity, in the search, the timeline, an export or a notification.
+
+### Field rules
+
+For every type a role can see, you can hide a field or make it read only. A field without a rule follows the right on its type. Besides the fields of the type you can rule the **Owner**, the **Domain**, the **Email addresses** and the **Phone numbers**.
+
+If a person holds several roles, the most permissive rule wins: a field is hidden only if every role that lets the person see the type hides it.
+
+### Special rights
+
+| Right | Gives |
+|---|---|
+| **Administer the CRM** | Roles, objects, fields, pipelines and settings |
+| **Connect a mailbox** | Connecting their own mailbox and calendar |
+| **Data protection office** | Answering data protection requests, without access to private notes |
+
+The last person who holds **Administer the CRM** cannot lose it. The CRM refuses a change that would remove it, whether you delete the role, take the right away, remove the member or the group, and says so.
+
+### Members
+
+A member is one person or one group. Only active internal people can hold a role: service accounts, guests and customers cannot, even through a group. Members load a page at a time. Adding someone who already holds the role changes nothing.
+
+### Delete a role
+
+Delete a role you created with **Delete**. Its members lose its rights at their next request. A shipped role cannot be deleted.
+
+### Why does someone not see a record?
+
+Under **Why does someone not see a record?** pick a person and paste the address of the record. The answer is one sentence:
+
+- the person has no access to the CRM,
+- their roles give no right to see this record,
+- the record is in the trash,
+- or they see the record, but some fields are hidden for them, and which.
+
+The answer is the same for a record that does not exist and for one in a type the person may not read.
+
+## Settings
+
+The settings hold the values two installations may need differently.
+
+| Setting | What it does |
+|---|---|
+| **Retention in months** | How long mail and appointments stay in the CRM. Collabase deletes older ones once a day. From 1 to 120 months. |
+| **Contacts from mail** | The most any mailbox may create: none, from sent mail, or from sent and received mail. A mailbox owner can choose less. |
+| **Reason required for lost deals** | Moving an opportunity to a lost stage asks for the reason. |
+| **Logo service** | An address with `{domain}` in it, such as `https://logos.example.com/{domain}`. The CRM asks it for a company logo by the company's domain, only when the company's own site has none. Only the domain is sent. Leave it empty to never contact a third party. |
+| **Mail and calendar apps** | Client ID and client secret of the Google and Microsoft apps of this installation. |
+
+A client secret is write only. After you save it the page shows only that one is set. To replace it, type a new one. To remove it, click **Remove** and save.
+
+## Audit
+
+Every change to a role, a membership or a setting is written to the audit log. A role entry holds the role, the rights that changed and the ids of members added or removed, never their names. A settings entry holds the names of the keys that changed, never a value and never a secret.
+
+## Related
+
+- [Get started with the CRM](/crm/getting-started)
+- [Object types, fields and pipelines](/crm/model)
+- [Connect your mailbox to the CRM](/crm/mailbox)

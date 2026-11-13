@@ -1,0 +1,60 @@
+---
+title: "Appointments from your calendar"
+description: "See appointments with customers on a record and in its timeline, with the same levels as mail."
+icon: "calendar"
+---
+
+When you connect a mailbox, the CRM also reads the calendar of the same account. Appointments are matched to people and companies the way mail is, and they appear on the **Calendar** tab of a record and in its [timeline](/crm/timeline).
+
+## What you need
+
+Connect your mailbox first, see [Connect your mailbox to the CRM](/crm/mailbox). Allow reading the calendar when your provider asks. If you allow only mail, the mailbox keeps working and no appointments are imported.
+
+## What the CRM imports
+
+- Appointments of your main calendar from the last 90 days, and everything that changes afterwards. Microsoft appointments are read up to a year ahead.
+- A repeating appointment is stored once. On Google it is one entry for the series, on Microsoft each occurrence is its own entry.
+- Entries that are not appointments, such as birthdays, focus time and working location, are not imported.
+- The CRM stores time, title, participants, the description, the place, the meeting link and whether the appointment lasts all day. The description, the place and the meeting link show only at the level **Everything**.
+
+An appointment that is moved is updated, and one that is cancelled or deleted at the provider disappears from the CRM at the next sync.
+
+## Who sees what
+
+Appointments follow the level you chose for the mailbox, see [What others see of your mail](/crm/mailbox#levels):
+
+| Level | What others with access to the record see |
+|---|---|
+| **Only participants** | Nothing, unless they take part in the appointment |
+| **Metadata only** | Time and participants, not the title |
+| **Subject** | Time, participants and title |
+| **Everything** | Everything of **Subject**, plus description, place and meeting link |
+
+You always see all of your own appointments, and so does everyone who takes part in one. A private appointment is never imported and never shown, to nobody, you included. Admins have no special right to see appointments.
+
+An appointment with a blocked address or domain is not imported, and one already imported is removed, see [Blocklist](/crm/mailbox#blocklist).
+
+## The Calendar tab and the timeline
+
+The **Calendar** tab lists appointments latest start first, upcoming ones included, 50 to a page. The timeline lists only appointments that have already started. A company shows the appointments of its people as well.
+
+Times are stored as exact moments and shown in your own time zone. An all-day appointment is shown as a date with the label **All day**.
+
+## Plan the agenda {#agenda}
+
+Under an appointment, click **Plan agenda** to create a Collabase meeting for it. The meeting takes the title, the start time, the length and the attendees of the appointment, and it is attached to the record at once. You choose whether the attendees get an invitation by mail now. The action appears only for people who may create meetings and see the title of the appointment.
+
+When a meeting on the same record already starts at the same time, the CRM shows **Open meeting** instead of creating a second one, and the appointment no longer appears twice in the [timeline](/crm/timeline): the meeting stands for it.
+
+## Appointments before a record existed
+
+When a record gets an email address, or a company a domain, the appointments already imported for it appear on the record from then on, in the same way as mail. The CRM creates no person or company from an appointment.
+
+## How long appointments stay
+
+Appointments that ended before the retention your CRM admin sets in the CRM settings (24 months by default) are deleted every day. Disconnecting a mailbox together with its mail removes its appointments too.
+
+## Related
+
+- [Connect your mailbox to the CRM](/crm/mailbox)
+- [Timeline](/crm/timeline)

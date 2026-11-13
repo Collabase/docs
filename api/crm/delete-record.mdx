@@ -1,0 +1,46 @@
+---
+title: "Delete CRM record"
+description: "Move a record to the trash, where it can be restored for 30 days; a company with open opportunities is refused."
+api: "DELETE /api/v1/crm/records/{id}"
+---
+
+Moves a record to the trash. Its notes, tasks and list entries disappear with it and return when the
+record is restored in the app. The record's domains and addresses become free for other records. The
+API cannot restore or empty the trash.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to delete the type. Recorded in the audit log with the token's name. A second call answers `404`.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The record.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>The deleted record.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/crm/records/cm3rec0001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm3rec0001" } }
+```
+
+```json 409
+{ "error": { "code": "CRM_RECORD_HAS_OPEN_OPPORTUNITIES", "message": "The company still has open deals." } }
+```
+
+</ResponseExample>

@@ -1,0 +1,90 @@
+---
+title: "Get started with the CRM"
+sidebarTitle: "Get started"
+description: "Switch the CRM on, give people access, create your first company and person, and add a note and a task."
+icon: "rocket"
+---
+
+This page takes you from an installation without the CRM to a first company with a note and a task. The first part is for administrators. The second part is for everyone who works in the CRM.
+
+## Switch the CRM on {#switch-on}
+
+The CRM is an experimental app, so it is off until someone switches it on. Choose one of the two ways:
+
+| Who | How | Effect |
+|---|---|---|
+| **A person, for themselves** | Open **Profile → User settings → Collabase Lab** and switch **CRM** on | The app appears for this person only |
+| **An administrator, for everyone** | Set `FEATURE_FLAG_OVERRIDES="CRM=true"` in the `.env` file of your installation and restart the app. See [Features in development](/admin/hosting#features-in-development) | The app is on for everyone, and available to all groups that hold it |
+
+A person only sees the app when a group of theirs holds it. See [Who can use it](/crm/overview#who).
+
+## Give the app to groups {#groups}
+
+<Steps>
+  <Step title="Open the group">
+    Go to **Administration → Groups**, open a group and choose **App access**.
+  </Step>
+  <Step title="Choose the role">
+    Set **CRM** to **User** for people who work in it, or **Admin** for people who manage its model, roles and settings.
+  </Step>
+</Steps>
+
+The app now appears in the app drawer of every member of the group. A person without the app does not see it, and its address answers "not found".
+
+## Open the CRM as the first administrator {#first-admin}
+
+The person who first opens the CRM as system administrator becomes **CRM admin**. Open the app once with that account before you give it to others. Then open **CRM** > **Settings** in the system administration and check [roles and settings](/crm/roles):
+
+- Add the people who should work with sales data to the role **Sales**. Add colleagues who only look things up to **Readers**.
+- Leave **Contacts from mail** at **None** until you have decided how mail may create contacts. See [Connect your mailbox](/crm/mailbox).
+
+A person without a CRM role sees nothing, even when the app is available to them. Every other role starts empty.
+
+## Create your first company and person {#first-record}
+
+<Steps>
+  <Step title="Create the company">
+    Open **Companies** in the sidebar, click **New**, enter the company name and the domain in the dialog **New company**, and save. The CRM looks up the logo of the domain in the background. See [The record page](/crm/record-detail#logo).
+  </Step>
+  <Step title="Create the person">
+    Open **People**, click **New**, enter first name, last name and an email address in the dialog **New person**, and save.
+  </Step>
+  <Step title="Relate them">
+    Open the person, go to **Relations** and add the company. The person appears on the page of the company, and the company shows its people.
+  </Step>
+</Steps>
+
+You see the new records at once in their lists, with the main domain and the owner as columns. More about lists, filters and columns is on [Companies and people](/crm/objects).
+
+## Add a note and a task {#note-and-task}
+
+On the page of the company:
+
+<Steps>
+  <Step title="Write a note">
+    Open **Notes**, click **New note**, write the text and choose who may read it. See [Notes](/crm/notes).
+  </Step>
+  <Step title="Add a task">
+    Open **Tasks**, click **New task**, give it a title, a due date and a colleague. The colleague gets a notice, and on the due day a second one. See [CRM tasks](/crm/tasks).
+  </Step>
+</Steps>
+
+Both entries appear on the **Timeline** of the company next to every change. See [Timeline](/crm/timeline).
+
+## What to do next {#next}
+
+| You want to | Read |
+|---|---|
+| Bring in existing data | [Import and export](/crm/import-export) |
+| Track deals | [Deal pipeline](/crm/board) |
+| See mail and appointments on the record | [Connect your mailbox](/crm/mailbox) and [Appointments from your calendar](/crm/calendar) |
+| Plan a customer meeting | [Meetings from the CRM](/crm/meetings) |
+| Adapt object types and fields | [Object types, fields and pipelines](/crm/model) |
+
+## Troubleshooting {#troubleshooting}
+
+| What you see | What to do |
+|---|---|
+| The app is missing from the app drawer | Your group does not hold the CRM, or it is not switched on. Ask an administrator, or switch it on for yourself in **Collabase Lab**. |
+| The app opens and shows nothing | You have no CRM role. Ask a CRM admin to add you to a role. |
+| A list you expect is missing from the sidebar | Your roles do not let you read that type. See [Why does someone not see a record?](/crm/roles) |

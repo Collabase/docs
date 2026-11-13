@@ -27,7 +27,7 @@ Hast du einen einzelnen Linux-Server, ist die [Installation mit Docker](/install
 | **Kapazität** | Für ein kleines Team mindestens 4 GB RAM und 2 vCPU frei im Namespace. Siehe [Systemvoraussetzungen](/de/admin/system-requirements#cpu-und-arbeitsspeicher). |
 | **Speicher** | Eine Standard-Storage-Klasse mit `ReadWriteOnce`-Volumes, insgesamt etwa 45 GB |
 | **Ingress** | Ein Ingress-Controller. Das Chart ist für nginx geschrieben und setzt nginx-Annotationen. |
-| **Pod Security** | Ein Namespace auf der Stufe `privileged` oder `baseline`. Die Stufe `restricted` wird nicht unterstützt, siehe [Pod Security](#pod-security). |
+| **Pod Security** | Ein Namespace auf `privileged` oder `baseline` mit den Standardwerten. Für `restricted` setze `securityContext.enabled: true`; die Plug-Sandbox startet dort trotzdem nicht, siehe [Pod Security](#pod-security). |
 | **Zertifikate** | cert-manager mit einem ClusterIssuer oder dein eigenes TLS-Zertifikat als Secret |
 | **Images** | Zugriff auf `ghcr.io` oder eine eigene Registry mit Kopien der Images |
 | **Adresse** | Ein DNS-Name, der auf deinen Ingress zeigt, zum Beispiel `collabase.yourcompany.com` |
@@ -49,7 +49,7 @@ Das Chart erstellt sechs Workloads mit je einer Instanz und zwei einmalige Jobs.
 | **Migration** | Job | Datenbankänderungen, läuft bei der Installation und vor jedem Upgrade | | | |
 | **Seed** | Job | Legt den ersten Administrator an, läuft nur bei der Installation | | | |
 
-Der Scheduler reserviert 512 MB für die App, 1 GB für die Datenbank und 256 MB für die Sandbox. Das Chart setzt keine CPU-Requests. Verlangt ein Resource Quota oder ein Limit Range in deinem Namespace welche, trägst du sie in deiner Werte-Datei ein, siehe [Ressourcen anpassen](#ressourcen-anpassen).
+Der Scheduler reserviert 512 MB für die App, 1 GB für die Datenbank und 256 MB für die Sandbox. Das Chart setzt ausserdem kleine CPU-Requests: 250m für die App, je 100m für den Dokument-Prozessor, die Sandbox und das Kollaborations-Relay. Datenbank und Queue setzen keine. Verlangt ein Resource Quota oder ein Limit Range in deinem Namespace mehr, trägst du es in deiner Werte-Datei ein, siehe [Ressourcen anpassen](#ressourcen-anpassen).
 
 <Note>
   Mit den Standardeinstellungen laufen die App und ihre Volumes als einzelne Instanz. Für mehr als eine Instanz siehe [Skalieren](#skalieren).
@@ -105,6 +105,10 @@ Der Scheduler reserviert 512 MB für die App, 1 GB für die Datenbank und 256 MB
     Melde dich unter deiner Adresse mit der Administrator-E-Mail aus deiner Werte-Datei und diesem Passwort an. Du wirst aufgefordert, ein neues Passwort zu wählen.
   </Step>
 </Steps>
+
+<Note>
+  **Den ersten Admin selbst anlegen.** Das Chart startet beim ersten Mal einen Job, der aus `secrets.adminPassword` einen Admin anlegt. Mit `migrations.seed: false` entfällt er: Die Installation startet ohne Admin, und der erste Besuch von `/setup` legt Admin, Titel und Sprache an. Der Standard ist `true`.
+</Note>
 
 ## Installation prüfen {#pruefen}
 
@@ -189,7 +193,7 @@ Viele Cluster können nicht von `ghcr.io` laden. Kopiere die Images in deine Reg
     Die Tags bleiben leer. Jedes Image nutzt die Version des Charts.
   </Step>
   <Step title="Dem Cluster das Laden erlauben">
-    Verlangt deine Registry eine Anmeldung, erstelle ein Pull-Secret und hänge es an den Default-Service-Account des Namespace. Das Chart hat keine Einstellung für Pull-Secrets.
+    Verlangt deine Registry eine Anmeldung, erstelle ein Pull-Secret im Namespace und trage es in der Values-Datei unter `imagePullSecrets` ein, zum Beispiel `imagePullSecrets: [{ name: ghcr-pull }]`. Das Chart setzt es an jedem Pod.
 
     ```bash
     kubectl create secret docker-registry registry-login -n collabase \
@@ -251,7 +255,16 @@ app:
       memory: 2816Mi
 ```
 
-Denselben Block `resources` gibt es für `documentProcessor`, `collab`, `sandbox` und `postgresql`. Wie du die gesamte Installation für dein Team dimensionierst, steht unter [Dimensionierung und Skalierung](/de/admin/scaling). Die Datenbankeinstellungen unter `postgresql.tuning` gehen von einem Node mit mindestens 8 GB RAM aus. Senke `shared_buffers` und `effective_cache_size` auf einem kleineren.
+Denselben Block `resources` gibt es für `documentProcessor`, `collab`, `sandbox` und `postgresql`. Diese CPU-Requests setzt das Chart standardmässig:
+
+| Workload | Wert | CPU-Request |
+|---|---|---|
+| **App** und eigener Worker | `app.resources.requests.cpu` | `250m` |
+| **Dokument-Prozessor** | `documentProcessor.resources.requests.cpu` | `100m` |
+| **Kollaborations-Relay** | `collab.resources.requests.cpu` | `100m` |
+| **Plug-Sandbox** | `sandbox.resources.requests.cpu` | `100m` |
+
+Ohne CPU-Request würde Kubernetes das ganze Limit als Request reservieren. Die kleinen Werte lassen den Scheduler die Pods platzieren, ohne Kerne zu blockieren, die sie nicht brauchen. Wie du die gesamte Installation für dein Team dimensionierst, steht unter [Dimensionierung und Skalierung](/de/admin/scaling). Die Datenbankeinstellungen unter `postgresql.tuning` gehen von einem Node mit mindestens 8 GB RAM aus. Senke `shared_buffers` und `effective_cache_size` auf einem kleineren.
 
 ## Plug-Sandbox {#plug-sandbox}
 
@@ -267,15 +280,15 @@ Die Sandbox führt Automation-Plugs von Dritten isoliert aus. Sie startet bei je
 
 ## Pod Security {#pod-security}
 
-Viele Plattformen erzwingen die Kubernetes Pod Security Standards auf einem Namespace oder betreiben eine Policy-Engine wie Kyverno oder OPA Gatekeeper. Was das Chart unter den einzelnen Stufen tut, ergibt sich aus seinen Pod-Definitionen. Auf einem Cluster, der sie durchsetzt, ist es nicht bestätigt.
+Viele Plattformen erzwingen die Kubernetes Pod Security Standards auf einem Namespace oder betreiben eine Policy-Engine wie Kyverno oder OPA Gatekeeper. Das Chart wurde mit einem serverseitigen Dry-Run in einem Namespace geprüft, der `restricted` erzwingt.
 
 | Stufe | Ergebnis |
 |---|---|
 | **Privileged** | Alles startet. |
 | **Baseline** | App, Datenbank, Queue, Kollaborations-Relay und Dokument-Prozessor setzen nichts, was Baseline verbietet. Die Plug-Sandbox startet mit ihrem Standard `apparmorProfile: Unconfined` nicht, weil Baseline nur das Standardprofil oder ein `Localhost`-Profil erlaubt. Installiere die Profile auf den Nodes und setze `Localhost`, oder schalte die Sandbox aus. `sandbox.loadProfiles: true` startet einen privilegierten Pod und wird abgelehnt, installiere die Profile also selbst. |
-| **Restricted** | Wird von dieser Version des Charts nicht unterstützt. Nur die Sandbox setzt einen Security Context. App, Datenbank, Queue, Relay und Prozessor setzen weder `runAsNonRoot`, noch entfernen sie alle Capabilities, noch setzen sie ein Seccomp-Profil. Ein Namespace, der `restricted` erzwingt, lehnt sie ab. |
+| **Restricted** | App, Worker, Datenbank, Queue, Relay und Dokument-Prozessor sowie die Jobs für Migration, Seed und Backup erfüllen die Stufe mit `securityContext.enabled: true`, siehe unten. Standard ist aus. Die Plug-Sandbox nicht: Sie braucht ein AppArmor- und ein Seccomp-Profil, und `restricted` verbietet das Standardprofil `Unconfined` für AppArmor. `sandbox.loadProfiles: true` startet einen privilegierten Pod. Schalte die Sandbox in einem solchen Namespace aus (`sandbox.enabled: false`, Plugs von Dritten laufen dann nicht) oder bitte um eine Ausnahme dafür. |
 
-Verlangt deine Richtlinie `restricted`, betreibe Collabase in einem Namespace auf `baseline`, oder bitte dein Plattformteam um eine Ausnahme für diesen Namespace. Sag uns Bescheid, falls das nicht möglich ist.
+Mit `securityContext.enabled: true` (standardmässig aus) startet das Chart jede Workload ausser der Sandbox als Nicht-Root-Benutzer mit der ID ihres Images, ohne Rechteausweitung, ohne Capabilities und mit dem Standard-Seccomp-Profil. Das Root-Dateisystem bleibt beschreibbar. Überschreibe einzelne Schlüssel unter `podSecurityContext` und `containerSecurityContext` einer Workload, wenn deine Plattform die Benutzer-IDs selbst vergibt oder ein Image oder Volume mit diesen Werten nicht funktioniert (`app`, `collab`, `documentProcessor`, `redis`, `postgresql`, `migrations`, `backup`). Die Volumes von Datenbank und Queue richtet `fsGroup` für die Image-Benutzer ein. Ignoriert ein älterer Storage-Treiber das, mach das Volume für die Benutzer-ID 999 beschreibbar.
 
 Eine Policy-Engine kann ausserdem Resource Requests und Limits, Images aus freigegebenen Registries oder festgelegte Versionen verlangen. Das Chart legt jedes Image standardmässig auf das Release fest und setzt Speicher-Requests. CPU-Requests setzt es nur, wenn du sie ergänzt, siehe [Ressourcen anpassen](#ressourcen-anpassen).
 
@@ -300,9 +313,9 @@ Die App-Pods und der Worker-Pod brauchen dieselben Verbindungen. Die Sandbox dar
 
 ## Scheduling und Plattformeinstellungen {#scheduling-und-plattformeinstellungen}
 
-Diese Version des Charts hat keine Einstellungen für `nodeSelector`, `tolerations`, `affinity`, Topology Spread, Priority Class, Pod-Annotationen, zusätzliche Umgebungsvariablen oder Pull-Secrets. Nutze stattdessen diese Wege:
+Das Chart hat Einstellungen für `nodeSelector`, `imagePullSecrets` und `app.spreadAcrossNodes`. Keine hat es für `tolerations`, `affinity`, Priority Class, Pod-Annotationen oder zusätzliche Umgebungsvariablen. Nutze stattdessen diese Wege:
 
-- **Pull-Secrets:** hänge das Secret an den Default-Service-Account des Namespace, siehe [Eigene Image-Registry nutzen](#eigene-registry).
+- **Pull-Secrets:** setze `imagePullSecrets`, siehe [Eigene Image-Registry nutzen](#eigene-registry).
 - **Scheduling und Annotationen:** lass Helm die gerenderten Manifeste mit `helm install --post-renderer` an einen Post-Renderer wie Kustomize übergeben. Der Post-Renderer ergänzt die Felder, die du an den Pods brauchst.
 - **Node-Pools:** weist deine Plattform Nodes pro Namespace zu, setze das am Namespace.
 
@@ -352,6 +365,22 @@ storage:
 ```
 
 Mit S3-Speicher tragen die App-Pods keine Volumes und werden ohne Ausfall aktualisiert. Zur Datenbank und zu den übrigen Teilen siehe [Dimensionierung und Skalierung](/de/admin/scaling#ueber-einen-server-hinaus-skalieren).
+
+### Ohne Ausfall ausrollen {#ausrollen}
+
+Diese Werte bestimmen, wie die App-Instanzen aktualisiert und beendet werden. Jeder Standardwert lässt deine Installation, wie sie ist.
+
+| Wert | Standard | Wirkung |
+|---|---|---|
+| `app.rollingUpdate` | `false` | Mit S3-Speicher ersetzt `true` eine Instanz nach der anderen und nimmt keine weg, bevor die Nachfolgerin bereit ist. |
+| `app.spreadAcrossNodes` | `false` | `true` zwingt die Instanzen auf verschiedene Nodes. Jede Revision wird für sich verteilt (`matchLabelKeys: [pod-template-hash]`), sodass ein Rolling Update die alte und die neue Instanz nicht zusammen auf einem Node lassen kann. Kubernetes wendet `matchLabelKeys` ab Version 1.27 an. |
+| `workers.replicas` | `1` | Anzahl der Worker-Instanzen, mit `workers.separate: true`. |
+| `nodeSelector` | `{}` | Beschränkt jeden Pod, ausser den Profil-Lader der Plug-Sandbox, auf passende Nodes. |
+| `redis.auth.existingSecretKey` | leer | Name eines Schlüssels in deinem eigenen Secret (`secrets.existingSecret`). Redis verlangt dann dieses Passwort. |
+| `app.clientIpHeader` | leer | Name des Anfrage-Headers mit der Adresse der Besucherin, zum Beispiel `cf-connecting-ip` hinter Cloudflare. |
+| `migrations.argoCd` | `false` | `true` lässt Argo CD die Datenbankmigration und die Ersteinrichtung ausführen statt Helm-Hooks. Der Backup-Job vor dem Upgrade entsteht dann nicht. |
+
+Instanzen haben beim Beenden 40 Sekunden Zeit, offene Anfragen abzuschliessen, Worker 60 Sekunden. Bei mehr als einer Instanz legt das Chart ausserdem ein Disruption Budget an, damit das Leeren eines Nodes nie alle Instanzen auf einmal wegnimmt. Mit Redis zählt das Anfragelimit über alle Instanzen.
 
 ## Aktualisieren {#aktualisieren}
 
@@ -421,6 +450,7 @@ Verwaltete Kubernetes-Dienste und hybride Plattformen auf Basis von Upstream-Kub
 | Die Live-Bearbeitung verbindet sich nicht | Der Ingress blockiert WebSocket-Upgrades auf `/collab` | Siehe [Anderen Ingress-Controller verwenden](#anderer-ingress-controller). |
 | Die Sandbox meldet `degraded` | Das Sicherheitsprofil ist auf dem Node nicht geladen | Siehe [Plug-Sandbox](#plug-sandbox). Der Rest von Collabase ist nicht betroffen. |
 | Das Rendern des Helm-Charts scheitert mit einer Meldung zu Replikaten | Mehr als eine Instanz ohne S3 und Worker | Siehe [Skalieren](#skalieren). |
+| Die Installation ist gescheitert, und nach der Reparatur gibt es keinen Administrator | Der Seed-Job läuft nur nach einer erfolgreichen Installation (`post-install`), eine gescheiterte hat ihn nie gestartet | Behebe zuerst die Ursache. Bei einer frischen Installation ohne Daten, die bleiben sollen, führst du `helm uninstall collabase -n collabase` aus, löschst die übrigen Volumes von Datenbank und Queue mit `kubectl delete pvc` (sie halten die alten Passwörter) und installierst neu. Sonst startest du den Seed-Job von Hand: `helm template collabase ./deployment/helm -n collabase -f collabase-values.yaml --show-only templates/migrate-job.yaml > seed.yaml`, then `kubectl apply -f seed.yaml`. `kubectl` meldet einen Fehler für den schon vorhandenen Migrations-Job, den du ignorieren kannst. |
 
 Sammle `kubectl get pods -n collabase` und das Log des fehlgeschlagenen Pods oder Jobs, bevor du den Support unter [collabase.featurebase.app](https://collabase.featurebase.app/en) kontaktierst.
 

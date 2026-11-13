@@ -1,0 +1,54 @@
+---
+title: "CRM automation"
+sidebarTitle: "Automation"
+description: "Start flows when records change or a deal is won, and let flows create records, tasks, notes and list entries."
+icon: "robot"
+---
+
+The **CRM** plug of the [automation](/automation/overview) platform lets a flow react to the CRM and work on it. Add it to a flow like any other plug.
+
+## Whose rights a flow has
+
+A flow that works on the CRM acts as **the person who published its current version**, not as the workspace account.
+
+- A step creates or changes a record, a task, a note or a list entry only as far as that person's CRM roles allow. The roles are read again for every step, so a right taken away stops the next run.
+- A trigger starts a flow only for records that person may read, and its data holds only the fields their roles show.
+- Notes the flow adds carry that person as author. A private note stays private to them.
+
+If a step is refused because the person lost a right, the run fails with the reason of the step. The flow owner, the person and the CRM admins get **A CRM automation was refused**, once for each published version. The notice names the flow, never the record or the field. Publish the flow again as someone who has the rights to run it.
+
+## Triggers
+
+| Trigger | Starts when | The flow receives |
+|---|---|---|
+| **CRM record created** | a person, a flow or the mail sync creates a record | `recordId`, `typeKey`, `title` |
+| **CRM record changed** | fields, contact points, links or the owner change. Changes to one record within five seconds arrive as one event | `recordId`, `typeKey`, `fieldKeys` of the fields you may see |
+| **CRM record deleted** | a record moves to the trash, one event per record | `recordId`, `typeKey`, `title` |
+| **Deal stage changed** | a deal moves to another stage | `recordId`, `fromStage`, `toStage` |
+| **Deal won** | a deal moves to a stage that counts as won. **Deal stage changed** starts as well | `recordId`, `fromStage` |
+| **Deal lost** | a deal moves to a stage that counts as lost. **Deal stage changed** starts as well | `recordId`, `fromStage`, `lostReason` (or empty) |
+| **CRM task due** | a CRM task is due today for one of its assignees, once per task and day | `taskId`, `recordIds` |
+| **Meeting linked to records** | a meeting is confirmed on records: you confirm a suggestion, you link it, the matcher links it or you create it from a record | `meetingId`, `recordIds`, `source` (`AUTO` or `MANUAL`) |
+| **CRM import finished** | an import ends with at least one imported row. One event for the whole import, not one per row | `importId`, `typeKey`, `count` |
+
+A flow never starts from a change one of its own runs made. A change by another flow does start it, up to the usual depth of chained runs.
+
+A deal that moves out of a won or lost stage starts only **Deal stage changed**. The five-second wait for **CRM record changed** is kept in memory, so a restart of Collabase inside it drops that event.
+
+## Actions
+
+| Action | Input | Output |
+|---|---|---|
+| **Create CRM record** | type, name, fields, contact points, links, owner | `recordId`, `title` |
+| **Update CRM record** | record, fields, owner. The step reads the current version itself and tries again once if somebody changed the record meanwhile | `recordId`, `changedKeys` |
+| **Create CRM task** | title, description, due date, assignees, one to twenty records | `taskId` |
+| **Add CRM note** | title, text, visibility (everyone who may read the records, or only the author), one to twenty records | `noteId` |
+| **Add record to CRM list** | list, record, cells | `entryId`, `added` |
+
+Fields, contact points, links and cells are JSON text, for example `{"industry": "Retail"}`. A wrong shape fails the step and names the input, never the value. Creating a task twice in the same step of the same run makes one task. Adding a record to a list twice leaves one entry.
+
+Each action goes through the same service as the CRM screens, so audit, the timeline and notices to assignees work as for a person. The audit log shows the person and that the change came from a flow.
+
+<Note>
+The CRM has no trigger or action for roles, the model, mailboxes or calendars. Rights stay manual work.
+</Note>

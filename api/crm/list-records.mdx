@@ -1,0 +1,56 @@
+---
+title: "List CRM records"
+description: "List the records of one type, filtered by a query and sorted, one page at a time with a cursor."
+api: "GET /api/v1/crm/records"
+---
+
+Returns a page of the records of one type that the token owner's roles let them read. Fields and
+columns the roles hide are not searchable and answer like a name that does not exist.
+
+<Info>
+  Scope `crm:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="typeKey" type="string" required>The type: `company`, `person`, `opportunity` or a custom key. A type the roles do not allow answers `404`.</ParamField>
+<ParamField query="cql" type="string">A filter in the Collabase query language, for example `title ~ "AG"`. The query is confined to the type.</ParamField>
+<ParamField query="sort" type="string">Up to three keys as `field:asc` or `field:desc`, separated by commas. Not allowed together with `ORDER BY` in `cql`.</ParamField>
+<ParamField query="columns" type="string">Comma-separated field keys to return as cells. Hidden columns are dropped.</ParamField>
+<ParamField query="cursor" type="string">The `nextCursor` of the previous page. A cursor of another query answers `422`.</ParamField>
+<ParamField query="limit" type="number" default="20">1 to 100; more is cut down to 100.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="array" required>One entry per record with `id`, `href` and `cells`.</ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>`null` on the last page.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/crm/records?typeKey=company&sort=title:asc&limit=20" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "items": [{ "id": "cm3rec0001", "href": "/crm/company/cm3rec0001", "cells": { "title": { "kind": "reference", "label": "Beispiel AG" } } }],
+    "nextCursor": null
+  }
+}
+```
+
+```json 422
+{ "error": { "code": "UNKNOWN_FIELD", "message": "The query could not be run." } }
+```
+
+</ResponseExample>

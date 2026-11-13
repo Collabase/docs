@@ -1,0 +1,55 @@
+---
+title: "Update CRM record"
+description: "Change the fields, contact points, relations, owner or title of a record against the version you read."
+api: "PATCH /api/v1/crm/records/{id}"
+---
+
+Changes a record. Send only what changes. A request that changes nothing writes nothing and leaves the version as it is.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to change the type and may write only the fields their roles allow.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The record.</ParamField>
+
+## Request body
+
+<ParamField body="baseUpdatedAt" type="string" required>The `contentUpdatedAt` you read, as an ISO 8601 instant in UTC. A newer version answers `409 CRM_CONFLICT_VERSION` with the record in `error.current`.</ParamField>
+<ParamField body="title" type="string">Renames a record that is named by its title. Ignored for a person.</ParamField>
+<ParamField body="fields" type="object">Values by short field key; `null` clears a field. A required field cannot be cleared.</ParamField>
+<ParamField body="contactPoints" type="array">The whole set of the kinds the token owner may write. A kind you leave out is cleared; a kind they may not write must not appear.</ParamField>
+<ParamField body="links" type="array">Replaces the targets of each relation kind it names.</ParamField>
+<ParamField body="clearLinkKeys" type="array">Relation kinds to empty, such as `["person_company"]`.</ParamField>
+<ParamField body="ownerId" type="string | null">An active internal person, or `null` for no owner.</ParamField>
+
+## Response
+
+The record as it is now, as in [Get CRM record](/api/crm/get-record).
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/crm/records/cm3rec0001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "baseUpdatedAt": "2026-11-02T09:30:00.000Z",
+    "fields": { "annualRevenue": 1500000 }
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm3rec0001", "typeKey": "company", "title": "Beispiel AG", "contentUpdatedAt": "2026-11-02T10:12:00.000Z" } }
+```
+
+```json 409
+{ "error": { "code": "CRM_CONFLICT_VERSION", "message": "The record was changed by someone else since it was loaded.", "current": { "id": "cm3rec0001" } } }
+```
+
+</ResponseExample>

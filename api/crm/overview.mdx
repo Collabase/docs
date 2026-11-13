@@ -1,0 +1,62 @@
+---
+title: "CRM API"
+sidebarTitle: "Overview"
+description: "Read and write companies, people, opportunities, notes, tasks and lists from another system through /api/v1/crm, with the CRM roles of the token owner."
+---
+
+The CRM API gives integrations the records the CRM app shows: companies, people, opportunities and
+records of custom types, with their notes, tasks and lists. Every call runs as the person who issued
+the token. Their CRM roles decide which types, records, fields and notes a call reaches, exactly as in
+the app.
+
+## Scopes
+
+| Scope | Allows |
+|---|---|
+| `crm:read` | Every `GET` endpoint below |
+| `crm:write` | Every other endpoint; includes `crm:read` |
+
+A token without the scope receives `403 INSUFFICIENT_SCOPE`. A token cannot be limited to one type of
+record, only to reading or writing. With the scope, a call still cannot do more than its owner: a
+person whose role only reads companies gets `403 FORBIDDEN` when they create one.
+
+If the owner loses a CRM role, the token loses those rights with the next call, without being
+reissued. If the owner's account is deactivated or deleted, the token answers `401`.
+
+## What the API does not offer
+
+The mailbox connections and their credentials, the content of mail below the level a mailbox shares,
+the notes other people keep private, and the administration of roles are not part of the API. Types
+and fields are readable with [Object types](/api/crm/object-types) and are changed in the app.
+
+## Conventions
+
+- **Visibility.** A record, note or list the token owner may not see answers `404 CRM_NOT_FOUND` or
+  `404 NOT_FOUND`, exactly like one that does not exist. A type the roles do not allow is missing from
+  every list. A field the roles hide is missing from the response and cannot be written.
+- **Short field keys.** A request names a custom field by its short key, such as `annualRevenue` or
+  `amount`. In a query (`cql`) the same field is `cf.crm_<typeKey>_<fieldKey>`, for example
+  `cf.crm_opportunity_amount`.
+- **Concurrent edits.** Changing a record needs `baseUpdatedAt`, the `contentUpdatedAt` you read. If
+  someone changed the record since, the request answers `409 CRM_CONFLICT_VERSION` with the record as
+  it is now in `error.current`. Read, merge and send again.
+- **No idempotency key.** Creating a company or a person with a domain or an e-mail address that
+  already exists answers `409 CRM_DUPLICATE_CONTACT_POINT`. That is how a repeated call is caught.
+  Other records and lists are created twice if you send the call twice. A task or a note accepts an `id`
+  you choose, so a repeat finds the one it made.
+- **Strict bodies.** Unknown fields are rejected with `422`, not dropped.
+- **Pages.** Lists return `nextCursor`, which you pass back as `cursor`. A `limit` above the maximum of
+  100 is cut down to it. Notes, tasks and lists use their own maximum, stated on their pages.
+
+## Errors
+
+On top of the [general errors](/api/introduction#response-format):
+
+| Status | Code | Meaning |
+|---|---|---|
+| `404` | `CRM_NOT_FOUND` | The type or the record does not exist, is in the trash, or is not visible to the token owner |
+| `409` | `CRM_CONFLICT_VERSION` | The record changed since you read it; the current record is in `error.current` |
+| `409` | `CRM_DUPLICATE_CONTACT_POINT` | Another record holds this domain or e-mail address; `error.existingRecordId` names it when the token owner may see its type |
+| `409` | `CRM_RECORD_HAS_OPEN_OPPORTUNITIES` | A company with open opportunities cannot be deleted |
+| `422` | `CRM_VALIDATION` | A value does not fit its field, a relation, or a limit |
+| `422` | `CRM_FORBIDDEN_FIELD` | The request names a field the roles hide or only let the token owner read |

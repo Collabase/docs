@@ -1,0 +1,59 @@
+---
+title: "List CRM object types"
+description: "Read the types of record and their fields, relations and permissions as the CRM roles of the token owner allow."
+api: "GET /api/v1/crm/object-types"
+---
+
+Returns the types of record the token owner may read, with their fields. Use it to learn the short
+keys a request accepts. A type the roles do not allow is missing, and so is a field the roles hide.
+
+<Info>
+  Scope `crm:read`. Read only: types, fields and roles are changed in the CRM app.
+</Info>
+
+## Response
+
+<ResponseField name="data" type="array" required>
+  <Expandable title="properties">
+    <ResponseField name="key" type="string" required>The type, such as `company`, `person`, `opportunity` or the key of a custom type.</ResponseField>
+    <ResponseField name="label" type="string" required>The name of the type.</ResponseField>
+    <ResponseField name="kind" type="string" required>`STANDARD` or `CUSTOM`.</ResponseField>
+    <ResponseField name="permissions" type="object" required>`create`, `update`, `delete` and `export`: what the token owner may do with this type.</ResponseField>
+    <ResponseField name="owner" type="object | null" required>`{ "isReadOnly": boolean }`, or `null` when the roles hide the owner.</ResponseField>
+    <ResponseField name="contactPoints" type="array" required>The kinds of contact point (`EMAIL`, `PHONE`, `DOMAIN`) the roles show, each with `isReadOnly`.</ResponseField>
+    <ResponseField name="fields" type="array" required>Each field has `key`, `label`, `type`, `section`, `isRequired`, `isReadOnly` and `options` (the choices of a selection field, the stages of a pipeline in order).</ResponseField>
+    <ResponseField name="relations" type="array" required>Each relation has `key`, `fromTypeKey`, `toTypeKey`, `cardinality` and `maxPerFrom`. Set one with `links` on a record.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/crm/object-types" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": [
+    {
+      "key": "company",
+      "label": "Companies",
+      "kind": "STANDARD",
+      "permissions": { "create": true, "update": true, "delete": false, "export": false },
+      "owner": { "isReadOnly": false },
+      "contactPoints": [{ "kind": "DOMAIN", "isReadOnly": false }],
+      "fields": [
+        { "key": "annualRevenue", "label": "Annual revenue", "type": "CURRENCY", "section": "metrics", "isRequired": false, "isReadOnly": false, "options": [] }
+      ],
+      "relations": []
+    }
+  ]
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,49 @@
+---
+title: "Update CRM list"
+description: "Rename a list or change its query, visibility or group."
+api: "PATCH /api/v1/crm/lists/{id}"
+---
+
+Changes a list. Send only what changes.
+
+<Info>
+  Scope `crm:write`. Only the owner of a list changes it.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The list.</ParamField>
+
+## Request body
+
+<ParamField body="name" type="string">The new name.</ParamField>
+<ParamField body="cql" type="string">The query of a dynamic list.</ParamField>
+<ParamField body="visibility" type="string">`PRIVATE` or `SHARED`.</ParamField>
+<ParamField body="groupId" type="string | null">The group the list sits in; `null` takes it out.</ParamField>
+
+## Response
+
+The list as it is now.
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/crm/lists/cm3list001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Christmas gifts 2026" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm3list001", "name": "Christmas gifts 2026" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "List not found" } }
+```
+
+</ResponseExample>

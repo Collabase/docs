@@ -1,0 +1,58 @@
+---
+title: "Create CRM record"
+description: "Create a company, a person, an opportunity or a record of a custom type; a domain or e-mail address that exists answers 409."
+api: "POST /api/v1/crm/records"
+---
+
+Creates a record. The owner is the token owner unless the request names another one. A person's
+title is built from the first and last name, or from the first e-mail address. A company, an
+opportunity and a record of a custom type need a `title`.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to create the type. Recorded in the audit log with the token's name.
+</Info>
+
+## Request body
+
+<ParamField body="typeKey" type="string" required>`company`, `person`, `opportunity` or a custom key.</ParamField>
+<ParamField body="title" type="string">Up to 200 characters. Ignored for a person.</ParamField>
+<ParamField body="fields" type="object">Values by short field key. A hidden or read-only field answers `422 CRM_FORBIDDEN_FIELD`.</ParamField>
+<ParamField body="contactPoints" type="array">`kind` (`EMAIL`, `PHONE`, `DOMAIN`), `value`, optional `label` and `isPrimary`. At most 20 per kind. Addresses and domains are normalised; one record holds an address or domain at a time.</ParamField>
+<ParamField body="links" type="array">Relations as `{ "defKey": "person_company", "toId": "..." }`.</ParamField>
+<ParamField body="ownerId" type="string | null">An active internal person, or `null` for no owner. Default: the token owner.</ParamField>
+
+## Response
+
+The created record, as in [Get CRM record](/api/crm/get-record), with status `201`.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/crm/records" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "typeKey": "company",
+    "title": "Beispiel AG",
+    "fields": { "annualRevenue": 1200000 },
+    "contactPoints": [{ "kind": "DOMAIN", "value": "beispiel.example", "isPrimary": true }]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm3rec0001", "typeKey": "company", "title": "Beispiel AG", "contentUpdatedAt": "2026-11-02T09:30:00.000Z" } }
+```
+
+```json 409
+{ "error": { "code": "CRM_DUPLICATE_CONTACT_POINT", "message": "Another record already holds this address or domain.", "kind": "DOMAIN", "existingRecordId": "cm3rec0009" } }
+```
+
+```json 422
+{ "error": { "code": "CRM_FORBIDDEN_FIELD", "message": "A field in the request is hidden or read-only for your role" } }
+```
+
+</ResponseExample>

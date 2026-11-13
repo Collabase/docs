@@ -1,0 +1,53 @@
+---
+title: "CRM timeline"
+sidebarTitle: "Timeline"
+description: "See what happened on a company, person or opportunity: changes, stage moves, notes, tasks and mail in one list."
+icon: "clock-rotate-left"
+---
+
+The **Timeline** tab of a record lists what happened on it, newest first. It is shown to everyone who has a CRM role. Click **Show older entries** below the list to read further back; each page holds 50 entries.
+
+## What the timeline shows {#kinds}
+
+| Entry | Where it comes from |
+|---|---|
+| **Created** | The record was created by a person. Records brought in by an import show no such entry; the import page says so. |
+| **Changed fields** | Someone changed fields. The line names the fields, not the values. |
+| **Stage moved** | An opportunity moved from one stage to another, in the board or on its page. |
+| **Company changed** | A person or an opportunity moved to another company. |
+| **Note added** | A note was written on the record. |
+| **Task** | A task on the record was created, completed or reopened. |
+| **Appointment** | An appointment with the person, or with the company's people, in a calendar someone [connected](/crm/calendar). It appears once it has started. |
+| **Meeting** | A meeting that is attached to the record, shown with its title at the time it starts. See [Meetings from the CRM](/crm/meetings). |
+| **Mail** | A mail to or from the person, or from the company's people, in a mailbox someone [connected](/crm/mailbox). |
+
+If the same person changes the same fields several times within ten minutes, the timeline shows one line with the number of changes, for example "changed Amount (3 times)".
+
+A line shows the time of the entry. If it is on other records you may read as well, they are listed under it as **Also on**.
+
+## A company shows its people and deals {#company}
+
+The timeline of a company also shows the entries of its people and of the opportunities of that company. Nothing is copied: if a person moves to another company, their entries move with them, and the old company no longer shows them.
+
+## What you do not see {#access}
+
+Every entry is checked against your rights before it is listed, and what you may not see is not listed at all. Nothing in the timeline says that something is missing, and the pages stay full.
+
+| Entry | Who sees it |
+|---|---|
+| Created, changed fields, stage moved | Everyone who may read the type of the record. A change of a field your role hides is left out of the line, or the whole line if nothing else changed. |
+| Note | The readers of the note: see [Notes](/crm/notes#visibility). A private note is only in its author's timeline. |
+| Task | Its creator and the people it is assigned to, and otherwise everyone who may read every record it is on. |
+| Mail | Decided by the level of the mailbox, see [What others see of your mail](/crm/mailbox#levels). |
+| Appointment | The same levels as mail, see [Appointments from your calendar](/crm/calendar). A private appointment is never listed. |
+
+If your roles do not let you read opportunities, the timeline of a company has no opportunity entries. If a person who acted has been deleted, the line shows "(deleted)" instead of a name.
+
+## Mail on the timeline {#mail}
+
+A mail appears with its sender and recipients and the time it was sent. The subject is added only where the mailbox's level allows it, and the text of a mail is never part of the timeline. A person who received a mail only as a blind copy sees the sender but not the recipients. The same mail held by two mailboxes is one line, shown at the lower of the two levels. A mail is also found on a company when it was written to or by one of the company's people, or by an address on the company's domain.
+
+## Good to know {#notes}
+
+- Changes are read from the audit log. If the system stops between saving a change and writing its audit line, that line is missing and is not added later.
+- Entries are not changed after the fact. Editing a note does not add a line, and deleting a note or a task removes its line.

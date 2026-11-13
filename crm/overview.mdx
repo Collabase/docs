@@ -1,0 +1,87 @@
+---
+title: "CRM"
+sidebarTitle: "Overview"
+description: "Keep companies, people and deals with their notes and tasks in one app, separate from projects and pages."
+icon: "address-book"
+---
+
+<Note>
+The CRM is an experimental app. It is off on a standard installation until an administrator switches it on or a person opts in under **Profile → User settings → Collabase Lab**.
+</Note>
+
+The CRM is its own app next to Projects and Service Management. It holds companies, people and deals, each with notes, tasks and a timeline. It runs without Projects, Pages or Spaces.
+
+## Who can use it {#who}
+
+An administrator gives the app to groups in **Administration → Groups → App access**, like any other app:
+
+| Role | Can do |
+|---|---|
+| User | Open the app and work with the records the person's CRM roles allow |
+| Admin | Also manage the CRM model, roles and settings |
+
+The app appears in the app drawer only for people who hold it. A person without the app does not see it, and its address answers "not found". An installation without the CRM turned on answers the same way to everyone.
+
+## Search
+
+The global search and the search in the header find companies, people, deals, notes and tasks. They appear as the kinds **CRM records**, **CRM notes** and **CRM tasks**, and each result opens the record on the tab where the note or task lives. A note is found by its title, a task by its title too.
+
+Search shows only what the CRM shows you. A type your roles may not read gives no result and no count, and a field your roles hide cannot be searched. A private note is found by its author alone, a shared note by the people it is shared with, and every other note by the people who may read all of its records. A task is found by its assignees and its creator, and by everyone who may read all of its records. Administrators have no extra view.
+
+## Notifications
+
+The CRM has its own notification category, **CRM**. By default CRM notifications arrive in the inbox only, not by email. Each person changes this under **Profile → Notifications**.
+
+## What you can do {#topics}
+
+New to the CRM? Start with [Get started with the CRM](/crm/getting-started). The pages follow the path of a customer from the first record to the last.
+
+### Work with records
+
+| Topic | Page |
+|---|---|
+| Open, filter and sort companies and people, and create them | [Companies and people](/crm/objects) |
+| Edit fields in place, see relations, change the owner, the logo | [The record page](/crm/record-detail) |
+| Follow deals on a board from stage to stage | [Deal pipeline](/crm/board) |
+| Write notes and decide who reads them | [Notes](/crm/notes) |
+| Give work to colleagues and get a notice when it is due | [CRM tasks](/crm/tasks) |
+| See what happened on a record | [Timeline](/crm/timeline) |
+| Attach contracts and other documents | [Files on records](/crm/files) |
+| Attach projects, pages and registry objects | [Links to projects, pages and registry](/crm/links) |
+
+### Organize and find
+
+| Topic | Page |
+|---|---|
+| Save a filter, sort order and columns as a view | [Saved views](/crm/views) |
+| Collect records for an action, with your own columns | [Lists for an action](/crm/lists) |
+| Show the pipeline and your tasks on a dashboard | [CRM gadgets](/crm/gadgets) |
+| Find and merge records entered twice | [Duplicates and merging](/crm/duplicates) |
+| Bring data in from a CSV file and take it out | [CRM import and export](/crm/import-export) |
+| Delete, restore and anonymise | [Trash and anonymisation](/crm/trash) |
+
+### Mail, appointments and meetings
+
+| Topic | Page |
+|---|---|
+| Connect your mailbox and decide what others see | [Connect your mailbox to the CRM](/crm/mailbox) |
+| See appointments with customers on a record | [Appointments from your calendar](/crm/calendar) |
+| Create a meeting from a record and read the briefing | [Meetings from the CRM](/crm/meetings) |
+
+### Automate and use AI
+
+| Topic | Page |
+|---|---|
+| Start flows when records change and let flows write to the CRM | [CRM automation](/crm/automation) |
+| Read a ready summary and ask the chat about your records | [AI in the CRM](/crm/ai) |
+
+### Administer
+
+| Topic | Page |
+|---|---|
+| Add your own object types, fields and pipelines | [Object types, fields and pipelines](/crm/model) |
+| Roles, rights per type and instance settings | [CRM roles and settings](/crm/roles) |
+
+### Build on it
+
+The [CRM API](/api/crm/overview) reads and writes records, notes, tasks and lists with an API token.

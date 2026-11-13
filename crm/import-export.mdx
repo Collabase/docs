@@ -1,0 +1,74 @@
+---
+title: "CRM import and export"
+sidebarTitle: "Import and export"
+description: "Bring companies, people and deals in from a CSV file, take them out again, and export everything about one person on a data request."
+icon: "file-csv"
+---
+
+Import fills the CRM from a spreadsheet, for example when you start from Excel or from another CRM. Export gives you the records of a type as a CSV file.
+
+Open **Import from CSV** in the CRM sidebar (`/crm/settings/import`). The page is called **Import and export**. The page shows each half only for the types your CRM role allows: you import into a type when you may create its records, and you export a type when your role has the export right.
+
+## Import a CSV file
+
+<Steps>
+  <Step title="Choose the type and the file">
+    Pick **Companies**, **People**, **Opportunities** or one of your own types, choose **Import CSV** and select the file. Collabase detects the delimiter (`,`, `;`, tab or `|`) and the encoding. Change them if the preview looks wrong.
+  </Step>
+  <Step title="Match the columns">
+    Match each column of your file to a field. Columns you leave out are skipped. Required fields must be matched.
+  </Step>
+  <Step title="Check">
+    Collabase reads the first 1,000 rows with your matching and shows how many can be imported and the first rows that would be skipped, with the reason. Nothing is written yet.
+  </Step>
+  <Step title="Start">
+    The import runs in the background. The dialog shows how many rows were imported and skipped when it ends.
+  </Step>
+</Steps>
+
+### What you can match
+
+| Target | What it takes |
+|---|---|
+| **Name** | The name of a company or deal. A person is named by first and last name, or by the first e-mail address. |
+| **E-mail address**, **Phone number**, **Website domain** | Several values in one cell are separated by `;` or `\|`. The first one is the main value. |
+| **Owner (e-mail address)** | The e-mail address of an active colleague. |
+| **Company (name)** | The name of a company that already exists, for a person or a deal. Without it, Collabase looks for the company that holds the domain of the person's e-mail address, unless it is a private mail provider. |
+| Your fields | Text, numbers, dates, yes or no, and choice fields. Choices match by the stored value or by the label, in any case. |
+
+Numbers may be written as `1'000.50`, `1.000,50` or `1000,5`. A value with a single point or comma and exactly three digits after it, such as `1.000` or `1,000`, could mean one thousand or one, so that row is refused with a reason: write `1000` or `1.000,00` instead. Dates may be written as `31.12.2026` or `2026-12-31`. A day that does not exist, such as `30.02.2026`, makes the row fail.
+
+You can only match fields your role lets you write.
+
+### Duplicates and errors
+
+- A row whose e-mail address or domain already belongs to a record is skipped, and so is a second row with the same value in the same file.
+- A row with a wrong value, a missing required field or no name is skipped with its reason.
+- The other rows are still imported. If the import stops half way, the rows written so far stay and the import ends as failed.
+- When rows were skipped, **Download the list of skipped rows** gives you a CSV with the line number and the reason of each. The list names no cell content.
+
+A file may hold up to 100,000 rows and 50 MB. You can run two imports at the same time.
+
+<Note>
+The import needs the background worker. Without it, Collabase tells you that the import cannot start instead of waiting.
+</Note>
+
+## Export a CSV file
+
+Choose a type and **Export CSV**, or use **Export this view** on a list: the file then holds the rows of the filter, the order and the columns you see. The file is prepared in the background and the page offers the download when it is ready. It holds the records you may read, with the fields your role shows. Rights are checked again when the file is made, so a field hidden since you asked is not in it.
+
+Only you can download the file, for 24 hours. After that the link answers that the export has expired. Text that starts with `=`, `+`, `-` or `@` is written as text so a spreadsheet never runs it as a formula.
+
+## Data export of one person
+
+Someone whose CRM role carries the **Data protection office** flag can export everything the CRM holds about one person for a data request. The file is JSON and holds the fields, contact points and links they may read, and the notes and tasks they may read. Private notes of other people are not part of it, and neither is mail. The same 24-hour link rules apply. Open the person and choose **Export person data** in the header; the action appears only for this flag.
+
+## What the audit log keeps
+
+Each finished import writes one line: the type and the counts of rows imported and skipped. Each export writes one line with the type and the kind. Neither names a record or holds a cell.
+
+## Related
+
+- [Duplicates and merging](/crm/duplicates)
+- [Object types, fields and pipelines](/crm/model)
+- [Trash and anonymisation](/crm/trash)
