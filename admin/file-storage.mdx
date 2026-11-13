@@ -90,6 +90,16 @@ On Kubernetes, the same settings live under `storage.*` in the Helm values — s
 
 ---
 
+### Encrypt files with your own key
+
+For a provider that shares one project between several customers, you can encrypt every file with a key only you hold. Set `S3_SSE_CUSTOMER_KEY` to a 256-bit key in base64 (44 characters ending in `=`). On Kubernetes, set `storage.s3.sseCustomerKey: true` and put the key under `s3SseCustomerKey` in your own secret.
+
+<Warning>
+Collabase and the provider never store this key. If you lose it, the files are lost. Keep a copy somewhere safe before you switch it on. Files stored without the key cannot be read once it is set, so use it from the start on a new bucket.
+</Warning>
+
+Some storage providers cannot copy a file that is encrypted with your key and answer the request with status 501. Collabase then copies the file through the application instead: it reads the file and writes it again. This works the same for you, but copying takes longer, in proportion to the size of the file.
+
 ## Switching an existing installation to S3
 
 Your existing files must be copied into the bucket once. Collabase ships a migration
@@ -136,6 +146,8 @@ missing `s3:PutObject`.
 **Everything fails against MinIO or a self-hosted service.** Make sure
 `S3_FORCE_PATH_STYLE` is `true` (the default) and the endpoint includes the scheme,
 for example `https://minio.internal:9000`.
+
+**The health check lists `storage`.** `/api/health` names `storage` as degraded when the bucket does not answer within three seconds. The application keeps running; check the endpoint, the bucket name and the network path.
 
 **I need help.** Open a ticket at
 [collabase.featurebase.app](https://collabase.featurebase.app/en) with the output of a

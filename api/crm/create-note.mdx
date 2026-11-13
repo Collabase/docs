@@ -1,0 +1,54 @@
+---
+title: "Create CRM note"
+description: "Write a note on one or more records, visible to everyone with access, to named people and groups, or only to the token owner."
+api: "POST /api/v1/crm/notes"
+---
+
+Creates a note authored by the token owner. The level decides who reads it: `ALL` shows it to everyone
+who may read all its records, `SHARED` to the people and groups named in `grants`, `PRIVATE` only to the
+author. Change it afterwards with [Update CRM note](/api/crm/update-note).
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to create notes and to read every record the note is on.
+</Info>
+
+## Request body
+
+<ParamField body="id" type="string">An id of 8 to 64 characters you choose. A repeated call with the same id returns the note it made instead of a second one.</ParamField>
+<ParamField body="title" type="string" required>Up to 200 characters.</ParamField>
+<ParamField body="body" type="array" required>The text as editor blocks, up to 1 MB.</ParamField>
+<ParamField body="visibility" type="string" default="ALL">`ALL`, `SHARED` or `PRIVATE`.</ParamField>
+<ParamField body="targetIds" type="array" required>The records the note is on, 1 to 20.</ParamField>
+<ParamField body="grants" type="array" default="[]">`{ "userId": "..." }` or `{ "groupId": "..." }`, at most 200. Required for `SHARED`, not allowed otherwise.</ParamField>
+
+## Response
+
+The created note, with status `201`.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/crm/notes" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Call notes",
+    "body": [{ "type": "p", "children": [{ "text": "Asked for an offer by December." }] }],
+    "visibility": "ALL",
+    "targetIds": ["cm3rec0001"]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm3note001", "title": "Call notes", "visibility": "ALL" } }
+```
+
+```json 422
+{ "error": { "code": "VALIDATION_ERROR", "message": "Invalid input: grants" } }
+```
+
+</ResponseExample>

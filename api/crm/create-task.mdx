@@ -1,0 +1,49 @@
+---
+title: "Create CRM task"
+description: "Create a task on one or more records, with an optional due day and assignees; a repeated call with the same id finds the task."
+api: "POST /api/v1/crm/tasks"
+---
+
+Creates a task in the CRM. It belongs to the records in `targetIds`, not to a project or a Space. The
+people in `assigneeIds` are told as in the app.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to create tasks and to read every record the task is on.
+</Info>
+
+## Request body
+
+<ParamField body="title" type="string" required>Up to 300 characters.</ParamField>
+<ParamField body="description" type="string">Plain text, up to 20,000 characters.</ParamField>
+<ParamField body="dueDate" type="string | null">A calendar day as `YYYY-MM-DD`.</ParamField>
+<ParamField body="status" type="string" default="TODO">`TODO`, `IN_PROGRESS` or `DONE`.</ParamField>
+<ParamField body="assigneeIds" type="array" default="[]">People, at most 50.</ParamField>
+<ParamField body="targetIds" type="array" required>The records the task is on, 1 to 20.</ParamField>
+<ParamField body="id" type="string">An id you choose (8 to 64 letters, digits, `_` or `-`). A repeated call with the same id returns the task it already made.</ParamField>
+
+## Response
+
+The created task, with status `201`.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/crm/tasks" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Send the offer",
+    "dueDate": "2026-12-01",
+    "targetIds": ["cm3rec0001"]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm3task001", "title": "Send the offer", "status": "TODO", "dueDate": "2026-12-01" } }
+```
+
+</ResponseExample>

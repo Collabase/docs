@@ -1,0 +1,50 @@
+---
+title: "Update CRM note"
+description: "Change the title, text, level or grants of a note you wrote, against the version you read."
+api: "PATCH /api/v1/crm/notes/{id}"
+---
+
+Changes a note. Send only what changes, together with `baseUpdatedAt`.
+
+<Info>
+  Scope `crm:write`. Only the author of a note changes it.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The note.</ParamField>
+
+## Request body
+
+<ParamField body="baseUpdatedAt" type="string" required>The version you read, as an ISO 8601 instant in UTC. A newer version answers `409` with the note in `error.current`.</ParamField>
+<ParamField body="title" type="string">Up to 200 characters.</ParamField>
+<ParamField body="body" type="array">The text as editor blocks, up to 1 MB.</ParamField>
+<ParamField body="visibility" type="string">`ALL`, `SHARED` or `PRIVATE`.</ParamField>
+<ParamField body="grants" type="array">`{ "userId": "..." }` or `{ "groupId": "..." }`. Required when the level becomes `SHARED`, not allowed otherwise.</ParamField>
+
+## Response
+
+The note as it is now.
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/crm/notes/cm3note001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "baseUpdatedAt": "2026-11-02T09:30:00.000Z", "title": "Call notes, revised" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm3note001", "title": "Call notes, revised", "visibility": "ALL" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Note not found" } }
+```
+
+</ResponseExample>

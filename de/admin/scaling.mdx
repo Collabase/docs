@@ -84,6 +84,72 @@ Liegen die Uploads in S3 und läuft die Datenbank extern, hat der Anwendungsserv
   </Step>
 </Steps>
 
+## Kubernetes-Installation dimensionieren {#kubernetes-installation-dimensionieren}
+
+Mit diesem Abschnitt wählst du die Node-Grössen und die Limits der einzelnen Workloads für das Helm-Chart. Jede Zahl trägt ihre Herkunft: **gemessen** in einem Test-Cluster, **Hochrechnung** (linear aus einer Messung) oder **Annahme**.
+
+Die Messungen verwendeten gleichzeitig aktive Personen mit Denkpausen, die nur die API aufrufen: lesen, suchen, Work Items anlegen, Priorität und Status setzen, kommentieren. Zehn Projekte, Demo-Daten. Live-Bearbeitung, KI, Anhänge und Exporte gehörten nicht zur Last. Plane Reserve ein, wenn dein Team sie stark nutzt.
+
+### Was gemessen wurde {#kubernetes-messungen}
+
+Der Test-Cluster hatte zwei Nodes mit je 4 vCPU und 8 GB, nutzbar etwa 5,6 GiB je Node.
+
+| Test | Ergebnis | Herkunft |
+|---|---|---|
+| 200 gleichzeitige Personen, 2 App-Instanzen, 10 Projekte | 95. Perzentil 0,63 s, 0,01 % Fehler. Jeder App-Pod erreichte 0,8 bis 1,1 Kerne und 1,4 GiB. | Gemessen |
+| 500 gleichzeitige Personen, 2 App-Instanzen, 10 Projekte | 95. Perzentil 5,0 s, keine Fehler. Die App-Pods liefen am CPU-Limit von 2 Kernen und erreichten 2,1 GiB. | Gemessen |
+| 500 gleichzeitige Personen, 4 App-Instanzen | 95. Perzentil 6,2 s, keine Fehler. Mehr Instanzen halfen nicht, weil der Cluster nur 8 vCPU hatte und die Datenbank 100 Verbindungen erlaubte. | Gemessen |
+| 200 Personen legen Work Items in einem Projekt an | 95. Perzentil 10 s, 2,4 % Fehler. Siehe [Viele Personen legen im selben Projekt an](#kubernetes-ein-projekt). | Gemessen |
+| Update unter Last, 2 App-Instanzen | 22 984 Anfragen, keine Fehler. | Gemessen |
+| Speicherbedarf je Pod, Leerlauf bis Spitze | App 0,35 bis 2,1 GiB, Datenbank 0,17 bis 1,6 GiB, Queue 16 MiB, Worker 0,4 GiB, Dokument-Prozessor 65 MiB. | Gemessen |
+
+Der Engpass ist die CPU der App, danach der Speicher. Die Datenbank brauchte 0,3 bis 0,4 Kerne. Ein App-Kern trägt etwa 100 gleichzeitig aktive Personen (**Hochrechnung** aus 200 Personen bei rund 2 Kernen).
+
+### Anforderungen und Limits je Workload {#kubernetes-limits}
+
+Die ersten Spalten zeigen die Standardwerte des Charts aus `values.yaml`. Die letzten Spalten sind ein Beispiel für zwei Nodes mit je 4 vCPU und 16 GB, nutzbar etwa 13,5 GiB je Node (**Annahme**), mit drei App-Instanzen. Die Beispielwerte sind keine Standardwerte, sie sind aus den Regeln auf dieser Seite abgeleitet und nicht auf diesen Nodes gemessen.
+
+| Workload | Instanzen im Beispiel | CPU-Anforderung / Limit, Standard | Speicher-Anforderung / Limit, Standard | CPU-Anforderung / Limit, Beispiel | Speicher-Anforderung / Limit, Beispiel |
+|---|---|---|---|---|---|
+| **App** | 3 | 250m / 2 | 512 MiB / 2816 MiB | 500m / 2 | 1 GiB / 3 GiB |
+| **Worker** | 1 | wie die App | wie die App | 250m / 1 | 512 MiB / 2 GiB |
+| **PostgreSQL** | 1 oder 2 | keine / keines | 1 GiB / 4 GiB | 500m / 2 | 2 GiB / 5 GiB je Instanz |
+| **Redis** | 1 | keine / keines | keine / keines | 100m / 1 | 256 MiB / 1 GiB |
+| **Kollaborations-Relay** | 1 | 100m / 1 | 256 MiB / 768 MiB | 100m / 1 | 256 MiB / 1 GiB |
+| **Plug-Sandbox** | 1 | 100m / 2 | 256 MiB / 2 GiB | 100m / 2 | 256 MiB / 2 GiB |
+| **Dokument-Prozessor** | 1 | 100m / 1 | 256 MiB / 1536 MiB | 100m / 1 | 256 MiB / 1,5 GiB |
+
+Das Chart gibt dem Worker die Werte der App. Ein kleinerer Worker wie im Beispiel braucht einen Post-Renderer, siehe [Scheduling und Plattformeinstellungen](/de/installation-kubernetes#scheduling-und-plattformeinstellungen). Eine zweite Datenbankinstanz für Hochverfügbarkeit gehört nicht zum Chart. Nutze eine externe PostgreSQL mit Failover, siehe [Eigene Datenbank verwenden](/de/installation-kubernetes#eigene-datenbank).
+
+Mit den Beispielwerten ergeben die Speicher-Limits aller Workloads 26,5 GiB, bei etwa 27 GiB nutzbarem Speicher auf beiden Nodes. Bei einem Update läuft eine App-Instanz mehr, die Limits steigen dann auf 29,5 GiB. Das ist etwa das 1,1-Fache des nutzbaren Speichers. Wir nehmen das bewusst in Kauf: Ein Limit ist eine Obergrenze, und der normale Verbrauch liegt weit darunter, siehe die Messungen oben. Das Risiko ist ein Pod, der wegen Speichermangel beendet wird (Exit-Code 137), wenn die zusätzliche Instanz und alle anderen gleichzeitig ihre Spitze erreichen.
+
+<Warning>
+  Die Summe aller Speicher-Limits muss unter dem nutzbaren Speicher deiner Nodes bleiben, abgesehen von der kurzen Überbuchung bei einem Update. In einem Test beendeten Limits, die den Node-Speicher um das 2,2- bis 2,6-Fache überstiegen, Pods mit Exit-Code 137 (**gemessen**).
+</Warning>
+
+### Wie viele Personen das Beispiel trägt {#kubernetes-kapazitaet}
+
+Von den 8 vCPU im Beispiel gehen etwa 0,8 an Kubelet und Netzwerk-Agenten, 1 an die Datenbank und im Mittel 1 an Worker, Queue, Relay, Sandbox und Dokument-Prozessor. Für die App bleiben rund 5 Kerne (**Hochrechnung**). Beide Nodes haben dieselbe CPU wie der Test-Cluster und nur mehr Speicher, die Zahl der Personen hängt also an der CPU, nicht am Speicher.
+
+| Gleichzeitig aktive Personen | Registrierte Members bei 10 % aktiv (**Annahme**) | Erwartung (**Hochrechnung**) |
+|---|---|---|
+| Bis 250 | Bis 2500 | 95. Perzentil unter 1 s mit 2 App-Instanzen, entspricht der Messung (200 Personen: 0,63 s) |
+| Bis 400 | Bis 4000 | 95. Perzentil um 1 bis 2 s mit 3 App-Instanzen (5 Kerne) |
+| 500 | 5000 | 95. Perzentil etwa 2 bis 5 s, die Grenze dieser Nodes |
+| Über 500 | Über 5000 | Braucht mehr CPU: Nodes mit mehr Kernen oder ein zusätzlicher Node |
+
+Ein zusätzlicher Node mit 4 vCPU hebt die CPU der App um rund 3 Kerne, etwa 300 Personen mehr (**Hochrechnung**).
+
+### Datenbankverbindungen {#kubernetes-verbindungen}
+
+Das Chart gibt jedem App-Prozess 80 % von `postgresql.tuning.max_connections`, geteilt durch die Zahl der App-Prozesse (Instanzen plus der eigene Worker), höchstens 100 je Prozess. Die zusätzliche Instanz, die bei einem Rolling Update läuft, zählt es nicht mit. Setze `database.connectionLimit` selbst, damit die Summe unter dem Limit der Datenbank bleibt.
+
+Beispiel: Mit `max_connections: "400"`, drei App-Instanzen und einem Worker gibt das Chart jedem der vier Prozesse 80 Verbindungen. Mit der zusätzlichen Instanz eines Updates sind es fünf Prozesse, setze also `database.connectionLimit: 64` (320 geteilt durch 5). Jede Verbindung kostet die Datenbank etwa 5 bis 10 MiB (**Annahme**), erhöhe `max_connections` deshalb zusammen mit dem Speicher der Datenbank.
+
+### Viele Personen legen im selben Projekt an {#kubernetes-ein-projekt}
+
+Die Work Items eines Projekts beziehen ihre Nummern aus einem einzigen Zähler. Hunderte Personen, die im selben Moment im selben Projekt anlegen, warten aufeinander. Im Test erreichten 200 Personen in einem Projekt ein 95. Perzentil von 10 s und 2,4 % Fehler, gegenüber 0,63 s bei Verteilung auf zehn Projekte (**gemessen**). Mehr Nodes ändern das nicht. Verteile stark genutzte Teams auf mehrere Projekte.
+
 ## Das Kollaborations-Relay im grossen Massstab {#das-kollaborations-relay-im-grossen-massstab}
 
 Das Relay ist ein einzelner Prozess und verarbeitet auf einer Instanz sehr viele Verbindungen über alle Dokumente hinweg. Für typische Installationen braucht es weder einen Cluster noch Redis. Die praktische Grenze liegt pro *Dokument*: Eine Seite mit Dutzenden gleichzeitigen Bearbeitenden ist unproblematisch. Erst sehr grosse Sitzungen auf einer einzigen Seite (etwa hundert Personen gleichzeitig) erreichen den Punkt, an dem der Cursor-Verkehr überwiegt.

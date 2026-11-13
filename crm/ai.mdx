@@ -1,0 +1,54 @@
+---
+title: "AI in the CRM"
+description: "See a ready summary on every company page, ask Collabase AI about your CRM records and let it create a task or change a record after you approve it."
+icon: "sparkles"
+---
+
+Collabase AI works in the CRM without you asking for anything. It writes a short summary at the top of every company, and you can ask it about your records in the chat. The CRM works the same without it.
+
+## The company summary
+
+Open a company. When Collabase AI is available for you, the page starts with a **Summary** marked **Written by AI**. It is written in the background after someone changes the company, adds a note for everyone or changes an open task. It is renewed at most once in ten minutes per company, and not at all when nothing it rests on has changed.
+
+The summary rests on a small base that everyone who can open the company may see:
+
+| Used | Never used |
+|---|---|
+| The company name | Opportunities and their amounts |
+| Notes written for everyone that belong to the company alone | Private and shared notes |
+| Open tasks of the company alone, with title and due day | Task descriptions |
+| | E-mail |
+
+A note or task that also belongs to a person or an opportunity is left out, because not every role may read those.
+
+Below the summary, **Based on** lists the notes and tasks it rests on. Without a summary, because Collabase AI is switched off, your group does not have it, the budget is used up or a run failed, the page shows this list alone and everything else works as before.
+
+<Info>
+The text is sent to the AI provider your administrator configured. Only the base above is sent.
+</Info>
+
+## Ask in the chat
+
+In the Collabase AI chat you can look up records and read them. Ask for example for the companies with "Muster" in the name, or what is open at one of them.
+
+The chat reads with your rights, at every question. It finds only records of types you may read, shows only the fields your role allows and only the notes and tasks you may see. A record you may not open is the same as one that does not exist for the chat. It never reads e-mail. On its own it only reads; changes need your approval, see below.
+
+## Searching by meaning
+
+When the AI search index is switched on, the chat also finds what companies and people hold in notes, not only their names. Only the same base as for the summary is indexed: the name, notes written for everyone and the titles of open tasks. Private and shared notes, task descriptions, e-mail, meeting transcripts and opportunities never enter the index.
+
+Which of these hits you may see is decided at every question from your roles. A record you may not open is never shown, and a record of a type that your administrator keeps from the AI is never found. If a note stops being a note for everyone, deleted or made private, its text is removed from the index at once. If an administrator switches off **The AI may read the content of its records** for an object type, everything of that type is removed.
+
+## Let the chat do something
+
+Collabase AI can create a task about records and change fields of a record. It always shows you what it is about to do and waits for your approval; nothing happens without it. After you approve, it works with your own rights: it cannot create a task if you may not, change a field your role hides or makes read-only, or touch a record you may not read. It also never overwrites a newer version: if someone changed the record meanwhile, it reads it again first. The change shows in the history as made by the assistant. Without Collabase AI you do the same work by hand, as before.
+
+## Switching it off
+
+An administrator controls who has Collabase AI by group and which provider it uses, under **Administration**. Without it the company page shows the sources without a summary and the chat has no CRM questions to answer.
+
+## Related
+
+- [The record page](/crm/record-detail)
+- [Notes](/crm/notes)
+- [CRM roles and settings](/crm/roles)

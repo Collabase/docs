@@ -1,0 +1,46 @@
+---
+title: "List CRM notes"
+description: "List the CRM notes the token owner may read, of one record or of all records, newest first with a cursor."
+api: "GET /api/v1/crm/notes"
+---
+
+Returns the notes the token owner may read. A private note of someone else, a note shared with other
+people only, and the notes of a type the roles do not allow never appear, whatever the token's scope.
+A page is always full: its size and cursor do not tell how many notes were hidden.
+
+<Info>
+  Scope `crm:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="recordId" type="string">Only the notes on this record. A record the token owner may not read answers `404`.</ParamField>
+<ParamField query="cursor" type="string">The `nextCursor` of the previous page.</ParamField>
+<ParamField query="limit" type="number" default="50">1 to 100; more is cut down to 100.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="array" required>Each note has `id`, `title`, `body` (editor blocks), `visibility` (`PRIVATE`, `SHARED`, `ALL`), `authorId`, `authorName`, `contentUpdatedAt`, `createdAt` and `targets`.</ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>`null` on the last page.</ResponseField>
+    <ResponseField name="canCreate" type="boolean" required>Whether the token owner may write notes.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/crm/notes?recordId=cm3rec0001&limit=25" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "items": [], "nextCursor": null, "canCreate": true } }
+```
+
+</ResponseExample>

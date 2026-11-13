@@ -77,6 +77,36 @@ React to registry objects and create, change, find and delete them.
 | **Read registry object** | Reads the label of a registry object. |
 | **List registry object types** | Lists the object types the service account may see, with the names and kinds of their fields, so a flow or an agent knows what to write. |
 
+### CRM
+
+React to companies, people and deals, and create or change them, with tasks, notes and lists.
+
+**Triggers**
+
+A trigger starts a flow only for records that the person who published the flow may read.
+
+| Name | What it does |
+|---|---|
+| **CRM record created** | A person, a flow or the mail sync creates a record. |
+| **CRM record changed** | Fields, contact points, links or the owner of a record change; changes within five seconds arrive as one event. |
+| **CRM record deleted** | A record moves to the trash, one event per record. |
+| **Deal stage changed** | A deal moves to another stage. |
+| **Deal won** | A deal moves to a stage that counts as won. |
+| **Deal lost** | A deal moves to a stage that counts as lost; the reason is part of the data. |
+| **CRM task due** | A CRM task is due today for one of its assignees, once per task and day. |
+| **Meeting linked to records** | A meeting is confirmed on records, by a person, by the matcher or when it is created from a record. |
+| **CRM import finished** | A CSV import ends with imported rows; one event for the whole import. |
+
+**Actions**
+
+| Name | What it does |
+|---|---|
+| **Create CRM record** | Creates a company, a person, a deal or a record of your own type, with the rights of the person who published the flow. |
+| **Update CRM record** | Changes fields or the owner of a record. The step reads the current version itself. |
+| **Create CRM task** | Creates a task on one to twenty records; the assignees are told as for a task made by a person. |
+| **Add CRM note** | Adds a note with plain text to one to twenty records. The person who published the flow is its author. |
+| **Add record to CRM list** | Puts a record on a list you may edit and sets its cells. Adding the same record again changes nothing. |
+
 ### Comments
 
 React to new comments and comment on pages.

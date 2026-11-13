@@ -1,0 +1,72 @@
+---
+title: "Object types, fields and pipelines"
+description: "Add your own object types and fields to the CRM, change a field type, and edit the stages of a pipeline."
+icon: "sitemap"
+---
+
+The model page is for people who hold the right to **administer the CRM**. You find it in the system administration under **CRM** > **Model** (`/admin/crm/model`). For everyone else the page answers "not found".
+
+## Object types
+
+Companies, people and opportunities are shipped types. You can rename them and switch the AI setting, but you cannot deactivate them.
+
+<Steps>
+  <Step title="Create a type">
+    Click **New object type**, enter a name and a key. The key is lower case letters and digits, it becomes part of the address, and it cannot change later. The names `settings`, `trash`, `lists`, `tasks`, `notes`, `dashboards`, `duplicates` and `new` are taken.
+  </Step>
+  <Step title="Hand out rights">
+    A new type gets a list and a detail page at once. Only the **CRM admin** role may use it until you grant rights to the other roles on the roles page.
+  </Step>
+</Steps>
+
+The switch **The AI may read the content of its records** decides whether notes and tasks of this type reach the AI. It is on by default, except for opportunities, which start with it off.
+
+**Deactivate** moves every record of a custom type to the trash and hides the type. The records are removed for good after 30 days.
+
+## Fields
+
+Click **Add field** on a type and pick a name, a key and a type. A type has at most 200 fields.
+
+| Type | Use |
+|---|---|
+| Text, Long text | Free text |
+| Number, Amount | Numbers and money |
+| Date | A day |
+| Single choice, Multiple choice | A fixed list of options |
+| Checkbox, Link, E-mail, Phone | Yes or no, a web address, an address, a number |
+| Location, Person | A place, a user |
+
+You can change a field type only where every stored value stays valid:
+
+- Text and Long text, in both directions
+- Text to Link, E-mail or Phone, if every stored value fits
+- Number and Amount, in both directions; an amount cannot be negative
+- Single choice and Multiple choice, in both directions; a list with several values cannot become a single choice
+
+Any other change is refused, and so is a change that another admin made first. A shipped field keeps its name and type.
+
+Removing a field switches it off. Its values stay for 30 days and are then deleted with it.
+
+## Pipelines
+
+A single choice field is a pipeline. Under it you can rename a stage, mark it as **Won** or **Lost**, add a stage and remove one. A stage with records cannot be removed until you pick the stage its records move to.
+
+## Relations
+
+A relation links records of two types, for example events and companies. Click **Add relation** on a type, pick the type it points to and name the field on each side. The relation shows as a field on both types, in columns and in filters.
+
+| Setting | Meaning |
+|---|---|
+| **One to one** | One record on each side; a target can belong to one record only |
+| **One to many** | One record holds several targets; each target belongs to one record only |
+| **Many to many** | Any number on both sides |
+
+Links are written from the side where you created the relation. On that side you add and remove targets on the item itself; the other side lists the linked items and is read only. A relation can limit the targets of one record; a new limit must not be lower than the number a record already holds. A person who may not read the target type sees "Not accessible" instead of a name.
+
+Deleting a relation removes all its links and both fields. The shipped relations between companies, people and opportunities cannot be changed or deleted.
+
+## Related
+
+- [CRM roles and settings](/crm/roles)
+- [Deal pipeline](/crm/board)
+- [CRM import and export](/crm/import-export)

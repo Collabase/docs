@@ -1,0 +1,108 @@
+---
+title: "Meetings from the CRM"
+sidebarTitle: "Meetings"
+description: "See customer meetings on companies and people, assign the ones the CRM cannot place, create a meeting from a record and read the briefing before it starts."
+icon: "video"
+---
+
+Meetings and the CRM work together when both are available to you. A meeting with a customer shows on the timeline of the company and the person, you can create a meeting from a record, and the company page shows a briefing before the next meeting.
+
+Without the Meetings app none of this appears, and the CRM works as before. See [Meetings](/meetings/overview) for planning, polls and meeting notes.
+
+## How a meeting finds its record {#matching}
+
+When a meeting ends or changes its guests, the CRM matches the guests with its records. Only guests without a Collabase account count. Each guest is decided on its own:
+
+| The guest | What happens |
+|---|---|
+| Has an email address that exactly one record holds | The meeting is attached to that record, confirmed |
+| Has no such address, but the domain belongs to exactly one company | The meeting is attached to that company, confirmed |
+| Fits several records | The meeting waits as a suggestion for each of them |
+| Fits no record, and the domain is a company domain | The meeting waits as a suggestion to create the company |
+| Uses a private mail provider such as Gmail and no record holds the address | Nothing. A private provider is matched by the exact address only |
+
+A meeting with guests from several companies appears on each of them. An attached meeting shows as an entry on the [timeline](/crm/timeline) of the record. A meeting appears only for people who may open the meeting and read the record.
+
+## Assign a meeting the CRM could not place {#suggestions}
+
+Where a guest fits several records or none, the organizer of the meeting gets a notice and the meeting waits.
+
+<Steps>
+  <Step title="Open the record">
+    Open the company or person on the **Overview** tab.
+  </Step>
+  <Step title="Read the section">
+    The section **Meetings to assign** lists each suggested meeting with its date and the guest address.
+  </Step>
+  <Step title="Decide">
+    Click **Confirm** to attach the meeting to this record, or **Not this one** to remove the suggestion.
+  </Step>
+</Steps>
+
+If you organize the meeting, the CRM home page also lists your waiting suggestions. For a guest from an unknown company domain, **Create company** creates the company with that domain and attaches the meeting at once.
+
+**Confirm** makes the link manual. Later changes of the guests never remove or replace a manual link. The section does not appear when no meeting waits. Each meeting entry on the timeline has **Create task** for a follow-up on the record.
+
+## Create a meeting from a company or a person {#create-meeting}
+
+You need the right to read the record and the right to create meetings. Without the right to read the record, the address answers "not found".
+
+<Steps>
+  <Step title="Open the record">
+    Open a company or a person. **Create meeting** is in the head of the page, next to the owner. It is missing where you may not create meetings.
+  </Step>
+  <Step title="Fill in the meeting">
+    Enter a title, the date, the time and the length in minutes. Date and time count in your own time zone.
+  </Step>
+  <Step title="Choose the guests">
+    Switch **Invite guests** on and tick the guests. For a person these are their own email addresses, for a company the addresses of the people who work there. Only addresses you may see on the record are offered.
+  </Step>
+  <Step title="Create it">
+    Click **Create**.
+  </Step>
+</Steps>
+
+| **Invite guests** is | Result |
+|---|---|
+| Off | The meeting stays a draft with you as the only participant. Nobody receives an invitation. |
+| On | The meeting is planned and the invitations go out. |
+
+The meeting is attached to the record at once and counts as confirmed. For a person it is also attached to the main company, for a company to the people you invited. It shows on the timeline of each.
+
+If the meeting was created but could not be attached, a message says so. Confirm the link in the meeting afterwards. Trying again never creates a second meeting.
+
+## The briefing before a meeting {#briefing}
+
+On the **Overview** tab of a company, the section **Briefing for upcoming meetings** shows the next meetings that hang on the company, up to five.
+
+| Who looks | What the section shows |
+|---|---|
+| The organizer, when a written briefing exists | The written overview, written about an hour before the start, and below it the list of sources |
+| Everyone else | The list of sources only |
+| The organizer, when no written briefing exists (the AI is off, or the meeting is less than an hour away) | The list of sources only |
+
+The list of sources is what the CRM knows about the records of the meeting: the company or person with domain and owner, open tasks, open opportunities and the titles of notes that everyone may read. It holds only what you may read yourself.
+
+It never contains mail, amounts, private or shared notes, or the text of a note. If the AI may not read the content of a type, its records appear without names. The written briefing uses the organizer's rights and the organizer's AI budget. See [AI and privacy](/meetings/ai-and-privacy#ai-briefing-before-a-meeting) for when it is written and how to switch it off.
+
+## Flows {#flows}
+
+A flow can start when a meeting is attached to records. See [CRM automation](/crm/automation).
+
+## Troubleshooting {#troubleshooting}
+
+| What you see | What to do |
+|---|---|
+| **This record holds no email address to invite.** | Add an email address to the person, or to a person of the company, and open the dialog again. |
+| **The guests could not be loaded.** | Close the dialog and open it again. If it persists, reload the page. |
+| **The meeting was created, but could not be attached to the record. Confirm the link in the meeting.** | Open the meeting and confirm the record there. Do not create the meeting again. |
+| **{count} address(es) were not invited.** | The address was not valid, was listed twice, was already on the meeting or went over the limit of guests. Check the guests in the meeting. |
+| **The meeting could not be created.** | Check title, date and time, then try again. |
+| A meeting you expect is missing on the record | You may not open the meeting or may not read the record, or the guest address matches no record. Look under **Meetings to assign**. |
+
+## Related
+
+- [The record page](/crm/record-detail)
+- [Timeline](/crm/timeline)
+- [Meetings](/meetings/overview)
+- [AI in the CRM](/crm/ai)

@@ -1,0 +1,50 @@
+---
+title: "Create CRM list"
+description: "Create a static list of chosen records or a dynamic list that follows a query, owned by the token owner."
+api: "POST /api/v1/crm/lists"
+---
+
+Creates a list on one type of record. A **static** list holds the records someone adds. A **dynamic**
+list shows the records a query matches and needs `cql`. Adding entries, columns and shares is done in
+the app.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to create lists and to read the type.
+</Info>
+
+## Request body
+
+<ParamField body="name" type="string" required>Up to 120 characters.</ParamField>
+<ParamField body="typeKey" type="string" required>The type of the records, such as `company`.</ParamField>
+<ParamField body="kind" type="string" required>`STATIC` or `DYNAMIC`.</ParamField>
+<ParamField body="cql" type="string">The query of a dynamic list; not allowed for a static one.</ParamField>
+<ParamField body="visibility" type="string" default="PRIVATE">`PRIVATE` or `SHARED`.</ParamField>
+<ParamField body="groupId" type="string | null">The group of lists it sits in.</ParamField>
+
+## Response
+
+The created list, with status `201`.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://your-collabase.ch/api/v1/crm/lists" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Customers with AG",
+    "typeKey": "company",
+    "kind": "DYNAMIC",
+    "cql": "title ~ \"AG\""
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{ "data": { "id": "cm3list001", "name": "Customers with AG", "kind": "DYNAMIC" } }
+```
+
+</ResponseExample>

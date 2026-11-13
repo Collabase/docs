@@ -1,0 +1,40 @@
+---
+title: "Delete CRM note"
+description: "Delete a note you may delete."
+api: "DELETE /api/v1/crm/notes/{id}"
+---
+
+Deletes a note. A private note of someone else answers `404`.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to delete the note.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The note.</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>`true` once it is deleted.</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/crm/notes/cm3note001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "success": true } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Note not found" } }
+```
+
+</ResponseExample>

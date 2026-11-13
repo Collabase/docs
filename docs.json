@@ -264,6 +264,36 @@
                       "service-management/dashboards"
                     ],
                     "icon": "life-ring"
+                  },
+                  {
+                    "group": "CRM",
+                    "pages": [
+                      "crm/overview",
+                      "crm/getting-started",
+                      "crm/home",
+                      "crm/objects",
+                      "crm/record-detail",
+                      "crm/board",
+                      "crm/notes",
+                      "crm/tasks",
+                      "crm/timeline",
+                      "crm/files",
+                      "crm/links",
+                      "crm/views",
+                      "crm/lists",
+                      "crm/gadgets",
+                      "crm/duplicates",
+                      "crm/import-export",
+                      "crm/trash",
+                      "crm/mailbox",
+                      "crm/calendar",
+                      "crm/meetings",
+                      "crm/automation",
+                      "crm/ai",
+                      "crm/model",
+                      "crm/roles"
+                    ],
+                    "icon": "address-book"
                   }
                 ]
               }
@@ -597,6 +627,30 @@
                 ]
               },
               {
+                "group": "CRM",
+                "pages": [
+                  "api/crm/overview",
+                  "api/crm/object-types",
+                  "api/crm/list-records",
+                  "api/crm/get-record",
+                  "api/crm/create-record",
+                  "api/crm/update-record",
+                  "api/crm/delete-record",
+                  "api/crm/list-notes",
+                  "api/crm/create-note",
+                  "api/crm/update-note",
+                  "api/crm/delete-note",
+                  "api/crm/list-tasks",
+                  "api/crm/create-task",
+                  "api/crm/update-task",
+                  "api/crm/delete-task",
+                  "api/crm/list-lists",
+                  "api/crm/create-list",
+                  "api/crm/update-list",
+                  "api/crm/delete-list"
+                ]
+              },
+              {
                 "group": "Meetings",
                 "pages": [
                   "api/meetings/overview",
@@ -745,6 +799,7 @@
                     "group": "Collabase 1",
                     "expanded": false,
                     "pages": [
+                      "changelog/v1-2-0",
                       "changelog/v1-1-0",
                       "changelog/v1-0-1",
                       "changelog/v1-0-0"
@@ -1050,6 +1105,36 @@
                       "service-management/dashboards"
                     ],
                     "icon": "life-ring"
+                  },
+                  {
+                    "group": "CRM",
+                    "pages": [
+                      "crm/overview",
+                      "crm/getting-started",
+                      "crm/home",
+                      "crm/objects",
+                      "crm/record-detail",
+                      "crm/board",
+                      "crm/notes",
+                      "crm/tasks",
+                      "crm/timeline",
+                      "crm/files",
+                      "crm/links",
+                      "crm/views",
+                      "crm/lists",
+                      "crm/gadgets",
+                      "crm/duplicates",
+                      "crm/import-export",
+                      "crm/trash",
+                      "crm/mailbox",
+                      "crm/calendar",
+                      "crm/meetings",
+                      "crm/automation",
+                      "crm/ai",
+                      "crm/model",
+                      "crm/roles"
+                    ],
+                    "icon": "address-book"
                   }
                 ]
               }
@@ -1383,6 +1468,30 @@
                 ]
               },
               {
+                "group": "CRM",
+                "pages": [
+                  "api/crm/overview",
+                  "api/crm/object-types",
+                  "api/crm/list-records",
+                  "api/crm/get-record",
+                  "api/crm/create-record",
+                  "api/crm/update-record",
+                  "api/crm/delete-record",
+                  "api/crm/list-notes",
+                  "api/crm/create-note",
+                  "api/crm/update-note",
+                  "api/crm/delete-note",
+                  "api/crm/list-tasks",
+                  "api/crm/create-task",
+                  "api/crm/update-task",
+                  "api/crm/delete-task",
+                  "api/crm/list-lists",
+                  "api/crm/create-list",
+                  "api/crm/update-list",
+                  "api/crm/delete-list"
+                ]
+              },
+              {
                 "group": "Meetings",
                 "pages": [
                   "api/meetings/overview",
@@ -1531,6 +1640,7 @@
                     "group": "Collabase 1",
                     "expanded": false,
                     "pages": [
+                      "de/changelog/v1-2-0",
                       "de/changelog/v1-1-0",
                       "de/changelog/v1-0-1",
                       "de/changelog/v1-0-0"

@@ -84,6 +84,72 @@ With uploads on S3 and the database external, the application server is stateles
   </Step>
 </Steps>
 
+## Size a Kubernetes installation {#size-a-kubernetes-installation}
+
+Use this section to choose node sizes and the limits of each workload for the Helm chart. Every number carries its source: **measured** in a test cluster, **extrapolated** linearly from a measurement, or **assumption**.
+
+The measurements used concurrently active people with think time, calling the API only: reading, searching, creating work items, setting priority and status, commenting. Ten projects, demo data. Live editing, AI, attachments and exports were not part of the load, so leave headroom if your team uses them heavily.
+
+### What was measured {#kubernetes-measurements}
+
+The test cluster had two nodes with 4 vCPU and 8 GB each, about 5.6 GiB usable per node.
+
+| Test | Result | Source |
+|---|---|---|
+| 200 concurrent people, 2 app instances, 10 projects | 95th percentile 0.63 s, 0.01 % errors. Each app pod peaked at 0.8 to 1.1 cores and 1.4 GiB. | Measured |
+| 500 concurrent people, 2 app instances, 10 projects | 95th percentile 5.0 s, no errors. The app pods ran at their CPU limit of 2 cores and peaked at 2.1 GiB. | Measured |
+| 500 concurrent people, 4 app instances | 95th percentile 6.2 s, no errors. More instances did not help, because the cluster had only 8 vCPU and the database allowed 100 connections. | Measured |
+| 200 people creating work items in one project | 95th percentile 10 s, 2.4 % errors. See [Many people creating in one project](#kubernetes-one-project). | Measured |
+| Update under load, 2 app instances | 22,984 requests, no errors. | Measured |
+| Memory use per pod, idle to peak | App 0.35 to 2.1 GiB, database 0.17 to 1.6 GiB, queue 16 MiB, worker 0.4 GiB, document processor 65 MiB. | Measured |
+
+The bottleneck is the CPU of the app, then memory. The database used 0.3 to 0.4 cores. One app core carries about 100 concurrently active people (**extrapolated** from 200 people at about 2 cores).
+
+### Requests and limits per workload {#kubernetes-limits}
+
+The first columns are the defaults of the chart, from `values.yaml`. The last columns are an example for two nodes with 4 vCPU and 16 GB each, about 13.5 GiB usable per node (**assumption**), running three app instances. The example values are not defaults, and they were derived from the rules on this page, not measured on these nodes.
+
+| Workload | Instances in the example | CPU request / limit, default | Memory request / limit, default | CPU request / limit, example | Memory request / limit, example |
+|---|---|---|---|---|---|
+| **App** | 3 | 250m / 2 | 512 MiB / 2816 MiB | 500m / 2 | 1 GiB / 3 GiB |
+| **Worker** | 1 | same as the app | same as the app | 250m / 1 | 512 MiB / 2 GiB |
+| **PostgreSQL** | 1 or 2 | none / none | 1 GiB / 4 GiB | 500m / 2 | 2 GiB / 5 GiB per instance |
+| **Redis** | 1 | none / none | none / none | 100m / 1 | 256 MiB / 1 GiB |
+| **Collaboration relay** | 1 | 100m / 1 | 256 MiB / 768 MiB | 100m / 1 | 256 MiB / 1 GiB |
+| **Plug sandbox** | 1 | 100m / 2 | 256 MiB / 2 GiB | 100m / 2 | 256 MiB / 2 GiB |
+| **Document processor** | 1 | 100m / 1 | 256 MiB / 1536 MiB | 100m / 1 | 256 MiB / 1.5 GiB |
+
+The chart gives the worker the values of the app. A smaller worker, as in the example, needs a post-renderer, see [Scheduling and platform settings](/installation-kubernetes#scheduling). A second database instance for high availability is not part of the chart. Use an external PostgreSQL with failover, see [Use your own database](/installation-kubernetes#own-database).
+
+With the example values, the memory limits of all workloads add up to 26.5 GiB, against about 27 GiB usable on both nodes. During an update one more app instance runs, which brings the limits to 29.5 GiB. That is about 1.1 times the usable memory. We accept this on purpose: a limit is a ceiling, and normal use stays far below it, see the measurements above. The risk is a pod that is stopped for memory (exit code 137) if the surge pod and all others peak at the same time.
+
+<Warning>
+  The sum of all memory limits must stay below the usable memory of your nodes, apart from the short overbooking of an update. In a test, limits that exceeded the node memory 2.2 to 2.6 times stopped pods with exit code 137 (**measured**).
+</Warning>
+
+### How many people the example carries {#kubernetes-capacity}
+
+Of the 8 vCPU in the example, about 0.8 go to the kubelet and the network agents, 1 to the database and 1 to the worker, queue, relay, sandbox and document processor on average. About 5 cores remain for the app (**extrapolated**). Both nodes have the same CPU as the test cluster, only more memory, so the number of people depends on CPU, not on memory.
+
+| Concurrently active people | Registered members at 10 % active (**assumption**) | Expected result (**extrapolated**) |
+|---|---|---|
+| Up to 250 | Up to 2,500 | 95th percentile under 1 s with 2 app instances, in line with the measurement (200 people: 0.63 s) |
+| Up to 400 | Up to 4,000 | 95th percentile around 1 to 2 s with 3 app instances (5 cores) |
+| 500 | 5,000 | 95th percentile around 2 to 5 s, the limit of these nodes |
+| Over 500 | Over 5,000 | Needs more CPU: nodes with more cores or an additional node |
+
+An additional node with 4 vCPU raises the CPU of the app by about 3 cores, roughly 300 more people (**extrapolated**).
+
+### Database connections {#kubernetes-connections}
+
+The chart gives each app process 80 % of `postgresql.tuning.max_connections`, divided by the number of app processes (instances plus the dedicated worker), at most 100 each. It does not count the extra instance that runs during a rolling update. Set `database.connectionLimit` yourself so that the total stays below the database limit.
+
+For example, with `max_connections: "400"`, three app instances and one worker, the chart gives 80 connections to each of the four processes. With the extra instance of an update there are five processes, so set `database.connectionLimit: 64` (320 divided by 5). Each connection costs the database about 5 to 10 MiB (**assumption**), so raise `max_connections` together with the memory of the database.
+
+### Many people creating in one project {#kubernetes-one-project}
+
+Work items of a project take their numbers from one counter. Hundreds of people who create in the same project at the same moment wait for each other. In the test, 200 people in one project reached a 95th percentile of 10 s and 2.4 % errors, against 0.63 s when they were spread over ten projects (**measured**). Adding nodes does not change this. Spread busy teams over several projects.
+
 ## The collaboration relay at scale
 
 The relay is a single process and handles a large number of connections across all documents on one instance — no cluster and no Redis are needed for typical deployments. The practical ceiling is per *document*: a page with dozens of simultaneous editors is fine, and only very large single-page sessions (around a hundred people editing one page at once) reach the point where cursor traffic dominates.

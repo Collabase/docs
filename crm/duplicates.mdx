@@ -1,0 +1,52 @@
+---
+title: "Duplicates and merging"
+description: "Find companies and people entered twice and merge them into one record, choosing which values to keep."
+icon: "copy"
+---
+
+Imports and the mailbox sync can create the same company or person twice. The CRM finds such records and lets you merge them into one.
+
+## Find duplicates
+
+Open the list of a type, for example **Companies**, and click **Duplicates** at the top right. The page groups records that share:
+
+- the same name, ignoring upper and lower case, punctuation and extra spaces,
+- the same e-mail address,
+- the same domain,
+- or the same phone number.
+
+You only see records you may read. A kind of address your role hides (for example phone numbers) is not used to find duplicates.
+
+## Merge two records
+
+Next to every record of a group except the first one is **Merge**. It is there only if you may both change and delete records of that type.
+
+In the merge window:
+
+<Steps>
+  <Step title="Check which record stays">
+    **Keep the other** swaps them.
+  </Step>
+  <Step title="Pick the values">
+    Where the two records hold different values, pick the value to keep. A field you may not change is not offered and keeps the value of the record that stays. A field that is empty on the record that stays takes the value of the other one.
+  </Step>
+  <Step title="Choose the main company">
+    A person has one main company. If the two people work for different companies, you must choose one; the merge waits for that choice.
+  </Step>
+  <Step title="Merge">
+    Click **Merge records**.
+  </Step>
+</Steps>
+
+What happens:
+
+- Notes, tasks, timeline entries, list entries, files, meetings, mails and links of the other record move to the record that stays. A note or list entry both records had appears once.
+- Private notes stay private.
+- E-mail addresses, domains and phone numbers move over; an address both records had appears once, and the record that stays keeps its primary address.
+- The other record goes to the [trash](/crm/trash).
+
+<Warning>
+A merge cannot be undone. Restoring the other record from the trash brings it back without what moved to the record that stays.
+</Warning>
+
+If someone changed one of the records while the merge window was open, the CRM refuses the merge. Close the window and open it again to see the current values.

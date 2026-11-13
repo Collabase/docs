@@ -1,0 +1,63 @@
+---
+title: "CRM tasks"
+sidebarTitle: "Tasks"
+description: "Put tasks on companies, people and deals, give them to colleagues, and get a notice on the day they are due."
+icon: "list-todo"
+---
+
+A CRM task works like a task in a project: it has a title, a description, a status, a due date and assignees. It does not belong to a project or a space, so the CRM needs neither.
+
+## Create a task
+
+<Steps>
+  <Step title="Open the tab">
+    Open a company, a person or a deal and choose the **Tasks** tab.
+  </Step>
+  <Step title="Start the task">
+    Choose **New task**, enter a title and fill in what you know.
+  </Step>
+  <Step title="Save">
+    Choose **Save**.
+  </Step>
+</Steps>
+
+The **New task** button appears only when your CRM role allows you to create tasks. A task sits on the record you started from.
+
+## Change a task
+
+- **Status and due date** change right in the list. Choose the status pill or the date.
+- **Everything else** opens in a dialog when you choose the title: title, description, assignees and the delete action.
+- Someone may change a task when they created it, are assigned to it, or hold a CRM role that allows changing tasks and can see the task.
+- If a colleague changed the task while you were editing it, Collabase tells you and keeps their version. Open the task again to see it.
+
+A due date in the past is allowed. The task is marked **Overdue** until it is done.
+
+## My tasks
+
+**My tasks** in the CRM sidebar lists the open tasks assigned to you, soonest due first. It shows CRM tasks only.
+
+## Who sees a task
+
+- The person who created a task and the people assigned to it always see it.
+- Everyone else sees it only when their roles allow them to read every record the task is on.
+- A record you may not read appears as **Not accessible**, without its name.
+- When a record is deleted, the task stays with its creator and assignees. When every record of a task is in the trash, only the creator and assignees still see it. Restoring a record brings the task back for everyone.
+
+## Notices
+
+| When | Who | How |
+|---|---|---|
+| Someone assigns you a task | The new assignee, not the person who made the change | In the inbox |
+| A task is due today | Each assignee, at 7:00 in their own time zone | In the inbox, and by email when you switched that channel on |
+
+If several of your tasks are due on the same day, you get one notice. Notices only reach people who may open the record. Change the channels under **Profile → Notifications**, category **CRM**.
+
+<Note>
+The due notice needs the background worker. Without it, Collabase reports the CRM task notices as degraded in the health check.
+</Note>
+
+## Related
+
+- [The record page](/crm/record-detail)
+- [Timeline](/crm/timeline)
+- [CRM gadgets](/crm/gadgets)

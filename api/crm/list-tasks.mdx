@@ -1,0 +1,47 @@
+---
+title: "List CRM tasks"
+description: "List the CRM tasks of one record, or the tasks assigned to the token owner, soonest due first."
+api: "GET /api/v1/crm/tasks"
+---
+
+Returns tasks that belong to the CRM and are visible to the token owner. A task is visible when at
+least one of its records is; a record in the trash hides its tasks.
+
+<Info>
+  Scope `crm:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="scope" type="string" required>`record` for the tasks of one record, `mine` for the tasks assigned to the token owner.</ParamField>
+<ParamField query="recordId" type="string">Required with `scope=record`.</ParamField>
+<ParamField query="status" type="string" default="all">`open` for tasks that are not done, or `all`.</ParamField>
+<ParamField query="cursor" type="string">The `nextCursor` of the previous page.</ParamField>
+<ParamField query="limit" type="number" default="25">1 to 100; more is cut down to 100.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="array" required>Each task has `id`, `title`, `description`, `status` (`TODO`, `IN_PROGRESS`, `DONE`), `dueDate` (`YYYY-MM-DD`), `assignees`, `targets`, `createdAt` and `updatedAt`.</ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>`null` on the last page.</ResponseField>
+    <ResponseField name="canCreate" type="boolean" required>Whether the token owner may create tasks.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/crm/tasks?scope=mine&status=open" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "items": [], "nextCursor": null, "canCreate": true } }
+```
+
+</ResponseExample>

@@ -1,0 +1,55 @@
+---
+title: "Trash and anonymisation"
+description: "Delete records into the trash, restore them within 30 days, empty the trash and anonymise a person on a privacy request."
+icon: "trash"
+---
+
+A deleted company, person or opportunity does not disappear at once. It moves to the trash, where it stays for 30 days. After that the CRM deletes it for good.
+
+## Delete a record
+
+Open the record and click the bin icon at the top right. You need the right to delete records of that type; without it the icon is missing.
+
+What happens:
+
+- The record leaves every list, board, search and gadget.
+- Its notes, tasks and list entries are hidden with it. A note or task that also hangs on another record stays visible there.
+- Its e-mail addresses and domains are free again, so another record can take them.
+- A person the mailbox sync created goes on the blocklist of the mailboxes that brought it, so the next mail does not create it again.
+
+A company that still has an open opportunity cannot be deleted. Close the opportunity (won or lost) or delete it first. Opportunities in the trash do not count.
+
+## Restore a record
+
+Open **Trash** in the CRM sidebar. It lists the deleted records of the types you may delete, newest first, with who deleted them and when they are deleted for good. Click **Restore** to bring a record back with its notes, tasks, list entries and addresses.
+
+If another record has taken one of its e-mail addresses or domains meanwhile, the record stays in the trash and the CRM tells you so. Remove the address from the other record first, then restore.
+
+## Empty the trash
+
+A CRM admin (the right to change the model) sees **Empty trash**. It deletes every record in the trash for good, with its notes, tasks, files and logo. This cannot be undone. A very full trash is emptied in parts; the CRM says when part of it is left.
+
+The daily clean-up does the same for records that have been in the trash for 30 days. It also deletes notes and tasks that were deleted on their own 30 days ago, and fields and custom object types that were switched off 30 days ago, with their values.
+
+## Anonymise a person
+
+On a privacy request, a person can be anonymised. Only a role with the **Data protection office** flag sees the action on a person; everyone else, admins included, does not.
+
+| Kept | Removed |
+|---|---|
+| The record and its links, shown as **(deleted)** | Name, e-mail addresses, phone numbers and every field value |
+| Notes, with their authors | The link from the note to the person |
+| Mails and events, with a hash instead of the address | Files and the logo |
+| The history lines, without their details | Names and values in the history |
+
+Anonymising works on a person in the trash as well, and it cannot be undone.
+
+## In the audit log
+
+Deleting a record, a bulk delete, restoring records, emptying the trash and anonymising a person each leave an entry in the audit log. The entries name the type and the number of records, never field values. A person who may not read a type of record sees only the keys of its entries in the central audit log.
+
+## Related
+
+- [Duplicates and merging](/crm/duplicates)
+- [CRM import and export](/crm/import-export)
+- [CRM roles and settings](/crm/roles)

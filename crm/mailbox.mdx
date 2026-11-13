@@ -1,0 +1,119 @@
+---
+title: "Connect your mailbox to the CRM"
+description: "Sign in with Google or Microsoft, choose what others see of your mail, agree to the import and disconnect again when you want."
+icon: "envelope"
+---
+
+Each person connects their own mailbox. Nobody else can connect it, change it or read it from the CRM, a CRM admin and a system administrator included. A mailbox is read only: Collabase reads mail and calendar and never sends anything.
+
+## Before you start
+
+You need the right **Connect a mailbox**. It is part of the shipped roles Sales, Staff, Management and CRM admin, and not of Readers. Your CRM admin also has to enter the Google or Microsoft sign-in app under **CRM settings → Mail and calendar apps**. Until then the page tells you that no mail provider is set up.
+
+The page is **Mailbox** in the CRM sidebar. It is visible only to people who hold the right.
+
+## Connect a mailbox
+
+<Steps>
+  <Step title="Sign in with your provider">
+    Click **Connect Google** or **Connect Microsoft** and sign in. The provider asks you to allow reading your mail and calendar.
+  </Step>
+  <Step title="Choose what the mailbox shares">
+    Back in the CRM a window asks what others see of your mail and which contacts the CRM may create from it. Nothing is read before you finish this step.
+  </Step>
+  <Step title="Agree and start">
+    Tick the agreement and click **Start import**. The mailbox then shows its progress on the page.
+  </Step>
+</Steps>
+
+If you close the window before you finish, the mailbox waits with the state **Waiting for your consent**. Click **Finish setup** to continue. Without your agreement the CRM imports nothing.
+
+### What others see of your mail {#levels}
+
+| Level | Who sees what |
+|---|---|
+| **Only participants** | Only you and the CRM users who sent or received the mail. This is the default. |
+| **Metadata only** | Everyone with access to the item sees sender, recipients and time, not the subject. |
+| **Subject** | Everyone with access to the item sees the metadata and the subject. |
+| **Everything** | Everyone with access to the item sees the whole mail. |
+
+You always see all of your own mail, and so does everyone who sent or received a mail themselves. Blind copies (Bcc) are shown to you only. A person who received a mail only as a blind copy sees who wrote it but not who else got it. A mail you excluded by hand never appears for anybody. Admins have no special right to see mail.
+
+If the same mail sits in two mailboxes, it is one line and the lower level applies, unless you own one of the two mailboxes.
+
+### Change what a mailbox shares {#change}
+
+Click **Settings** on a connected mailbox to change the level or the rule for contacts. The change applies to all of the mailbox's mail at once, the mail already imported included. A change of the level is recorded in the audit log without any address.
+
+### Contacts from mail
+
+The rule decides whether the CRM creates people and companies from the mail it imports:
+
+| Rule | The CRM creates people for |
+|---|---|
+| **None** | Nobody. Mail is still matched to people and companies you already have. |
+| **From sent mail** | The recipients (To and Cc) of the mail you sent |
+| **From sent and received mail** | Everyone who wrote to you or received mail with you, except Bcc |
+
+Your CRM admin sets the most any mailbox may do, and the list offers only the rules up to that limit.
+
+When a record gets an email address, or a company a domain, the mail already imported for that address (and for the domain, as far as no other record claimed it) shows on the record's timeline from then on. An address of a person beats the domain of a company.
+
+A new person carries only the email address, which also names them until someone edits the record. Nothing of the mail is copied. The company comes from the registrable domain of the address, such as `acme.example` for `ada@mail.acme.example`, and the person is linked to it. A domain that already belongs to a company, or an address that already belongs to a person, is used as it is.
+
+The CRM never creates a person or a company for:
+
+- your own addresses and those of your colleagues
+- addresses that never read replies, such as `noreply@`
+- team addresses such as `info@`, `support@` or `sales@`, which no single person sits behind
+- private mail providers such as `gmail.com` or `outlook.com`
+- an address or domain on the blocklist of the mailbox
+
+Mail to or from an address of a blocklist is not imported at all, and mail already imported for it is removed.
+
+### Blocklist {#blocklist}
+
+Click **Blocklist** on a connected mailbox to block an address (`name@example.com`) or a domain (`example.com`, which covers its subdomains too). Mail with a blocked address is hidden from every timeline right away, and a background run removes it. A mailbox holds up to 1,000 entries. Lifting an entry only stops the blocking: mail that was removed does not come back, and new mail is imported again.
+
+## The Mail tab {#mail-tab}
+
+A record shows its mail on the **Mail** tab, and a company shows the mail of its people too. Mail of one conversation is grouped into a thread that opens to its mails, newest first, 50 mails to a page. What you see of each mail follows the level of the mailbox it came from, see [What others see of your mail](#levels): the subject from **Subject** on, the text only at **Everything**. The same mail in two mailboxes appears once, at the lowest level of the two. A blind copy is shown to the owner of the mailbox only.
+
+## Mailbox states
+
+| State | Meaning |
+|---|---|
+| **Waiting for your consent** | Signed in, import not started |
+| **Starting import**, **Importing** | The first import runs in the background |
+| **Up to date** | The mailbox is in sync |
+| **Sign-in expired** | The provider no longer lets the CRM in. Click **Sign in again**. |
+| **Provider unavailable, trying again** | A temporary problem at the provider. The CRM tries again by itself. |
+| **Disconnected, mail kept** | You disconnected the mailbox and kept its mail |
+
+When the sign-in expires, for example after a password change or when you withdraw access at the provider, you get a security notice in the app and by email, with a link to the page. Mail already imported stays. Sign in again to continue.
+
+## Several mailboxes
+
+You can connect up to 10 mailboxes, each with its own level and rule. Signing in again with an address that is already connected replaces its access and does not add a second mailbox.
+
+## Disconnect a mailbox
+
+Click **Disconnect** on the mailbox. The CRM deletes its access and withdraws the permission at the provider, where the provider supports that. Microsoft has no single withdrawal, so the access expires there.
+
+You decide what happens to the mail already imported:
+
+| Choice | Result |
+|---|---|
+| Keep the mail | The mail stays under the level you chose. The mailbox is never read again. |
+| **Also delete the mail and appointments imported from this mailbox** | The mailbox goes with everything imported from it. |
+
+A mailbox of a person whose account is locked or deleted is disconnected automatically, together with its mail.
+
+## How long mail stays
+
+Mail and appointments older than the retention that your CRM admin sets in the CRM settings (24 months by default) are deleted every day. The same daily run removes what a blocklist covers, so a backlog is worked off over a few days at most.
+
+## Related
+
+- [CRM roles and settings](/crm/roles) for the right **Connect a mailbox** and the sign-in apps of the CRM admin
+- [Notifications](/concepts/notifications) for the security notice about an expired sign-in

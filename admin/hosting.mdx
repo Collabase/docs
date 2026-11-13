@@ -191,8 +191,8 @@ with a third party, leave usage statistics switched off.
 
 ## Features in development {#features-in-development}
 
-People can switch on features that are still in development for themselves, under **Collabase Lab**
-in their profile. To keep a feature off for everyone, name it in `FEATURE_FLAG_OVERRIDES` in the
+System administrators can switch on features that are still in development for everyone, under
+**Settings** → **Collabase Lab**. To keep a feature off, name it in `FEATURE_FLAG_OVERRIDES` in the
 `.env` file of your installation and restart the app:
 
 ```bash
@@ -201,7 +201,7 @@ FEATURE_FLAG_OVERRIDES="INTRANET=false,DOCTOR=false"
 
 The names are `INTRANET`, `DOCTOR`, `MIGRATION_TOOLS` and `CONFLUENCE_DC_MIGRATION`. A
 feature switched off this way shows a locked switch in Collabase Lab. Setting a name to `true`
-switches the feature on for everyone instead.
+switches the feature on without the Lab switch.
 
 ---
 

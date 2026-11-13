@@ -1,0 +1,40 @@
+---
+title: "Delete CRM list"
+description: "Delete a list; the records on it stay."
+api: "DELETE /api/v1/crm/lists/{id}"
+---
+
+Deletes a list. The records on it are not touched.
+
+<Info>
+  Scope `crm:write`. Only the owner of a list deletes it, or a person with the right to delete lists.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The list.</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>`true` once it is deleted.</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/crm/lists/cm3list001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "success": true } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "List not found" } }
+```
+
+</ResponseExample>

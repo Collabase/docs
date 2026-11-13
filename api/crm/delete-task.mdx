@@ -1,0 +1,40 @@
+---
+title: "Delete CRM task"
+description: "Delete a task you may delete."
+api: "DELETE /api/v1/crm/tasks/{id}"
+---
+
+Deletes a task and takes it off its records.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to delete the task.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The task.</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean" required>`true` once it is deleted.</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X DELETE "https://your-collabase.ch/api/v1/crm/tasks/cm3task001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "success": true } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Task not found" } }
+```
+
+</ResponseExample>

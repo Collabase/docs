@@ -1,0 +1,52 @@
+---
+title: "Update CRM task"
+description: "Change the title, description, due date, status, assignees or records of a task."
+api: "PATCH /api/v1/crm/tasks/{id}"
+---
+
+Changes a task. Send only what changes.
+
+<Info>
+  Scope `crm:write`. The token owner needs the right to change the task.
+</Info>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>The task.</ParamField>
+
+## Request body
+
+<ParamField body="title" type="string">Up to 200 characters.</ParamField>
+<ParamField body="description" type="string | null">Plain text; `null` clears it.</ParamField>
+<ParamField body="dueDate" type="string | null">A calendar day, `YYYY-MM-DD`; `null` clears it.</ParamField>
+<ParamField body="status" type="string">`TODO`, `IN_PROGRESS` or `DONE`.</ParamField>
+<ParamField body="assigneeIds" type="array">The people on the task; new ones are told as in the app.</ParamField>
+<ParamField body="targetIds" type="array">The records the task is on, 1 to 20.</ParamField>
+<ParamField body="baseUpdatedAt" type="string">The `updatedAt` you read; a task changed since answers `409`.</ParamField>
+
+## Response
+
+The task as it is now.
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://your-collabase.ch/api/v1/crm/tasks/cm3task001" \
+  -H "Authorization: Bearer cb_xYz123ABCD..." \
+  -H "Content-Type: application/json" \
+  -d '{ "status": "DONE" }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "id": "cm3task001", "status": "DONE" } }
+```
+
+```json 404
+{ "error": { "code": "NOT_FOUND", "message": "Task not found" } }
+```
+
+</ResponseExample>

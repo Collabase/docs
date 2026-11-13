@@ -1,0 +1,43 @@
+---
+title: "List CRM lists"
+description: "List the CRM lists the token owner may open: their own, shared ones and those shared with their groups."
+api: "GET /api/v1/crm/lists"
+---
+
+Returns the lists the token owner may open, by name, a page at a time. Another person's private list
+never appears.
+
+<Info>
+  Scope `crm:read`.
+</Info>
+
+## Query parameters
+
+<ParamField query="cursor" type="string">The `nextCursor` of the previous page.</ParamField>
+<ParamField query="limit" type="number" default="50">1 to 200; more is cut down to 200.</ParamField>
+
+## Response
+
+<ResponseField name="data" type="object" required>
+  <Expandable title="properties">
+    <ResponseField name="items" type="array" required>Each list has `id`, `name`, `typeKey`, `kind` (`STATIC` or `DYNAMIC`), `cql`, `visibility` (`PRIVATE` or `SHARED`), `ownerId`, `canEdit` and `entryCount` (`null` for a dynamic list).</ResponseField>
+    <ResponseField name="nextCursor" type="string | null" required>`null` on the last page.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl "https://your-collabase.ch/api/v1/crm/lists?limit=50" \
+  -H "Authorization: Bearer cb_xYz123ABCD..."
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{ "data": { "items": [], "nextCursor": null } }
+```
+
+</ResponseExample>

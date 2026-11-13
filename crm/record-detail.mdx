@@ -1,0 +1,51 @@
+---
+title: "The record page"
+description: "Open a company or a person, edit its fields in place, see its relations and change its owner."
+icon: "id-card"
+---
+
+Click a row in a list to open the page of that item. The page shows the name at the top, the owner next to it, and below them the fields in sections, then the relations.
+
+## Edit in place {#edit}
+
+There is no edit dialog. Click a field, change it and leave the field. The change is saved at once. Leaving a field untouched saves nothing.
+
+| Field | How to edit |
+|---|---|
+| **Name** | Click the name at the top. Press **Enter** to save or **Escape** to cancel. A person's name is built from the first and last name, so it is changed there. |
+| **Email addresses, phone numbers, domains** | Write one per line. The first line is the main entry. |
+| **Other fields** | Use the input of the field, such as a text box, a choice or a date. |
+
+A field your CRM roles let you read but not change is shown as plain text. A field your roles hide is not on the page at all, and there is no empty space where it would be.
+
+### When someone else changed the same field {#conflict}
+
+If a colleague saved the record after you opened it, your change is not applied. The field shows the current value, and a note under it shows what you entered. Click **Apply my input** to save your value on top of the new version, or **Keep current value** to drop yours.
+
+## The logo {#logo}
+
+A company shows its logo in front of its name, in lists and on its page. As soon as you save a main domain, the CRM looks for the symbol or the preview image of that site in the background. The name stays editable and the page stays usable meanwhile. Until a logo is found, or when the site has none, a placeholder with the first letter of the name is shown.
+
+The lookup runs again when the main domain changes, and not more often than every 30 days otherwise. A domain of a private mail provider, such as a free mailbox, is never looked up. Only PNG, JPEG, WebP and ICO images up to 1 MB are used. A logo uploaded by hand is never replaced by the lookup. If you may change a company, the upload and reset icons in its header set a logo or go back to the automatic one. Records without a logo, or whose last lookup is 30 days old, are looked up again once a day.
+
+## The owner {#owner}
+
+Click the owner at the top to pick another person from the list, or choose **No owner**. The owner is used by the **Owner** filter in the lists. It gives nobody extra rights: only your CRM roles decide what you see and change.
+
+The new owner gets a notification, unless they made the change themselves or their roles do not let them read this type. Several changes to the same record within ten minutes are grouped into one notification. The category is **CRM**, which you can switch per channel in your [notification settings](/concepts/notifications).
+
+## Relations {#relations}
+
+The **Relations** section lists the records this one points to and the records that point to it, such as the people of a company. Each entry opens its own page. A record of a type your roles do not let you read appears as **Not accessible**, without a name.
+
+A long list shows the first 50 entries. Click the **Show {count} more** button, where the number is how many entries are left, for the next ones.
+
+For a relation you may change, click **Add** under it, search by name and pick a record. The pick marks a record you already linked, and a second click removes it. The cross next to an entry removes it too. A relation with a limit of one swaps the target instead of adding one. The records that point to this one are read only.
+
+## Meetings {#meetings}
+
+Meetings that involve a company or person appear on its timeline, and the **Overview** tab of a company shows the next meetings with a briefing. Matching, suggestions, the briefing and **Create meeting** are described on [Meetings from the CRM](/crm/meetings).
+
+## Tabs {#tabs}
+
+The page starts on **Overview**. Other tabs, such as notes and tasks, appear next to it as they become available. A tab for a type you may not read is not shown. The open tab is part of the address, so a link opens the same tab. If one tab fails to load, the name, the owner and the other tabs stay usable.
